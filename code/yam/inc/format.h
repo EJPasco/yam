@@ -1,15 +1,19 @@
-#ifndef Y_FORMAT_H_Y
-#define Y_FORMAT_H_Y
+#ifndef Y_FORMAT_H
+#define Y_FORMAT_H
 
 #include "common.h"
 
-class YAM_API CYFormat
-{
-public:
-	CYFormat();
-	virtual ~CYFormat();
+namespace yam{ namespace external{ namespace photoshop{ namespace plugin{
 
-public:
-};
+	class YAM_API CYFormat
+	{
+	public:
+		CYFormat();
+		virtual ~CYFormat();
 
-#endif // Y_FORMAT_H_Y
+	public:
+	};
+
+}}}}
+
+#endif // Y_FORMAT_H

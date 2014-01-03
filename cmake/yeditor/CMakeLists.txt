@@ -8,8 +8,13 @@ set(DEPEND_PROJ_LIST
     yam
     )
 
-set(INCLUDE_PATH_LIST ${CODE_PATH_YEDITOR}/inc)
+set(INCLUDE_PATH_LIST
+    ${CODE_PATH}/yam/inc
+    ${CODE_PATH_YEDITOR}/inc
+    )
+
 set(LINK_PATH_LIST
+    ${OUT_PATH}/lib
     )
 
 if(CMAKE_COMPILER_IS_GNUCXX)
