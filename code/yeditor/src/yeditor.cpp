@@ -1,7 +1,22 @@
 #include "yeditor.h"
 
-int main(int argc, char* argv[])
+#include <QtWidgets/QApplication>
+
+YEditor::YEditor(QWidget* pParent /* = NULL */)
+	: QMainWindow(pParent)
+{
+	ui.setupUi(this);
+}
+
+YEditor::~YEditor()
 {
 	//
-	return 0;
+}
+
+int main(int argc, char* argv[])
+{
+	QApplication a(argc, argv);
+	YEditor editor;
+	editor.show();
+	return a.exec();
 }

@@ -61,6 +61,13 @@ link_libraries(${LIBRARY_FILE_LIST})
 
 add_definitions("-DC4G_EXPORTS_API")
 
+add_library(pstoyam SHARED ${CODE_FILE_LIST_PS}
+                           ${CODE_FILE_LIST_PSTOYAM}
+                           ${CODE_FILE_LIST_RES}
+            )
+
+set_target_properties(pstoyam PROPERTIES SUFFIX ".8bi")
+
 add_custom_command(OUTPUT pstoyam.pipl
                    COMMAND cl /I$ENV{PS_PLUGIN_SDK}/photoshopapi/PICA_SP /I$ENV{PS_PLUGIN_SDK}/photoshopapi/Photoshop /I$ENV{PS_PLUGIN_SDK}/photoshopapi/Resources /I${CODE_PATH_PSTOYAM}/inc /EP /DMSWindows=1 /Tc"${CODE_PATH_PSTOYAM}/ps/pstoyam.r" > "${OUT_PATH}/pstoyam.rr"
                    COMMAND $ENV{PS_PLUGIN_SDK}/samplecode/resources/cnvtpipl "${OUT_PATH}/pstoyam.rr" "${CODE_PATH_PSTOYAM}/ps/pstoyam.pipl"
@@ -68,13 +75,6 @@ add_custom_command(OUTPUT pstoyam.pipl
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_PSTOYAM}/ps/pstoyam.r
                    )
-
-add_library(pstoyam SHARED ${CODE_FILE_LIST_PS}
-                           ${CODE_FILE_LIST_PSTOYAM}
-                           ${CODE_FILE_LIST_RES}
-            )
-
-set_target_properties(pstoyam PROPERTIES SUFFIX ".8bi")
 
 add_custom_target(pstoyam_pipl DEPENDS pstoyam.pipl)
 add_dependencies(pstoyam ${DEPEND_PROJ_LIST}
