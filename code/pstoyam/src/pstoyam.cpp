@@ -44,7 +44,7 @@ DLLExport MACPASCAL void PluginMain (const int16 iSelector,
 
 	case formatSelectorWriteStart:
 		{
-			yam::external::photoshop::plugin::CYFormat format;
+			//yam::external::photoshop::plugin::CYFormat format;
 			//format.Save(formatParamBlock, "aa", "yam");
 		}
 		break;
