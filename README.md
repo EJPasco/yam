@@ -47,4 +47,4 @@ You can use it to edit/save the yam file and export the new format file.
 
 ### License
 
-Reference to MIT License
+See The MIT License or LICENSE file
