@@ -6,11 +6,13 @@ set(CODE_PATH_YEDITOR ${CODE_PATH}/yeditor)
 
 set(DEPEND_PROJ_LIST
     yam
+    supereasyjson
     )
 
 set(INCLUDE_PATH_LIST
     $ENV{QT_MSVC2012_X32}/include
     ${CODE_PATH}/yam/inc
+    ${CODE_PATH}/t3rd/supereasyjson
     ${CODE_PATH_YEDITOR}/inc
     )
 
@@ -22,10 +24,12 @@ set(LINK_PATH_LIST
 if(CMAKE_COMPILER_IS_GNUCXX)
 set(LIBRARY_FILE_LIST
     yam.a
+    supereasyjson.a
     )
 else(CMAKE_COMPILER_IS_GNUCXX)
 set(LIBRARY_FILE_LIST
     yam.lib
+    supereasyjson.lib
     qtmaind.lib
     Qt5Cored.lib
     Qt5Guid.lib

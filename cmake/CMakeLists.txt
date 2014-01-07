@@ -9,3 +9,5 @@ set(OUT_PATH "${ROOT_PATH}/out")
 add_subdirectory(yam)
 add_subdirectory(yeditor)
 add_subdirectory(pstoyam)
+
+add_subdirectory(t3rd)

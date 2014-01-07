@@ -1,5 +1,7 @@
 #include "yeditor.h"
 
+#include "json.h"
+
 #include <crtdbg.h>
 
 #include <QtWidgets/QApplication>
@@ -18,6 +20,11 @@ YEditor::~YEditor()
 int main(int argc, char* argv[])
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+	json::Object obj;
+	obj["coin"] = 1.0f;
+	obj["title"] = "hello world";
+	std::string sRes = json::Serialize(obj);
 
 	using namespace yam::base;
 	CYPanel* pPanel = new CYPanel;
