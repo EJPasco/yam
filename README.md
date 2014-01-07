@@ -1,6 +1,6 @@
 # Yam
 
-A UI System
+A User Interface System
 
 
 ## Projects
