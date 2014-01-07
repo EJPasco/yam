@@ -10,16 +10,30 @@ namespace yam{ namespace base{
 class IYPanel : public IYWidget
 {
 public:
-	virtual ~IYPanel() = 0;
+	virtual ~IYPanel() { ; }
 };
 
-class CYPanel : public TYWidget<IYPanel>
+template<typename TNBase>
+class TYPanel : public TYWidget<TNBase>
+{
+public:
+	TYPanel() { ; }
+	virtual ~TYPanel() { ; }
+
+public:
+};
+
+class CYPanel : public TYPanel<IYPanel>
 {
 public:
 	CYPanel();
 	virtual ~CYPanel();
 
 public:
+	void test()
+	{
+		//this->GetChildren()
+	}
 };
 
 }}
