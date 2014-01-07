@@ -72,7 +72,8 @@ add_custom_command(OUTPUT yeditor.moc.cpp
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/yeditor.h
                    )
 
-add_custom_target(yeditor_moc_cpp DEPENDS ${CODE_PATH_YEDITOR}/inc/yeditor.h)
+add_custom_target(yeditor_moc_cpp
+                  DEPENDS yeditor.moc.cpp)
 
 add_custom_command(OUTPUT yeditor.main.ui.h
                    COMMAND $ENV{QT_MSVC2012_X32}/bin/uic.exe -o ${CODE_PATH_YEDITOR}/inc/yeditor.main.ui.h ${CODE_PATH_YEDITOR}/res/main.ui
@@ -80,7 +81,8 @@ add_custom_command(OUTPUT yeditor.main.ui.h
                    DEPENDS ${CODE_PATH_YEDITOR}/res/main.ui
                    )
 
-add_custom_target(yeditor_main_ui_h DEPENDS ${CODE_PATH_YEDITOR}/res/main.ui)
+add_custom_target(yeditor_main_ui_h
+                  DEPENDS yeditor.main.ui.h)
 
 add_dependencies(yeditor ${DEPEND_PROJ_LIST}
                          yeditor_moc_cpp

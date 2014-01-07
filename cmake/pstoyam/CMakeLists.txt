@@ -76,7 +76,7 @@ add_custom_command(OUTPUT pstoyam.pipl
                    DEPENDS ${CODE_PATH_PSTOYAM}/ps/pstoyam.r
                    )
 
-add_custom_target(pstoyam_pipl DEPENDS ${CODE_PATH_PSTOYAM}/ps/pstoyam.r)
+add_custom_target(pstoyam_pipl DEPENDS pstoyam.pipl)
 add_dependencies(pstoyam ${DEPEND_PROJ_LIST}
                          pstoyam_pipl)
 

@@ -4,6 +4,8 @@
 #include "define.h"
 #include "typedef.h"
 
+#include <assert.h>
+
 #ifndef NULL
 #define NULL			0
 #endif
