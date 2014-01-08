@@ -40,11 +40,11 @@ protected:
 	virtual void Read(yifstream& rStream, yrect2d& rRes) const = 0;
 	virtual void Write(yofstream& rStream, const yrect2d& rData) const = 0;
 
-	virtual void Read(yifstream& rStream, base::IYWidget*& rRes) const = 0;
-	virtual void Write(yofstream& rStream, const base::IYWidget*& rData) const = 0;
+	virtual void Read(yifstream& rStream, base::IYWidget*& rpData) const = 0;
+	virtual void Write(yofstream& rStream, const base::IYWidget*& rpData) const = 0;
 
-	virtual void Read(yifstream& rStream, base::IYFormat*& rRes) const = 0;
-	virtual void Write(yofstream& rStream, const base::IYFormat*& rData) const = 0;
+	virtual void Read(yifstream& rStream, base::IYFormat*& rpData) const = 0;
+	virtual void Write(yofstream& rStream, const base::IYFormat*& rpData) const = 0;
 };
 
 class CYFile : public IYFile
@@ -79,11 +79,11 @@ protected:
 	virtual void Read(yifstream& rStream, yrect2d& rRes) const;
 	virtual void Write(yofstream& rStream, const yrect2d& rData) const;
 
-	virtual void Read(yifstream& rStream, base::IYWidget*& rRes) const;
-	virtual void Write(yofstream& rStream, const base::IYWidget*& rData) const;
+	virtual void Read(yifstream& rStream, base::IYWidget*& rpData) const;
+	virtual void Write(yofstream& rStream, const base::IYWidget*& rpData) const;
 
-	virtual void Read(yifstream& rStream, base::IYFormat*& rRes) const;
-	virtual void Write(yofstream& rStream, const base::IYFormat*& rData) const;
+	virtual void Read(yifstream& rStream, base::IYFormat*& rpData) const;
+	virtual void Write(yofstream& rStream, const base::IYFormat*& rpData) const;
 
 private:
 	base::IYWidget* NewWidget(const ystring& rsType) const;

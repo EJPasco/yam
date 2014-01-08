@@ -77,7 +77,7 @@ void CYFile::Save(const ystring& rsFileName, const base::IYWidget* pWidget) cons
 	yofstream fsFile;
 	fsFile.open(rsFileName.c_str(), std::ios::out | std::ios::binary);
 
-	// write the format data
+	// rewrite the format data
 	{
 		ystring sKey = FILE_KEY_FORMAT;
 		Write(fsFile, sKey);
@@ -89,12 +89,14 @@ void CYFile::Save(const ystring& rsFileName, const base::IYWidget* pWidget) cons
 		}
 	}
 
-	// write the widget data
-	ystring sKey = FILE_KEY_WIDGET;
-	Write(fsFile, sKey);
-	ybuffsize iSize = pWidget->SizeOfData();
-	Write(fsFile, iSize);
-	Write(fsFile, pWidget);
+	{
+		// write the widget data
+		ystring sKey = FILE_KEY_WIDGET;
+		Write(fsFile, sKey);
+		ybuffsize iSize = pWidget->SizeOfData();
+		Write(fsFile, iSize);
+		Write(fsFile, pWidget);
+	}
 	fsFile.close();
 }
 
@@ -128,7 +130,7 @@ void CYFile::Read(yifstream& rStream, ystring& rRes) const
 	Read(rStream, sizeof(yint8) * iLen, pBuffer);
 	pBuffer[iLen] = '\0';
 	rRes.append(pBuffer);
-	delete[] pBuffer; pBuffer = NULL;
+	delete[] pBuffer; pBuffer = YNULL;
 }
 
 void CYFile::Write(yofstream& rStream, const ystring& rData) const
@@ -200,13 +202,11 @@ void CYFile::Read(yifstream& rStream, base::IYWidget*& rpData) const
 
 	ybool bHasNext = false;
 	Read(rStream, bHasNext);
-	while (bHasNext)
+	if (bHasNext)
 	{
 		base::IYWidget* pNext = YNULL;
 		Read(rStream, pNext);
 		rpData->AddNext(pNext);
-
-		Read(rStream, bHasNext);
 	}
 
 	ybool bHasChildren = false;
@@ -232,13 +232,9 @@ void CYFile::Write(yofstream& rStream, const base::IYWidget*& rpData) const
 	const base::IYWidget* pNext = rpData->GetNext();
 	ybool bHasNext = YNULL != pNext;
 	Write(rStream, bHasNext);
-	while (bHasNext)
+	if (bHasNext)
 	{
 		Write(rStream, pNext);
-
-		pNext = pNext->GetNext();
-		bHasNext = YNULL != pNext;
-		Write(rStream, bHasNext);
 	}
 
 	// write the children
@@ -251,12 +247,12 @@ void CYFile::Write(yofstream& rStream, const base::IYWidget*& rpData) const
 	}
 }
 
-void CYFile::Read(yifstream& rStream, base::IYFormat*& rRes) const
+void CYFile::Read(yifstream& rStream, base::IYFormat*& rpData) const
 {
 	//
 }
 
-void CYFile::Write(yofstream& rStream, const base::IYFormat*& rData) const
+void CYFile::Write(yofstream& rStream, const base::IYFormat*& rpData) const
 {
 	//
 }

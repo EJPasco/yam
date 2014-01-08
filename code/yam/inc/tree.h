@@ -12,6 +12,9 @@ public:
 	virtual ~IYTree() { ; }
 
 public:
+	virtual ybuffsize SizeOfData() const = 0;
+
+public:
 	virtual GET_DECL(TNItem*&, GetParent) = 0;
 	virtual GET_DECL_CONST(TNItem*, GetParent) = 0;
 	virtual GET_DECL(TNItem*&, GetNext) = 0;
@@ -40,13 +43,35 @@ public:
 			delete m_pChildren;
 			m_pChildren = YNULL;
 		}
-		TNItem* pTree = m_pNext;
-		while (YNULL != pTree)
+		if (YNULL != m_pNext)
 		{
-			TNItem* pTreeNext = pTree->GetNext();
-			delete pTree;
-			pTree = pTreeNext;
+			delete m_pNext;
+			m_pNext = YNULL;
 		}
+	}
+
+public:
+	virtual ybuffsize SizeOfData() const
+	{
+		ybuffsize iRes = 0;
+
+		// calculate the size of next
+		const TNItem* pNext = GetNext();
+		iRes += sizeof(ybool);
+		if (YNULL != pNext)
+		{
+			iRes += pNext->SizeOfData();
+			iRes += sizeof(ybool);
+		}
+
+		// calculate the size of children
+		const TNItem* pChildren = GetChildren();
+		iRes += sizeof(ybool);
+		if (YNULL != pChildren)
+		{
+			iRes += pChildren->SizeOfData();
+		}
+		return iRes;
 	}
 
 public:

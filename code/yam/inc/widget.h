@@ -12,9 +12,6 @@ public:
 	virtual ~IYWidget() { ; }
 
 public:
-	virtual ybuffsize SizeOfData() const = 0;
-
-public:
 	virtual GET_DECL_CONST(ystring&, GetType) = 0;
 	virtual GET_DECL(ystring&, GetId) = 0;
 	virtual GET_DECL_CONST(ystring&, GetId) = 0;
@@ -44,20 +41,7 @@ public:
 		iRes += sizeof(yrect2d);
 		iRes += sizeof(ylayerweight);
 
-		// calculate the size of next
-		const IYWidget* pNext = GetNext();
-		while (YNULL != pNext)
-		{
-			iRes += pNext->SizeOfData();
-			pNext = pNext->GetNext();
-		}
-
-		// calculate the size of children
-		const IYWidget* pChildren = GetChildren();
-		if (YNULL != pChildren)
-		{
-			iRes += pChildren->SizeOfData();
-		}
+		iRes += TYTree::SizeOfData();
 		return iRes;
 	}
 

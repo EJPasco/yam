@@ -3,6 +3,7 @@
 
 #include "yeditor.main.ui.h"
 
+#include <json.h>
 #include <yam.h>
 
 #include <QtWidgets/QMainWindow>

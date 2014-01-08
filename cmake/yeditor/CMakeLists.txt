@@ -37,7 +37,7 @@ set(LIBRARY_FILE_LIST
     )
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
-set(CODE_FILE_LIST_YEDITOR
+set(CODE_FILE_LIST_EDITOR
     ${CODE_PATH_YEDITOR}/inc/yeditor.h
     ${CODE_PATH_YEDITOR}/src/yeditor.cpp
     )
@@ -51,9 +51,15 @@ set(CODE_FILE_LIST_QT
     ${CODE_PATH_YEDITOR}/src/yeditor.moc.cpp
     )
 
-source_group("yeditor" FILES ${CODE_FILE_LIST_YEDITOR})
+set(CODE_FILE_LIST_EXPORT
+    ${CODE_PATH_YEDITOR}/inc/yexport.h
+    ${CODE_PATH_YEDITOR}/src/yexport.cpp
+    )
+
+source_group("editor" FILES ${CODE_FILE_LIST_EDITOR})
 source_group("res" FILES ${CODE_FILE_LIST_RES})
 source_group("qt" FILES ${CODE_FILE_LIST_QT})
+source_group("export" FILES ${CODE_FILE_LIST_EXPORT})
 
 set(LIBRARY_OUTPUT_PATH ${OUT_PATH}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${OUT_PATH}/bin)
@@ -64,9 +70,10 @@ link_libraries(${LIBRARY_FILE_LIST})
 
 #add_definitions("-DC4G_EXPORTS_API")
 
-add_executable(yeditor ${CODE_FILE_LIST_YEDITOR}
+add_executable(yeditor ${CODE_FILE_LIST_EDITOR}
                        ${CODE_FILE_LIST_RES}
                        ${CODE_FILE_LIST_QT}
+                       ${CODE_FILE_LIST_EXPORT}
                        )
 
 

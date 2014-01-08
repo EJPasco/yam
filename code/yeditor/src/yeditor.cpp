@@ -1,6 +1,6 @@
 #include "yeditor.h"
 
-#include "json.h"
+#include "yexport.h"
 
 #include <crtdbg.h>
 
@@ -10,6 +10,9 @@ YEditor::YEditor(QWidget* pParent /* = NULL */)
 	: QMainWindow(pParent)
 {
 	ui.setupUi(this);
+
+	yam::output::IYPsFormat* ff = new yam::output::CYPsFormat;
+	delete ff;
 }
 
 YEditor::~YEditor()
@@ -29,10 +32,20 @@ int main(int argc, char* argv[])
 	std::string sRes = json::Serialize(obj);
 
 	CYPanel* pPanel = new CYPanel;
+	yam::ybuffsize rrsize = pPanel->SizeOfData();
+
 	CYPanel* pPanelA = pPanel->NewChild<CYPanel>();
-	CYWidget* pWidgetA = pPanelA->NewChild<CYWidget>();
+	rrsize = pPanel->SizeOfData();
 	CYPanel* pPanelB = pPanel->NewChild<CYPanel>();
+	rrsize = pPanel->SizeOfData();
+	rrsize = pPanelA->SizeOfData();
+	rrsize = pPanelB->SizeOfData();
+
+	CYWidget* pWidgetA = pPanelA->NewChild<CYWidget>();
+	rrsize = pWidgetA->SizeOfData();
+	rrsize = pPanel->SizeOfData();
 	CYWidget* pWidgetB = pPanelB->NewChild<CYWidget>();
+	rrsize = pPanel->SizeOfData();
 
 	pPanel->GetId() = "root";
 	pPanel->GetBound().Pos.X = 1;
@@ -63,10 +76,11 @@ int main(int argc, char* argv[])
 	pWidgetB->GetBound().Pos.Y = 18;
 	pWidgetB->GetBound().Size.X = 19;
 	pWidgetB->GetBound().Size.Y = 20;
+	rrsize = pPanel->SizeOfData();
 
 	yam::ystring sFileName = "test.yui";
 	yam::file::CYFile::Instance().Save(sFileName, pPanel);
-	delete pPanel; pPanel = NULL;
+	delete pPanel; pPanel = YNULL;
 
 	IYWidget* pWidget = YNULL;
 	yam::file::CYFile::Instance().Load(sFileName, pWidget);
