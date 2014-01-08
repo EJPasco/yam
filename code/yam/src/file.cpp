@@ -18,6 +18,44 @@ CYFile::~CYFile()
 	//
 }
 
+/*void CYFile::Load(const ystring& rsFileName, base::IYFormat*& rpFormat) const
+{
+	assert(YNULL == rpFormat);
+
+	yifstream fsFile;
+	fsFile.open(rsFileName.c_str(), std::ios::in | std::ios::binary);
+
+	while (!fsFile.eof())
+	{
+		ystring sKeyOfData = "";
+		ybuffsize iSizeOfData = 0;
+		ybuffptr pBufferOfData = YNULL;
+
+		Read(fsFile, sKeyOfData);
+
+		if (sKeyOfData == FILE_KEY_FORMAT)
+		{
+			Read(fsFile, iSizeOfData);
+			Read(fsFile, rpFormat);
+		}
+		else
+		{
+			Read(fsFile, iSizeOfData);
+			if (0 < iSizeOfData)
+			{
+				Read(fsFile, iSizeOfData, pBufferOfData);
+			}
+		}
+	}
+	fsFile.close();
+}
+
+void CYFile::Save(const ystring& rsFileName, const base::IYFormat* pFormat) const
+{
+	assert(YNULL != pFormat);
+	//
+}*/
+
 void CYFile::Load(const ystring& rsFileName, base::IYWidget*& rpWidget) const
 {
 	assert(YNULL == rpWidget);
@@ -116,6 +154,39 @@ void CYFile::Write(yofstream& rStream, const ybuffsize& rSize, const ybuffptr& r
 	rStream.write(rpBuffer, rSize);
 }
 
+/*void CYFile::Read(yifstream& rStream, const ystring& rsKey, ybuffsize& riBufferSize, ybuffptr& rpBuffer) const
+{
+	while (!rStream.eof())
+	{
+		ystring sKeyOfData = "";
+		Read(rStream, sKeyOfData);
+
+		ybuffsize iBufferSize = 0;
+		Read(rStream, iBufferSize);
+
+		if (sKeyOfData != rsKey)
+		{
+			rStream.seekg(iBufferSize);
+			continue;
+		}
+
+		riBufferSize = iBufferSize;
+		rpBuffer = YNULL;
+		if (0 < riBufferSize)
+		{
+			rpBuffer = new ybuff[riBufferSize];
+			Read(rStream, riBufferSize, rpBuffer);
+		}
+		break;
+	}
+}
+
+void CYFile::Write(yofstream& rStream, const ystring& rsKey, const ybuffsize& riBufferSize, const ybuffptr& rpBuffer) const
+{
+	Write(rStream, rsKey);
+	Write(rStream, riBufferSize, rpBuffer);
+}*/
+
 void CYFile::Read(yifstream& rStream, ystring& rRes) const
 {
 	if (rStream.eof())
@@ -180,6 +251,46 @@ void CYFile::Write(yofstream& rStream, const yrect2d& rData) const
 	Write(rStream, sizeof(yrect2d), (ybuffptr)&rData);
 }
 
+void CYFile::Read(yifstream& rStream, base::IYFormat*& rpData) const
+{
+	assert(YNULL != rpData);
+
+	ystring sId = "";
+	Read(rStream, sId);
+	rpData->GetId() = sId;
+
+	yrect2d stBound;
+	ycolorptr pColorData = YNULL;
+	Read(rStream, stBound);
+
+	ybool bHasColorData = false;
+	Read(rStream, bHasColorData);
+	if (bHasColorData)
+	{
+		pColorData = new ycolor[stBound.Size.X * stBound.Size.Y];
+		Read(rStream, sizeof(ycolor) * stBound.Size.X * stBound.Size.Y, (ybuffptr)pColorData);
+	}
+	rpData->SetBoundAndColorData(stBound, pColorData);
+
+	ReadTree(rStream, rpData);
+}
+
+void CYFile::Write(yofstream& rStream, const base::IYFormat*& rpData) const
+{
+	assert(YNULL != rpData);
+
+	Write(rStream, rpData->GetId());
+	Write(rStream, rpData->GetBound());
+	ybool bHasColorData = YNULL != rpData->GetColorData();
+	Write(rStream, bHasColorData);
+	if (bHasColorData)
+	{
+		Write(rStream, sizeof(ycolor) * rpData->GetBound().Size.X * rpData->GetBound().Size.Y, (ybuffptr)rpData->GetColorData());
+	}
+
+	WriteTree(rStream, rpData);
+}
+
 void CYFile::Read(yifstream& rStream, base::IYWidget*& rpData) const
 {
 	assert(YNULL == rpData);
@@ -200,23 +311,7 @@ void CYFile::Read(yifstream& rStream, base::IYWidget*& rpData) const
 	Read(rStream, iLayerWeight);
 	rpData->GetLayerWeight() = iLayerWeight;
 
-	ybool bHasNext = false;
-	Read(rStream, bHasNext);
-	if (bHasNext)
-	{
-		base::IYWidget* pNext = YNULL;
-		Read(rStream, pNext);
-		rpData->AddNext(pNext);
-	}
-
-	ybool bHasChildren = false;
-	Read(rStream, bHasChildren);
-	if (bHasChildren)
-	{
-		base::IYWidget* pChildren = YNULL;
-		Read(rStream, pChildren);
-		rpData->AddChild(pChildren);
-	}
+	ReadTree(rStream, rpData);
 }
 
 void CYFile::Write(yofstream& rStream, const base::IYWidget*& rpData) const
@@ -228,33 +323,7 @@ void CYFile::Write(yofstream& rStream, const base::IYWidget*& rpData) const
 	Write(rStream, rpData->GetBound());
 	Write(rStream, rpData->GetLayerWeight());
 
-	// write the next
-	const base::IYWidget* pNext = rpData->GetNext();
-	ybool bHasNext = YNULL != pNext;
-	Write(rStream, bHasNext);
-	if (bHasNext)
-	{
-		Write(rStream, pNext);
-	}
-
-	// write the children
-	const base::IYWidget* pChildren = rpData->GetChildren();
-	ybool bHasChildren = YNULL != pChildren;
-	Write(rStream, bHasChildren);
-	if (bHasChildren)
-	{
-		Write(rStream, pChildren);
-	}
-}
-
-void CYFile::Read(yifstream& rStream, base::IYFormat*& rpData) const
-{
-	//
-}
-
-void CYFile::Write(yofstream& rStream, const base::IYFormat*& rpData) const
-{
-	//
+	WriteTree(rStream, rpData);
 }
 
 base::IYWidget* CYFile::NewWidget(const ystring& rsType) const

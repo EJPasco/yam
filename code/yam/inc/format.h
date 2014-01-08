@@ -36,8 +36,7 @@ public:
 		iRes += sizeof(yrect2d);
 
 		iRes += sizeof(ybool);
-		ybool bHasColorData = YNULL == m_pColorData;
-		if (bHasColorData)
+		if (YNULL != m_pColorData)
 		{
 			iRes += sizeof(ycolorptr) * m_stBound.Size.X * m_stBound.Size.Y;
 		}
