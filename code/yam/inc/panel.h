@@ -17,7 +17,7 @@ template<typename TNBase>
 class TYPanel : public TYWidget<TNBase>
 {
 public:
-	TYPanel() { ; }
+	explicit TYPanel(const ystring& rsType) : TYWidget(rsType) { ; }
 	virtual ~TYPanel() { ; }
 
 public:
@@ -26,14 +26,15 @@ public:
 class CYPanel : public TYPanel<IYPanel>
 {
 public:
+	SINGLETON_DECL(CYPanel);
+
+public:
 	CYPanel();
 	virtual ~CYPanel();
 
 public:
-	void test()
-	{
-		//this->GetChildren()
-	}
+
+private:
 };
 
 }}

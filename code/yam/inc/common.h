@@ -1,13 +1,10 @@
-#ifndef Y_COMMON_H_Y
-#define Y_COMMON_H_Y
+#ifndef Y_COMMON_H
+#define Y_COMMON_H
 
 #include "define.h"
 #include "typedef.h"
+#include "struct.h"
 
 #include <assert.h>
 
-#ifndef NULL
-#define NULL			0
-#endif
-
-#endif // Y_COMMON_H_Y
+#endif // Y_COMMON_H
