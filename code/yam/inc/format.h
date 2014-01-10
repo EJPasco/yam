@@ -7,68 +7,54 @@
 
 namespace yam{ namespace base{
 
-class IYFormat : public IYTree<IYFormat>
+class YIFormat : public YITree<YIFormat>
 {
 public:
-	virtual ~IYFormat() { ; }
+	virtual ~YIFormat() { ; }
 
 public:
-	virtual GET_DECL(ystring&, GetId) = 0;
-	virtual GET_DECL_CONST(ystring&, GetId) = 0;
-	virtual GET_DECL_CONST(yrect2d&, GetBound) = 0;
+	virtual GET_DECL_CONST(YRect2D&, GetBound) = 0;
 	virtual GET_DECL_CONST(ycolorptr&, GetColorData) = 0;
-	virtual void SetBoundAndColorData(yrect2d stBound, ycolorptr pColorData) = 0;
+	virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData) = 0;
 };
 
-template<typename TNBase>
-class TYFormat : public TYTree<TNBase, IYFormat>
+template<typename TNBase, typename TNReal>
+class YTFormat : public YTTree<TNBase, YIFormat, TNReal>
 {
 public:
-	TYFormat() : m_sId(""), m_pColorData(YNULL) { ; }
-	virtual ~TYFormat() { ; }
+	YTFormat() : m_pColorData(YNULL) { ; }
+	virtual ~YTFormat() { ; }
 
 public:
-	virtual ybuffsize SizeOfData() const
-	{
-		ybuffsize iRes = 0;
-		iRes += sizeof(yint32);
-		iRes += sizeof(yint8) * m_sId.size();
-		iRes += sizeof(yrect2d);
-
-		iRes += sizeof(ybool);
-		if (YNULL != m_pColorData)
-		{
-			iRes += sizeof(ycolorptr) * m_stBound.Size.X * m_stBound.Size.Y;
-		}
-
-		iRes += TYTree::SizeOfData();
-		return iRes;
-	}
-
-public:
-	virtual GET_FUNC(ystring&, GetId, m_sId);
-	virtual GET_FUNC_CONST(ystring&, GetId, m_sId);
-	virtual GET_FUNC_CONST(yrect2d&, GetBound, m_stBound);
+	virtual GET_FUNC_CONST(YRect2D&, GetBound, m_stBound);
 	virtual GET_FUNC_CONST(ycolorptr&, GetColorData, m_pColorData);
-	virtual void SetBoundAndColorData(yrect2d stBound, ycolorptr pColorData)
+	virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData)
 	{
-		m_stBound = stBound;
-		m_pColorData = pColorData;
+		//
 	}
 
 protected:
-	ystring		m_sId;
-	yrect2d		m_stBound;
+	YRect2D		m_stBound;
 	ycolorptr	m_pColorData;
 };
 
-class CYFormat : public IYFormat
+class YCFormat : public YTFormat<YIFormat, YCFormat>
 {
-public:
-	CYFormat();
-	virtual ~CYFormat();
+	YOBJECT_DECL(YCFormat);
 
 public:
+	YCFormat();
+	virtual ~YCFormat();
+
+public:
+	virtual void operator>>(base::YCBuffer& rBuffer) const;
+	virtual void operator<<(base::YCBuffer& rBuffer);
+
+public:
+	virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData);
+
+private:
+	void SetColorData(const yint32& riSize, const ycolorptr& rpColorData);
 };
 
 }}

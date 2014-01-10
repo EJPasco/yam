@@ -23,7 +23,10 @@ set(CODE_FILE_LIST_COMMON
     )
 
 set(CODE_FILE_LIST_BASE
+    ${CODE_PATH_YAM}/inc/object.h
     ${CODE_PATH_YAM}/inc/tree.h
+    ${CODE_PATH_YAM}/inc/buffer.h
+    ${CODE_PATH_YAM}/src/buffer.cpp
     ${CODE_PATH_YAM}/inc/panel.h
     ${CODE_PATH_YAM}/src/panel.cpp
     ${CODE_PATH_YAM}/inc/widget.h
@@ -35,6 +38,8 @@ set(CODE_FILE_LIST_BASE
 set(CODE_FILE_LIST_FILE
     ${CODE_PATH_YAM}/inc/file.h
     ${CODE_PATH_YAM}/src/file.cpp
+    ${CODE_PATH_YAM}/inc/uifile.h
+    ${CODE_PATH_YAM}/src/uifile.cpp
     )
 
 set(CODE_FILE_LIST_YAM

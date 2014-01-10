@@ -2,15 +2,14 @@
 
 namespace yam{ namespace base{
 
-SINGLETON_IMPL(CYWidget);
+YOBJECT_IMPL(YCWidget);
 
-CYWidget::CYWidget()
-	: TYWidget(FILE_KEY_WIDGET_BASE)
+YCWidget::YCWidget()
 {
 	//
 }
 
-CYWidget::~CYWidget()
+YCWidget::~YCWidget()
 {
 	//
 }

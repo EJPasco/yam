@@ -2,15 +2,14 @@
 
 namespace yam{ namespace base{
 
-SINGLETON_IMPL(CYPanel);
+YOBJECT_IMPL(YCPanel);
 
-CYPanel::CYPanel()
-	: TYPanel(FILE_KEY_WIDGET_PANEL)
+YCPanel::YCPanel()
 {
 	//
 }
 
-CYPanel::~CYPanel()
+YCPanel::~YCPanel()
 {
 	//
 }

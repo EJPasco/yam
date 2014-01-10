@@ -7,30 +7,29 @@
 
 namespace yam{ namespace base{
 
-class IYPanel : public IYWidget
+class YIPanel : public YIWidget
 {
 public:
-	virtual ~IYPanel() { ; }
+	virtual ~YIPanel() { ; }
 };
 
-template<typename TNBase>
-class TYPanel : public TYWidget<TNBase>
+template<typename TNBase, typename TNReal>
+class YTPanel : public YTWidget<TNBase, TNReal>
 {
 public:
-	explicit TYPanel(const ystring& rsType) : TYWidget(rsType) { ; }
-	virtual ~TYPanel() { ; }
+	YTPanel() { ; }
+	virtual ~YTPanel() { ; }
 
 public:
 };
 
-class CYPanel : public TYPanel<IYPanel>
+class YCPanel : public YTPanel<YIPanel, YCPanel>
 {
-public:
-	SINGLETON_DECL(CYPanel);
+	YOBJECT_DECL(YCPanel);
 
 public:
-	CYPanel();
-	virtual ~CYPanel();
+	YCPanel();
+	virtual ~YCPanel();
 
 public:
 

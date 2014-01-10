@@ -3,16 +3,15 @@
 
 #include "common.h"
 
+#include "object.h"
+
 namespace yam{ namespace base{
 
 template<typename TNItem>
-class IYTree
+class YITree : public YIObject<TNItem>
 {
 public:
-	virtual ~IYTree() { ; }
-
-public:
-	virtual ybuffsize SizeOfData() const = 0;
+	virtual ~YITree() { ; }
 
 public:
 	virtual GET_DECL(TNItem*&, GetParent) = 0;
@@ -23,19 +22,17 @@ public:
 	virtual GET_DECL_CONST(TNItem*, GetChildren) = 0;
 
 public:
-	virtual void SetParent(TNItem* pParent) = 0;
-	virtual void SetNext(TNItem* pNext) = 0;
 	virtual void AddNext(TNItem* pChild) = 0;
 	virtual void AddChild(TNItem* pChild) = 0;
 	virtual const yint32 &GetCountOfChildren() const = 0;
 };
 
-template<typename TNBase, typename TNItem>
-class TYTree : public TNBase
+template<typename TNBase, typename TNItem, typename TNReal>
+class YTTree : public YTObject<TNBase, TNReal>
 {
 public:
-	TYTree() :m_pParent(YNULL), m_pNext(YNULL), m_pChildren(YNULL), m_iCountOfChildren(0) { ; }
-	virtual ~TYTree()
+	YTTree() :m_pParent(YNULL), m_pNext(YNULL), m_pChildren(YNULL), m_iCountOfChildren(0) { ; }
+	virtual ~YTTree()
 	{
 		m_pParent = YNULL;
 		if (YNULL != m_pChildren)
@@ -51,30 +48,6 @@ public:
 	}
 
 public:
-	virtual ybuffsize SizeOfData() const
-	{
-		ybuffsize iRes = 0;
-
-		// calculate the size of next
-		const TNItem* pNext = GetNext();
-		iRes += sizeof(ybool);
-		if (YNULL != pNext)
-		{
-			iRes += pNext->SizeOfData();
-			iRes += sizeof(ybool);
-		}
-
-		// calculate the size of children
-		const TNItem* pChildren = GetChildren();
-		iRes += sizeof(ybool);
-		if (YNULL != pChildren)
-		{
-			iRes += pChildren->SizeOfData();
-		}
-		return iRes;
-	}
-
-public:
 	virtual GET_FUNC(TNItem*&, GetParent, m_pParent);
 	virtual GET_FUNC_CONST(TNItem*, GetParent, m_pParent);
 	virtual GET_FUNC(TNItem*&, GetNext, m_pNext);
@@ -83,21 +56,11 @@ public:
 	virtual GET_FUNC_CONST(TNItem*, GetChildren, m_pChildren);
 
 public:
-	virtual void SetParent(TNItem* pParent)
-	{
-		m_pParent = pParent;
-	}
-
-	virtual void SetNext(TNItem* pNext)
-	{
-		m_pNext = pNext;
-	}
-
 	virtual void AddNext(TNItem* pNext)
 	{
 		assert(YNULL != pNext);
 
-		pNext->SetParent(GetParent());
+		pNext->GetParent() = GetParent();
 
 		if (YNULL == m_pNext)
 		{
@@ -110,7 +73,7 @@ public:
 			{
 				pNext = pNextTemp->GetNext();
 			}
-			pNextTemp->SetNext(pNext);
+			pNextTemp->GetNext() = pNext;
 		}
 	}
 
@@ -119,7 +82,7 @@ public:
 		assert(YNULL != pChild);
 		if (YNULL == m_pChildren)
 		{
-			pChild->SetParent(this);
+			pChild->GetParent() = this;
 			m_pChildren = pChild;
 		}
 		else
@@ -136,10 +99,17 @@ public:
 
 public:
 	template<typename TName>
+	TName* NewNext()
+	{
+		TName* pChild = new TName;
+		AddNext(pChild);
+		return pChild;
+	}
+
+	template<typename TName>
 	TName* NewChild()
 	{
 		TName* pChild = new TName;
-		pChild->SetParent(this);
 		AddChild(pChild);
 		return pChild;
 	}

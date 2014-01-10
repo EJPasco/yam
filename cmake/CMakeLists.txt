@@ -11,3 +11,5 @@ add_subdirectory(yeditor)
 add_subdirectory(pstoyam)
 
 add_subdirectory(t3rd)
+
+add_subdirectory(test)

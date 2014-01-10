@@ -3,102 +3,174 @@
 
 #include "common.h"
 
+#include <map>
+
 namespace yam{ namespace base{
 
-class IYWidget;
-class IYFormat;
+class YIBuffer;
+class YIWidget;
+class YIFormat;
 
 }}
 
 namespace yam{ namespace file{
 
-class IYFile
+class YIFile
 {
 public:
-	virtual ~IYFile() { ; }
+	virtual ~YIFile() { ; }
 
 public:
-	/*virtual void Load(const ystring& rsFileName, base::IYFormat*& rpFormat) const = 0;
-	virtual void Save(const ystring& rsFileName, const base::IYFormat* pFormat) const = 0;*/
+	virtual void Load(const ystring& rsFileName, base::YIFormat*& rpFormat) const = 0;
+	virtual void Save(const ystring& rsFileName, const base::YIFormat* pFormat) const = 0;
 
-	virtual void Load(const ystring& rsFileName, base::IYWidget*& rpWidget) const = 0;
-	virtual void Save(const ystring& rsFileName, const base::IYWidget* pWidget) const = 0;
+	virtual void Load(const ystring& rsFileName, base::YIWidget*& rpWidget) const = 0;
+	virtual void Save(const ystring& rsFileName, const base::YIWidget* pWidget) const = 0;
 
-protected:
-	virtual void Read(yifstream& rStream, const ybuffsize& rSize, ybuffptr pBuffer) const = 0;
-	virtual void Write(yofstream& rStream, const ybuffsize& rSize, const ybuffptr& rpBuffer) const = 0;
+public:
+	virtual void Read(yistream& rStream, const ybuffsize& rSize, ybuffptr pBuffer) const = 0;
+	virtual void Write(yostream& rStream, const ybuffsize& rSize, const ybuffptr& rpBuffer) const = 0;
 
-	/*virtual void Read(yifstream& rStream, const ystring& rsKey, ybuffsize& riBufferSize, ybuffptr& rpBuffer) const = 0;
-	virtual void Write(yofstream& rStream, const ystring& rsKey, const ybuffsize& riBufferSize, const ybuffptr& rpBuffer) const = 0;*/
+	virtual void Read(yistream& rStream, ystreambuff& rData) const = 0;
+	virtual void Write(yostream& rStream, const ystreambuff& rData) const = 0;
 
-	virtual void Read(yifstream& rStream, ystring& rRes) const = 0;
-	virtual void Write(yofstream& rStream, const ystring& rData) const = 0;
+	virtual void Read(yistream& rStream, yistream& rData) const = 0;
+	virtual void Write(yostream& rStream, const yostream& rData) const = 0;
 
-	virtual void Read(yifstream& rStream, ybool& rRes) const = 0;
-	virtual void Write(yofstream& rStream, const ybool& rData) const = 0;
+	virtual void Read(yistream& rStream, ystring& rRes) const = 0;
+	virtual void Write(yostream& rStream, const ystring& rData) const = 0;
 
-	virtual void Read(yifstream& rStream, yint32& rRes) const = 0;
-	virtual void Write(yofstream& rStream, const yint32& rData) const = 0;
+	virtual void Read(yistream& rStream, ybool& rRes) const = 0;
+	virtual void Write(yostream& rStream, const ybool& rData) const = 0;
 
-	virtual void Read(yifstream& rStream, yvec2d& rRes) const = 0;
-	virtual void Write(yofstream& rStream, const yvec2d& rData) const = 0;
+	virtual void Read(yistream& rStream, yint32& rRes) const = 0;
+	virtual void Write(yostream& rStream, const yint32& rData) const = 0;
 
-	virtual void Read(yifstream& rStream, yrect2d& rRes) const = 0;
-	virtual void Write(yofstream& rStream, const yrect2d& rData) const = 0;
+	virtual void Read(yistream& rStream, YVec2D& rRes) const = 0;
+	virtual void Write(yostream& rStream, const YVec2D& rData) const = 0;
 
-	virtual void Read(yifstream& rStream, base::IYWidget*& rpData) const = 0;
-	virtual void Write(yofstream& rStream, const base::IYWidget*& rpData) const = 0;
+	virtual void Read(yistream& rStream, YRect2D& rRes) const = 0;
+	virtual void Write(yostream& rStream, const YRect2D& rData) const = 0;
 
-	virtual void Read(yifstream& rStream, base::IYFormat*& rpData) const = 0;
-	virtual void Write(yofstream& rStream, const base::IYFormat*& rpData) const = 0;
+	virtual void Read(yistream& rStream, base::YIBuffer*& rpData) const = 0;
+	virtual void Write(yostream& rStream, const base::YIBuffer*& rpData) const = 0;
+
+	virtual void Read(yistream& rStream, base::YIWidget*& rpData) const = 0;
+	virtual void Write(yostream& rStream, const base::YIWidget*& rpData) const = 0;
+
+	virtual void Read(yistream& rStream, base::YIFormat*& rpData) const = 0;
+	virtual void Write(yostream& rStream, const base::YIFormat*& rpData) const = 0;
 };
 
-class CYFile : public IYFile
+class YCFile : public YIFile
 {
-public:
-	SINGLETON_DECL(CYFile);
-
-protected:
-	CYFile();
-	virtual ~CYFile();
+	typedef std::map<ystring, base::YIBuffer*>		tmbuffer;
 
 public:
-	/*virtual void Load(const ystring& rsFileName, base::IYFormat*& rpFormat) const;
-	virtual void Save(const ystring& rsFileName, const base::IYFormat* pFormat) const;*/
-
-	virtual void Load(const ystring& rsFileName, base::IYWidget*& rpWidget) const;
-	virtual void Save(const ystring& rsFileName, const base::IYWidget* pWidget) const;
+	SINGLETON_DECL(YCFile);
 
 protected:
-	virtual void Read(yifstream& rStream, const ybuffsize& rSize, ybuffptr pBuffer) const;
-	virtual void Write(yofstream& rStream, const ybuffsize& rSize, const ybuffptr& rpBuffer) const;
+	YCFile();
+	virtual ~YCFile();
 
-	/*virtual void Read(yifstream& rStream, const ystring& rsKey, ybuffsize& riBufferSize, ybuffptr& rpBuffer) const;
-	virtual void Write(yofstream& rStream, const ystring& rsKey, const ybuffsize& riBufferSize, const ybuffptr& rpBuffer) const;*/
+public:
+	virtual void Load(const ystring& rsFileName, base::YIFormat*& rpFormat) const;
+	virtual void Save(const ystring& rsFileName, const base::YIFormat* pFormat) const;
 
-	virtual void Read(yifstream& rStream, ystring& rRes) const;
-	virtual void Write(yofstream& rStream, const ystring& rData) const;
+	virtual void Load(const ystring& rsFileName, base::YIWidget*& rpWidget) const;
+	virtual void Save(const ystring& rsFileName, const base::YIWidget* pWidget) const;
 
-	virtual void Read(yifstream& rStream, ybool& rRes) const;
-	virtual void Write(yofstream& rStream, const ybool& rData) const;
+public:
+	virtual void Read(yistream& rStream, const ybuffsize& rSize, ybuffptr pBuffer) const;
+	virtual void Write(yostream& rStream, const ybuffsize& rSize, const ybuffptr& rpBuffer) const;
 
-	virtual void Read(yifstream& rStream, yint32& rRes) const;
-	virtual void Write(yofstream& rStream, const yint32& rData) const;
+	virtual void Read(yistream& rStream, ystreambuff& rData) const;
+	virtual void Write(yostream& rStream, const ystreambuff& rData) const;
 
-	virtual void Read(yifstream& rStream, yvec2d& rRes) const;
-	virtual void Write(yofstream& rStream, const yvec2d& rData) const;
+	virtual void Read(yistream& rStream, yistream& rData) const;
+	virtual void Write(yostream& rStream, const yostream& rData) const;
 
-	virtual void Read(yifstream& rStream, yrect2d& rRes) const;
-	virtual void Write(yofstream& rStream, const yrect2d& rData) const;
+	virtual void Read(yistream& rStream, ystring& rRes) const;
+	virtual void Write(yostream& rStream, const ystring& rData) const;
 
-	virtual void Read(yifstream& rStream, base::IYFormat*& rpData) const;
-	virtual void Write(yofstream& rStream, const base::IYFormat*& rpData) const;
+	virtual void Read(yistream& rStream, ybool& rRes) const;
+	virtual void Write(yostream& rStream, const ybool& rData) const;
 
-	virtual void Read(yifstream& rStream, base::IYWidget*& rpData) const;
-	virtual void Write(yofstream& rStream, const base::IYWidget*& rpData) const;
+	virtual void Read(yistream& rStream, yint32& rRes) const;
+	virtual void Write(yostream& rStream, const yint32& rData) const;
+
+	virtual void Read(yistream& rStream, YVec2D& rRes) const;
+	virtual void Write(yostream& rStream, const YVec2D& rData) const;
+
+	virtual void Read(yistream& rStream, YRect2D& rRes) const;
+	virtual void Write(yostream& rStream, const YRect2D& rData) const;
+
+	virtual void Read(yistream& rStream, base::YIBuffer*& rpData) const;
+	virtual void Write(yostream& rStream, const base::YIBuffer*& rpData) const;
+
+	virtual void Read(yistream& rStream, base::YIFormat*& rpData) const;
+	virtual void Write(yostream& rStream, const base::YIFormat*& rpData) const;
+
+	virtual void Read(yistream& rStream, base::YIWidget*& rpData) const;
+	virtual void Write(yostream& rStream, const base::YIWidget*& rpData) const;
+
+	template<typename TNKey, typename TNValue>
+	void ReadMapPtr(yistream& rStream, std::map<TNKey, TNValue*>& rData) const
+	{
+		if (!rStream.good())
+		{
+			return;
+		}
+
+		rStream.seekg(0, std::ios::end);
+		yistream::pos_type real_size = rStream.tellg();
+		rStream.seekg(0, std::ios::beg);
+
+		while (!rStream.eof())
+		{
+			TNKey key;
+			Read(rStream, key);
+			TNValue* val = YNULL;
+			Read(rStream, val);
+			rData.insert(std::make_pair(key, val));
+
+			if (real_size == rStream.tellg())
+			{
+				break;
+			}
+		}
+	}
+
+	template<typename TNKey, typename TNValue>
+	void WriteMapPtr(yistream& rStream, const std::map<TNKey, TNValue*>& rData) const
+	{
+		std::map<TNKey, TNValue*>::const_iterator citData = rData.begin();
+		std::map<TNKey, TNValue*>::const_iterator citDataEnd = rData.end();
+		for (; citData != citDataEnd; ++citData)
+		{
+			Write(rStream, citData->first);
+			Write(rStream, citData->second);
+		}
+	}
+
+	template<typename TNKey, typename TNValue>
+	void DeleteMapPtr(std::map<TNKey, TNValue*>& rData) const
+	{
+		std::map<TNKey, TNValue*>::iterator itData = rData.begin();
+		std::map<TNKey, TNValue*>::iterator itDataEnd = rData.end();
+		for (; itData != itDataEnd; ++itData)
+		{
+			if (YNULL == itData->second)
+			{
+				continue;
+			}
+			Delete(itData->second);
+		}
+		rData.clear();
+	}
 
 	template<typename TNItem>
-	void ReadTree(yifstream& rStream, TNItem*& rpData) const
+	void ReadTree(yistream& rStream, TNItem*& rpData) const
 	{
 		ybool bHasNext = false;
 		Read(rStream, bHasNext);
@@ -120,7 +192,7 @@ protected:
 	}
 
 	template<typename TNItem>
-	void WriteTree(yofstream& rStream, const TNItem*& rpData) const
+	void WriteTree(yostream& rStream, const TNItem*& rpData) const
 	{
 		// write the next
 		const TNItem* pNext = rpData->GetNext();
@@ -142,7 +214,10 @@ protected:
 	}
 
 private:
-	base::IYWidget* NewWidget(const ystring& rsType) const;
+	void New(base::YIBuffer*& rpNew) const;
+	void Delete(base::YIBuffer*& rpNew) const;
+	void New(base::YIFormat*& rpNew) const;
+	void New(base::YIWidget*& rpNew, const ystring& rsClass) const;
 };
 
 }}

@@ -5,29 +5,31 @@
 
 namespace yam{ namespace output{
 
-class IYPsFormat : public base::IYFormat
+class YIPsFormat : public base::YIFormat
 {
 public:
-	virtual ~IYPsFormat() { ; }
+	virtual ~YIPsFormat() { ; }
 
 public:
 };
 
-template<typename TNBase>
-class TYPsFormat : public base::TYFormat<TNBase>
+template<typename TNBase, typename TNReal>
+class YTPsFormat : public base::YTFormat<TNBase, TNReal>
 {
 public:
-	TYPsFormat() { ; }
-	virtual ~TYPsFormat() { ; }
+	YTPsFormat() { ; }
+	virtual ~YTPsFormat() { ; }
 
 public:
 };
 
-class CYPsFormat : public TYPsFormat<IYPsFormat>
+class YCPsFormat : public YTPsFormat<YIPsFormat, YCPsFormat>
 {
+	YOBJECT_DECL(YCPsFormat);
+
 public:
-	CYPsFormat();
-	virtual ~CYPsFormat();
+	YCPsFormat();
+	virtual ~YCPsFormat();
 
 public:
 };

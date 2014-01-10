@@ -2,12 +2,14 @@
 
 namespace yam{ namespace output{
 
-CYPsFormat::CYPsFormat()
+YOBJECT_IMPL(YCPsFormat);
+
+YCPsFormat::YCPsFormat()
 {
 	//
 }
 
-CYPsFormat::~CYPsFormat()
+YCPsFormat::~YCPsFormat()
 {
 	//
 }

@@ -11,7 +11,7 @@ YEditor::YEditor(QWidget* pParent /* = NULL */)
 {
 	ui.setupUi(this);
 
-	yam::output::IYPsFormat* ff = new yam::output::CYPsFormat;
+	yam::output::YIPsFormat* ff = new yam::output::YCPsFormat;
 	delete ff;
 }
 
@@ -31,20 +31,45 @@ int main(int argc, char* argv[])
 	obj["title"] = "hello world";
 	std::string sRes = json::Serialize(obj);
 
-	CYPanel* pPanel = new CYPanel;
+	/*yam::ystring sFileNameT = "testa.yui";
+	yam::ystring sst = "test";
+	yam::yint32 sit = 10;
+
+	yam::yofstream ost;
+	ost.open(sFileNameT, std::ios::out | std::ios::binary);
+	//yam::file::YCFile::Instance().Write(ost, sit);
+	//yam::file::YCFile::Instance().Write(ost, sst);
+	ost << sst;
+	ost.close();
+	yam::yifstream ist;
+	ist.open(sFileNameT, std::ios::in | std::ios::binary);
+	sit = 50;
+	sst = "";
+	//yam::file::YCFile::Instance().Read(ist, sit);
+	//yam::file::YCFile::Instance().Read(ist, sst);
+	ist >> sst;
+	if (ist.eof())
+	{
+		sst = "00";
+	}
+	ist.close();*/
+
+	/*yam::ystring sFileName = "test.yui";
+
+	YCPanel* pPanel = new YCPanel;
 	yam::ybuffsize rrsize = pPanel->SizeOfData();
 
-	CYPanel* pPanelA = pPanel->NewChild<CYPanel>();
+	YCPanel* pPanelA = pPanel->NewChild<YCPanel>();
 	rrsize = pPanel->SizeOfData();
-	CYPanel* pPanelB = pPanel->NewChild<CYPanel>();
+	YCPanel* pPanelB = pPanel->NewChild<YCPanel>();
 	rrsize = pPanel->SizeOfData();
 	rrsize = pPanelA->SizeOfData();
 	rrsize = pPanelB->SizeOfData();
 
-	CYWidget* pWidgetA = pPanelA->NewChild<CYWidget>();
+	YCWidget* pWidgetA = pPanelA->NewChild<YCWidget>();
 	rrsize = pWidgetA->SizeOfData();
 	rrsize = pPanel->SizeOfData();
-	CYWidget* pWidgetB = pPanelB->NewChild<CYWidget>();
+	YCWidget* pWidgetB = pPanelB->NewChild<YCWidget>();
 	rrsize = pPanel->SizeOfData();
 
 	pPanel->GetId() = "root";
@@ -78,13 +103,18 @@ int main(int argc, char* argv[])
 	pWidgetB->GetBound().Size.Y = 20;
 	rrsize = pPanel->SizeOfData();
 
-	yam::ystring sFileName = "test.yui";
-	yam::file::CYFile::Instance().Save(sFileName, pPanel);
+	yam::file::YCFile::Instance().Save(sFileName, pPanel);
 	delete pPanel; pPanel = YNULL;
 
-	IYWidget* pWidget = YNULL;
-	yam::file::CYFile::Instance().Load(sFileName, pWidget);
+	YIWidget* pWidget = YNULL;
+	yam::file::YCFile::Instance().Load(sFileName, pWidget);
 	delete pWidget; pWidget = YNULL;
+	
+	YIFormat* pFormat = new YCFormat;
+	yam::file::YCFile::Instance().Save(sFileName, pFormat);
+	delete pFormat; pFormat = YNULL;
+	yam::file::YCFile::Instance().Load(sFileName, pFormat);
+	delete pFormat; pFormat = YNULL;*/
 
 	QApplication a(argc, argv);
 	YEditor editor;

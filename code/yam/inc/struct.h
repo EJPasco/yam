@@ -4,35 +4,46 @@
 #include "define.h"
 #include "typedef.h"
 
+#include <vector>
+
 namespace yam{
 
-typedef struct YVec2D
+struct YVec2D
 {
 	YVec2D() : X(0), Y(0) { ; }
 
 	yint32		X;
 	yint32		Y;
-} yvec2d;
+};
 
-typedef struct YRect2D
+struct YRect2D
 {
-	yvec2d		Pos;
-	yvec2d		Size;
-} yrect2d;
+	YVec2D		Pos;
+	YVec2D		Size;
+};
 
-typedef struct YFVec2D
+struct YFVec2D
 {
 	YFVec2D() : X(0.0f), Y(0.0f) { ; }
 
 	yfloat32		X;
 	yfloat32		Y;
-} yfvec2d;
+};
 
-typedef struct YFRect2D
+struct YFRect2D
 {
-	yfvec2d		Pos;
-	yfvec2d		Size;
-} yfrect2d;
+	YFVec2D		Pos;
+	YFVec2D		Size;
+};
+
+struct YBuffer
+{
+	YBuffer() : Size(0), Data(YNULL) { ; }
+
+	ybuffsize	Size;
+	ybuffptr	Data;
+};
+typedef std::vector<YBuffer>		yvbuffer;
 
 }
 

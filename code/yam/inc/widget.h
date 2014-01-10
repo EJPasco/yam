@@ -6,69 +6,43 @@
 
 namespace yam{ namespace base{
 
-class IYWidget : public IYTree<IYWidget>
+class YIWidget : public YITree<YIWidget>
 {
 public:
-	virtual ~IYWidget() { ; }
+	virtual ~YIWidget() { ; }
 
 public:
-	virtual GET_DECL_CONST(ystring&, GetType) = 0;
-	virtual GET_DECL(ystring&, GetId) = 0;
-	virtual GET_DECL_CONST(ystring&, GetId) = 0;
-	virtual GET_DECL(yrect2d&, GetBound) = 0;
-	virtual GET_DECL_CONST(yrect2d&, GetBound) = 0;
+	virtual GET_DECL(YRect2D&, GetBound) = 0;
+	virtual GET_DECL_CONST(YRect2D&, GetBound) = 0;
 	virtual GET_DECL(ylayerweight&, GetLayerWeight) = 0;
 	virtual GET_DECL_CONST(ylayerweight&, GetLayerWeight) = 0;
 };
 
-template<typename TNBase>
-class TYWidget : public TYTree<TNBase, IYWidget>
+template<typename TNBase, typename TNReal>
+class YTWidget : public YTTree<TNBase, YIWidget, TNReal>
 {
 public:
-	explicit TYWidget(const ystring& rsType) : m_sType(rsType), m_sId(""), m_iLayerWeight(0) { ; }
-	virtual ~TYWidget() { ; }
+	YTWidget() : m_iLayerWeight(0) { ; }
+	virtual ~YTWidget() { ; }
 
 public:
-	virtual ybuffsize SizeOfData() const
-	{
-		ybuffsize iRes = 0;
-
-		// calculate the size of real data
-		iRes += sizeof(yint32);
-		iRes += sizeof(yint8) * m_sType.size();
-		iRes += sizeof(yint32);
-		iRes += sizeof(yint8) * m_sId.size();
-		iRes += sizeof(yrect2d);
-		iRes += sizeof(ylayerweight);
-
-		iRes += TYTree::SizeOfData();
-		return iRes;
-	}
-
-public:
-	virtual GET_FUNC_CONST(ystring&, GetType, m_sType);
-	virtual GET_FUNC(ystring&, GetId, m_sId);
-	virtual GET_FUNC_CONST(ystring&, GetId, m_sId);
-	virtual GET_FUNC(yrect2d&, GetBound, m_stBound);
-	virtual GET_FUNC_CONST(yrect2d&, GetBound, m_stBound);
+	virtual GET_FUNC(YRect2D&, GetBound, m_stBound);
+	virtual GET_FUNC_CONST(YRect2D&, GetBound, m_stBound);
 	virtual GET_FUNC(ylayerweight&, GetLayerWeight, m_iLayerWeight);
 	virtual GET_FUNC_CONST(ylayerweight&, GetLayerWeight, m_iLayerWeight);
 
 protected:
-	ystring				m_sType;
-	ystring				m_sId;
-	yrect2d				m_stBound;
+	YRect2D				m_stBound;
 	ylayerweight		m_iLayerWeight;
 };
 
-class CYWidget : public TYWidget<IYWidget>
+class YCWidget : public YTWidget<YIWidget, YCWidget>
 {
-public:
-	SINGLETON_DECL(CYWidget);
+	YOBJECT_DECL(YCWidget);
 
 public:
-	CYWidget();
-	virtual ~CYWidget();
+	YCWidget();
+	virtual ~YCWidget();
 
 public:
 

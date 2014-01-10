@@ -1,195 +1,213 @@
 #include "file.h"
 
+#include "buffer.h"
+#include "format.h"
 #include "widget.h"
 #include "panel.h"
-#include "format.h"
 
 namespace yam{ namespace file{
 
-SINGLETON_IMPL(CYFile);
+SINGLETON_IMPL(YCFile);
 
-CYFile::CYFile()
+YCFile::YCFile()
 {
 	//
 }
 
-CYFile::~CYFile()
+YCFile::~YCFile()
 {
 	//
 }
 
-/*void CYFile::Load(const ystring& rsFileName, base::IYFormat*& rpFormat) const
+void YCFile::Load(const ystring& rsFileName, base::YIFormat*& rpFormat) const
 {
 	assert(YNULL == rpFormat);
 
-	yifstream fsFile;
-	fsFile.open(rsFileName.c_str(), std::ios::in | std::ios::binary);
+	tmbuffer vBuffer;
 
-	while (!fsFile.eof())
 	{
-		ystring sKeyOfData = "";
-		ybuffsize iSizeOfData = 0;
-		ybuffptr pBufferOfData = YNULL;
-
-		Read(fsFile, sKeyOfData);
-
-		if (sKeyOfData == FILE_KEY_FORMAT)
-		{
-			Read(fsFile, iSizeOfData);
-			Read(fsFile, rpFormat);
-		}
-		else
-		{
-			Read(fsFile, iSizeOfData);
-			if (0 < iSizeOfData)
-			{
-				Read(fsFile, iSizeOfData, pBufferOfData);
-			}
-		}
+		yifstream fsFile;
+		fsFile.open(rsFileName.c_str(), std::ios::in | std::ios::binary);
+		ReadMapPtr(fsFile, vBuffer);
+		fsFile.close();
 	}
-	fsFile.close();
+
+	tmbuffer::const_iterator citBuffer = vBuffer.begin();
+	tmbuffer::const_iterator citBufferEnd = vBuffer.end();
+	for (; citBuffer != citBufferEnd; ++citBuffer)
+	{
+		if (FILE_KEY_FORMAT != citBuffer->first)
+		{
+			continue;
+		}
+		std::stringstream ss;
+		ss.write(citBuffer->second->GetData(), citBuffer->second->GetSize());
+		yistream buffer_stream(ss.rdbuf());
+		Read(buffer_stream, rpFormat);
+		break;
+	}
+	DeleteMapPtr(vBuffer);
 }
 
-void CYFile::Save(const ystring& rsFileName, const base::IYFormat* pFormat) const
+void YCFile::Save(const ystring& rsFileName, const base::YIFormat* pFormat) const
 {
 	assert(YNULL != pFormat);
-	//
-}*/
 
-void CYFile::Load(const ystring& rsFileName, base::IYWidget*& rpWidget) const
-{
-	assert(YNULL == rpWidget);
+	tmbuffer vBuffer;
 
-	yifstream fsFile;
-	fsFile.open(rsFileName.c_str(), std::ios::in | std::ios::binary);
-
-	while (!fsFile.eof())
 	{
-		ystring sKeyOfData = "";
-		ybuffsize iSizeOfData = 0;
-		ybuffptr pBufferOfData = YNULL;
-
-		Read(fsFile, sKeyOfData);
-
-		if (sKeyOfData == FILE_KEY_WIDGET)
-		{
-			Read(fsFile, iSizeOfData);
-			Read(fsFile, rpWidget);
-		}
-		else
-		{
-			Read(fsFile, iSizeOfData);
-			if (0 < iSizeOfData)
-			{
-				Read(fsFile, iSizeOfData, pBufferOfData);
-			}
-		}
-	}
-	fsFile.close();
-}
-
-void CYFile::Save(const ystring& rsFileName, const base::IYWidget* pWidget) const
-{
-	assert(YNULL != pWidget);
-
-	// read the format data
-	ybuffsize iSizeOfFormatData = 0;
-	ybuffptr pBufferOfFormatData = YNULL;
-	{
-		yifstream fsReadFile;
-		fsReadFile.open(rsFileName.c_str(), std::ios::in | std::ios::binary);
-		if (!fsReadFile.eof())
-		{
-			ystring sFormatKey = "";
-			Read(fsReadFile, sFormatKey);
-			Read(fsReadFile, iSizeOfFormatData);
-			if (0 < iSizeOfFormatData)
-			{
-				pBufferOfFormatData = new ybuff[iSizeOfFormatData];
-				Read(fsReadFile, iSizeOfFormatData, pBufferOfFormatData);
-			}
-		}
-		fsReadFile.close();
+		yifstream fsFile;
+		fsFile.open(rsFileName.c_str(), std::ios::in | std::ios::binary);
+		ReadMapPtr(fsFile, vBuffer);
+		fsFile.close();
 	}
 
 	yofstream fsFile;
 	fsFile.open(rsFileName.c_str(), std::ios::out | std::ios::binary);
 
-	// rewrite the format data
-	{
-		ystring sKey = FILE_KEY_FORMAT;
-		Write(fsFile, sKey);
-		Write(fsFile, iSizeOfFormatData);
-		if (YNULL != pBufferOfFormatData)
-		{
-			Write(fsFile, iSizeOfFormatData, pBufferOfFormatData);
-			delete pBufferOfFormatData; pBufferOfFormatData = YNULL;
-		}
-	}
+	const ystring sKey = FILE_KEY_FORMAT;
+	Write(fsFile, sKey);
+	//Write(fsFile, pFormat->SizeOfData());
+	Write(fsFile, pFormat);
 
+	tmbuffer::const_iterator citBuffer = vBuffer.begin();
+	tmbuffer::const_iterator citBufferEnd = vBuffer.end();
+	for (; citBuffer != citBufferEnd; ++citBuffer)
 	{
-		// write the widget data
-		ystring sKey = FILE_KEY_WIDGET;
-		Write(fsFile, sKey);
-		ybuffsize iSize = pWidget->SizeOfData();
-		Write(fsFile, iSize);
-		Write(fsFile, pWidget);
+		if (sKey == citBuffer->first)
+		{
+			continue;
+		}
+		Write(fsFile, citBuffer->first);
+		const base::YIBuffer* pBuffer = citBuffer->second;
+		Write(fsFile, pBuffer);
 	}
+	DeleteMapPtr(vBuffer);
+
 	fsFile.close();
 }
 
-void CYFile::Read(yifstream& rStream, const ybuffsize& rSize, ybuffptr pBuffer) const
+void YCFile::Load(const ystring& rsFileName, base::YIWidget*& rpWidget) const
+{
+	assert(YNULL == rpWidget);
+
+	tmbuffer vBuffer;
+
+	{
+		yifstream fsFile;
+		fsFile.open(rsFileName.c_str(), std::ios::in | std::ios::binary);
+		ReadMapPtr(fsFile, vBuffer);
+		fsFile.close();
+	}
+
+	tmbuffer::const_iterator citBuffer = vBuffer.begin();
+	tmbuffer::const_iterator citBufferEnd = vBuffer.end();
+	for (; citBuffer != citBufferEnd; ++citBuffer)
+	{
+		if (FILE_KEY_WIDGET != citBuffer->first)
+		{
+			continue;
+		}
+		std::stringstream ss;
+		ss.write(citBuffer->second->GetData(), citBuffer->second->GetSize());
+		yistream buffer_stream(ss.rdbuf());
+		Read(buffer_stream, rpWidget);
+		break;
+	}
+	DeleteMapPtr(vBuffer);
+}
+
+void YCFile::Save(const ystring& rsFileName, const base::YIWidget* pWidget) const
+{
+	assert(YNULL != pWidget);
+
+	tmbuffer vBuffer;
+
+	{
+		yifstream fsFile;
+		fsFile.open(rsFileName.c_str(), std::ios::in | std::ios::binary);
+		ReadMapPtr(fsFile, vBuffer);
+		fsFile.close();
+	}
+
+	yofstream fsFile;
+	fsFile.open(rsFileName.c_str(), std::ios::out | std::ios::binary);
+
+	const ystring sKey = FILE_KEY_WIDGET;
+	Write(fsFile, sKey);
+
+	{
+		std::stringstream ss;
+		yostream iost(ss.rdbuf());
+		Write(iost, pWidget);
+		Write(fsFile, iost);
+	}
+
+	tmbuffer::const_iterator citBuffer = vBuffer.begin();
+	tmbuffer::const_iterator citBufferEnd = vBuffer.end();
+	for (; citBuffer != citBufferEnd; ++citBuffer)
+	{
+		if (sKey == citBuffer->first)
+		{
+			continue;
+		}
+		Write(fsFile, citBuffer->first);
+		const base::YIBuffer* pBuffer = citBuffer->second;
+		Write(fsFile, pBuffer);
+	}
+	DeleteMapPtr(vBuffer);
+
+	fsFile.close();
+}
+
+void YCFile::Read(yistream& rStream, const ybuffsize& rSize, ybuffptr pBuffer) const
 {
 	assert(YNULL != pBuffer);
-	if (rStream.eof())
+	if (!rStream.good() || rStream.eof())
+	{
+		return;
+	}
+	if (0 >= rSize)
 	{
 		return;
 	}
 	rStream.read(pBuffer, rSize);
 }
 
-void CYFile::Write(yofstream& rStream, const ybuffsize& rSize, const ybuffptr& rpBuffer) const
+void YCFile::Write(yostream& rStream, const ybuffsize& rSize, const ybuffptr& rpBuffer) const
 {
 	assert(YNULL != rpBuffer);
+	if (0 >= rSize)
+	{
+		return;
+	}
 	rStream.write(rpBuffer, rSize);
 }
 
-/*void CYFile::Read(yifstream& rStream, const ystring& rsKey, ybuffsize& riBufferSize, ybuffptr& rpBuffer) const
+void YCFile::Read(yistream& rStream, ystreambuff& rData) const
 {
-	while (!rStream.eof())
-	{
-		ystring sKeyOfData = "";
-		Read(rStream, sKeyOfData);
-
-		ybuffsize iBufferSize = 0;
-		Read(rStream, iBufferSize);
-
-		if (sKeyOfData != rsKey)
-		{
-			rStream.seekg(iBufferSize);
-			continue;
-		}
-
-		riBufferSize = iBufferSize;
-		rpBuffer = YNULL;
-		if (0 < riBufferSize)
-		{
-			rpBuffer = new ybuff[riBufferSize];
-			Read(rStream, riBufferSize, rpBuffer);
-		}
-		break;
-	}
+	rStream >> &rData;
 }
 
-void CYFile::Write(yofstream& rStream, const ystring& rsKey, const ybuffsize& riBufferSize, const ybuffptr& rpBuffer) const
+void YCFile::Write(yostream& rStream, const ystreambuff& rData) const
 {
-	Write(rStream, rsKey);
-	Write(rStream, riBufferSize, rpBuffer);
-}*/
+	//rData.pubseekpos(0, std::ios::end);
+	rStream << &rData;
+}
 
-void CYFile::Read(yifstream& rStream, ystring& rRes) const
+void YCFile::Read(yistream& rStream, yistream& rData) const
 {
-	if (rStream.eof())
+	Read(rStream, *rData.rdbuf());
+}
+
+void YCFile::Write(yostream& rStream, const yostream& rData) const
+{
+	Write(rStream, *rData.rdbuf());
+}
+
+void YCFile::Read(yistream& rStream, ystring& rRes) const
+{
+	if (!rStream.good() || rStream.eof())
 	{
 		return;
 	}
@@ -204,62 +222,93 @@ void CYFile::Read(yifstream& rStream, ystring& rRes) const
 	delete[] pBuffer; pBuffer = YNULL;
 }
 
-void CYFile::Write(yofstream& rStream, const ystring& rData) const
+void YCFile::Write(yostream& rStream, const ystring& rData) const
 {
 	yint32 iLen = rData.size();
 	Write(rStream, sizeof(yint32), (ybuffptr)&iLen);
-	Write(rStream, sizeof(yint8) * iLen, (ybuffptr)rData.c_str());
+	Write(rStream, sizeof(ybuff) * iLen, (ybuffptr)rData.c_str());
 }
 
-void CYFile::Read(yifstream& rStream, ybool& rRes) const
+void YCFile::Read(yistream& rStream, ybool& rRes) const
 {
 	Read(rStream, sizeof(ybool), (ybuffptr)&rRes);
 }
 
-void CYFile::Write(yofstream& rStream, const ybool& rData) const
+void YCFile::Write(yostream& rStream, const ybool& rData) const
 {
 	Write(rStream, sizeof(ybool), (ybuffptr)&rData);
 }
 
-void CYFile::Read(yifstream& rStream, yint32& rRes) const
+void YCFile::Read(yistream& rStream, yint32& rRes) const
 {
 	Read(rStream, sizeof(yint32), (ybuffptr)&rRes);
 }
 
-void CYFile::Write(yofstream& rStream, const yint32& rData) const
+void YCFile::Write(yostream& rStream, const yint32& rData) const
 {
 	Write(rStream, sizeof(yint32), (ybuffptr)&rData);
 }
 
-void CYFile::Read(yifstream& rStream, yvec2d& rRes) const
+void YCFile::Read(yistream& rStream, YVec2D& rRes) const
 {
-	Read(rStream, sizeof(yvec2d), (ybuffptr)&rRes);
+	Read(rStream, sizeof(YVec2D), (ybuffptr)&rRes);
 }
 
-void CYFile::Write(yofstream& rStream, const yvec2d& rData) const
+void YCFile::Write(yostream& rStream, const YVec2D& rData) const
 {
-	Write(rStream, sizeof(yvec2d), (ybuffptr)&rData);
+	Write(rStream, sizeof(YVec2D), (ybuffptr)&rData);
 }
 
-void CYFile::Read(yifstream& rStream, yrect2d& rRes) const
+void YCFile::Read(yistream& rStream, YRect2D& rRes) const
 {
-	Read(rStream, sizeof(yrect2d), (ybuffptr)&rRes);
+	Read(rStream, sizeof(YRect2D), (ybuffptr)&rRes);
 }
 
-void CYFile::Write(yofstream& rStream, const yrect2d& rData) const
+void YCFile::Write(yostream& rStream, const YRect2D& rData) const
 {
-	Write(rStream, sizeof(yrect2d), (ybuffptr)&rData);
+	Write(rStream, sizeof(YRect2D), (ybuffptr)&rData);
 }
 
-void CYFile::Read(yifstream& rStream, base::IYFormat*& rpData) const
+void YCFile::Read(yistream& rStream, base::YIBuffer*& rpData) const
+{
+	assert(YNULL == rpData);
+
+	New(rpData);
+
+	ybuffsize iSize = 0;
+	Read(rStream, iSize);
+	rpData->New(iSize);
+	if (0 >= iSize)
+	{
+		return;
+	}
+	Read(rStream, rpData->GetSize(), rpData->GetData());
+}
+
+void YCFile::Write(yostream& rStream, const base::YIBuffer*& rpData) const
 {
 	assert(YNULL != rpData);
+
+	ybuffsize iSize = rpData->GetSize();
+	Write(rStream, iSize);
+	if (0 >= iSize)
+	{
+		return;
+	}
+	Write(rStream, rpData->GetSize(), rpData->GetData());
+}
+
+void YCFile::Read(yistream& rStream, base::YIFormat*& rpData) const
+{
+	assert(YNULL == rpData);
+
+	New(rpData);
 
 	ystring sId = "";
 	Read(rStream, sId);
 	rpData->GetId() = sId;
 
-	yrect2d stBound;
+	YRect2D stBound;
 	ycolorptr pColorData = YNULL;
 	Read(rStream, stBound);
 
@@ -275,7 +324,7 @@ void CYFile::Read(yifstream& rStream, base::IYFormat*& rpData) const
 	ReadTree(rStream, rpData);
 }
 
-void CYFile::Write(yofstream& rStream, const base::IYFormat*& rpData) const
+void YCFile::Write(yostream& rStream, const base::YIFormat*& rpData) const
 {
 	assert(YNULL != rpData);
 
@@ -291,19 +340,19 @@ void CYFile::Write(yofstream& rStream, const base::IYFormat*& rpData) const
 	WriteTree(rStream, rpData);
 }
 
-void CYFile::Read(yifstream& rStream, base::IYWidget*& rpData) const
+void YCFile::Read(yistream& rStream, base::YIWidget*& rpData) const
 {
 	assert(YNULL == rpData);
 
 	ystring sType = "";
 	Read(rStream, sType);
-	rpData = NewWidget(sType);
+	New(rpData, sType);
 
 	ystring sId = "";
 	Read(rStream, sId);
 	rpData->GetId() = sId;
 
-	yrect2d stBound;
+	YRect2D stBound;
 	Read(rStream, stBound);
 	rpData->GetBound() = stBound;
 
@@ -314,11 +363,11 @@ void CYFile::Read(yifstream& rStream, base::IYWidget*& rpData) const
 	ReadTree(rStream, rpData);
 }
 
-void CYFile::Write(yofstream& rStream, const base::IYWidget*& rpData) const
+void YCFile::Write(yostream& rStream, const base::YIWidget*& rpData) const
 {
 	assert(YNULL != rpData);
 
-	Write(rStream, rpData->GetType());
+	Write(rStream, rpData->GetClassName());
 	Write(rStream, rpData->GetId());
 	Write(rStream, rpData->GetBound());
 	Write(rStream, rpData->GetLayerWeight());
@@ -326,17 +375,36 @@ void CYFile::Write(yofstream& rStream, const base::IYWidget*& rpData) const
 	WriteTree(rStream, rpData);
 }
 
-base::IYWidget* CYFile::NewWidget(const ystring& rsType) const
+void YCFile::New(base::YIBuffer*& rpNew) const
 {
-	if (FILEKEY_GET(base::CYPanel) == rsType)
+	rpNew = new base::YCBuffer;
+}
+
+void YCFile::Delete(base::YIBuffer*& rpDelete) const
+{
+	if (YNULL == rpDelete)
 	{
-		return new base::CYPanel;
+		return;
 	}
-	else if (FILEKEY_GET(base::CYWidget) == rsType)
+	delete rpDelete;
+	rpDelete = YNULL;
+}
+
+void YCFile::New(base::YIFormat*& rpNew) const
+{
+	rpNew = new base::YCFormat;
+}
+
+void YCFile::New(base::YIWidget*& rpNew, const ystring& rsClass) const
+{
+	if (YOBJECT_GETCLASSNAME(base::YCPanel) == rsClass)
 	{
-		return new base::CYWidget;
+		rpNew = new base::YCPanel;
 	}
-	return YNULL;
+	else if (YOBJECT_GETCLASSNAME(base::YCWidget) == rsClass)
+	{
+		rpNew = new base::YCWidget;
+	}
 }
 
 }}

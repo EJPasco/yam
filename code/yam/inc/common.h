@@ -7,4 +7,10 @@
 
 #include <assert.h>
 
+// external define
+
+namespace yam{
+
+}
+
 #endif // Y_COMMON_H
