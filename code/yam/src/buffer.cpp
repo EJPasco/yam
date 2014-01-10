@@ -44,6 +44,34 @@ YIBuffer& YCBuffer::operator>>(ystring& rData)
 	return *this;
 }
 
+bool YCBuffer::operator>>(base::YCBuffer& rBuffer) const
+{
+	assert(&rBuffer != this);
+	rBuffer << (const YIBuffer*)this;
+	return true;
+}
+
+bool YCBuffer::operator<<(base::YCBuffer& rBuffer)
+{
+	assert(&rBuffer != this);
+	rBuffer.Begin();
+
+	ystring sId = "";
+	ystring sClass = "";
+	ybuffsize iBufferSize = 0;
+	rBuffer.ReadHead(sId, sClass, iBufferSize);
+	if (YOBJECT_GETCLASSNAME(YCBuffer) != sClass)
+	{
+		return false;
+	}
+
+	GetId() = sId;
+
+	this->New(iBufferSize);
+	rBuffer.Read(iBufferSize, GetData());
+	return true;
+}
+
 GET_FUNC_CONST_CUSTOM(ybuffptr&, YCBuffer::GetData)
 {
 	assert(0 >= m_vBufferSeg.size());
@@ -119,11 +147,9 @@ bool YCBuffer::WriteHead(const ystring& rsId, const ystring& rsClass, const ybuf
 
 bool YCBuffer::ReadHead(ystring& rsId, ystring& rsClass, ybuffsize& riSize)
 {
-	Begin();
 	*this >> rsId;
 	*this >> rsClass;
 	*this >> riSize;
-	End();
 	return true;
 }
 
@@ -198,18 +224,20 @@ void YCBuffer::Merge()
 YIBuffer& YCBuffer::operator<<(const YIBuffer* const& rpData)
 {
 	assert(YNULL != rpData);
+	assert(rpData != this);
 
 	WriteHead(rpData->GetId(), rpData->GetClassName(), rpData->GetSize());
 	Write(rpData->GetSize(), rpData->GetData());
 
-	const base::YITree<YIBuffer>* pTree = rpData;
-	*this << pTree;
+	const base::YITree<YIBuffer>* const& rpTree = rpData;
+	operator<<<YIBuffer, YCBuffer>(rpTree);
 	return *this;
 }
 
 YIBuffer& YCBuffer::operator>>(YIBuffer*& rpData)
 {
 	assert(YNULL == rpData);
+	assert(rpData != this);
 
 	ystring sId = "";
 	ystring sClass = "";
@@ -227,8 +255,8 @@ YIBuffer& YCBuffer::operator>>(YIBuffer*& rpData)
 		delete pData; pData = YNULL;
 	}
 
-	const base::YITree<YIBuffer>* pTree = rpData;
-	*this >> pTree;
+	base::YITree<YIBuffer>* pTree = rpData;
+	operator>><YIBuffer, YCBuffer>(pTree);
 	return *this;
 }
 

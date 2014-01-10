@@ -29,16 +29,21 @@ int main(int argc, char* argv[])
 	// ready the data
 	YCBuffer* pBuffer = new YCBuffer;
 	{
-		pBuffer->GetId() = "buffertest";
+		pBuffer->GetId() = "buffertest0";
 		pBuffer->Begin();
 
 		{
-			YIFormat* pFormat = new YCFormat;
+			YCFormat* pFormat = new YCFormat;
 			pFormat->GetId() = "formattest";
 			YRect2D stBound;
 			stBound.Pos.X = 100;
 			stBound.Pos.Y = 101;
 			pFormat->SetBoundAndColorData(stBound, YNULL);
+
+			YCFormat* pNN = pFormat->NewNext<YCFormat>();
+			pNN->GetId() = "nn";
+			YCFormat* pMM = pFormat->NewNext<YCFormat>();
+			pMM->GetId() = "mm";
 
 			*pFormat >> *pBuffer;
 			//*pBuffer << (const YIFormat*)pFormat;
@@ -51,7 +56,7 @@ int main(int argc, char* argv[])
 		pBuffer->End();
 
 		YCBuffer* pBuffer0 = pBuffer->NewNext<YCBuffer>();
-		pBuffer0->GetId() = "buffertest0";
+		pBuffer0->GetId() = "buffertest1";
 	}
 
 	// write buff

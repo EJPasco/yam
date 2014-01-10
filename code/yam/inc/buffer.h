@@ -80,6 +80,10 @@ public:
 	YIBuffer& operator>>(ystring& rData);
 
 public:
+	virtual bool operator>>(base::YCBuffer& rBuffer) const;
+	virtual bool operator<<(base::YCBuffer& rBuffer);
+
+public:
 	virtual GET_DECL_CONST(ybuffptr&, GetData);
 
 public:
@@ -100,17 +104,19 @@ public:
 	virtual YIBuffer& operator<<(const YIBuffer* const& rpData);
 	virtual YIBuffer& operator>>(YIBuffer*& rpData);
 
-protected:
-	template<typename TNItem>
+public:
+	template<typename TNItem, typename TNReal>
 	YIBuffer& operator<<(const base::YITree<TNItem>* const& rpData)
 	{
+		assert(YNULL != rpData);
 		// write the next
 		const TNItem* pNext = rpData->GetNext();
 		ybool bHasNext = YNULL != pNext;
 		*this << bHasNext;
 		if (bHasNext)
 		{
-			*this << pNext;
+			//TODO: force to cast?
+			*(YIObject*)pNext >> *this;
 		}
 
 		// write the children
@@ -119,12 +125,13 @@ protected:
 		*this << bHasChildren;
 		if (bHasChildren)
 		{
-			*this << pChildren;
+			//TODO: force to cast?
+			*(YIObject*)pChildren >> *this;
 		}
 		return *this;
 	}
 
-	template<typename TNItem>
+	template<typename TNItem, typename TNReal>
 	YIBuffer& operator>>(base::YITree<TNItem>*& rpData)
 	{
 		assert(YNULL != rpData);
@@ -136,8 +143,8 @@ protected:
 		*this >> bHasNext;
 		if (bHasNext)
 		{
-			TNItem* pNext = YNULL;
-			*this >> pNext;
+			TNReal* pNext = new TNReal;
+			*pNext << *this;
 			rpData->AddNext(pNext);
 		}
 
@@ -145,8 +152,8 @@ protected:
 		*this >> bHasChildren;
 		if (bHasChildren)
 		{
-			TNItem* pChildren = YNULL;
-			*this >> pChildren;
+			TNReal* pChildren = new TNReal;
+			*pChildren << *this;
 			rpData->AddChild(pChildren);
 		}
 		return *this;

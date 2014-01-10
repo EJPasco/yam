@@ -23,22 +23,24 @@ YCFormat::~YCFormat()
 bool YCFormat::operator>>(base::YCBuffer& rBuffer) const
 {
 	YCBuffer oDataBuffer;
-	oDataBuffer.Begin();
-	oDataBuffer.GetId() = GetId();
-	oDataBuffer.GetClassName() = GetClassName();
-
 	oDataBuffer << GetBound();
 	oDataBuffer.Write(sizeof(ycolor) * GetBound().Size.X * GetBound().Size.Y, (ybuffptr)GetColorData());
 	oDataBuffer.End();
 
-	rBuffer << (const YIBuffer*)&oDataBuffer;
+	rBuffer.Begin();
+	rBuffer << GetId();
+	rBuffer << GetClassName();
+	rBuffer << oDataBuffer.GetSize();
+	rBuffer.Write(oDataBuffer.GetSize(), oDataBuffer.GetData());
+	rBuffer.End();
+
+	const YITree<YIFormat>* const pTree = this;
+	rBuffer.operator<<<YIFormat, YCFormat>(pTree);
 	return true;
 }
 
 bool YCFormat::operator<<(base::YCBuffer& rBuffer)
 {
-	rBuffer.Begin();
-
 	ystring sId = "";
 	ystring sClass = "";
 	ybuffsize iBufferSize = 0;
@@ -66,6 +68,9 @@ bool YCFormat::operator<<(base::YCBuffer& rBuffer)
 		delete[] pColorData;
 		pColorData = YNULL;
 	}
+
+	YITree<YIFormat>* pTree = this;
+	rBuffer.operator>><YIFormat, YCFormat>(pTree);
 	return true;
 }
 
