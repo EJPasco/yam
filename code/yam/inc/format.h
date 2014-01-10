@@ -47,8 +47,8 @@ public:
 	virtual ~YCFormat();
 
 public:
-	virtual void operator>>(base::YCBuffer& rBuffer) const;
-	virtual void operator<<(base::YCBuffer& rBuffer);
+	virtual bool operator>>(base::YCBuffer& rBuffer) const;
+	virtual bool operator<<(base::YCBuffer& rBuffer);
 
 public:
 	virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData);

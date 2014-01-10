@@ -195,7 +195,6 @@ public:
 protected:
 	YIUIFileReader& operator>>(ystring& rData);
 	void Read(const ybuffsize& riSize, const ybuffptr& rpBuff);
-	base::YIBuffer* New(const ystring& rsClass) const;
 
 private:
 	ybool				mbOpened;

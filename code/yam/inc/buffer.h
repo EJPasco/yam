@@ -7,9 +7,6 @@
 
 namespace yam{ namespace base{
 
-class YIFormat;
-class YIWidget;
-
 class YIBuffer : public YITree<YIBuffer>
 {
 public:
@@ -26,11 +23,13 @@ public:
 	virtual void End() = 0;
 	virtual bool Write(const ybuffsize& riSize, const ybuffptr& rpSrc) = 0;
 	virtual bool Read(const ybuffsize& riSize, const ybuffptr& rpDst) = 0;
+	virtual bool WriteHead(const ystring& rsId, const ystring& rsClass, const ybuffsize& riSize) = 0;
+	virtual bool ReadHead(ystring& rsId, ystring& rsClass, ybuffsize& riSize) = 0;
 	virtual YIBuffer& Clear() = 0;
 
 public:
-	virtual YIBuffer& operator<<(const YIFormat* const& rpData) = 0;
-	virtual YIBuffer& operator>>(YIFormat*& rpData) = 0;
+	virtual YIBuffer& operator<<(const YIBuffer* const& rpData) = 0;
+	virtual YIBuffer& operator>>(YIBuffer*& rpData) = 0;
 };
 
 template<typename TNBase, typename TNReal>
@@ -90,14 +89,16 @@ public:
 	virtual void End();
 	virtual bool Write(const ybuffsize& riSize, const ybuffptr& rpSrc);
 	virtual bool Read(const ybuffsize& riSize, const ybuffptr& rpDst);
+	virtual bool WriteHead(const ystring& rsId, const ystring& rsClass, const ybuffsize& riSize);
+	virtual bool ReadHead(ystring& rsId, ystring& rsClass, ybuffsize& riSize);
 	virtual YIBuffer& Clear();
 
 protected:
 	void Merge();
 
 public:
-	virtual YIBuffer& operator<<(const YIFormat* const& rpData);
-	virtual YIBuffer& operator>>(YIFormat*& rpData);
+	virtual YIBuffer& operator<<(const YIBuffer* const& rpData);
+	virtual YIBuffer& operator>>(YIBuffer*& rpData);
 
 protected:
 	template<typename TNItem>

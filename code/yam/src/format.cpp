@@ -20,14 +20,36 @@ YCFormat::~YCFormat()
 	}
 }
 
-void YCFormat::operator>>(base::YCBuffer& rBuffer) const
+bool YCFormat::operator>>(base::YCBuffer& rBuffer) const
 {
-	rBuffer << GetBound();
-	rBuffer.Write(sizeof(ycolor) * GetBound().Size.X * GetBound().Size.Y, (ybuffptr)GetColorData());
+	YCBuffer oDataBuffer;
+	oDataBuffer.Begin();
+	oDataBuffer.GetId() = GetId();
+	oDataBuffer.GetClassName() = GetClassName();
+
+	oDataBuffer << GetBound();
+	oDataBuffer.Write(sizeof(ycolor) * GetBound().Size.X * GetBound().Size.Y, (ybuffptr)GetColorData());
+	oDataBuffer.End();
+
+	rBuffer << (const YIBuffer*)&oDataBuffer;
+	return true;
 }
 
-void YCFormat::operator<<(base::YCBuffer& rBuffer)
+bool YCFormat::operator<<(base::YCBuffer& rBuffer)
 {
+	rBuffer.Begin();
+
+	ystring sId = "";
+	ystring sClass = "";
+	ybuffsize iBufferSize = 0;
+	rBuffer.ReadHead(sId, sClass, iBufferSize);
+	if (YOBJECT_GETCLASSNAME(YCFormat) != sClass)
+	{
+		return false;
+	}
+
+	GetId() = sId;
+
 	YRect2D stBound;
 	rBuffer >> stBound;
 
@@ -44,6 +66,7 @@ void YCFormat::operator<<(base::YCBuffer& rBuffer)
 		delete[] pColorData;
 		pColorData = YNULL;
 	}
+	return true;
 }
 
 void YCFormat::SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData)

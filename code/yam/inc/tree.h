@@ -8,7 +8,7 @@
 namespace yam{ namespace base{
 
 template<typename TNItem>
-class YITree : public YIObject<TNItem>
+class YITree : public YIObject
 {
 public:
 	virtual ~YITree() { ; }

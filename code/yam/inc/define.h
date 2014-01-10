@@ -39,4 +39,11 @@
 #define FILE_KEY_FORMAT					"format"
 #define FILE_KEY_WIDGET					"widget"
 
+
+#define YOBJECT_DECL(_Class)		\
+	public:\
+		static ystring		sClassName;
+#define YOBJECT_IMPL(_Class)		ystring _Class::sClassName = YTOSTRING(_Class);
+#define YOBJECT_GETCLASSNAME(_Class)		_Class::sClassName
+
 #endif // Y_DEFINE_H

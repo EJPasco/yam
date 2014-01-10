@@ -2,6 +2,7 @@
 #define Y_WIDGET_H
 
 #include "common.h"
+
 #include "tree.h"
 
 namespace yam{ namespace base{

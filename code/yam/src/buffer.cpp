@@ -1,7 +1,5 @@
 #include "buffer.h"
 
-#include "format.h"
-
 namespace yam{ namespace base{
 
 YOBJECT_IMPL(YCBuffer);
@@ -109,6 +107,26 @@ bool YCBuffer::Read(const ybuffsize& riSize, const ybuffptr& rpDst)
 	return true;
 }
 
+bool YCBuffer::WriteHead(const ystring& rsId, const ystring& rsClass, const ybuffsize& riSize)
+{
+	Begin();
+	*this << rsId;
+	*this << rsClass;
+	*this << riSize;
+	End();
+	return true;
+}
+
+bool YCBuffer::ReadHead(ystring& rsId, ystring& rsClass, ybuffsize& riSize)
+{
+	Begin();
+	*this >> rsId;
+	*this >> rsClass;
+	*this >> riSize;
+	End();
+	return true;
+}
+
 YIBuffer& YCBuffer::Clear()
 {
 	m_iSize = 0;
@@ -177,32 +195,39 @@ void YCBuffer::Merge()
 	m_pData = pData;
 }
 
-YIBuffer& YCBuffer::operator<<(const YIFormat* const& rpData)
+YIBuffer& YCBuffer::operator<<(const YIBuffer* const& rpData)
 {
 	assert(YNULL != rpData);
-	*this << rpData->GetClassName();
-	*this << rpData->GetId();
-	*rpData >> *this;
 
-	const YITree<YIFormat>* pTree = rpData;
+	WriteHead(rpData->GetId(), rpData->GetClassName(), rpData->GetSize());
+	Write(rpData->GetSize(), rpData->GetData());
+
+	const base::YITree<YIBuffer>* pTree = rpData;
 	*this << pTree;
 	return *this;
 }
 
-YIBuffer& YCBuffer::operator>>(YIFormat*& rpData)
+YIBuffer& YCBuffer::operator>>(YIBuffer*& rpData)
 {
 	assert(YNULL == rpData);
 
+	ystring sId = "";
 	ystring sClass = "";
-	*this >> sClass;
-	rpData = yam::New<YCFormat>(sClass);
-	if (YNULL != rpData)
+	ybuffsize iSize = 0;
+	ReadHead(sId, sClass, iSize);
+
+	rpData = new YCBuffer;
+	rpData->GetId() = sId;
+	rpData->GetClassName() = sClass;
+	if (0 < iSize)
 	{
-		*this >> rpData->GetId();
-		*rpData << *this;
+		ybuffptr pData = new ybuff[iSize];
+		Read(iSize, pData);
+		rpData->Write(iSize, pData);
+		delete pData; pData = YNULL;
 	}
 
-	YITree<YIFormat>* pTree = rpData;
+	const base::YITree<YIBuffer>* pTree = rpData;
 	*this >> pTree;
 	return *this;
 }

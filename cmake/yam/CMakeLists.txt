@@ -33,6 +33,8 @@ set(CODE_FILE_LIST_BASE
     ${CODE_PATH_YAM}/src/widget.cpp
     ${CODE_PATH_YAM}/inc/format.h
     ${CODE_PATH_YAM}/src/format.cpp
+    ${CODE_PATH_YAM}/inc/new.h
+    ${CODE_PATH_YAM}/src/new.cpp
     )
 
 set(CODE_FILE_LIST_FILE

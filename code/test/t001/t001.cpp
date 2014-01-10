@@ -11,29 +11,47 @@ int main(int argc, char* argv[])
 	using namespace yam::base;
 	using namespace yam::file;
 
-	ystringhash ss;
-	std::string key = YTOSTRING(yam);
-	int rsa = ss(key);
-	int rsb = ss("tt");
-	int rsc = ss(key);
+	{
+		ystringhash ss;
+		std::string key = YTOSTRING(yam);
+		int rsa = ss(key);
+		int rsb = ss("tt");
+		int rsc = ss(key);
+	}
+
+	{
+		json::Object obj;
+		obj["coin"] = 1.0f;
+		obj["title"] = "hello world";
+		std::string sRes = json::Serialize(obj);
+	}
 
 	// ready the data
-	YCBuffer ybuffer;
+	YCBuffer* pBuffer = new YCBuffer;
 	{
-		YCBuffer* pBuffer0 = ybuffer.NewNext<YCBuffer>();
-		ybuffer.GetId() = "buffertest";
+		pBuffer->GetId() = "buffertest";
+		pBuffer->Begin();
+
+		{
+			YIFormat* pFormat = new YCFormat;
+			pFormat->GetId() = "formattest";
+			YRect2D stBound;
+			stBound.Pos.X = 100;
+			stBound.Pos.Y = 101;
+			pFormat->SetBoundAndColorData(stBound, YNULL);
+
+			*pFormat >> *pBuffer;
+			//*pBuffer << (const YIFormat*)pFormat;
+			if (YNULL != pFormat)
+			{
+				delete pFormat; pFormat = NULL;
+			}
+		}
+
+		pBuffer->End();
+
+		YCBuffer* pBuffer0 = pBuffer->NewNext<YCBuffer>();
 		pBuffer0->GetId() = "buffertest0";
-
-		YCFormat dformat;
-		dformat.GetId() = "formattest";
-		YRect2D stBound;
-		stBound.Pos.X = 100;
-		stBound.Pos.Y = 101;
-		dformat.SetBoundAndColorData(stBound, YNULL);
-
-		ybuffer.Begin();
-		ybuffer << (const YIFormat*)&dformat;
-		ybuffer.End();
 	}
 
 	// write buff
@@ -41,8 +59,7 @@ int main(int argc, char* argv[])
 		//
 		YCUIFileWriter file;
 		file.Save("test.aa");
-		const YIBuffer* pBufferc = &ybuffer;
-		file << pBufferc;
+		file << (const YIBuffer*)pBuffer;
 		file.Close();
 	}
 
@@ -50,17 +67,22 @@ int main(int argc, char* argv[])
 	{
 		YCUIFileReader file;
 		file.Open("test.aa");
-		YIBuffer* pBuffer = YNULL;
-		file >> pBuffer;
+		YCBuffer* pBufferRead = YNULL;
+		file >> (YIBuffer*&)pBufferRead;
 		file.Close();
-		YIFormat* pFormat = YNULL;
-		*pBuffer >> pFormat;
+		YIFormat* pFormat = new YCFormat;
+		*pFormat << *pBufferRead;
+		//*pBufferRead >> pFormat;
 		if (YNULL != pFormat)
 		{
 			delete pFormat; pFormat = NULL;
 		}
-		delete pBuffer;
+		if (YNULL != pBufferRead)
+		{
+			delete pBufferRead; pBufferRead  = YNULL;
+		}
 	}
+	delete pBuffer;
 
 	return 0;
 }

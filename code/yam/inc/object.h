@@ -11,7 +11,6 @@ class YCBuffer;
 
 }
 
-template<typename TNReal>
 class YIObject
 {
 public:
@@ -24,54 +23,40 @@ public:
 	virtual GET_DECL_CONST(ystring&, GetClassName) = 0;
 
 public:
-	virtual void operator>>(base::YCBuffer& rBuffer) const = 0;
-	virtual void operator<<(base::YCBuffer& rBuffer) = 0;
+	virtual bool operator>>(base::YCBuffer& rBuffer) const = 0;
+	virtual bool operator<<(base::YCBuffer& rBuffer) = 0;
 };
 
 template<typename TNBase, typename TNReal>
 class YTObject : public TNBase
 {
 public:
-	YTObject() : m_sId("") { ; }
+	YTObject() : m_sId(""), m_sClassName(YOBJECT_GETCLASSNAME(TNReal)) { ; }
 	virtual ~YTObject() { ; }
 
 public:
 	virtual GET_FUNC(ystring&, GetId, m_sId);
 	virtual GET_FUNC_CONST(ystring&, GetId, m_sId);
-	virtual GET_FUNC(ystring&, GetClassName, TNReal::sClassName);
-	virtual GET_FUNC_CONST(ystring&, GetClassName, TNReal::sClassName);
+	virtual GET_FUNC(ystring&, GetClassName, m_sClassName);
+	virtual GET_FUNC_CONST(ystring&, GetClassName, m_sClassName);
 
 public:
-	virtual void operator>>(base::YCBuffer& rBuffer) const
+	virtual bool operator>>(base::YCBuffer& rBuffer) const
 	{
 		//
+		return false;
 	}
 
-	virtual void operator<<(base::YCBuffer& rBuffer)
+	virtual bool operator<<(base::YCBuffer& rBuffer)
 	{
 		//
+		return false;
 	}
 
 private:
 	ystring		m_sId;
+	ystring		m_sClassName;
 };
-
-#define YOBJECT_DECL(_Class)		\
-	public:\
-		static ystring		sClassName;
-#define YOBJECT_IMPL(_Class)		ystring _Class::sClassName = YTOSTRING(_Class);
-#define YOBJECT_GETCLASSNAME(_Class)		_Class::sClassName
-
-
-template<typename TNClass>
-TNClass* New(const ystring& rsClass)
-{
-	if (YOBJECT_GETCLASSNAME(TNClass) == rsClass)
-	{
-		return new TNClass;
-	}
-	return YNULL;
-}
 
 }
 

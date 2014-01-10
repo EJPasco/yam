@@ -44,11 +44,11 @@ YIUIFileWriter& YCUIFileWriter::operator<<(const ystring& rData)
 
 YIUIFileWriter& YCUIFileWriter::operator<<(const base::YIBuffer* const& rpBuffer)
 {
+	assert(YNULL != rpBuffer);
 	if (!mbOpened)
 	{
 		return *this;
 	}
-	*this << rpBuffer->GetClassName();
 	*this << rpBuffer->GetId();
 	*this << rpBuffer->GetSize();
 	Write(rpBuffer->GetSize(), rpBuffer->GetData());
@@ -122,9 +122,7 @@ YIUIFileReader& YCUIFileReader::operator>>(base::YIBuffer*& rpBuffer)
 		return *this;
 	}
 
-	ystring sClass = "";
-	*this >> sClass;
-	rpBuffer = New(sClass);
+	rpBuffer = new base::YCBuffer;
 	*this >> rpBuffer->GetId();
 	ybuffsize iSize = 0;
 	*this >> iSize;
@@ -143,15 +141,6 @@ void YCUIFileReader::Read(const ybuffsize& riSize, const ybuffptr& rpBuff)
 		return;
 	}
 	mFileStream.read(rpBuff, riSize);
-}
-
-base::YIBuffer* YCUIFileReader::New(const ystring& rsClass) const
-{
-	if (YOBJECT_GETCLASSNAME(base::YCBuffer) == rsClass)
-	{
-		return new base::YCBuffer;
-	}
-	return YNULL;
 }
 
 }}
