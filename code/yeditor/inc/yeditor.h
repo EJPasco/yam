@@ -16,9 +16,16 @@ public:
 	YEditor(QWidget* pParent = NULL);
 	virtual ~YEditor();
 
-private:
-	Ui_MainWindow ui;
+public slots:
+	void onClickedOpen();
+	void onClickedSave();
+	void onClickedSync();
 
+private:
+	Ui_MainWindow			m_UI;
+
+public:
+	const static QString	ms_sTitle;
 };
 
 #endif

@@ -40,6 +40,8 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 set(CODE_FILE_LIST_EDITOR
     ${CODE_PATH_YEDITOR}/inc/yeditor.h
     ${CODE_PATH_YEDITOR}/src/yeditor.cpp
+    ${CODE_PATH_YEDITOR}/inc/ydragdroparea.h
+    ${CODE_PATH_YEDITOR}/src/ydragdroparea.cpp
     )
 
 set(CODE_FILE_LIST_RES
@@ -49,6 +51,7 @@ set(CODE_FILE_LIST_RES
 set(CODE_FILE_LIST_QT
     ${CODE_PATH_YEDITOR}/inc/yeditor.main.ui.h
     ${CODE_PATH_YEDITOR}/src/yeditor.moc.cpp
+    ${CODE_PATH_YEDITOR}/src/ydragdroparea.moc.cpp
     )
 
 set(CODE_FILE_LIST_EXPORT
@@ -76,6 +79,14 @@ add_executable(yeditor ${CODE_FILE_LIST_EDITOR}
                        ${CODE_FILE_LIST_EXPORT}
                        )
 
+add_custom_command(OUTPUT ydragdroparea.moc.cpp
+                   COMMAND $ENV{QT_MSVC2012_X32}/bin/moc.exe ${CODE_PATH_YEDITOR}/inc/ydragdroparea.h -o ${CODE_PATH_YEDITOR}/src/ydragdroparea.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I$ENV{QT_MSVC2012_X32}/include -I${CODE_PATH_YEDITOR}/inc -I$ENV{QT_MSVC2012_X32}/include/QtCore -I$ENV{QT_MSVC2012_X32}/include/QtGui -I$ENV{QT_MSVC2012_X32}/include/QtWidgets
+                   COMMAND echo "ok"
+                   DEPENDS ${CODE_PATH_YEDITOR}/inc/ydragdroparea.h
+                   )
+
+add_custom_target(ydragdroparea_moc_cpp
+                  DEPENDS ydragdroparea.moc.cpp)
 
 add_custom_command(OUTPUT yeditor.moc.cpp
                    COMMAND $ENV{QT_MSVC2012_X32}/bin/moc.exe ${CODE_PATH_YEDITOR}/inc/yeditor.h -o ${CODE_PATH_YEDITOR}/src/yeditor.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I$ENV{QT_MSVC2012_X32}/include -I${CODE_PATH_YEDITOR}/inc -I$ENV{QT_MSVC2012_X32}/include/QtCore -I$ENV{QT_MSVC2012_X32}/include/QtGui -I$ENV{QT_MSVC2012_X32}/include/QtWidgets
@@ -96,5 +107,6 @@ add_custom_target(yeditor_main_ui_h
                   DEPENDS yeditor.main.ui.h)
 
 add_dependencies(yeditor ${DEPEND_PROJ_LIST}
+                         ydragdroparea_moc_cpp
                          yeditor_moc_cpp
                          yeditor_main_ui_h)
