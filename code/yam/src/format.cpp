@@ -20,58 +20,48 @@ YCFormat::~YCFormat()
 	}
 }
 
-bool YCFormat::operator>>(base::YCBuffer& rBuffer) const
+bool YCFormat::operator>>(YCBuffer& rBuffer) const
 {
-	YCBuffer oDataBuffer;
-	oDataBuffer << GetBound();
-	oDataBuffer.Write(sizeof(ycolor) * GetBound().Size.X * GetBound().Size.Y, (ybuffptr)GetColorData());
-	oDataBuffer.End();
+	YCBuffer buf;
+	buf.GetId() = GetId();
+	buf.GetClassName() = GetClassName();
+	buf.Begin();
+	const YRect2D& stBound = GetBound();
+	buf.In(stBound);
+	buf.Write(sizeof(ycolor) * stBound.Size.X * stBound.Size.Y, (const ybuffptr)GetColorData());
+	buf.End();
+	buf >> rBuffer;
 
-	rBuffer.Begin();
-	rBuffer << GetId();
-	rBuffer << GetClassName();
-	rBuffer << oDataBuffer.GetSize();
-	rBuffer.Write(oDataBuffer.GetSize(), oDataBuffer.GetData());
-	rBuffer.End();
-
-	const YITree<YIFormat>* const pTree = this;
-	rBuffer.operator<<<YIFormat, YCFormat>(pTree);
-	return true;
+	return __super::operator >>(rBuffer);
 }
 
-bool YCFormat::operator<<(base::YCBuffer& rBuffer)
+bool YCFormat::operator<<(YCBuffer& rBuffer)
 {
-	ystring sId = "";
-	ystring sClass = "";
-	ybuffsize iBufferSize = 0;
-	rBuffer.ReadHead(sId, sClass, iBufferSize);
-	if (YOBJECT_GETCLASSNAME(YCFormat) != sClass)
+	YCBuffer buf;
+	buf << rBuffer;
+
+	if (buf.GetClassName() != GetClassName())
 	{
 		return false;
 	}
-
-	GetId() = sId;
-
+	GetId() = buf.GetId();
 	YRect2D stBound;
-	rBuffer >> stBound;
-
-	yint32 iSize = stBound.Size.X * stBound.Size.Y;
+	buf.Out(stBound);
+	ysize iSize = stBound.Size.X * stBound.Size.Y;
 	ycolorptr pColorData = YNULL;
 	if (0 < iSize)
 	{
 		pColorData = new ycolor[iSize];
-		rBuffer.Read(sizeof(ycolor) * iSize, (ybuffptr)pColorData);
 	}
+	
+	buf.Read(sizeof(ycolor) * iSize, (const ybuffptr)pColorData);
 	SetBoundAndColorData(stBound, pColorData);
 	if (YNULL != pColorData)
 	{
 		delete[] pColorData;
-		pColorData = YNULL;
 	}
 
-	YITree<YIFormat>* pTree = this;
-	rBuffer.operator>><YIFormat, YCFormat>(pTree);
-	return true;
+	return __super::operator <<(rBuffer);
 }
 
 void YCFormat::SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData)
@@ -89,7 +79,7 @@ void YCFormat::SetColorData(const yint32& riSize, const ycolorptr& rpColorData)
 		m_pColorData = YNULL;
 	}
 
-	if (0 < riSize)
+	if (0 < riSize && YNULL != rpColorData)
 	{
 		m_pColorData = new ycolor[riSize];
 		::memcpy(m_pColorData, rpColorData, sizeof(ycolor) * riSize);

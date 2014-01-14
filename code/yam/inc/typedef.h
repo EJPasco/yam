@@ -16,6 +16,7 @@ typedef unsigned char			yuint8;
 typedef int						yint32;
 typedef unsigned int			yuint32;
 typedef float					yfloat32;
+
 typedef std::string				ystring;
 typedef std::istream			yistream;
 typedef std::ostream			yostream;
@@ -35,6 +36,8 @@ typedef yint32					ycolor;
 typedef yint32*					ycolorptr;
 
 typedef yint32					ylayerweight;
+
+typedef yint32					ysize;
 
 }
 

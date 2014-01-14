@@ -6,7 +6,6 @@
 #include "widget.h"
 #include "panel.h"
 #include "file.h"
-#include "uifile.h"
 
 
 #endif//__YAM_H__

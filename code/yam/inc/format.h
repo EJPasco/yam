@@ -7,7 +7,7 @@
 
 namespace yam{ namespace base{
 
-class YIFormat : public YITree<YIFormat>
+class YIFormat : public YITree
 {
 public:
 	virtual ~YIFormat() { ; }
@@ -15,11 +15,13 @@ public:
 public:
 	virtual GET_DECL_CONST(YRect2D&, GetBound) = 0;
 	virtual GET_DECL_CONST(ycolorptr&, GetColorData) = 0;
+
+public:
 	virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData) = 0;
 };
 
 template<typename TNBase, typename TNReal>
-class YTFormat : public YTTree<TNBase, YIFormat, TNReal>
+class YTFormat : public YTTree<TNBase, TNReal>
 {
 public:
 	YTFormat() : m_pColorData(YNULL) { ; }
@@ -28,10 +30,6 @@ public:
 public:
 	virtual GET_FUNC_CONST(YRect2D&, GetBound, m_stBound);
 	virtual GET_FUNC_CONST(ycolorptr&, GetColorData, m_pColorData);
-	virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData)
-	{
-		//
-	}
 
 protected:
 	YRect2D		m_stBound;
@@ -47,8 +45,8 @@ public:
 	virtual ~YCFormat();
 
 public:
-	virtual bool operator>>(base::YCBuffer& rBuffer) const;
-	virtual bool operator<<(base::YCBuffer& rBuffer);
+	virtual bool operator>>(YCBuffer& rBuffer) const;
+	virtual bool operator<<(YCBuffer& rBuffer);
 
 public:
 	virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData);

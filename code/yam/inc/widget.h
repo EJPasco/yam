@@ -7,7 +7,7 @@
 
 namespace yam{ namespace base{
 
-class YIWidget : public YITree<YIWidget>
+class YIWidget : public YITree
 {
 public:
 	virtual ~YIWidget() { ; }
@@ -20,7 +20,7 @@ public:
 };
 
 template<typename TNBase, typename TNReal>
-class YTWidget : public YTTree<TNBase, YIWidget, TNReal>
+class YTWidget : public YTTree<TNBase, TNReal>
 {
 public:
 	YTWidget() : m_iLayerWeight(0) { ; }
@@ -46,6 +46,8 @@ public:
 	virtual ~YCWidget();
 
 public:
+	/*virtual ybool operator>>(YCBuffer& rBuffer) const;
+	virtual ybool operator<<(YCBuffer& rBuffer);*/
 
 private:
 };

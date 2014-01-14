@@ -42,8 +42,11 @@
 
 #define YOBJECT_DECL(_Class)		\
 	public:\
-		static ystring		sClassName;
-#define YOBJECT_IMPL(_Class)		ystring _Class::sClassName = YTOSTRING(_Class);
-#define YOBJECT_GETCLASSNAME(_Class)		_Class::sClassName
+		const static ystring		ssClassName;
+#define YOBJECT_IMPL(_Class)		const ystring _Class::ssClassName = YTOSTRING(_Class);
+#define YOBJECT_GETCLASSNAME(_Class)		_Class::ssClassName
+
+#define YTRUE			1
+#define YFALSE			0
 
 #endif // Y_DEFINE_H

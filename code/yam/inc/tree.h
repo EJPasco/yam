@@ -4,30 +4,32 @@
 #include "common.h"
 
 #include "object.h"
+#include "buffer.h"
+
+#include "new.h"
 
 namespace yam{ namespace base{
 
-template<typename TNItem>
 class YITree : public YIObject
 {
 public:
 	virtual ~YITree() { ; }
 
 public:
-	virtual GET_DECL(TNItem*&, GetParent) = 0;
-	virtual GET_DECL_CONST(TNItem*, GetParent) = 0;
-	virtual GET_DECL(TNItem*&, GetNext) = 0;
-	virtual GET_DECL_CONST(TNItem*, GetNext) = 0;
-	virtual GET_DECL(TNItem*&, GetChildren) = 0;
-	virtual GET_DECL_CONST(TNItem*, GetChildren) = 0;
+	virtual GET_DECL(YITree*&, GetParent) = 0;
+	virtual GET_DECL_CONST(YITree*, GetParent) = 0;
+	virtual GET_DECL(YITree*&, GetNext) = 0;
+	virtual GET_DECL_CONST(YITree*, GetNext) = 0;
+	virtual GET_DECL(YITree*&, GetChildren) = 0;
+	virtual GET_DECL_CONST(YITree*, GetChildren) = 0;
 
 public:
-	virtual void AddNext(TNItem* pChild) = 0;
-	virtual void AddChild(TNItem* pChild) = 0;
+	virtual void AddNext(YITree* pChild) = 0;
+	virtual void AddChild(YITree* pChild) = 0;
 	virtual const yint32 &GetCountOfChildren() const = 0;
 };
 
-template<typename TNBase, typename TNItem, typename TNReal>
+template<typename TNBase, typename TNReal>
 class YTTree : public YTObject<TNBase, TNReal>
 {
 public:
@@ -48,15 +50,70 @@ public:
 	}
 
 public:
-	virtual GET_FUNC(TNItem*&, GetParent, m_pParent);
-	virtual GET_FUNC_CONST(TNItem*, GetParent, m_pParent);
-	virtual GET_FUNC(TNItem*&, GetNext, m_pNext);
-	virtual GET_FUNC_CONST(TNItem*, GetNext, m_pNext);
-	virtual GET_FUNC(TNItem*&, GetChildren, m_pChildren);
-	virtual GET_FUNC_CONST(TNItem*, GetChildren, m_pChildren);
+	virtual ybool operator>>(YCBuffer& rBuffer) const
+	{
+		const ybool bHasNext = YNULL != m_pNext;
+		rBuffer.In(bHasNext);
+		if (bHasNext)
+		{
+			rBuffer.In(m_pNext->GetId());
+			rBuffer.In(m_pNext->GetClassName());
+			*m_pNext >> rBuffer;
+		}
+		const ybool bHasChildren = YNULL != m_pChildren;
+		rBuffer.In(bHasChildren);
+		if (bHasChildren)
+		{
+			rBuffer.In(m_pChildren->GetId());
+			rBuffer.In(m_pChildren->GetClassName());
+			*m_pChildren >> rBuffer;
+		}
+		return YTRUE;
+	}
+
+	virtual ybool operator<<(YCBuffer& rBuffer)
+	{
+		ybool bHasNext = YFALSE;
+		rBuffer.Out(bHasNext);
+		if (bHasNext)
+		{
+			ystring sId = "";
+			rBuffer.Out(sId);
+			ystring sClassName = "";
+			rBuffer.Out(sClassName);
+			m_pNext = NewTree(sClassName);
+			if (YNULL != m_pNext)
+			{
+				*m_pNext << rBuffer;
+			}
+		}
+		ybool bHasChildren = YFALSE;
+		rBuffer.Out(bHasChildren);
+		if (bHasChildren)
+		{
+			ystring sId = "";
+			rBuffer.Out(sId);
+			ystring sClassName = "";
+			rBuffer.Out(sClassName);
+			m_pChildren = NewTree(sClassName);
+			if (YNULL != m_pChildren)
+			{
+				*m_pChildren << rBuffer;
+			}
+		}
+		return YTRUE;
+	}
 
 public:
-	virtual void AddNext(TNItem* pNext)
+	virtual GET_FUNC(YITree*&, GetParent, m_pParent);
+	virtual GET_FUNC_CONST(YITree*, GetParent, m_pParent);
+	virtual GET_FUNC(YITree*&, GetNext, m_pNext);
+	virtual GET_FUNC_CONST(YITree*, GetNext, m_pNext);
+	virtual GET_FUNC(YITree*&, GetChildren, m_pChildren);
+	virtual GET_FUNC_CONST(YITree*, GetChildren, m_pChildren);
+
+public:
+	virtual void AddNext(YITree* pNext)
 	{
 		assert(YNULL != pNext);
 
@@ -68,7 +125,7 @@ public:
 		}
 		else
 		{
-			TNItem* pNextTemp = m_pNext;
+			YITree* pNextTemp = m_pNext;
 			while (YNULL != pNextTemp->GetNext())
 			{
 				pNext = pNextTemp->GetNext();
@@ -77,7 +134,7 @@ public:
 		}
 	}
 
-	virtual void AddChild(TNItem* pChild)
+	virtual void AddChild(YITree* pChild)
 	{
 		assert(YNULL != pChild);
 		if (YNULL == m_pChildren)
@@ -115,9 +172,9 @@ public:
 	}
 
 private:
-	TNItem*		m_pParent;
-	TNItem*		m_pNext;
-	TNItem*		m_pChildren;
+	YITree*		m_pParent;
+	YITree*		m_pNext;
+	YITree*		m_pChildren;
 	yint32		m_iCountOfChildren;
 };
 

@@ -1,11 +1,25 @@
 #ifndef Y_NEW_H
 #define Y_NEW_H
 
+#pragma warning(disable:4114)
+
 #include "common.h"
 
-#include "object.h"
-
 namespace yam{
+
+namespace base{
+
+class YIObject;
+class YITree;
+
+}
+
+template<typename TNType>
+TNType* NewArray(const ysize& riSize)
+{
+	assert(0 >= riSize);
+	return new TNType[riSize];
+}
 
 template<typename TNClass>
 TNClass* New(const ystring& rsClass)
@@ -17,7 +31,10 @@ TNClass* New(const ystring& rsClass)
 	return YNULL;
 }
 
-YIObject* NewObject(const ystring& rsClass);
+base::YIObject* NewObject(const ystring& rsClass);
+base::YITree* NewTree(const ystring& rsClass);
+
+void MemSet(const ybuffptr& rpDst, const ybuffsize& riDstSize, const ybuffptr const& rpData, const ybuffsize& riDataSize);
 
 }
 

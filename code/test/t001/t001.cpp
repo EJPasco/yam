@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
 
 	using namespace yam;
 	using namespace yam::base;
-	using namespace yam::file;
+	using namespace yam::storage;
 
 	{
 		ystringhash ss;
@@ -27,67 +27,76 @@ int main(int argc, char* argv[])
 	}
 
 	// ready the data
-	YCBuffer* pBuffer = new YCBuffer;
 	{
-		pBuffer->GetId() = "buffertest0";
-		pBuffer->Begin();
-
+		YCBuffer buffer;
+		buffer.GetId() = "buffer0";
+		buffer.Begin();
+		YCFormat format0;
+		format0.GetId() = "format0";
+		YRect2D stBound;
+		stBound.Pos.X = 100;
+		stBound.Pos.Y = 101;
+		stBound.Size.X = 0;
+		stBound.Size.Y = 0;
+		ysize iSize = stBound.Size.X * stBound.Size.Y;
+		ycolorptr pColorData = YNULL;
+		if (0 < iSize)
 		{
-			YCFormat* pFormat = new YCFormat;
-			pFormat->GetId() = "formattest";
-			YRect2D stBound;
-			stBound.Pos.X = 100;
-			stBound.Pos.Y = 101;
-			pFormat->SetBoundAndColorData(stBound, YNULL);
-
-			YCFormat* pNN = pFormat->NewNext<YCFormat>();
-			pNN->GetId() = "nn";
-			YCFormat* pMM = pFormat->NewNext<YCFormat>();
-			pMM->GetId() = "mm";
-
-			*pFormat >> *pBuffer;
-			//*pBuffer << (const YIFormat*)pFormat;
-			if (YNULL != pFormat)
-			{
-				delete pFormat; pFormat = NULL;
-			}
+			pColorData = new ycolor[iSize];
+			ycolor defaultcolor = 0x01020304;
+			MemSet((const ybuffptr)pColorData, sizeof(ycolor) * iSize, (const ybuffptr)&defaultcolor, sizeof(ycolor));
+		}
+		format0.SetBoundAndColorData(stBound, pColorData);
+		if (YNULL != pColorData)
+		{
+			delete[] pColorData;
 		}
 
-		pBuffer->End();
+		YCFormat* pFormat0Next0 = format0.NewNext<YCFormat>();
+		pFormat0Next0->GetId() = "format0next0";
+		stBound.Size.X = 0;
+		stBound.Size.Y = 0;
+		pFormat0Next0->SetBoundAndColorData(stBound, YNULL);
 
-		YCBuffer* pBuffer0 = pBuffer->NewNext<YCBuffer>();
-		pBuffer0->GetId() = "buffertest1";
-	}
+		YCFormat* pFormat0Next1 = format0.NewNext<YCFormat>();
+		pFormat0Next1->GetId() = "format0next1";
+		stBound.Pos.X = 10;
+		pFormat0Next1->SetBoundAndColorData(stBound, YNULL);
 
-	// write buff
-	{
+		YCFormat* pFormat0Child0 = format0.NewChild<YCFormat>();
+		pFormat0Child0->GetId() = "format0child0";
+		stBound.Pos.X = 11;
+		pFormat0Child0->SetBoundAndColorData(stBound, YNULL);
+
+		YCFormat* pFormat0Child1 = format0.NewChild<YCFormat>();
+		pFormat0Child1->GetId() = "format0child1";
+		stBound.Pos.X = 11;
+		pFormat0Child1->SetBoundAndColorData(stBound, YNULL);
+
+		format0 >> buffer;
+		buffer.End();
+
 		//
-		YCUIFileWriter file;
+		YCFileWriter file;
 		file.Save("test.aa");
-		file << (const YIBuffer*)pBuffer;
+		file << buffer;
 		file.Close();
 	}
 
 	// read buff
 	{
-		YCUIFileReader file;
+		YCFileReader file;
 		file.Open("test.aa");
-		YCBuffer* pBufferRead = YNULL;
-		file >> (YIBuffer*&)pBufferRead;
+		YCBuffer buffer;
+		file >> buffer;
 		file.Close();
 		YIFormat* pFormat = new YCFormat;
-		*pFormat << *pBufferRead;
-		//*pBufferRead >> pFormat;
+		*pFormat << buffer;
 		if (YNULL != pFormat)
 		{
 			delete pFormat; pFormat = NULL;
 		}
-		if (YNULL != pBufferRead)
-		{
-			delete pBufferRead; pBufferRead  = YNULL;
-		}
 	}
-	delete pBuffer;
 
 	return 0;
 }

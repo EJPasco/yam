@@ -3,14 +3,12 @@
 
 #include "common.h"
 
-namespace yam{
+namespace yam{ namespace base{
 
-namespace base{
-
+// declare
 class YCBuffer;
 
-}
-
+// 
 class YIObject
 {
 public:
@@ -23,8 +21,8 @@ public:
 	virtual GET_DECL_CONST(ystring&, GetClassName) = 0;
 
 public:
-	virtual bool operator>>(base::YCBuffer& rBuffer) const = 0;
-	virtual bool operator<<(base::YCBuffer& rBuffer) = 0;
+	virtual ybool operator>>(YCBuffer& rBuffer) const = 0;
+	virtual ybool operator<<(YCBuffer& rBuffer) = 0;
 };
 
 template<typename TNBase, typename TNReal>
@@ -41,16 +39,13 @@ public:
 	virtual GET_FUNC_CONST(ystring&, GetClassName, m_sClassName);
 
 public:
-	virtual bool operator>>(base::YCBuffer& rBuffer) const
+	virtual ybool operator>>(YCBuffer& rBuffer) const
 	{
-		//
-		return false;
+		return YFALSE;
 	}
-
-	virtual bool operator<<(base::YCBuffer& rBuffer)
+	virtual ybool operator<<(YCBuffer& rBuffer)
 	{
-		//
-		return false;
+		return YFALSE;
 	}
 
 private:
@@ -58,6 +53,6 @@ private:
 	ystring		m_sClassName;
 };
 
-}
+}}
 
 #endif // Y_OBJECT_H

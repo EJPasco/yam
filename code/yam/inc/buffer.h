@@ -3,11 +3,11 @@
 
 #include "common.h"
 
-#include "tree.h"
+#include "object.h"
 
 namespace yam{ namespace base{
 
-class YIBuffer : public YITree<YIBuffer>
+class YIBuffer : public YIObject
 {
 public:
 	virtual ~YIBuffer() { ; }
@@ -19,21 +19,14 @@ public:
 public:
 	virtual void New(const ybuffsize& riSize) = 0;
 	virtual YIBuffer& Begin() = 0;
-	virtual YIBuffer& Jump(const ybuffpos& riOffset) = 0;
 	virtual void End() = 0;
 	virtual bool Write(const ybuffsize& riSize, const ybuffptr& rpSrc) = 0;
 	virtual bool Read(const ybuffsize& riSize, const ybuffptr& rpDst) = 0;
-	virtual bool WriteHead(const ystring& rsId, const ystring& rsClass, const ybuffsize& riSize) = 0;
-	virtual bool ReadHead(ystring& rsId, ystring& rsClass, ybuffsize& riSize) = 0;
 	virtual YIBuffer& Clear() = 0;
-
-public:
-	virtual YIBuffer& operator<<(const YIBuffer* const& rpData) = 0;
-	virtual YIBuffer& operator>>(YIBuffer*& rpData) = 0;
 };
 
 template<typename TNBase, typename TNReal>
-class YTBuffer : public YTTree<TNBase, YIBuffer, TNReal>
+class YTBuffer : public YTObject<TNBase, TNReal>
 {
 public:
 	YTBuffer() : m_iSize(0), m_pData(YNULL) { ; }
@@ -59,14 +52,14 @@ public:
 
 public:
 	template<typename TNType>
-	YIBuffer& operator<<(const TNType& rData)
+	YIBuffer& In(const TNType& rData)
 	{
 		Write(sizeof(TNType), (ybuffptr)&rData);
 		return *this;
 	}
 
 	template<typename TNType>
-	YIBuffer& operator>>(TNType& rData)
+	YIBuffer& Out(TNType& rData)
 	{
 		if (0 >= m_iSize || m_iSize <= m_iPosCurrent)
 		{
@@ -76,12 +69,12 @@ public:
 		return *this;
 	}
 
-	YIBuffer& operator<<(const ystring& rData);
-	YIBuffer& operator>>(ystring& rData);
+	YIBuffer& In(const ystring& rData);
+	YIBuffer& Out(ystring& rData);
 
 public:
-	virtual bool operator>>(base::YCBuffer& rBuffer) const;
-	virtual bool operator<<(base::YCBuffer& rBuffer);
+	virtual bool operator>>(YCBuffer& rBuffer) const;
+	virtual bool operator<<(YCBuffer& rBuffer);
 
 public:
 	virtual GET_DECL_CONST(ybuffptr&, GetData);
@@ -89,75 +82,13 @@ public:
 public:
 	virtual void New(const ybuffsize& riSize);
 	virtual YIBuffer& Begin();
-	virtual YIBuffer& Jump(const ybuffpos& riOffset);
 	virtual void End();
 	virtual bool Write(const ybuffsize& riSize, const ybuffptr& rpSrc);
 	virtual bool Read(const ybuffsize& riSize, const ybuffptr& rpDst);
-	virtual bool WriteHead(const ystring& rsId, const ystring& rsClass, const ybuffsize& riSize);
-	virtual bool ReadHead(ystring& rsId, ystring& rsClass, ybuffsize& riSize);
 	virtual YIBuffer& Clear();
 
 protected:
 	void Merge();
-
-public:
-	virtual YIBuffer& operator<<(const YIBuffer* const& rpData);
-	virtual YIBuffer& operator>>(YIBuffer*& rpData);
-
-public:
-	template<typename TNItem, typename TNReal>
-	YIBuffer& operator<<(const base::YITree<TNItem>* const& rpData)
-	{
-		assert(YNULL != rpData);
-		// write the next
-		const TNItem* pNext = rpData->GetNext();
-		ybool bHasNext = YNULL != pNext;
-		*this << bHasNext;
-		if (bHasNext)
-		{
-			//TODO: force to cast?
-			*(YIObject*)pNext >> *this;
-		}
-
-		// write the children
-		const TNItem* pChildren = rpData->GetChildren();
-		ybool bHasChildren = YNULL != pChildren;
-		*this << bHasChildren;
-		if (bHasChildren)
-		{
-			//TODO: force to cast?
-			*(YIObject*)pChildren >> *this;
-		}
-		return *this;
-	}
-
-	template<typename TNItem, typename TNReal>
-	YIBuffer& operator>>(base::YITree<TNItem>*& rpData)
-	{
-		assert(YNULL != rpData);
-		if (0 >= m_iSize || m_iSize <= m_iPosCurrent)
-		{
-			return *this;
-		}
-		ybool bHasNext = false;
-		*this >> bHasNext;
-		if (bHasNext)
-		{
-			TNReal* pNext = new TNReal;
-			*pNext << *this;
-			rpData->AddNext(pNext);
-		}
-
-		ybool bHasChildren = false;
-		*this >> bHasChildren;
-		if (bHasChildren)
-		{
-			TNReal* pChildren = new TNReal;
-			*pChildren << *this;
-			rpData->AddChild(pChildren);
-		}
-		return *this;
-	}
 
 private:
 	yvbuffer		m_vBufferSeg;

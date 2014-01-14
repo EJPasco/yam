@@ -40,8 +40,6 @@ set(CODE_FILE_LIST_BASE
 set(CODE_FILE_LIST_FILE
     ${CODE_PATH_YAM}/inc/file.h
     ${CODE_PATH_YAM}/src/file.cpp
-    ${CODE_PATH_YAM}/inc/uifile.h
-    ${CODE_PATH_YAM}/src/uifile.cpp
     )
 
 set(CODE_FILE_LIST_YAM

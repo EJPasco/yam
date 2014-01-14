@@ -22,7 +22,7 @@ YCBuffer::~YCBuffer()
 	}
 }
 
-YIBuffer& YCBuffer::operator<<(const ystring& rData)
+YIBuffer& YCBuffer::In(const ystring& rData)
 {
 	yint32 iLen = rData.size();
 	Write(sizeof(yint32), (ybuffptr)&iLen);
@@ -30,7 +30,7 @@ YIBuffer& YCBuffer::operator<<(const ystring& rData)
 	return *this;
 }
 
-YIBuffer& YCBuffer::operator>>(ystring& rData)
+YIBuffer& YCBuffer::Out(ystring& rData)
 {
 	rData.clear();
 
@@ -44,31 +44,27 @@ YIBuffer& YCBuffer::operator>>(ystring& rData)
 	return *this;
 }
 
-bool YCBuffer::operator>>(base::YCBuffer& rBuffer) const
+bool YCBuffer::operator>>(YCBuffer& rBuffer) const
 {
-	assert(&rBuffer != this);
-	rBuffer << (const YIBuffer*)this;
+	rBuffer.In(GetId());
+	rBuffer.In(GetClassName());
+	rBuffer.In(GetSize());
+	rBuffer.Write(GetSize(), GetData());
 	return true;
 }
 
-bool YCBuffer::operator<<(base::YCBuffer& rBuffer)
+bool YCBuffer::operator<<(YCBuffer& rBuffer)
 {
-	assert(&rBuffer != this);
-	rBuffer.Begin();
+	rBuffer.Out(GetId());
+	rBuffer.Out(GetClassName());
 
-	ystring sId = "";
-	ystring sClass = "";
-	ybuffsize iBufferSize = 0;
-	rBuffer.ReadHead(sId, sClass, iBufferSize);
-	if (YOBJECT_GETCLASSNAME(YCBuffer) != sClass)
+	ybuffsize iSize = 0;
+	rBuffer.Out(iSize);
+	New(iSize);
+	if (0 < iSize)
 	{
-		return false;
+		rBuffer.Read(iSize, GetData());
 	}
-
-	GetId() = sId;
-
-	this->New(iBufferSize);
-	rBuffer.Read(iBufferSize, GetData());
 	return true;
 }
 
@@ -99,12 +95,6 @@ YIBuffer& YCBuffer::Begin()
 	return *this;
 }
 
-YIBuffer& YCBuffer::Jump(const ybuffpos& riOffset)
-{
-	m_iPosCurrent += riOffset;
-	return *this;
-}
-
 void YCBuffer::End()
 {
 	Merge();
@@ -125,31 +115,12 @@ bool YCBuffer::Write(const ybuffsize& riSize, const ybuffptr& rpSrc)
 
 bool YCBuffer::Read(const ybuffsize& riSize, const ybuffptr& rpDst)
 {
-	assert(YNULL != rpDst);
-	if (0 >= m_iSize || m_iSize < (m_iPosCurrent + riSize))
+	if (0 >= m_iSize || m_iSize < (m_iPosCurrent + riSize) || YNULL == rpDst)
 	{
 		return false;
 	}
 	::memcpy(rpDst, m_pData + m_iPosCurrent, riSize);
 	m_iPosCurrent += riSize;
-	return true;
-}
-
-bool YCBuffer::WriteHead(const ystring& rsId, const ystring& rsClass, const ybuffsize& riSize)
-{
-	Begin();
-	*this << rsId;
-	*this << rsClass;
-	*this << riSize;
-	End();
-	return true;
-}
-
-bool YCBuffer::ReadHead(ystring& rsId, ystring& rsClass, ybuffsize& riSize)
-{
-	*this >> rsId;
-	*this >> rsClass;
-	*this >> riSize;
 	return true;
 }
 
@@ -219,45 +190,6 @@ void YCBuffer::Merge()
 		delete[] m_pData;
 	}
 	m_pData = pData;
-}
-
-YIBuffer& YCBuffer::operator<<(const YIBuffer* const& rpData)
-{
-	assert(YNULL != rpData);
-	assert(rpData != this);
-
-	WriteHead(rpData->GetId(), rpData->GetClassName(), rpData->GetSize());
-	Write(rpData->GetSize(), rpData->GetData());
-
-	const base::YITree<YIBuffer>* const& rpTree = rpData;
-	operator<<<YIBuffer, YCBuffer>(rpTree);
-	return *this;
-}
-
-YIBuffer& YCBuffer::operator>>(YIBuffer*& rpData)
-{
-	assert(YNULL == rpData);
-	assert(rpData != this);
-
-	ystring sId = "";
-	ystring sClass = "";
-	ybuffsize iSize = 0;
-	ReadHead(sId, sClass, iSize);
-
-	rpData = new YCBuffer;
-	rpData->GetId() = sId;
-	rpData->GetClassName() = sClass;
-	if (0 < iSize)
-	{
-		ybuffptr pData = new ybuff[iSize];
-		Read(iSize, pData);
-		rpData->Write(iSize, pData);
-		delete pData; pData = YNULL;
-	}
-
-	base::YITree<YIBuffer>* pTree = rpData;
-	operator>><YIBuffer, YCBuffer>(pTree);
-	return *this;
 }
 
 }}

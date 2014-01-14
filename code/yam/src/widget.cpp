@@ -14,4 +14,16 @@ YCWidget::~YCWidget()
 	//
 }
 
+/*ybool YCWidget::operator>>(YCBuffer& rBuffer) const
+{
+	//
+	return true;
+}
+
+ybool YCWidget::operator<<(YCBuffer& rBuffer)
+{
+	//
+	return true;
+}*/
+
 }}
