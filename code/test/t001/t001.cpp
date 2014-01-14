@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	{
 		ystringhash ss;
 		std::string key = YTOSTRING(yam);
-		int rsa = ss(key);
+		yint32 rsa = ss(key);
 		int rsb = ss("tt");
 		int rsc = ss(key);
 	}
@@ -28,11 +28,10 @@ int main(int argc, char* argv[])
 
 	// ready the data
 	{
-		YCBuffer buffer;
-		buffer.GetId() = "buffer0";
-		buffer.Begin();
-		YCFormat format0;
-		format0.GetId() = "format0";
+		YCTree treedata;
+		YCFormat * pFormat0 = treedata.NewChild<YCFormat>();
+
+		pFormat0->GetId() = "pFormat0";
 		YRect2D stBound;
 		stBound.Pos.X = 100;
 		stBound.Pos.Y = 101;
@@ -46,34 +45,43 @@ int main(int argc, char* argv[])
 			ycolor defaultcolor = 0x01020304;
 			MemSet((const ybuffptr)pColorData, sizeof(ycolor) * iSize, (const ybuffptr)&defaultcolor, sizeof(ycolor));
 		}
-		format0.SetBoundAndColorData(stBound, pColorData);
+		pFormat0->SetBoundAndColorData(stBound, pColorData);
 		if (YNULL != pColorData)
 		{
 			delete[] pColorData;
 		}
 
-		YCFormat* pFormat0Next0 = format0.NewNext<YCFormat>();
+		YCFormat* pFormat0Next0 = pFormat0->NewNext<YCFormat>();
 		pFormat0Next0->GetId() = "format0next0";
 		stBound.Size.X = 0;
 		stBound.Size.Y = 0;
 		pFormat0Next0->SetBoundAndColorData(stBound, YNULL);
 
-		YCFormat* pFormat0Next1 = format0.NewNext<YCFormat>();
+		YCFormat* pFormat0Next1 = pFormat0->NewNext<YCFormat>();
 		pFormat0Next1->GetId() = "format0next1";
 		stBound.Pos.X = 10;
 		pFormat0Next1->SetBoundAndColorData(stBound, YNULL);
 
-		YCFormat* pFormat0Child0 = format0.NewChild<YCFormat>();
+		YCFormat* pFormat0Child0 = pFormat0->NewChild<YCFormat>();
 		pFormat0Child0->GetId() = "format0child0";
 		stBound.Pos.X = 11;
 		pFormat0Child0->SetBoundAndColorData(stBound, YNULL);
 
-		YCFormat* pFormat0Child1 = format0.NewChild<YCFormat>();
+		YCFormat* pFormat0Child1 = pFormat0->NewChild<YCFormat>();
 		pFormat0Child1->GetId() = "format0child1";
 		stBound.Pos.X = 11;
 		pFormat0Child1->SetBoundAndColorData(stBound, YNULL);
 
-		format0 >> buffer;
+		YCWidget* pWidget0 = treedata.NewChild<YCWidget>();
+		pWidget0->GetId() = "pWidget0";
+		pWidget0->GetBound().Pos.Y = 1025;
+
+
+		YCBuffer buffer;
+		buffer.GetId() = "buffer0";
+		buffer.Begin();
+		//*pFormat0 >> buffer;
+		treedata >> buffer;
 		buffer.End();
 
 		//
@@ -90,12 +98,12 @@ int main(int argc, char* argv[])
 		YCBuffer buffer;
 		file >> buffer;
 		file.Close();
-		YIFormat* pFormat = new YCFormat;
-		*pFormat << buffer;
-		if (YNULL != pFormat)
-		{
-			delete pFormat; pFormat = NULL;
-		}
+		//YCFormat format0;
+		//format0 << buffer;
+		//format0.GetId();
+		YCTree treedata;
+		treedata << buffer;
+		treedata.GetId();
 	}
 
 	return 0;

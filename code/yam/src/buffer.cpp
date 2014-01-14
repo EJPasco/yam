@@ -48,6 +48,7 @@ bool YCBuffer::operator>>(YCBuffer& rBuffer) const
 {
 	rBuffer.In(GetId());
 	rBuffer.In(GetClassName());
+
 	rBuffer.In(GetSize());
 	rBuffer.Write(GetSize(), GetData());
 	return true;

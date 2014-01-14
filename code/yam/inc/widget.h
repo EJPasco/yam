@@ -5,6 +5,8 @@
 
 #include "tree.h"
 
+#include "property.h"
+
 namespace yam{ namespace base{
 
 class YIWidget : public YITree
@@ -17,6 +19,10 @@ public:
 	virtual GET_DECL_CONST(YRect2D&, GetBound) = 0;
 	virtual GET_DECL(ylayerweight&, GetLayerWeight) = 0;
 	virtual GET_DECL_CONST(ylayerweight&, GetLayerWeight) = 0;
+
+public:
+	virtual ybool operator>>(YCProperty& rProperty) const = 0;
+	virtual ybool operator<<(YCProperty& rProperty) = 0;
 };
 
 template<typename TNBase, typename TNReal>
@@ -46,10 +52,12 @@ public:
 	virtual ~YCWidget();
 
 public:
-	/*virtual ybool operator>>(YCBuffer& rBuffer) const;
-	virtual ybool operator<<(YCBuffer& rBuffer);*/
+	virtual ybool operator>>(YCBuffer& rProperty) const;
+	virtual ybool operator<<(YCBuffer& rProperty);
 
-private:
+public:
+	virtual ybool operator>>(YCProperty& rProperty) const;
+	virtual ybool operator<<(YCProperty& rProperty);
 };
 
 }}

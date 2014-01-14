@@ -24,9 +24,14 @@ public:
 	virtual GET_DECL_CONST(YITree*, GetChildren) = 0;
 
 public:
+	virtual void SetParent(YITree* const& rpParent) = 0;
+	// caution: don't call this directly
 	virtual void AddNext(YITree* pChild) = 0;
+	// caution: don't call this directly
 	virtual void AddChild(YITree* pChild) = 0;
 	virtual const yint32 &GetCountOfChildren() const = 0;
+	virtual YITree* FindNext(const ystring& rsId) const = 0;
+	virtual YITree* FindChild(const ystring& rsId) const = 0;
 };
 
 template<typename TNBase, typename TNReal>
@@ -56,15 +61,14 @@ public:
 		rBuffer.In(bHasNext);
 		if (bHasNext)
 		{
-			rBuffer.In(m_pNext->GetId());
 			rBuffer.In(m_pNext->GetClassName());
 			*m_pNext >> rBuffer;
 		}
+
 		const ybool bHasChildren = YNULL != m_pChildren;
 		rBuffer.In(bHasChildren);
 		if (bHasChildren)
 		{
-			rBuffer.In(m_pChildren->GetId());
 			rBuffer.In(m_pChildren->GetClassName());
 			*m_pChildren >> rBuffer;
 		}
@@ -77,28 +81,27 @@ public:
 		rBuffer.Out(bHasNext);
 		if (bHasNext)
 		{
-			ystring sId = "";
-			rBuffer.Out(sId);
 			ystring sClassName = "";
 			rBuffer.Out(sClassName);
-			m_pNext = NewTree(sClassName);
-			if (YNULL != m_pNext)
+			YITree* pNext = NewTree(sClassName);
+			if (YNULL != pNext)
 			{
-				*m_pNext << rBuffer;
+				*pNext << rBuffer;
+				AddNext(pNext);
 			}
 		}
+
 		ybool bHasChildren = YFALSE;
 		rBuffer.Out(bHasChildren);
 		if (bHasChildren)
 		{
-			ystring sId = "";
-			rBuffer.Out(sId);
 			ystring sClassName = "";
 			rBuffer.Out(sClassName);
-			m_pChildren = NewTree(sClassName);
-			if (YNULL != m_pChildren)
+			YITree* pChildren = NewTree(sClassName);
+			if (YNULL != pChildren)
 			{
-				*m_pChildren << rBuffer;
+				*pChildren << rBuffer;
+				AddChild(pChildren);
 			}
 		}
 		return YTRUE;
@@ -113,6 +116,16 @@ public:
 	virtual GET_FUNC_CONST(YITree*, GetChildren, m_pChildren);
 
 public:
+	virtual void SetParent(YITree* const& rpParent)
+	{
+		YITree* pNext = this;
+		while (YNULL != pNext->GetNext())
+		{
+			pNext->GetParent() = rpParent;
+			pNext = pNext->GetNext();
+		}
+	}
+
 	virtual void AddNext(YITree* pNext)
 	{
 		assert(YNULL != pNext);
@@ -128,7 +141,7 @@ public:
 			YITree* pNextTemp = m_pNext;
 			while (YNULL != pNextTemp->GetNext())
 			{
-				pNext = pNextTemp->GetNext();
+				pNextTemp = pNextTemp->GetNext();
 			}
 			pNextTemp->GetNext() = pNext;
 		}
@@ -137,9 +150,11 @@ public:
 	virtual void AddChild(YITree* pChild)
 	{
 		assert(YNULL != pChild);
+
+		pChild->SetParent(this);
+
 		if (YNULL == m_pChildren)
 		{
-			pChild->GetParent() = this;
 			m_pChildren = pChild;
 		}
 		else
@@ -152,6 +167,33 @@ public:
 	virtual const yint32 &GetCountOfChildren() const
 	{
 		return m_iCountOfChildren;
+	}
+
+	virtual YITree* FindNext(const ystring& rsId) const
+	{
+		YITree* pNext = m_pNext;
+		while (YNULL != pNext)
+		{
+			if (rsId == pNext->GetId())
+			{
+				return pNext;
+			}
+			pNext = pNext->GetNext();
+		}
+		return pNext;
+	}
+
+	virtual YITree* FindChild(const ystring& rsId) const 
+	{
+		if (YNULL == m_pChildren)
+		{
+			return YNULL;
+		}
+		if (rsId == m_pChildren->GetId())
+		{
+			return m_pChildren;
+		}
+		return m_pChildren->FindNext(rsId);
 	}
 
 public:
@@ -176,6 +218,18 @@ private:
 	YITree*		m_pNext;
 	YITree*		m_pChildren;
 	yint32		m_iCountOfChildren;
+};
+
+class YCTree : public YTTree<YITree, YCTree>
+{
+	YOBJECT_DECL(YCTree);
+
+public:
+	YCTree();
+	virtual ~YCTree();
+
+public:
+	//
 };
 
 }}

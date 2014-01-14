@@ -1,8 +1,10 @@
 #include "new.h"
 
 #include "buffer.h"
+#include "tree.h"
 #include "format.h"
 #include "widget.h"
+#include "property.h"
 
 namespace yam{
 
@@ -10,6 +12,13 @@ base::YIObject* NewObject(const ystring& rsClass)
 {
 	{
 		base::YIObject* pNewObj = New<base::YCBuffer>(rsClass);
+		if (YNULL != pNewObj)
+		{
+			return pNewObj;
+		}
+	}
+	{
+		base::YIObject* pNewObj = New<base::YCTree>(rsClass);
 		if (YNULL != pNewObj)
 		{
 			return pNewObj;
@@ -29,11 +38,25 @@ base::YIObject* NewObject(const ystring& rsClass)
 			return pNewObj;
 		}
 	}
+	{
+		base::YIObject* pNewObj = New<base::YCProperty>(rsClass);
+		if (YNULL != pNewObj)
+		{
+			return pNewObj;
+		}
+	}
 	return YNULL;
 }
 
 base::YITree* NewTree(const ystring& rsClass)
 {
+	{
+		base::YITree* pNewObj = New<base::YCTree>(rsClass);
+		if (YNULL != pNewObj)
+		{
+			return pNewObj;
+		}
+	}
 	{
 		base::YITree* pNewTree = New<base::YCFormat>(rsClass);
 		if (YNULL != pNewTree)
@@ -46,6 +69,13 @@ base::YITree* NewTree(const ystring& rsClass)
 		if (YNULL != pNewTree)
 		{
 			return pNewTree;
+		}
+	}
+	{
+		base::YITree* pNewObj = New<base::YCProperty>(rsClass);
+		if (YNULL != pNewObj)
+		{
+			return pNewObj;
 		}
 	}
 	return YNULL;

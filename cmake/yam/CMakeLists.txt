@@ -25,10 +25,13 @@ set(CODE_FILE_LIST_COMMON
 set(CODE_FILE_LIST_BASE
     ${CODE_PATH_YAM}/inc/object.h
     ${CODE_PATH_YAM}/inc/tree.h
+	${CODE_PATH_YAM}/src/tree.cpp
     ${CODE_PATH_YAM}/inc/buffer.h
     ${CODE_PATH_YAM}/src/buffer.cpp
     ${CODE_PATH_YAM}/inc/panel.h
     ${CODE_PATH_YAM}/src/panel.cpp
+    ${CODE_PATH_YAM}/inc/property.h
+	${CODE_PATH_YAM}/src/property.cpp
     ${CODE_PATH_YAM}/inc/widget.h
     ${CODE_PATH_YAM}/src/widget.cpp
     ${CODE_PATH_YAM}/inc/format.h

@@ -42,6 +42,7 @@ bool YCFormat::operator<<(YCBuffer& rBuffer)
 
 	if (buf.GetClassName() != GetClassName())
 	{
+		assert(false);
 		return false;
 	}
 	GetId() = buf.GetId();
