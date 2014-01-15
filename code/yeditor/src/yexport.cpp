@@ -14,4 +14,9 @@ YCPsFormat::~YCPsFormat()
 	//
 }
 
+void YCPsFormat::SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData)
+{
+	//
+}
+
 }}

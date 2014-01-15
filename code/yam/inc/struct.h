@@ -3,6 +3,7 @@
 
 #include "define.h"
 #include "typedef.h"
+#include "enum.h"
 
 #include <vector>
 

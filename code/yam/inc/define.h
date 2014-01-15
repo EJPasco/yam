@@ -49,6 +49,8 @@
 #define YTRUE			1
 #define YFALSE			0
 
+#define YBITCOUNT_INT8							8
+
 #define YSTRINGLEN_INT32_MAX				64
 #define YSTRINGLEN_FLOAT32_MAX				64
 #define YSTRINGLEN_RECT2D32_MAX				256

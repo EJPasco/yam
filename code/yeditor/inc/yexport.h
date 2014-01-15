@@ -32,6 +32,7 @@ public:
 	virtual ~YCPsFormat();
 
 public:
+	virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData);
 };
 
 }}

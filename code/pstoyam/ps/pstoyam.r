@@ -3,7 +3,7 @@
 
 #include "PIGeneral.h"
 
-#include "pstoyamcommon.h"
+#include "pstoyamr.h"
 
 resource 'PiPL' (MYRESOURCEID, MYPLUGINNAME " PiPL", purgeable)
 {

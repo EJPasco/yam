@@ -19,6 +19,9 @@ DLLExport MACPASCAL void PluginMain (const int16 iSelector,
 		break;
 
 	case formatSelectorEstimateStart:
+		pRecord->minDataBytes = sizeof(yam::ycolor) * pRecord->imageSize.v * pRecord->imageSize.h;
+		pRecord->maxDataBytes = pRecord->maxData;
+		pRecord->data = NULL;
 		break;
 
 	case formatSelectorEstimateContinue:
@@ -31,7 +34,10 @@ DLLExport MACPASCAL void PluginMain (const int16 iSelector,
 		break;
 
 	case formatSelectorReadStart:
-		break;
+		{
+			yam::external::YCPsFormatReader reader;
+			reader.Do(pRecord);
+		} break;
 
 	case formatSelectorReadContinue:
 		break;
@@ -40,14 +46,14 @@ DLLExport MACPASCAL void PluginMain (const int16 iSelector,
 		break;
 
 	case formatSelectorWritePrepare:
+		pRecord->maxData = 0;
 		break;
 
 	case formatSelectorWriteStart:
 		{
-			//yam::external::photoshop::plugin::CYFormat format;
-			//format.Save(formatParamBlock, "aa", "yam");
-		}
-		break;
+			yam::external::YCPsFormatWriter writer;
+			writer.Do(pRecord);
+		} break;
 
 	case formatSelectorWriteContinue:
 		break;
@@ -60,3 +66,19 @@ DLLExport MACPASCAL void PluginMain (const int16 iSelector,
 	}
 }
 
+OSErr FSWrite(int32 refNum, int32* count, void* buffPtr)
+{
+	int32 bytes = (WORD)*count;
+
+	if (!WriteFile((HANDLE)refNum, buffPtr, bytes, (unsigned long *)count, NULL))
+	{
+		return writErr;
+	}
+
+	if (bytes != *count)
+	{
+		return writErr;
+	}
+
+	return noErr;
+}

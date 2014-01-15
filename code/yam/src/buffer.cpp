@@ -107,6 +107,7 @@ bool YCBuffer::Write(const ybuffsize& riSize, const ybuffptr& rpSrc)
 	stBuffer.Size = riSize;
 	if (0 < stBuffer.Size)
 	{
+		assert(YNULL != rpSrc);
 		stBuffer.Data = new ybuff[stBuffer.Size];
 		::memcpy(stBuffer.Data, rpSrc, sizeof(ybuff) * stBuffer.Size);
 	}

@@ -11,6 +11,29 @@ int main(int argc, char* argv[])
 	using namespace yam::base;
 	using namespace yam::storage;
 
+	// read buff
+	{
+		YCFileReader file;
+		file.Open("test.yui");
+		YCBuffer buffer;
+		file >> buffer;
+		file.Close();
+		//YCFormat format0;
+		//format0 << buffer;
+		//format0.GetId();
+		YCTree treedata;
+		treedata << buffer;
+		treedata.GetId();
+	}
+
+	{
+		ybuff iColorElem = 0xAB;
+		ycolor iColorData = 0x12345678;
+		yint32 iOffset = 0x10 / (sizeof(ybuff) * YBITCOUNT_INT8);
+		*((ybuff*)&iColorData + iOffset) = iColorElem;
+		iColorData = 0;
+	}
+
 	{
 		ystringhash ss;
 		std::string key = YTOSTRING(yam);

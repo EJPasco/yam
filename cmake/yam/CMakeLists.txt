@@ -18,6 +18,7 @@ set(LIBRARY_FILE_LIST
 set(CODE_FILE_LIST_COMMON
     ${CODE_PATH_YAM}/inc/define.h
     ${CODE_PATH_YAM}/inc/typedef.h
+    ${CODE_PATH_YAM}/inc/enum.h
 	${CODE_PATH_YAM}/inc/struct.h
     ${CODE_PATH_YAM}/inc/common.h
     )

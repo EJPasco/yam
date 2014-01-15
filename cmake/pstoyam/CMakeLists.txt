@@ -38,9 +38,18 @@ set(CODE_FILE_LIST_PS
     )
 
 set(CODE_FILE_LIST_PSTOYAM
+    ${CODE_PATH_PSTOYAM}/inc/pstoyamr.h
     ${CODE_PATH_PSTOYAM}/inc/pstoyamcommon.h
     ${CODE_PATH_PSTOYAM}/inc/pstoyam.h
     ${CODE_PATH_PSTOYAM}/src/pstoyam.cpp
+    ${CODE_PATH_PSTOYAM}/inc/psformat.h
+    ${CODE_PATH_PSTOYAM}/src/psformat.cpp
+    ${CODE_PATH_PSTOYAM}/inc/psformatwriter.h
+    ${CODE_PATH_PSTOYAM}/src/psformatwriter.cpp
+    ${CODE_PATH_PSTOYAM}/inc/psformatreader.h
+    ${CODE_PATH_PSTOYAM}/src/psformatreader.cpp
+    ${CODE_PATH_PSTOYAM}/inc/pschannel.h
+    ${CODE_PATH_PSTOYAM}/src/pschannel.cpp
     )
 
 set(CODE_FILE_LIST_RES
