@@ -1,6 +1,11 @@
 #ifndef Y_PSTOYAMCOMMON_H
 #define Y_PSTOYAMCOMMON_H
 
+// don't check the keyword in vc++ 2012
+#if defined(WIN32)
+#define _ALLOW_KEYWORD_MACROS
+#endif // WIN32
+
 #include "pstoyamr.h"
 
 #include <PIGeneral.h>
