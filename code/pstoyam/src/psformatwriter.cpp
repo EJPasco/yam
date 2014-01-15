@@ -17,9 +17,45 @@ void YCPsFormatWriter::Do(FormatRecordPtr& rpRecord)
 	m_ChannelProc = rpRecord;
 
 	base::YCTree oTreeData;
-	base::YIFormat* pFormat = oTreeData.NewChild<base::YCFormat>();
-	pFormat->GetId() = "psformat";
 
+	// preload
+	{
+		ystring sFilePathName = "";
+		ysize iLen = 0;
+		while (0x0000 != *(rpRecord->finalSpec + iLen))
+		{
+			sFilePathName += static_cast<char>(*(rpRecord->finalSpec + iLen));
+			++iLen;
+		}
+
+		storage::YCFileReader oFileReader;
+		oFileReader.Open(sFilePathName);
+		base::YCBuffer buffer;
+		oFileReader >> buffer;
+		oFileReader.Close();
+		oTreeData << buffer;
+	}
+
+	// keep other data
+	base::YIFormat* pFormat = YNULL;
+	{
+		base::YITree* pTreePsFormat = oTreeData.FindChild("psformat");
+		if (YNULL != pTreePsFormat && YOBJECT_GETCLASSNAME(base::YCFormat) == pTreePsFormat->GetClassName())
+		{
+			pFormat = (base::YIFormat*)pTreePsFormat;
+		}
+	}
+	if (YNULL == pFormat)
+	{
+		pFormat = oTreeData.NewChild<base::YCFormat>();
+		pFormat->GetId() = "psformat";
+	}
+	else
+	{
+		pFormat->Clear();
+	}
+
+	// parse the layer
 	Do(rpRecord->documentInfo->layersDescriptor, rpRecord->documentInfo->bounds, pFormat);
 
 	base::YCBuffer oBuffer;
@@ -27,9 +63,9 @@ void YCPsFormatWriter::Do(FormatRecordPtr& rpRecord)
 	oTreeData >> oBuffer;
 	oBuffer.End();
 
-	int32 iSizeOfSize = sizeof(yint32);
 	int32 iSize = oBuffer.GetSize();
-	FSWrite(rpRecord->dataFork, &iSizeOfSize, &iSize);
+	/*int32 iSizeOfSize = sizeof(yint32);
+	FSWrite(rpRecord->dataFork, &iSizeOfSize, &iSize);*/
 
 	void* pBuffer = oBuffer.GetData();
 	FSWrite(rpRecord->dataFork, &iSize, pBuffer);

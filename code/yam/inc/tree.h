@@ -29,7 +29,9 @@ public:
 	virtual void AddNext(YITree* pChild) = 0;
 	// caution: don't call this directly
 	virtual void AddChild(YITree* pChild) = 0;
-	virtual const yint32 &GetCountOfChildren() const = 0;
+	virtual void Clear() = 0;
+	virtual yint32 GetCountOfNext() const = 0;
+	virtual yint32 GetCountOfChildren() const = 0;
 	virtual YITree* FindNext(const ystring& rsId) const = 0;
 	virtual YITree* FindChild(const ystring& rsId) const = 0;
 };
@@ -38,20 +40,11 @@ template<typename TNBase, typename TNReal>
 class YTTree : public YTObject<TNBase, TNReal>
 {
 public:
-	YTTree() :m_pParent(YNULL), m_pNext(YNULL), m_pChildren(YNULL), m_iCountOfChildren(0) { ; }
+	YTTree() :m_pParent(YNULL), m_pNext(YNULL), m_pChildren(YNULL) { ; }
 	virtual ~YTTree()
 	{
 		m_pParent = YNULL;
-		if (YNULL != m_pChildren)
-		{
-			delete m_pChildren;
-			m_pChildren = YNULL;
-		}
-		if (YNULL != m_pNext)
-		{
-			delete m_pNext;
-			m_pNext = YNULL;
-		}
+		Clear();
 	}
 
 public:
@@ -163,12 +156,37 @@ public:
 		{
 			m_pChildren->AddNext(pChild);
 		}
-		++m_iCountOfChildren;
 	}
 
-	virtual const yint32 &GetCountOfChildren() const
+	virtual void Clear()
 	{
-		return m_iCountOfChildren;
+		if (YNULL != m_pChildren)
+		{
+			delete m_pChildren;
+			m_pChildren = YNULL;
+		}
+		if (YNULL != m_pNext)
+		{
+			delete m_pNext;
+			m_pNext = YNULL;
+		}
+	}
+
+	virtual yint32 GetCountOfNext() const
+	{
+		yint32 iCount = 0;
+		const YITree* pTree = m_pNext;
+		while (YNULL != pTree)
+		{
+			++iCount;
+			pTree = pTree->GetNext();
+		}
+		return iCount;
+	}
+
+	virtual yint32 GetCountOfChildren() const
+	{
+		return (YNULL == m_pChildren) ? 0 : (1 + m_pChildren->GetCountOfNext());
 	}
 
 	virtual YITree* FindNext(const ystring& rsId) const

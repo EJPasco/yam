@@ -40,7 +40,7 @@ ybool YCFileWriter::operator<<(const base::YCBuffer& rBuffer)
 	{
 		return YFALSE;
 	}
-	*this << rBuffer.GetSize();
+	//*this << rBuffer.GetSize();
 	Write(rBuffer.GetSize(), rBuffer.GetData());
 	return YTRUE;
 }
@@ -92,7 +92,10 @@ ybool YCFileReader::operator>>(base::YCBuffer& rBuffer)
 	}
 
 	ybuffsize iSize = 0;
-	*this >> iSize;
+	//*this >> iSize;
+	mFileStream.seekg(0, std::ios::end);
+	iSize = static_cast<ybuffsize>(mFileStream.tellg());
+	mFileStream.seekg(0, std::ios::beg);
 	rBuffer.New(iSize);
 	Read(rBuffer.GetSize(), rBuffer.GetData());
 	return YTRUE;
