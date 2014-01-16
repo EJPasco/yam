@@ -16,7 +16,6 @@
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLabel>
 #include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -27,7 +26,7 @@
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include "ydragdroparea.h"
+#include "quiarea.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -43,9 +42,7 @@ public:
     QAction *actionBarSync;
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout_3;
-    YCDragDropArea *dragdropArea;
-    QWidget *scrollAreaWidgetContents;
-    QLabel *label;
+    YCQUiArea *uiArea;
     QMenuBar *menubar;
     QMenu *menuFile;
     QStatusBar *statusbar;
@@ -70,7 +67,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(579, 543);
+        MainWindow->resize(853, 532);
         actionOpen = new QAction(MainWindow);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
         actionSave = new QAction(MainWindow);
@@ -90,28 +87,17 @@ public:
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         horizontalLayout_3 = new QHBoxLayout(centralwidget);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        dragdropArea = new YCDragDropArea(centralwidget);
-        dragdropArea->setObjectName(QStringLiteral("dragdropArea"));
-        dragdropArea->setAcceptDrops(true);
-        dragdropArea->setFrameShape(QFrame::Panel);
-        dragdropArea->setFrameShadow(QFrame::Sunken);
-        dragdropArea->setWidgetResizable(true);
-        scrollAreaWidgetContents = new QWidget();
-        scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 57, 466));
-        label = new QLabel(scrollAreaWidgetContents);
-        label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(10, 70, 54, 12));
-        label->setFrameShape(QFrame::Panel);
-        label->setFrameShadow(QFrame::Raised);
-        dragdropArea->setWidget(scrollAreaWidgetContents);
+        uiArea = new YCQUiArea(centralwidget);
+        uiArea->setObjectName(QStringLiteral("uiArea"));
+        uiArea->setFrameShape(QFrame::Panel);
+        uiArea->setFrameShadow(QFrame::Sunken);
 
-        horizontalLayout_3->addWidget(dragdropArea);
+        horizontalLayout_3->addWidget(uiArea);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 579, 17));
+        menubar->setGeometry(QRect(0, 0, 853, 17));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         MainWindow->setMenuBar(menubar);
@@ -158,7 +144,7 @@ public:
         varBox->setObjectName(QStringLiteral("varBox"));
         basePage = new QWidget();
         basePage->setObjectName(QStringLiteral("basePage"));
-        basePage->setGeometry(QRect(0, 0, 238, 198));
+        basePage->setGeometry(QRect(0, 0, 274, 192));
         verticalLayout_4 = new QVBoxLayout(basePage);
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         varList = new QListView(basePage);
@@ -215,7 +201,6 @@ public:
         actionBarOpen->setText(QApplication::translate("MainWindow", "Open", 0));
         actionBarSave->setText(QApplication::translate("MainWindow", "Save", 0));
         actionBarSync->setText(QApplication::translate("MainWindow", "Sync", 0));
-        label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
         formatDock->setWindowTitle(QApplication::translate("MainWindow", "Format", 0));
         uiTreeDock->setWindowTitle(QApplication::translate("MainWindow", "UI Tree", 0));
