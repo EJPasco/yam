@@ -33,6 +33,7 @@ public:
 
 public:
 	virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData);
+	virtual void Prune();
 };
 
 }}

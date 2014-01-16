@@ -58,6 +58,9 @@ void YCPsFormatWriter::Do(FormatRecordPtr& rpRecord)
 	// parse the layer
 	Do(rpRecord->documentInfo->layersDescriptor, rpRecord->documentInfo->bounds, pFormat);
 
+	// prune invisible pixels bound
+	pFormat->Prune();
+
 	base::YCBuffer oBuffer;
 	oBuffer.Begin();
 	oTreeData >> oBuffer;
