@@ -72,33 +72,9 @@ void YCFormat::SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorDat
 	SetColorData(iSize, pColorData);
 }
 
-void YCFormat::Prune()
+void YCFormat::Refine()
 {
-	{
-		YRect2D stBound = CalculateSmallestBound();
-		stBound.Pos.X += m_stBound.Pos.X;
-		stBound.Pos.Y += m_stBound.Pos.Y;
-		ysize iSize = stBound.Size.X * stBound.Size.Y;
-		ycolorptr pNewData = YNULL;
-		if (0 < iSize && YNULL != m_pColorData)
-		{
-			pNewData = new ycolor[iSize];
-			for (yint32 y = 0; y < stBound.Size.Y; ++y)
-			{
-				for (yint32 x = 0; x < stBound.Size.X; ++x)
-				{
-					pNewData[x + y * stBound.Size.X] = m_pColorData[x + stBound.Pos.X + (y + stBound.Pos.Y) * stBound.Size.X];
-				}
-			}
-		}
-		SetBoundAndColorData(stBound, pNewData);
-		if (YNULL != pNewData)
-		{
-			delete[] pNewData;
-			pNewData = YNULL;
-		}
-		
-	}
+	Crop(CalculateSmallestBound());
 
 	YITree* pNext = GetNext();
 	while (YNULL != pNext)
@@ -106,7 +82,7 @@ void YCFormat::Prune()
 		if (YOBJECT_GETCLASSNAME(YCFormat) == pNext->GetClassName())
 		{
 			YCFormat* pFormat = (YCFormat*)pNext;
-			pFormat->Prune();
+			pFormat->Refine();
 		}
 		pNext = pNext->GetNext();
 	}
@@ -117,7 +93,7 @@ void YCFormat::Prune()
 		if (YOBJECT_GETCLASSNAME(YCFormat) == pChildren->GetClassName())
 		{
 			YCFormat* pFormat = (YCFormat*)pChildren;
-			pFormat->Prune();
+			pFormat->Refine();
 		}
 		pChildren = pChildren->GetChildren();
 	}
@@ -198,6 +174,31 @@ YRect2D YCFormat::CalculateSmallestBound() const
 		}
 	}
 	return stBound;
+}
+
+void YCFormat::Crop(YRect2D stBound)
+{
+	stBound.Pos.X += m_stBound.Pos.X;
+	stBound.Pos.Y += m_stBound.Pos.Y;
+	ysize iSize = stBound.Size.X * stBound.Size.Y;
+	ycolorptr pNewData = YNULL;
+	if (0 < iSize && YNULL != m_pColorData)
+	{
+		pNewData = new ycolor[iSize];
+		for (yint32 y = 0; y < stBound.Size.Y; ++y)
+		{
+			for (yint32 x = 0; x < stBound.Size.X; ++x)
+			{
+				pNewData[x + y * stBound.Size.X] = m_pColorData[x + stBound.Pos.X + (y + stBound.Pos.Y) * stBound.Size.X];
+			}
+		}
+	}
+	SetBoundAndColorData(stBound, pNewData);
+	if (YNULL != pNewData)
+	{
+		delete[] pNewData;
+		pNewData = YNULL;
+	}
 }
 
 }}

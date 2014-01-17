@@ -10,6 +10,19 @@ int main(int argc, char* argv[])
 	using namespace yam;
 	using namespace yam::base;
 	using namespace yam::storage;
+	using namespace yam::util;
+
+	{
+		yvvec2d vSizeList;
+		vSizeList.push_back(YVec2D(7, 2));
+		vSizeList.push_back(YVec2D(5, 15));
+		vSizeList.push_back(YVec2D(8, 3));
+		vSizeList.push_back(YVec2D(11, 6));
+		YRect2D stFinal;
+		yvrect rvDetail;
+		YCMerge::Instance().Do(vSizeList, stFinal, rvDetail);
+		rvDetail.clear();
+	}
 
 	// read buff
 	{

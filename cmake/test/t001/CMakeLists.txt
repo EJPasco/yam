@@ -7,11 +7,13 @@ set(TEST_CODE_PATH_T001 ${TEST_CODE_PATH}/t001)
 set(DEPEND_PROJ_LIST
     yam
     supereasyjson
+    rectanglebinpack
     )
 
 set(INCLUDE_PATH_LIST
     ${CODE_PATH}/yam/inc
     ${CODE_PATH}/t3rd/supereasyjson
+    ${CODE_PATH}/t3rd/rectanglebinpack
     ${TEST_CODE_PATH_T001}
     )
 
@@ -23,11 +25,13 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 set(LIBRARY_FILE_LIST
     yam.a
     supereasyjson.a
+    rectanglebinpack.a
     )
 else(CMAKE_COMPILER_IS_GNUCXX)
 set(LIBRARY_FILE_LIST
     yam.lib
     supereasyjson.lib
+    rectanglebinpack.lib
     )
 endif(CMAKE_COMPILER_IS_GNUCXX)
 

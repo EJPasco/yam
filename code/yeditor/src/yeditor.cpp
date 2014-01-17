@@ -18,9 +18,6 @@ YEditor::YEditor(QWidget* pParent /* = NULL */)
 	setWindowTitle(ms_sTitle);
 
 	m_UI.setupUi(this);
-
-	yam::output::YIPsFormat* ff = new yam::output::YCPsFormat;
-	delete ff;
 }
 
 YEditor::~YEditor()

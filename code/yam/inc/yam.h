@@ -6,6 +6,7 @@
 #include "widget.h"
 #include "panel.h"
 #include "file.h"
+#include "merge.h"
 
 
 #endif//__YAM_H__

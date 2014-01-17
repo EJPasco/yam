@@ -22,7 +22,8 @@
 #define GET_CONST_DECL(type, name)						const type name()
 #define GET_CONST_DECL_CUSTOM(type, name)				GET_CONST_DECL(type, name)
 
-#define SINGLETON_DECL(_Class)		static _Class& Instance();
+#define SINGLETON_DECL(_Class)		public:\
+	static _Class& Instance();
 #define SINGLETON_IMPL(_Class)		_Class& _Class::Instance()\
 	{ static _Class gs_##_Class##Instance; return gs_##_Class##Instance; }
 

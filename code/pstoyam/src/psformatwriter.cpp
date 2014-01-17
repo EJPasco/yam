@@ -59,7 +59,7 @@ void YCPsFormatWriter::Do(FormatRecordPtr& rpRecord)
 	Do(rpRecord->documentInfo->layersDescriptor, rpRecord->documentInfo->bounds, pFormat);
 
 	// prune invisible pixels bound
-	pFormat->Prune();
+	pFormat->Refine();
 
 	base::YCBuffer oBuffer;
 	oBuffer.Begin();
@@ -140,7 +140,7 @@ void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, const VRect& rstBox, base
 
 		for (yint32 i = 0; i < EColor_Max; ++i)
 		{
-			Do(apChannelDesc[i], rstBox, pFormat, (EColor_Max - 1 - i) * YBITCOUNT_INT8);
+			Do(apChannelDesc[i], rstBox, pFormat, i * YBITCOUNT_INT8);
 		}
 
 		rpLayerDesc = rpLayerDesc->next;

@@ -5,35 +5,31 @@
 
 namespace yam{ namespace output{
 
-class YIPsFormat : public base::YIFormat
+class YIExport
 {
 public:
-	virtual ~YIPsFormat() { ; }
+	virtual ~YIExport() { ; }
 
 public:
 };
 
-template<typename TNBase, typename TNReal>
-class YTPsFormat : public base::YTFormat<TNBase, TNReal>
+template<typename TNBase>
+class YTExport : public TNBase
 {
 public:
-	YTPsFormat() { ; }
-	virtual ~YTPsFormat() { ; }
+	YTExport() { ; }
+	virtual ~YTExport() { ; }
 
 public:
 };
 
-class YCPsFormat : public YTPsFormat<YIPsFormat, YCPsFormat>
+class YCExport : public YTExport<YIExport>
 {
-	YOBJECT_DECL(YCPsFormat);
+public:
+	YCExport();
+	virtual ~YCExport();
 
 public:
-	YCPsFormat();
-	virtual ~YCPsFormat();
-
-public:
-	virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData);
-	virtual void Prune();
 };
 
 }}

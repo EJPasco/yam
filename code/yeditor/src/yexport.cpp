@@ -2,24 +2,12 @@
 
 namespace yam{ namespace output{
 
-YOBJECT_IMPL(YCPsFormat);
-
-YCPsFormat::YCPsFormat()
+YCExport::YCExport()
 {
 	//
 }
 
-YCPsFormat::~YCPsFormat()
-{
-	//
-}
-
-void YCPsFormat::SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData)
-{
-	//
-}
-
-void YCPsFormat::Prune()
+YCExport::~YCExport()
 {
 	//
 }

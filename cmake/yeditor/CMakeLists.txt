@@ -7,12 +7,14 @@ set(CODE_PATH_YEDITOR ${CODE_PATH}/yeditor)
 set(DEPEND_PROJ_LIST
     yam
     supereasyjson
+    rectanglebinpack
     )
 
 set(INCLUDE_PATH_LIST
     $ENV{QT_MSVC2012_X32}/include
     ${CODE_PATH}/yam/inc
     ${CODE_PATH}/t3rd/supereasyjson
+    ${CODE_PATH}/t3rd/rectanglebinpack
     ${CODE_PATH_YEDITOR}/inc
     )
 
@@ -25,16 +27,30 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 set(LIBRARY_FILE_LIST
     yam.a
     supereasyjson.a
+    rectanglebinpack.a
     )
 else(CMAKE_COMPILER_IS_GNUCXX)
+if(CMAKE_BUILD_TYPE EQUAL "DEBUG")
 set(LIBRARY_FILE_LIST
     yam.lib
     supereasyjson.lib
+    rectanglebinpack.lib
     qtmaind.lib
     Qt5Cored.lib
     Qt5Guid.lib
     Qt5Widgetsd.lib
     )
+else(CMAKE_BUILD_TYPE EQUAL "DEBUG")
+set(LIBRARY_FILE_LIST
+    yam.lib
+    supereasyjson.lib
+    rectanglebinpack.lib
+    qtmain.lib
+    Qt5Core.lib
+    Qt5Gui.lib
+    Qt5Widgets.lib
+    )
+endif(CMAKE_BUILD_TYPE EQUAL "DEBUG")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 set(CODE_FILE_LIST_EDITOR
