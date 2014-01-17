@@ -14,7 +14,7 @@ YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	, m_bSelected(false)
 {
 	// for test
-	move(0, 0);
+	/*move(0, 0);
 	setFixedSize(100, 100);
 
 	m_pImage = new QImage(size(), QImage::Format_RGBA8888);
@@ -24,7 +24,7 @@ YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 		{
 			m_pImage->setPixel(i, j, 0x33008800);
 		}
-	}
+	}*/
 }
 
 YCQUiItem::~YCQUiItem()
@@ -165,4 +165,19 @@ void YCQUiItem::setFormat(const yam::YRect2D& rstRect, const yam::ycolorptr& rpC
 	}
 
 	repaint();
+}
+
+void YCQUiItem::setColor(const QColor& rColor)
+{
+	if (NULL == m_pImage)
+	{
+		m_pImage = new QImage(size(), QImage::Format_RGBA8888);
+	}
+	for (int j = 0; j < size().height(); ++j)
+	{
+		for (int i = 0; i < size().width(); ++i)
+		{
+			m_pImage->setPixel(i, j, rColor.rgba());
+		}
+	}
 }
