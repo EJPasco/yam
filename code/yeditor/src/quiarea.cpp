@@ -9,12 +9,14 @@ YCQUiArea::YCQUiArea(QWidget* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 {
 	// for test
 	new YCQUiItem(this);
+	new YCQUiItem(this);
 	//
 }
 
 YCQUiArea::YCQUiArea(QFramePrivate &dd, QWidget* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	: QFrame(dd, parent, f)
 {
+	// for test
 	//
 }
 
@@ -39,7 +41,15 @@ void YCQUiArea::mouseReleaseEvent(QMouseEvent* pEvent)
 void YCQUiArea::mouseDoubleClickEvent(QMouseEvent* pEvent)
 {
 	m_bPressed = false;
-	//
+
+	const QObjectList& lChildren = this->children();
+	QObjectList::const_iterator cit = lChildren.begin();
+	QObjectList::const_iterator citEnd = lChildren.end();
+	for (; cit != citEnd; ++cit)
+	{
+		YCQUiItem* pItem = (YCQUiItem*)(*cit);
+		pItem->setSelected(false);
+	}
 }
 
 void YCQUiArea::mouseMoveEvent(QMouseEvent* pEvent)
@@ -58,4 +68,20 @@ void YCQUiArea::mouseMoveEvent(QMouseEvent* pEvent)
 		pItem->move(pItem->pos() + oOffset.toPoint());
 	}
 	m_oPosMousePressStart = pEvent->screenPos();
+}
+
+void YCQUiArea::setSelected(const YCQUiItem* const& rpItem)
+{
+	const QObjectList& lChildren = this->children();
+	QObjectList::const_iterator cit = lChildren.begin();
+	QObjectList::const_iterator citEnd = lChildren.end();
+	for (; cit != citEnd; ++cit)
+	{
+		YCQUiItem* pItem = (YCQUiItem*)(*cit);
+		if (rpItem == pItem)
+		{
+			continue;
+		}
+		pItem->setSelected(false);
+	}
 }

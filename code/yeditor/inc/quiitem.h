@@ -22,12 +22,19 @@ protected:
 	virtual void mouseMoveEvent(QMouseEvent* pEvent);
 	virtual void paintEvent(QPaintEvent* pEvent);
 
+public:
+	void setGrabed(const bool& rbGrabed);
+	void setSelected(const bool& rbSelected);
+	void setFormat(const yam::base::YIFormat*& rpFormat);
+	void setFormat(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData);
+
 private:
 	YCQUiArea*		m_pUiArea;
+	QImage*			m_pImage;
 	bool			m_bPressed;
 	QPointF			m_oPosMousePressStart;
-	QImage*			m_pImage;
-	QPixmap*		m_pPixmap;
+	bool			m_bGrabed;
+	bool			m_bSelected;
 };
 
 

@@ -5,6 +5,8 @@
 
 #include <QtWidgets/QFrame>
 
+class YCQUiItem;
+
 class YCQUiArea : public QFrame
 {
 	Q_OBJECT
@@ -19,6 +21,9 @@ protected:
 	virtual void mouseReleaseEvent(QMouseEvent* pEvent);
 	virtual void mouseDoubleClickEvent(QMouseEvent* pEvent);
 	virtual void mouseMoveEvent(QMouseEvent* pEvent);
+
+public:
+	void setSelected(const YCQUiItem* const& rpItem);
 
 private:
 	bool			m_bPressed;
