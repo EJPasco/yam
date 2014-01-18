@@ -28,19 +28,9 @@ set(LIBRARY_FILE_LIST
     yam.a
     supereasyjson.a
     rectanglebinpack.a
+    # todo: more for qt
     )
 else(CMAKE_COMPILER_IS_GNUCXX)
-if(CMAKE_BUILD_TYPE EQUAL "DEBUG")
-set(LIBRARY_FILE_LIST
-    yam.lib
-    supereasyjson.lib
-    rectanglebinpack.lib
-    qtmaind.lib
-    Qt5Cored.lib
-    Qt5Guid.lib
-    Qt5Widgetsd.lib
-    )
-else(CMAKE_BUILD_TYPE EQUAL "DEBUG")
 set(LIBRARY_FILE_LIST
     yam.lib
     supereasyjson.lib
@@ -50,7 +40,6 @@ set(LIBRARY_FILE_LIST
     Qt5Gui.lib
     Qt5Widgets.lib
     )
-endif(CMAKE_BUILD_TYPE EQUAL "DEBUG")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 set(CODE_FILE_LIST_EDITOR
