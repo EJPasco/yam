@@ -1,6 +1,6 @@
 # Yam
 
-A User Interface System
+A User Interface System for Game
 
 
 ## Projects
@@ -26,7 +26,7 @@ We need use Adobe Photoshop to save the layer and image to yam format.
 
 ### Yam's editor by Qt
 
-> A executable file, to edit/save the yam file.
+> A executable file, to edit/save the yam file(.yui).
 
 You can use it to edit/save the yam file and export the new format file.
 
@@ -36,14 +36,14 @@ You can use it to edit/save the yam file and export the new format file.
 ### Requirement
 
 * CMake
-* Visual Studio 2012 Express
-* Qt
+* Visual C++
+* Qt 5
 
 ### Environment
 
 * set the PS\_PLUGIN\_SDK to the SDK directory for Photoshop Plug-In
-* set the QT\_MSVC2012\_X32 to the Qt directory for VC2012 x32
-* set the QT\_MSVC2012\_X64 to the Qt directory for VC2012 x64
+* set the QT\_MSVC\_X32 to the Qt directory for Visual C++ x32
+* set the QT\_MSVC\_X64 to the Qt directory for Visual C++ x64
 
 ### License
 

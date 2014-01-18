@@ -11,7 +11,7 @@ set(DEPEND_PROJ_LIST
     )
 
 set(INCLUDE_PATH_LIST
-    $ENV{QT_MSVC2012_X32}/include
+    $ENV{QT_MSVC_X32}/include
     ${CODE_PATH}/yam/inc
     ${CODE_PATH}/t3rd/supereasyjson
     ${CODE_PATH}/t3rd/rectanglebinpack
@@ -19,7 +19,7 @@ set(INCLUDE_PATH_LIST
     )
 
 set(LINK_PATH_LIST
-    $ENV{QT_MSVC2012_X32}/lib
+    $ENV{QT_MSVC_X32}/lib
     ${OUT_PATH}/lib
     )
 
@@ -102,7 +102,7 @@ add_executable(yeditor ${CODE_FILE_LIST_EDITOR}
                        )
 
 add_custom_command(OUTPUT quiarea.moc.cpp
-                   COMMAND $ENV{QT_MSVC2012_X32}/bin/moc.exe ${CODE_PATH_YEDITOR}/inc/quiarea.h -o ${CODE_PATH_YEDITOR}/src/quiarea.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I$ENV{QT_MSVC2012_X32}/include -I${CODE_PATH_YEDITOR}/inc -I$ENV{QT_MSVC2012_X32}/include/QtCore -I$ENV{QT_MSVC2012_X32}/include/QtGui -I$ENV{QT_MSVC2012_X32}/include/QtWidgets
+                   COMMAND $ENV{QT_MSVC_X32}/bin/moc.exe ${CODE_PATH_YEDITOR}/inc/quiarea.h -o ${CODE_PATH_YEDITOR}/src/quiarea.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I$ENV{QT_MSVC_X32}/include -I${CODE_PATH_YEDITOR}/inc -I$ENV{QT_MSVC_X32}/include/QtCore -I$ENV{QT_MSVC_X32}/include/QtGui -I$ENV{QT_MSVC_X32}/include/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/quiarea.h
                    )
@@ -111,7 +111,7 @@ add_custom_target(quiarea_moc_cpp
                   DEPENDS quiarea.moc.cpp)
 
 add_custom_command(OUTPUT quiitem.moc.cpp
-                   COMMAND $ENV{QT_MSVC2012_X32}/bin/moc.exe ${CODE_PATH_YEDITOR}/inc/quiitem.h -o ${CODE_PATH_YEDITOR}/src/quiitem.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I$ENV{QT_MSVC2012_X32}/include -I${CODE_PATH_YEDITOR}/inc -I$ENV{QT_MSVC2012_X32}/include/QtCore -I$ENV{QT_MSVC2012_X32}/include/QtGui -I$ENV{QT_MSVC2012_X32}/include/QtWidgets
+                   COMMAND $ENV{QT_MSVC_X32}/bin/moc.exe ${CODE_PATH_YEDITOR}/inc/quiitem.h -o ${CODE_PATH_YEDITOR}/src/quiitem.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I$ENV{QT_MSVC_X32}/include -I${CODE_PATH_YEDITOR}/inc -I$ENV{QT_MSVC_X32}/include/QtCore -I$ENV{QT_MSVC_X32}/include/QtGui -I$ENV{QT_MSVC_X32}/include/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/quiitem.h
                    )
@@ -120,7 +120,7 @@ add_custom_target(quiitem_moc_cpp
                   DEPENDS quiitem.moc.cpp)
 
 add_custom_command(OUTPUT ydragdroparea.moc.cpp
-                   COMMAND $ENV{QT_MSVC2012_X32}/bin/moc.exe ${CODE_PATH_YEDITOR}/inc/ydragdroparea.h -o ${CODE_PATH_YEDITOR}/src/ydragdroparea.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I$ENV{QT_MSVC2012_X32}/include -I${CODE_PATH_YEDITOR}/inc -I$ENV{QT_MSVC2012_X32}/include/QtCore -I$ENV{QT_MSVC2012_X32}/include/QtGui -I$ENV{QT_MSVC2012_X32}/include/QtWidgets
+                   COMMAND $ENV{QT_MSVC_X32}/bin/moc.exe ${CODE_PATH_YEDITOR}/inc/ydragdroparea.h -o ${CODE_PATH_YEDITOR}/src/ydragdroparea.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I$ENV{QT_MSVC_X32}/include -I${CODE_PATH_YEDITOR}/inc -I$ENV{QT_MSVC_X32}/include/QtCore -I$ENV{QT_MSVC_X32}/include/QtGui -I$ENV{QT_MSVC_X32}/include/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/ydragdroparea.h
                    )
@@ -129,7 +129,7 @@ add_custom_target(ydragdroparea_moc_cpp
                   DEPENDS ydragdroparea.moc.cpp)
 
 add_custom_command(OUTPUT yeditor.moc.cpp
-                   COMMAND $ENV{QT_MSVC2012_X32}/bin/moc.exe ${CODE_PATH_YEDITOR}/inc/yeditor.h -o ${CODE_PATH_YEDITOR}/src/yeditor.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I$ENV{QT_MSVC2012_X32}/include -I${CODE_PATH_YEDITOR}/inc -I$ENV{QT_MSVC2012_X32}/include/QtCore -I$ENV{QT_MSVC2012_X32}/include/QtGui -I$ENV{QT_MSVC2012_X32}/include/QtWidgets
+                   COMMAND $ENV{QT_MSVC_X32}/bin/moc.exe ${CODE_PATH_YEDITOR}/inc/yeditor.h -o ${CODE_PATH_YEDITOR}/src/yeditor.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I$ENV{QT_MSVC_X32}/include -I${CODE_PATH_YEDITOR}/inc -I$ENV{QT_MSVC_X32}/include/QtCore -I$ENV{QT_MSVC_X32}/include/QtGui -I$ENV{QT_MSVC_X32}/include/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/yeditor.h
                    )
@@ -138,7 +138,7 @@ add_custom_target(yeditor_moc_cpp
                   DEPENDS yeditor.moc.cpp)
 
 add_custom_command(OUTPUT yeditor.main.ui.h
-                   COMMAND $ENV{QT_MSVC2012_X32}/bin/uic.exe -o ${CODE_PATH_YEDITOR}/inc/yeditor.main.ui.h ${CODE_PATH_YEDITOR}/res/main.ui
+                   COMMAND $ENV{QT_MSVC_X32}/bin/uic.exe -o ${CODE_PATH_YEDITOR}/inc/yeditor.main.ui.h ${CODE_PATH_YEDITOR}/res/main.ui
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/res/main.ui
                    )
