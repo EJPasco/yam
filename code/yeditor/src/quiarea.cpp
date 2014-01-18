@@ -3,6 +3,8 @@
 #include <QtWidgets/QPushButton>
 #include <QtGui/QtEvents>
 #include <QtCore/QTime>
+#include <QtWidgets/QLayout>
+#include <QtWidgets/QLayoutItem>
 
 #include "GuillotineBinPack.h"
 #include "MaxRectsBinPack.h"
@@ -14,7 +16,7 @@ YCQUiArea::YCQUiArea(QWidget* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	qsrand(QTime::currentTime().msec());
 
 	// for test
-	rbp::GuillotineBinPack binPack(1024, 1024);
+	/*rbp::GuillotineBinPack binPack(1024, 1024);
 	std::vector<rbp::RectSize> vRectList;
 	rbp::RectSize stSize;
 	int iMax = qrand() % 50 + 1;
@@ -37,7 +39,7 @@ YCQUiArea::YCQUiArea(QWidget* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 		pItem->resize(rstBound.width, rstBound.height);
 		int iColor = 0xff000000 | qrand();
 		pItem->setColor(iColor);
-	}
+	}*/
 	//
 }
 
@@ -112,4 +114,28 @@ void YCQUiArea::setSelected(const YCQUiItem* const& rpItem)
 		}
 		pItem->setSelected(false);
 	}
+}
+
+void YCQUiArea::addChildItem(const yam::base::YIFormat*& rpFormat)
+{
+	if (YNULL == rpFormat->GetColorData())
+	{
+		return;
+	}
+	YCQUiItem* pNewItem = new YCQUiItem(this);
+	pNewItem->setFormat(rpFormat);
+	pNewItem->show();
+
+	m_vItemPtr.push_back(pNewItem);
+}
+
+void YCQUiArea::clearChildrenItem()
+{
+	yvuiitemptr::iterator it = m_vItemPtr.begin();
+	yvuiitemptr::iterator itEnd = m_vItemPtr.end();
+	for (; it != itEnd; ++it)
+	{
+		delete *it;
+	}
+	m_vItemPtr.clear();
 }

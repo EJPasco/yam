@@ -22,7 +22,11 @@ public slots:
 	void onClickedSync();
 
 private:
+	void reloadFormat(const yam::base::YIFormat*& rpFormat);
+
+private:
 	Ui_MainWindow			m_UI;
+	yam::base::YCTree		m_FileTreeData;
 
 public:
 	const static QString	ms_sTitle;

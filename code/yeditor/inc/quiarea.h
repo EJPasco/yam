@@ -9,6 +9,8 @@ class YCQUiItem;
 
 class YCQUiArea : public QFrame
 {
+	typedef std::vector<YCQUiItem*>			yvuiitemptr;
+
 	Q_OBJECT
 
 public:
@@ -24,10 +26,13 @@ protected:
 
 public:
 	void setSelected(const YCQUiItem* const& rpItem);
+	void addChildItem(const yam::base::YIFormat*& rpFormat);
+	void clearChildrenItem();
 
 private:
 	bool			m_bPressed;
 	QPointF			m_oPosMousePressStart;
+	yvuiitemptr		m_vItemPtr;
 };
 
 #endif // Y_QUIAREA_H

@@ -32,8 +32,10 @@ typedef ybuff*					ybuffptr;
 typedef yint32					ybuffsize;
 typedef yint32					ybuffpos;
 
-typedef yint32					ycolor;
-typedef yint32*					ycolorptr;
+typedef yuint8					ycolorbit;
+typedef ycolorbit*				ycolorbitptr;
+typedef yuint32					ycolor;
+typedef ycolor*					ycolorptr;
 
 typedef yint32					ylayerweight;
 

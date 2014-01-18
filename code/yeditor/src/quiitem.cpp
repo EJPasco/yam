@@ -13,18 +13,7 @@ YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	, m_bGrabed(false)
 	, m_bSelected(false)
 {
-	// for test
-	/*move(0, 0);
-	setFixedSize(100, 100);
-
-	m_pImage = new QImage(size(), QImage::Format_RGBA8888);
-	for (int j = 0; j < 100; ++j)
-	{
-		for (int i = 0; i < 100; ++i)
-		{
-			m_pImage->setPixel(i, j, 0x33008800);
-		}
-	}*/
+	//
 }
 
 YCQUiItem::~YCQUiItem()
@@ -146,6 +135,7 @@ void YCQUiItem::setFormat(const yam::YRect2D& rstRect, const yam::ycolorptr& rpC
 	move(rstRect.Pos.X, rstRect.Pos.Y);
 	resize(rstRect.Size.X, rstRect.Size.Y);
 
+	//setColor(convertFromYColor(0xff0000ff));
 	if (NULL != m_pImage)
 	{
 		delete m_pImage;
@@ -159,7 +149,7 @@ void YCQUiItem::setFormat(const yam::YRect2D& rstRect, const yam::ycolorptr& rpC
 		{
 			for (int x = 0; x < rstRect.Size.X; ++x)
 			{
-				m_pImage->setPixel(x, y, rpColorData[x + y * rstRect.Size.Y]);
+				m_pImage->setPixel(x, y, convertFromYColor(rpColorData[x + y * rstRect.Size.X]));
 			}
 		}
 	}
@@ -167,7 +157,7 @@ void YCQUiItem::setFormat(const yam::YRect2D& rstRect, const yam::ycolorptr& rpC
 	repaint();
 }
 
-void YCQUiItem::setColor(const QColor& rColor)
+void YCQUiItem::setColor(const uint& riColor)
 {
 	if (NULL == m_pImage)
 	{
@@ -177,7 +167,16 @@ void YCQUiItem::setColor(const QColor& rColor)
 	{
 		for (int i = 0; i < size().width(); ++i)
 		{
-			m_pImage->setPixel(i, j, rColor.rgba());
+			m_pImage->setPixel(i, j, riColor);
 		}
 	}
+}
+
+QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const
+{
+	using namespace yam;
+	return qRgba(YGETCOLORBIT(riColor, YBITOFFSET_RED)
+				, YGETCOLORBIT(riColor, YBITOFFSET_GREEN)
+				, YGETCOLORBIT(riColor, YBITOFFSET_BLUE)
+				, YGETCOLORBIT(riColor, YBITOFFSET_ALPHA));
 }

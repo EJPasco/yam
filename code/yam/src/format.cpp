@@ -137,7 +137,7 @@ YRect2D YCFormat::CalculateSmallestBound() const
 			for (yint32 x = 0; x < m_stBound.Size.X; ++x)
 			{
 				const ycolor& iColor = m_pColorData[x + y * m_stBound.Size.X];
-				if (0 == (iColor & (0xFF << ((EColor_Max - EColor_Alpah - 1) * YBITCOUNT_INT8))))
+				if (0 == YGETCOLORBIT(iColor, YBITOFFSET_ALPHA))
 				{
 					continue;
 				}
@@ -189,7 +189,7 @@ void YCFormat::Crop(YRect2D stBound)
 		{
 			for (yint32 x = 0; x < stBound.Size.X; ++x)
 			{
-				pNewData[x + y * stBound.Size.X] = m_pColorData[x + stBound.Pos.X + (y + stBound.Pos.Y) * stBound.Size.X];
+				pNewData[x + y * stBound.Size.X] = m_pColorData[x + stBound.Pos.X + (y + stBound.Pos.Y) * m_stBound.Size.X];
 			}
 		}
 	}

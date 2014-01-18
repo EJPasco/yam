@@ -33,7 +33,7 @@ public:
 
 protected:
 	void Do(ReadLayerDesc*& rpLayerDesc, const VRect& rstBox, base::YIFormat*& rpFormat);
-	void Do(ReadChannelDesc*& rpChannelDesc, const VRect& rstBox, base::YIFormat*& rpFormat, const int32& riOffset);
+	void Do(ReadChannelDesc*& rpChannelDesc, const VRect& rstBox, base::YIFormat*& rpFormat, const yuint32& riOffset);
 	YRect2D Convert(const VRect& rstBox);
 
 protected:

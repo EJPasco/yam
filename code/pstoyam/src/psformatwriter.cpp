@@ -140,7 +140,22 @@ void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, const VRect& rstBox, base
 
 		for (yint32 i = 0; i < EColor_Max; ++i)
 		{
-			Do(apChannelDesc[i], rstBox, pFormat, i * YBITCOUNT_INT8);
+			if (EColor_Red == i)
+			{
+				Do(apChannelDesc[i], rstBox, pFormat, YBITOFFSET_RED);
+			}
+			else if (EColor_Green == i)
+			{
+				Do(apChannelDesc[i], rstBox, pFormat, YBITOFFSET_GREEN);
+			}
+			else if (EColor_Blue == i)
+			{
+				Do(apChannelDesc[i], rstBox, pFormat, YBITOFFSET_BLUE);
+			}
+			else if (EColor_Alpah == i)
+			{
+				Do(apChannelDesc[i], rstBox, pFormat, YBITOFFSET_ALPHA);
+			}
 		}
 
 		rpLayerDesc = rpLayerDesc->next;
@@ -148,7 +163,7 @@ void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, const VRect& rstBox, base
 	}
 }
 
-void YCPsFormatWriter::Do(ReadChannelDesc*& rpChannelDesc, const VRect& rstBox, base::YIFormat*& rpFormat, const int32& riOffset)
+void YCPsFormatWriter::Do(ReadChannelDesc*& rpChannelDesc, const VRect& rstBox, base::YIFormat*& rpFormat, const yuint32& riOffset)
 {
 	assert(YNULL != rpFormat);
 
@@ -167,7 +182,10 @@ void YCPsFormatWriter::Do(ReadChannelDesc*& rpChannelDesc, const VRect& rstBox, 
 	{
 		ycolor& riColorData = *(rpColorData + i);
 		ybuff& rColorElem = *(rpColorElem + i);
-		*((ybuff*)&riColorData + (riOffset / (sizeof(ybuff) * YBITCOUNT_INT8))) = rColorElem;
+		YSETCOLORBIT(riColorData, rColorElem, riOffset);
+		int a = 0;
+		a =10;
+		//*((ybuff*)&riColorData + (riOffset / (sizeof(ybuff) * YBITCOUNT_INT8))) = rColorElem;
 	}
 }
 

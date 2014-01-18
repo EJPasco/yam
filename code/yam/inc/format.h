@@ -59,6 +59,9 @@ private:
 	void Crop(YRect2D rstBound);
 };
 
+#define YGETCOLORBIT(_Color, _Offset) (*((ycolorbitptr)&_Color + _Offset / (sizeof(ycolorbit) * YBITCOUNT_INT8)))
+#define YSETCOLORBIT(_Color, _Value, _Offset) (*((ycolorbitptr)&_Color + _Offset / (sizeof(ycolorbit) * YBITCOUNT_INT8))) = _Value
+
 }}
 
 #endif // Y_FORMAT_H

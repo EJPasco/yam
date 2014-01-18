@@ -27,7 +27,10 @@ public:
 	void setSelected(const bool& rbSelected);
 	void setFormat(const yam::base::YIFormat*& rpFormat);
 	void setFormat(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData);
-	void setColor(const QColor& rColor);
+	void setColor(const uint& riColor);
+
+public:
+	QRgb convertFromYColor(const yam::ycolor& riColor) const;
 
 private:
 	YCQUiArea*		m_pUiArea;
