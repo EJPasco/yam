@@ -16,10 +16,11 @@ DLLExport MACPASCAL void PluginMain (const int16 iSelector,
 		break;
 
 	case formatSelectorEstimatePrepare:
+		//pRecord->maxData = 0;
 		break;
 
 	case formatSelectorEstimateStart:
-		pRecord->minDataBytes = sizeof(yam::ycolor) * pRecord->imageSize.v * pRecord->imageSize.h;
+		pRecord->minDataBytes = 0;//sizeof(yam::ycolor) * pRecord->imageSize.v * pRecord->imageSize.h;
 		pRecord->maxDataBytes = pRecord->maxData;
 		pRecord->data = NULL;
 		break;
@@ -68,7 +69,7 @@ DLLExport MACPASCAL void PluginMain (const int16 iSelector,
 
 OSErr FSWrite(int32 refNum, int32* count, void* buffPtr)
 {
-	int32 bytes = (WORD)*count;
+	int32 bytes = *count;
 
 	if (!WriteFile((HANDLE)refNum, buffPtr, bytes, (unsigned long *)count, NULL))
 	{
