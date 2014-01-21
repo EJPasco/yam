@@ -16,14 +16,13 @@
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QToolBox>
-#include <QtWidgets/QTreeView>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -42,6 +41,7 @@ public:
     QAction *actionBarSave;
     QAction *actionBarSync;
     QAction *actionExport;
+    QAction *actionBarExport;
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout_3;
     YCQUiArea *uiArea;
@@ -55,14 +55,14 @@ public:
     QDockWidget *uiTreeDock;
     QWidget *uiTreeLayout;
     QVBoxLayout *verticalLayout;
-    QTreeView *uiTree;
+    QTreeWidget *uiTree;
     QDockWidget *uiDetailDock;
     QWidget *uiDetailLayout;
     QVBoxLayout *verticalLayout_3;
-    QToolBox *varBox;
-    QWidget *basePage;
+    QToolBox *uiVarBox;
+    QWidget *uiBasePage;
     QVBoxLayout *verticalLayout_4;
-    QListView *varList;
+    QTableView *uiBaseTableView;
     QToolBar *toolBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -87,6 +87,8 @@ public:
         actionBarSync->setObjectName(QStringLiteral("actionBarSync"));
         actionExport = new QAction(MainWindow);
         actionExport->setObjectName(QStringLiteral("actionExport"));
+        actionBarExport = new QAction(MainWindow);
+        actionBarExport->setObjectName(QStringLiteral("actionBarExport"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         horizontalLayout_3 = new QHBoxLayout(centralwidget);
@@ -120,6 +122,7 @@ public:
         __qtreewidgetitem->setText(0, QStringLiteral("1"));
         formatTree->setHeaderItem(__qtreewidgetitem);
         formatTree->setObjectName(QStringLiteral("formatTree"));
+        formatTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
         verticalLayout_2->addWidget(formatTree);
 
@@ -132,9 +135,15 @@ public:
         uiTreeLayout->setObjectName(QStringLiteral("uiTreeLayout"));
         verticalLayout = new QVBoxLayout(uiTreeLayout);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        uiTree = new QTreeView(uiTreeLayout);
+        uiTree = new QTreeWidget(uiTreeLayout);
+        QTreeWidgetItem *__qtreewidgetitem1 = new QTreeWidgetItem();
+        __qtreewidgetitem1->setText(1, QStringLiteral("2"));
+        __qtreewidgetitem1->setText(0, QStringLiteral("1"));
+        uiTree->setHeaderItem(__qtreewidgetitem1);
         uiTree->setObjectName(QStringLiteral("uiTree"));
+        uiTree->setContextMenuPolicy(Qt::CustomContextMenu);
         uiTree->setFrameShape(QFrame::Panel);
+        uiTree->setColumnCount(2);
 
         verticalLayout->addWidget(uiTree);
 
@@ -146,28 +155,29 @@ public:
         uiDetailLayout->setObjectName(QStringLiteral("uiDetailLayout"));
         verticalLayout_3 = new QVBoxLayout(uiDetailLayout);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        varBox = new QToolBox(uiDetailLayout);
-        varBox->setObjectName(QStringLiteral("varBox"));
-        basePage = new QWidget();
-        basePage->setObjectName(QStringLiteral("basePage"));
-        basePage->setGeometry(QRect(0, 0, 274, 192));
-        verticalLayout_4 = new QVBoxLayout(basePage);
+        uiVarBox = new QToolBox(uiDetailLayout);
+        uiVarBox->setObjectName(QStringLiteral("uiVarBox"));
+        uiBasePage = new QWidget();
+        uiBasePage->setObjectName(QStringLiteral("uiBasePage"));
+        uiBasePage->setGeometry(QRect(0, 0, 274, 192));
+        verticalLayout_4 = new QVBoxLayout(uiBasePage);
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
-        varList = new QListView(basePage);
-        varList->setObjectName(QStringLiteral("varList"));
-        varList->setFrameShape(QFrame::Panel);
-        varList->setFrameShadow(QFrame::Sunken);
+        uiBaseTableView = new QTableView(uiBasePage);
+        uiBaseTableView->setObjectName(QStringLiteral("uiBaseTableView"));
+        uiBaseTableView->setFrameShape(QFrame::Panel);
+        uiBaseTableView->setFrameShadow(QFrame::Sunken);
 
-        verticalLayout_4->addWidget(varList);
+        verticalLayout_4->addWidget(uiBaseTableView);
 
-        varBox->addItem(basePage, QStringLiteral("Base"));
+        uiVarBox->addItem(uiBasePage, QStringLiteral("Base"));
 
-        verticalLayout_3->addWidget(varBox);
+        verticalLayout_3->addWidget(uiVarBox);
 
         uiDetailDock->setWidget(uiDetailLayout);
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(2), uiDetailDock);
         toolBar = new QToolBar(MainWindow);
         toolBar->setObjectName(QStringLiteral("toolBar"));
+        toolBar->setMovable(false);
         MainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
 
         menubar->addAction(menuFile->menuAction());
@@ -181,6 +191,7 @@ public:
         toolBar->addAction(actionBarOpen);
         toolBar->addAction(actionBarSave);
         toolBar->addSeparator();
+        toolBar->addAction(actionBarExport);
         toolBar->addAction(actionBarSync);
 
         retranslateUi(MainWindow);
@@ -192,9 +203,12 @@ public:
         QObject::connect(actionBarSave, SIGNAL(triggered()), MainWindow, SLOT(onClickedSave()));
         QObject::connect(actionBarSync, SIGNAL(triggered()), MainWindow, SLOT(onClickedSync()));
         QObject::connect(formatTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), MainWindow, SLOT(onSelectedFormatTree(QTreeWidgetItem*,int)));
+        QObject::connect(actionBarExport, SIGNAL(triggered()), MainWindow, SLOT(onClickedExport()));
         QObject::connect(actionExport, SIGNAL(triggered()), MainWindow, SLOT(onClickedExport()));
+        QObject::connect(formatTree, SIGNAL(customContextMenuRequested(QPoint)), MainWindow, SLOT(onFormatTreeContextMenu(QPoint)));
+        QObject::connect(uiTree, SIGNAL(customContextMenuRequested(QPoint)), MainWindow, SLOT(onUiTreeContextMenu(QPoint)));
 
-        varBox->setCurrentIndex(0);
+        uiVarBox->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -211,11 +225,12 @@ public:
         actionBarSave->setText(QApplication::translate("MainWindow", "Save", 0));
         actionBarSync->setText(QApplication::translate("MainWindow", "Sync", 0));
         actionExport->setText(QApplication::translate("MainWindow", "Export", 0));
+        actionBarExport->setText(QApplication::translate("MainWindow", "Export", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
         formatDock->setWindowTitle(QApplication::translate("MainWindow", "Format", 0));
         uiTreeDock->setWindowTitle(QApplication::translate("MainWindow", "UI Tree", 0));
         uiDetailDock->setWindowTitle(QApplication::translate("MainWindow", "UI Detail", 0));
-        varBox->setItemText(varBox->indexOf(basePage), QApplication::translate("MainWindow", "Base", 0));
+        uiVarBox->setItemText(uiVarBox->indexOf(uiBasePage), QApplication::translate("MainWindow", "Base", 0));
         toolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0));
     } // retranslateUi
 

@@ -8,6 +8,9 @@
 
 #include <QtWidgets/QMainWindow>
 
+#define YNAME_FILE_PSFORMAT		"psformat"
+#define YNAME_FILE_UIWIDGET		"uiwidget"
+
 class YEditor : public QMainWindow
 {
 	struct SRelationship
@@ -29,9 +32,21 @@ public slots:
 	void onClickedExport();
 	void onClickedSync();
 	void onSelectedFormatTree(QTreeWidgetItem* pTreeItem, int iIndex);
+	void onFormatTreeContextMenu(QPoint oPos);
+	void onUiTreeContextMenu(QPoint oPos);
+
+public slots:
+	void onClickedFormatMenuItem_ShowHide();
+
+public slots:
+	void onClickedUiWidgetMenuItem_CreateScene();
+	void onClickedUiWidgetMenuItem_CreatePanel();
+	void onClickedUiWidgetMenuItem_CreateImage();
+	void onClickedUiWidgetMenuItem_CreateButton();
 
 private:
 	void reloadFormat(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
+	void reloadWidget(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
 	QString getFullName(const yam::base::YITree* pTree);
 	YCQUiItem* getUiItem(QTreeWidgetItem* pTreeItem) const;
 

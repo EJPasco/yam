@@ -17,7 +17,8 @@ public:
 	void Do(const yam::yvvec2d& rvSize, yam::YVec2D& rstSize, yam::yvrect& rvRect) const;
 
 private:
-	void TryPack(const yam::yvvec2d& rvSize, yam::YVec2D stSize, yam::yfloat32 fPercent, yam::yvrect& rvRect) const;
+	yam::YVec2D TryPack(const yam::yvvec2d& rvSize, const yam::YVec2D& rstSize, const yam::yfloat32& rfPercentSmall, const yam::yfloat32& rfPercentBig, const yam::yfloat32& rfPercentLastInvalidSmall) const;
+	bool CanPack(const yam::yvvec2d& rvSize, const yam::YVec2D& rstSize) const;
 	yam::YVec2D ToScale(const yam::YVec2D& rstSize, const yam::yfloat32& rfPercent) const;
 	yam::YVec2D ToResize(const yam::YVec2D& rstSize, const yam::yint32& riOffset) const;
 	yam::YVec2D Convert(const rbp::RectSize& rstSize) const;

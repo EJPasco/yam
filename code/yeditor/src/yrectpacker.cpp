@@ -17,34 +17,53 @@ void YCRectPacker::Do(const yam::yvvec2d& rvSize, yam::YVec2D& rstSize, yam::yvr
 	yam::YVec2D stSize;
 	stSize.X = 1024;
 	stSize.Y = 1024;
-	TryPack(rvSize, stSize, 0.5f, rvRect);
-}
-
-void YCRectPacker::TryPack(const yam::yvvec2d& rvSize, yam::YVec2D stSize, yam::yfloat32 fPercent, yam::yvrect& rvRect) const
-{
-	yam::YVec2D stSizeOld = stSize;
-	stSize = ToScale(stSize, fPercent);
-	if (stSizeOld.X == stSize.X)
-	{
-		return;
-	}
+	rstSize = TryPack(rvSize, stSize, 1.0f, 2.0f, 0.0f);
 
 	rbp::GuillotineBinPack oBinPack;
-	oBinPack.Init(stSize.X, stSize.Y);
+	oBinPack.Init(rstSize.X, rstSize.Y);
 	std::vector<rbp::RectSize> rectsizes = Convert(rvSize);
 	oBinPack.Insert(rectsizes, false, rbp::GuillotineBinPack::RectBestShortSideFit, rbp::GuillotineBinPack::SplitMinimizeArea);
 	std::vector<rbp::Rect> rects = oBinPack.GetUsedRectangles();
-	if (rects.size() == rvSize.size())
+	rvRect = Convert(rects);
+}
+
+yam::YVec2D YCRectPacker::TryPack(const yam::yvvec2d& rvSize, const yam::YVec2D& rstSize, const yam::yfloat32& rfPercentSmall, const yam::yfloat32& rfPercentBig, const yam::yfloat32& rfPercentLastInvalidSmall) const
+{
+	yam::YVec2D stSizeSmall = ToScale(rstSize, rfPercentSmall);
+	yam::YVec2D stSizeBig = ToScale(rstSize, rfPercentBig);
+	if (0.001f > (rfPercentSmall - rfPercentBig))
 	{
-		// to small
-		TryPack(rvSize, stSize, fPercent - fPercent * 0.5f, rvRect);
+		return stSizeBig;
+	}
+	if (stSizeSmall.X == stSizeBig.X)
+	{
+		return stSizeBig;
+	}
+	if (CanPack(rvSize, stSizeSmall))
+	{
+		return TryPack(rvSize, rstSize, (rfPercentSmall + rfPercentLastInvalidSmall) * 0.5f, rfPercentSmall, rfPercentLastInvalidSmall);
 	}
 	else
 	{
-		// to big
-		TryPack(rvSize, stSize, fPercent + fPercent * 0.5f, rvRect);
+		if (CanPack(rvSize, stSizeBig))
+		{
+			return TryPack(rvSize, rstSize, (rfPercentSmall + rfPercentBig) * 0.5f, rfPercentBig, rfPercentSmall);
+		}
+		else
+		{
+			return TryPack(rvSize, rstSize, rfPercentBig, rfPercentBig * 2.0f, rfPercentSmall);
+		}
 	}
-	rvRect = Convert(oBinPack.GetUsedRectangles());
+}
+
+bool YCRectPacker::CanPack(const yam::yvvec2d& rvSize, const yam::YVec2D& rstSize) const
+{
+	rbp::GuillotineBinPack oBinPack;
+	oBinPack.Init(rstSize.X, rstSize.Y);
+	std::vector<rbp::RectSize> rectsizes = Convert(rvSize);
+	oBinPack.Insert(rectsizes, false, rbp::GuillotineBinPack::RectBestShortSideFit, rbp::GuillotineBinPack::SplitMinimizeArea);
+	std::vector<rbp::Rect> rects = oBinPack.GetUsedRectangles();
+	return (rects.size() == rvSize.size());
 }
 
 yam::YVec2D YCRectPacker::ToScale(const yam::YVec2D& rstSize, const yam::yfloat32& rfPercent) const

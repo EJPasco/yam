@@ -78,11 +78,18 @@ void YCQUiArea::setSelected(const YCQUiItem* const& rpItem)
 	for (; cit != citEnd; ++cit)
 	{
 		YCQUiItem* pItem = (YCQUiItem*)(*cit);
-		if (rpItem == pItem)
+		if (NULL == pItem)
 		{
 			continue;
 		}
-		pItem->setSelected(false);
+		if (rpItem == pItem)
+		{
+			pItem->setSelected(true);
+		}
+		else
+		{
+			pItem->setSelected(false);
+		}
 	}
 }
 
