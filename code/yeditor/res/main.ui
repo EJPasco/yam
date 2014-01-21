@@ -43,6 +43,7 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="separator"/>
+    <addaction name="actionExport"/>
     <addaction name="actionSync"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -63,10 +64,12 @@
    <widget class="QWidget" name="formatDockLayout">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QTreeView" name="formatTree">
-       <property name="frameShape">
-        <enum>QFrame::Panel</enum>
-       </property>
+      <widget class="QTreeWidget" name="formatTree">
+       <column>
+        <property name="text">
+         <string notr="true">1</string>
+        </property>
+       </column>
       </widget>
      </item>
     </layout>
@@ -189,6 +192,11 @@
   <action name="actionBarSync">
    <property name="text">
     <string>Sync</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>Export</string>
    </property>
   </action>
  </widget>
@@ -314,10 +322,44 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>formatTree</sender>
+   <signal>itemClicked(QTreeWidgetItem*,int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onSelectedFormatTree(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>136</x>
+     <y>286</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionExport</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onClickedExport()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onClickedOpen()</slot>
   <slot>onClickedSave()</slot>
   <slot>onClickedSync()</slot>
+  <slot>onSelectedFormatTree(QTreeWidgetItem*,int)</slot>
+  <slot>onClickedExport()</slot>
  </slots>
 </ui>

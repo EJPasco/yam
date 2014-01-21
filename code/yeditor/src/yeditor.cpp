@@ -1,6 +1,7 @@
 #include "yeditor.h"
 
 #include "yexport.h"
+#include "yrectpacker.h"
 
 #include <crtdbg.h>
 
@@ -58,9 +59,11 @@ void YEditor::onClickedOpen()
 		return;
 	}
 	m_UI.uiArea->clearChildrenItem();
+	m_UI.formatTree->clear();
+	m_mRelationship.clear();
 
 	const yam::base::YIFormat* pFormat = (yam::base::YIFormat*)pTreePsFormat;
-	reloadFormat(pFormat);
+	reloadFormat(pFormat, NULL, NULL);
 }
 
 void YEditor::onClickedSave()
@@ -69,34 +72,115 @@ void YEditor::onClickedSave()
 	//
 }
 
+void YEditor::onClickedExport()
+{
+	yam::yvvec2d vSize;
+	yam::YVec2D stSize;
+	stSize.X = 50; stSize.Y = 50;
+	vSize.push_back(stSize);
+	stSize.X = 50; stSize.Y = 50;
+	vSize.push_back(stSize);
+	stSize.X = 50; stSize.Y = 50;
+	vSize.push_back(stSize);
+	stSize.X = 50; stSize.Y = 50;
+	vSize.push_back(stSize);
+	stSize.X = 500; stSize.Y = 500;
+	yam::yvrect vRect;
+	YCRectPacker::Instance().Do(vSize, stSize, vRect);
+	/*QImage* pImage = new QImage;
+	delete pImage;*/
+}
+
 void YEditor::onClickedSync()
 {
 	qDebug("on clicked sync");
 	//
 }
 
-void YEditor::reloadFormat(const yam::base::YIFormat*& rpFormat)
+void YEditor::onSelectedFormatTree(QTreeWidgetItem* pTreeItem, int iIndex)
+{
+	if (NULL == pTreeItem)
+	{
+		return;
+	}
+	YCQUiItem* pUiItem = getUiItem(pTreeItem);
+	if (NULL == pUiItem)
+	{
+		return;
+	}
+	pUiItem->setSelected(true);
+}
+
+void YEditor::reloadFormat(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent)
 {
 	if (YNULL == rpFormat)
 	{
 		return;
 	}
 
-	m_UI.uiArea->addChildItem(rpFormat);
+	YCQUiItem* pUiItem = m_UI.uiArea->addChildItem(rpFormat);
+
+	QTreeWidgetItem* pTreeItem = new QTreeWidgetItem;
+	pTreeItem->setText(0, rpFormat->GetId().c_str());
+	if (NULL == pTreeParent)
+	{
+		m_UI.formatTree->insertTopLevelItem(0, pTreeItem);
+	}
+	else
+	{
+		pTreeParent->insertChild(0, pTreeItem);
+	}
+
+	SRelationship stRelationship;
+	stRelationship._pUiItem = pUiItem;
+	stRelationship._pTreeItem = pTreeItem;
+	m_mRelationship.insert(std::make_pair(getFullName(rpFormat), stRelationship));
 
 	const yam::base::YITree* pTreeNext = rpFormat->GetNext();
 	if (YNULL != pTreeNext && YOBJECT_GETCLASSNAME(yam::base::YCFormat) == pTreeNext->GetClassName())
 	{
 		const yam::base::YIFormat* pFormatNext = (const yam::base::YIFormat*)pTreeNext;
-		reloadFormat(pFormatNext);
+		reloadFormat(pFormatNext, pUiParent, pTreeParent);
 	}
 
 	const yam::base::YITree* pTreeChildren = rpFormat->GetChildren();
 	if (YNULL != pTreeChildren && YOBJECT_GETCLASSNAME(yam::base::YCFormat) == pTreeChildren->GetClassName())
 	{
 		const yam::base::YIFormat* pFormatChildren = (const yam::base::YIFormat*)pTreeChildren;
-		reloadFormat(pFormatChildren);
+		reloadFormat(pFormatChildren, pUiItem, pTreeItem);
 	}
+}
+
+QString YEditor::getFullName(const yam::base::YITree* pTree)
+{
+	QString sRes = "";
+	if (YNULL != pTree)
+	{
+		sRes.append(".");
+		sRes.append(pTree->GetId().c_str());
+		sRes.append(getFullName(pTree->GetParent()));
+	}
+	return sRes;
+}
+
+YCQUiItem* YEditor::getUiItem(QTreeWidgetItem* pTreeItem) const
+{
+	if (NULL == pTreeItem)
+	{
+		return NULL;
+	}
+
+	ymnamerelationship::const_iterator cit = m_mRelationship.begin();
+	ymnamerelationship::const_iterator citEnd = m_mRelationship.end();
+	for (; cit != citEnd; ++cit)
+	{
+		if (pTreeItem != cit->second._pTreeItem)
+		{
+			continue;
+		}
+		return cit->second._pUiItem;
+	}
+	return NULL;
 }
 
 int main(int argc, char* argv[])

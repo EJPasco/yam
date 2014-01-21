@@ -24,6 +24,7 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QToolBox>
 #include <QtWidgets/QTreeView>
+#include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "quiarea.h"
@@ -40,6 +41,7 @@ public:
     QAction *actionBarOpen;
     QAction *actionBarSave;
     QAction *actionBarSync;
+    QAction *actionExport;
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout_3;
     YCQUiArea *uiArea;
@@ -49,7 +51,7 @@ public:
     QDockWidget *formatDock;
     QWidget *formatDockLayout;
     QVBoxLayout *verticalLayout_2;
-    QTreeView *formatTree;
+    QTreeWidget *formatTree;
     QDockWidget *uiTreeDock;
     QWidget *uiTreeLayout;
     QVBoxLayout *verticalLayout;
@@ -83,6 +85,8 @@ public:
         actionBarSave->setObjectName(QStringLiteral("actionBarSave"));
         actionBarSync = new QAction(MainWindow);
         actionBarSync->setObjectName(QStringLiteral("actionBarSync"));
+        actionExport = new QAction(MainWindow);
+        actionExport->setObjectName(QStringLiteral("actionExport"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         horizontalLayout_3 = new QHBoxLayout(centralwidget);
@@ -111,9 +115,11 @@ public:
         formatDockLayout->setObjectName(QStringLiteral("formatDockLayout"));
         verticalLayout_2 = new QVBoxLayout(formatDockLayout);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        formatTree = new QTreeView(formatDockLayout);
+        formatTree = new QTreeWidget(formatDockLayout);
+        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
+        __qtreewidgetitem->setText(0, QStringLiteral("1"));
+        formatTree->setHeaderItem(__qtreewidgetitem);
         formatTree->setObjectName(QStringLiteral("formatTree"));
-        formatTree->setFrameShape(QFrame::Panel);
 
         verticalLayout_2->addWidget(formatTree);
 
@@ -168,6 +174,7 @@ public:
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionSave);
         menuFile->addSeparator();
+        menuFile->addAction(actionExport);
         menuFile->addAction(actionSync);
         menuFile->addSeparator();
         menuFile->addAction(actionExit);
@@ -184,6 +191,8 @@ public:
         QObject::connect(actionBarOpen, SIGNAL(triggered()), MainWindow, SLOT(onClickedOpen()));
         QObject::connect(actionBarSave, SIGNAL(triggered()), MainWindow, SLOT(onClickedSave()));
         QObject::connect(actionBarSync, SIGNAL(triggered()), MainWindow, SLOT(onClickedSync()));
+        QObject::connect(formatTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), MainWindow, SLOT(onSelectedFormatTree(QTreeWidgetItem*,int)));
+        QObject::connect(actionExport, SIGNAL(triggered()), MainWindow, SLOT(onClickedExport()));
 
         varBox->setCurrentIndex(0);
 
@@ -201,6 +210,7 @@ public:
         actionBarOpen->setText(QApplication::translate("MainWindow", "Open", 0));
         actionBarSave->setText(QApplication::translate("MainWindow", "Save", 0));
         actionBarSync->setText(QApplication::translate("MainWindow", "Sync", 0));
+        actionExport->setText(QApplication::translate("MainWindow", "Export", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
         formatDock->setWindowTitle(QApplication::translate("MainWindow", "Format", 0));
         uiTreeDock->setWindowTitle(QApplication::translate("MainWindow", "UI Tree", 0));

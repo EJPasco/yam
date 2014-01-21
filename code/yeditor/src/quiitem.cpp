@@ -27,9 +27,8 @@ YCQUiItem::~YCQUiItem()
 
 void YCQUiItem::mousePressEvent(QMouseEvent* pEvent)
 {
-	qDebug("YCQUiItem::mousePressEvent");
-
-	m_bPressed = true;
+	// can't move item
+	//m_bPressed = true;
 	m_oPosMousePressStart = pEvent->screenPos();
 
 	setGrabed(true);

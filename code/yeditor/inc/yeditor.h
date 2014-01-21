@@ -10,6 +10,13 @@
 
 class YEditor : public QMainWindow
 {
+	struct SRelationship
+	{
+		YCQUiItem*			_pUiItem;
+		QTreeWidgetItem*	_pTreeItem;
+	};
+	typedef std::map<QString, SRelationship>		ymnamerelationship;
+
 	Q_OBJECT
 
 public:
@@ -19,14 +26,19 @@ public:
 public slots:
 	void onClickedOpen();
 	void onClickedSave();
+	void onClickedExport();
 	void onClickedSync();
+	void onSelectedFormatTree(QTreeWidgetItem* pTreeItem, int iIndex);
 
 private:
-	void reloadFormat(const yam::base::YIFormat*& rpFormat);
+	void reloadFormat(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
+	QString getFullName(const yam::base::YITree* pTree);
+	YCQUiItem* getUiItem(QTreeWidgetItem* pTreeItem) const;
 
 private:
 	Ui_MainWindow			m_UI;
 	yam::base::YCTree		m_FileTreeData;
+	ymnamerelationship		m_mRelationship;
 
 public:
 	const static QString	ms_sTitle;

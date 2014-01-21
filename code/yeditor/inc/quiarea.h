@@ -26,7 +26,7 @@ protected:
 
 public:
 	void setSelected(const YCQUiItem* const& rpItem);
-	void addChildItem(const yam::base::YIFormat*& rpFormat);
+	YCQUiItem* addChildItem(const yam::base::YIFormat*& rpFormat);
 	void clearChildrenItem();
 
 private:

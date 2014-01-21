@@ -68,6 +68,8 @@ set(CODE_FILE_LIST_QT
 set(CODE_FILE_LIST_EXPORT
     ${CODE_PATH_YEDITOR}/inc/yexport.h
     ${CODE_PATH_YEDITOR}/src/yexport.cpp
+    ${CODE_PATH_YEDITOR}/inc/yrectpacker.h
+    ${CODE_PATH_YEDITOR}/src/yrectpacker.cpp
     )
 
 source_group("editor" FILES ${CODE_FILE_LIST_EDITOR})

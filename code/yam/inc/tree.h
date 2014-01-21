@@ -111,10 +111,8 @@ public:
 public:
 	virtual void SetParent(YITree* const& rpParent)
 	{
-		GetParent() = rpParent;
-
 		YITree* pNext = this;
-		while (YNULL != pNext->GetNext())
+		while (YNULL != pNext)
 		{
 			pNext->GetParent() = rpParent;
 			pNext = pNext->GetNext();

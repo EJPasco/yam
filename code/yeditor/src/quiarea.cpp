@@ -6,40 +6,10 @@
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QLayoutItem>
 
-#include "GuillotineBinPack.h"
-#include "MaxRectsBinPack.h"
-
 YCQUiArea::YCQUiArea(QWidget* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	: QFrame(parent, f)
 	, m_bPressed(false)
 {
-	qsrand(QTime::currentTime().msec());
-
-	// for test
-	/*rbp::GuillotineBinPack binPack(1024, 1024);
-	std::vector<rbp::RectSize> vRectList;
-	rbp::RectSize stSize;
-	int iMax = qrand() % 50 + 1;
-	int iMaxS = 1024 / iMax;
-	for (int i = 0; i < iMax; ++i)
-	{
-		stSize.width = qrand() % iMaxS; stSize.height = qrand() % iMaxS; vRectList.push_back(stSize);
-	}
-
-	binPack.Insert(vRectList, false, rbp::GuillotineBinPack::RectBestShortSideFit, rbp::GuillotineBinPack::SplitMinimizeArea);
-	std::vector<rbp::Rect> vstBound = binPack.GetUsedRectangles();
-
-	std::vector<rbp::Rect>::const_iterator cit = vstBound.begin();
-	std::vector<rbp::Rect>::const_iterator citEnd = vstBound.end();
-	for (; cit != citEnd; ++cit)
-	{
-		const rbp::Rect& rstBound = *cit;
-		YCQUiItem* pItem = new YCQUiItem(this);
-		pItem->move(rstBound.x, rstBound.y);
-		pItem->resize(rstBound.width, rstBound.height);
-		int iColor = 0xff000000 | qrand();
-		pItem->setColor(iColor);
-	}*/
 	//
 }
 
@@ -116,17 +86,19 @@ void YCQUiArea::setSelected(const YCQUiItem* const& rpItem)
 	}
 }
 
-void YCQUiArea::addChildItem(const yam::base::YIFormat*& rpFormat)
+YCQUiItem* YCQUiArea::addChildItem(const yam::base::YIFormat*& rpFormat)
 {
 	if (YNULL == rpFormat->GetColorData())
 	{
-		return;
+		return NULL;
 	}
 	YCQUiItem* pNewItem = new YCQUiItem(this);
 	pNewItem->setFormat(rpFormat);
 	pNewItem->show();
 
 	m_vItemPtr.push_back(pNewItem);
+
+	return pNewItem;
 }
 
 void YCQUiArea::clearChildrenItem()

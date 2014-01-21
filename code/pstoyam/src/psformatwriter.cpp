@@ -56,10 +56,8 @@ void YCPsFormatWriter::Do(FormatRecordPtr& rpRecord)
 	}
 
 	// parse the layer
-	Do(rpRecord->documentInfo->layersDescriptor, rpRecord->documentInfo->bounds, pFormat);
-
-	// prune invisible pixels bound
-	pFormat->Refine();
+	ReadLayerDesc* pLayerDesc = rpRecord->documentInfo->layersDescriptor;
+	Do(pLayerDesc, pFormat);
 
 	base::YCBuffer oBuffer;
 	oBuffer.Begin();
@@ -67,19 +65,17 @@ void YCPsFormatWriter::Do(FormatRecordPtr& rpRecord)
 	oBuffer.End();
 
 	int32 iSize = oBuffer.GetSize();
-	/*int32 iSizeOfSize = sizeof(yint32);
-	FSWrite(rpRecord->dataFork, &iSizeOfSize, &iSize);*/
-
 	void* pBuffer = oBuffer.GetData();
 	FSWrite(rpRecord->dataFork, &iSize, pBuffer);
 }
 
-void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, const VRect& rstBox, base::YIFormat*& rpFormatParent)
+void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, base::YIFormat*& rpFormatParent)
 {
-	if (NULL == rpLayerDesc)
+	if (NULL == rpLayerDesc || NULL == rpLayerDesc->transparency)
 	{
 		return;
 	}
+	VRect stBox = rpLayerDesc->transparency->limitBounds;
 	if (YPSBLENDMODE_LAYERGROUP == rpLayerDesc->blendMode)
 	{
 		ystring sLayerName = rpLayerDesc->name;
@@ -89,14 +85,14 @@ void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, const VRect& rstBox, base
 			rpFormatParent->AddChild(pFormat);
 
 			rpLayerDesc = rpLayerDesc->next;
-			Do(rpLayerDesc, rstBox, pFormat);
+			Do(rpLayerDesc, pFormat);
 		}
 		else
 		{
 			rpFormatParent->GetId() = rpLayerDesc->name;
 
 			rpLayerDesc = rpLayerDesc->next;
-			Do(rpLayerDesc, rstBox, rpFormatParent);
+			Do(rpLayerDesc, rpFormatParent);
 		}
 	}
 	else
@@ -106,7 +102,7 @@ void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, const VRect& rstBox, base
 
 		pFormat->GetId() = rpLayerDesc->name;
 
-		YRect2D stBound = Convert(rstBox);
+		YRect2D stBound = Convert(stBox);
 		ysize iSize = stBound.Size.X * stBound.Size.Y;
 		ycolorptr pColorData = new ycolor[iSize];
 		ycolor iColorDefault = 0x00000000;
@@ -142,24 +138,24 @@ void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, const VRect& rstBox, base
 		{
 			if (EColor_Red == i)
 			{
-				Do(apChannelDesc[i], rstBox, pFormat, YBITOFFSET_RED);
+				Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_RED);
 			}
 			else if (EColor_Green == i)
 			{
-				Do(apChannelDesc[i], rstBox, pFormat, YBITOFFSET_GREEN);
+				Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_GREEN);
 			}
 			else if (EColor_Blue == i)
 			{
-				Do(apChannelDesc[i], rstBox, pFormat, YBITOFFSET_BLUE);
+				Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_BLUE);
 			}
 			else if (EColor_Alpah == i)
 			{
-				Do(apChannelDesc[i], rstBox, pFormat, YBITOFFSET_ALPHA);
+				Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_ALPHA);
 			}
 		}
 
 		rpLayerDesc = rpLayerDesc->next;
-		Do(rpLayerDesc, rstBox, rpFormatParent);
+		Do(rpLayerDesc, rpFormatParent);
 	}
 }
 
@@ -183,9 +179,6 @@ void YCPsFormatWriter::Do(ReadChannelDesc*& rpChannelDesc, const VRect& rstBox, 
 		ycolor& riColorData = *(rpColorData + i);
 		ybuff& rColorElem = *(rpColorElem + i);
 		YSETCOLORBIT(riColorData, rColorElem, riOffset);
-		int a = 0;
-		a =10;
-		//*((ybuff*)&riColorData + (riOffset / (sizeof(ybuff) * YBITCOUNT_INT8))) = rColorElem;
 	}
 }
 
