@@ -31,6 +31,7 @@ void YCQUiItem::mousePressEvent(QMouseEvent* pEvent)
 	m_bPressed = true;
 	m_oPosMousePressStart = pEvent->screenPos();
 
+	onPressed(this);
 	setGrabed(true);
 }
 

@@ -15,6 +15,9 @@ public:
 	explicit YCQUiItem(YCQUiArea* parent = 0, Qt::WindowFlags f = 0);
 	virtual ~YCQUiItem();
 
+Q_SIGNALS:
+	void onPressed(YCQUiItem* pUiItem);
+
 protected:
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void mouseReleaseEvent(QMouseEvent* pEvent);

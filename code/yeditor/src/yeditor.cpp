@@ -184,6 +184,18 @@ void YEditor::onUiTreeContextMenu(QPoint oPos)
 	menu.exec(QCursor::pos());
 }
 
+void YEditor::onPressedUiItem(YCQUiItem* pUiItem)
+{
+	QTreeWidgetItem* pTreeItem = getTreeItem(pUiItem);
+	if (NULL == pTreeItem)
+	{
+		return;
+	}
+	m_UI.formatTree->clearSelection();
+	m_UI.formatTree->setItemSelected(pTreeItem, true);
+	//
+}
+
 void YEditor::onClickedFormatMenuItem_ShowHide()
 {
 	QList<QTreeWidgetItem*> lItems = m_UI.formatTree->selectedItems();
@@ -233,6 +245,7 @@ void YEditor::reloadFormat(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiP
 	}
 
 	YCQUiItem* pUiItem = m_UI.uiArea->addChildItem(rpFormat);
+	connect(pUiItem, SIGNAL(onPressed(YCQUiItem*)), this, SLOT(onPressedUiItem(YCQUiItem*)));
 
 	QTreeWidgetItem* pTreeItem = new QTreeWidgetItem;
 	pTreeItem->setText(0, rpFormat->GetId().c_str());
@@ -298,6 +311,26 @@ YCQUiItem* YEditor::getUiItem(QTreeWidgetItem* pTreeItem) const
 			continue;
 		}
 		return cit->second._pUiItem;
+	}
+	return NULL;
+}
+
+QTreeWidgetItem* YEditor::getTreeItem(YCQUiItem* pUiItem) const
+{
+	if (NULL == pUiItem)
+	{
+		return NULL;
+	}
+
+	ymnamerelationship::const_iterator cit = m_mRelationship.begin();
+	ymnamerelationship::const_iterator citEnd = m_mRelationship.end();
+	for (; cit != citEnd; ++cit)
+	{
+		if (pUiItem != cit->second._pUiItem)
+		{
+			continue;
+		}
+		return cit->second._pTreeItem;
 	}
 	return NULL;
 }

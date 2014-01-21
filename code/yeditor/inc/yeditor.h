@@ -26,7 +26,7 @@ public:
 	YEditor(QWidget* pParent = NULL);
 	virtual ~YEditor();
 
-public slots:
+public Q_SLOTS:
 	void onClickedOpen();
 	void onClickedSave();
 	void onClickedExport();
@@ -35,10 +35,13 @@ public slots:
 	void onFormatTreeContextMenu(QPoint oPos);
 	void onUiTreeContextMenu(QPoint oPos);
 
-public slots:
+public Q_SLOTS:
+	void onPressedUiItem(YCQUiItem* pUiItem);
+
+public Q_SLOTS:
 	void onClickedFormatMenuItem_ShowHide();
 
-public slots:
+public Q_SLOTS:
 	void onClickedUiWidgetMenuItem_CreateScene();
 	void onClickedUiWidgetMenuItem_CreatePanel();
 	void onClickedUiWidgetMenuItem_CreateImage();
@@ -49,6 +52,7 @@ private:
 	void reloadWidget(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
 	QString getFullName(const yam::base::YITree* pTree);
 	YCQUiItem* getUiItem(QTreeWidgetItem* pTreeItem) const;
+	QTreeWidgetItem* getTreeItem(YCQUiItem* pUiItem) const;
 
 private:
 	Ui_MainWindow			m_UI;
