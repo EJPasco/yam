@@ -44,6 +44,7 @@ public:
     QAction *actionBarExport;
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout_3;
+    YCQUiArea *formatArea;
     YCQUiArea *uiArea;
     QMenuBar *menubar;
     QMenu *menuFile;
@@ -93,6 +94,13 @@ public:
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         horizontalLayout_3 = new QHBoxLayout(centralwidget);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        formatArea = new YCQUiArea(centralwidget);
+        formatArea->setObjectName(QStringLiteral("formatArea"));
+        formatArea->setFrameShape(QFrame::Panel);
+        formatArea->setFrameShadow(QFrame::Sunken);
+
+        horizontalLayout_3->addWidget(formatArea);
+
         uiArea = new YCQUiArea(centralwidget);
         uiArea->setObjectName(QStringLiteral("uiArea"));
         uiArea->setFrameShape(QFrame::Panel);

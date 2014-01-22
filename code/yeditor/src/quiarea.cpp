@@ -5,10 +5,12 @@
 #include <QtCore/QTime>
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QLayoutItem>
+#include <QtGui/QPainter>
 
 YCQUiArea::YCQUiArea(QWidget* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	: QFrame(parent, f)
 	, m_bPressed(false)
+	, m_fScale(1.0f)
 {
 	//
 }
@@ -25,6 +27,14 @@ YCQUiArea::~YCQUiArea()
 	//
 }
 
+/*void YCQUiArea::paintEvent(QPaintEvent* pEvent)
+{
+	qDebug("paintEvent %f", m_fScale);
+	QPainter oPainter(this);
+	oPainter.scale(m_fScale, m_fScale);
+	//
+}*/
+
 void YCQUiArea::mousePressEvent(QMouseEvent* pEvent)
 {
 	m_bPressed = true;
@@ -38,20 +48,6 @@ void YCQUiArea::mouseReleaseEvent(QMouseEvent* pEvent)
 	//
 }
 
-void YCQUiArea::mouseDoubleClickEvent(QMouseEvent* pEvent)
-{
-	m_bPressed = false;
-
-	const QObjectList& lChildren = this->children();
-	QObjectList::const_iterator cit = lChildren.begin();
-	QObjectList::const_iterator citEnd = lChildren.end();
-	for (; cit != citEnd; ++cit)
-	{
-		YCQUiItem* pItem = (YCQUiItem*)(*cit);
-		pItem->setSelected(false);
-	}
-}
-
 void YCQUiArea::mouseMoveEvent(QMouseEvent* pEvent)
 {
 	if (!m_bPressed)
@@ -59,38 +55,86 @@ void YCQUiArea::mouseMoveEvent(QMouseEvent* pEvent)
 		return;
 	}
 	QPointF oOffset = pEvent->screenPos() - m_oPosMousePressStart;
-	const QObjectList& lChildren = this->children();
-	QObjectList::const_iterator cit = lChildren.begin();
-	QObjectList::const_iterator citEnd = lChildren.end();
-	for (; cit != citEnd; ++cit)
+	yvuiitemptr::iterator it = m_vItemPtr.begin();
+	yvuiitemptr::iterator itEnd = m_vItemPtr.end();
+	for (; it != itEnd; ++it)
 	{
-		YCQUiItem* pItem = (YCQUiItem*)(*cit);
-		pItem->move(pItem->pos() + oOffset.toPoint());
+		YCQUiItem*& rpItem = *it;
+		if (NULL == rpItem)
+		{
+			continue;
+		}
+		rpItem->move(rpItem->pos() + oOffset.toPoint());
 	}
 	m_oPosMousePressStart = pEvent->screenPos();
 }
 
-void YCQUiArea::setSelected(const YCQUiItem* const& rpItem)
+#ifndef QT_NO_WHEELEVENT
+void YCQUiArea::wheelEvent(QWheelEvent* pEvent)
 {
-	const QObjectList& lChildren = this->children();
-	QObjectList::const_iterator cit = lChildren.begin();
-	QObjectList::const_iterator citEnd = lChildren.end();
-	for (; cit != citEnd; ++cit)
+	qDebug("wheelevent %d", pEvent->delta());
+
+	//TODO: too many magic number
+	qreal fScale = m_fScale;
+	if (0 > pEvent->delta())
 	{
-		YCQUiItem* pItem = (YCQUiItem*)(*cit);
-		if (NULL == pItem)
+		fScale -= 0.05f;
+	}
+	else
+	{
+		fScale += 0.05f;
+	}
+	if (0.1 > fScale || 20.0f < fScale)
+	{
+		return;
+	}
+	m_fScale = fScale;
+
+	/*yvuiitemptr::iterator it = m_vItemPtr.begin();
+	yvuiitemptr::iterator itEnd = m_vItemPtr.end();
+	for (; it != itEnd; ++it)
+	{
+		YCQUiItem*& rpItem = *it;
+		//QPoint rpItem->pos();
+		if (NULL == rpItem)
 		{
 			continue;
 		}
-		if (rpItem == pItem)
+		QSize ss = rpItem->size() * m_fScale;
+		rpItem->resize(ss);
+		rpItem->setScale(m_fScale);
+		rpItem->repaint();
+	}*/
+	//
+}
+#endif
+
+void YCQUiArea::setSelected(const YCQUiItem* const& rpSelectedItem)
+{
+	yvuiitemptr::iterator it = m_vItemPtr.begin();
+	yvuiitemptr::iterator itEnd = m_vItemPtr.end();
+	for (; it != itEnd; ++it)
+	{
+		YCQUiItem*& rpItem = *it;
+		if (NULL == rpItem)
 		{
-			pItem->setSelected(true);
+			continue;
+		}
+		if (rpItem == rpSelectedItem)
+		{
+			rpItem->setSelected(true);
+			rpItem->raise();
 		}
 		else
 		{
-			pItem->setSelected(false);
+			rpItem->setSelected(false);
 		}
 	}
+}
+
+void YCQUiArea::setScale(const qreal& rfScale)
+{
+	m_fScale = rfScale;
 }
 
 YCQUiItem* YCQUiArea::addChildItem(const yam::base::YIFormat*& rpFormat)
@@ -101,6 +145,7 @@ YCQUiItem* YCQUiArea::addChildItem(const yam::base::YIFormat*& rpFormat)
 	}
 	YCQUiItem* pNewItem = new YCQUiItem(this);
 	pNewItem->setFormat(rpFormat);
+	pNewItem->setScale(m_fScale);
 	pNewItem->show();
 
 	m_vItemPtr.push_back(pNewItem);

@@ -12,7 +12,12 @@ YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	, m_bPressed(false)
 	, m_bGrabed(false)
 	, m_bSelected(false)
+	, m_fScale(1.0f)
 {
+	QSizePolicy policy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	policy.setHeightForWidth(true);
+	setSizePolicy(policy);
+	//setScaledContents(true);
 	//
 }
 
@@ -25,53 +30,12 @@ YCQUiItem::~YCQUiItem()
 	}
 }
 
-void YCQUiItem::mousePressEvent(QMouseEvent* pEvent)
-{
-	// can't move item
-	m_bPressed = true;
-	m_oPosMousePressStart = pEvent->screenPos();
-
-	onPressed(this);
-	setGrabed(true);
-}
-
-void YCQUiItem::mouseReleaseEvent(QMouseEvent* pEvent)
-{
-	m_bPressed = false;
-
-	setGrabed(false);
-}
-
-void YCQUiItem::mouseDoubleClickEvent(QMouseEvent* pEvent)
-{
-	m_bPressed = false;
-
-	if (m_bSelected)
-	{
-		setSelected(false);
-	}
-	else
-	{
-		setSelected(true);
-	}
-}
-
-void YCQUiItem::mouseMoveEvent(QMouseEvent* pEvent)
-{
-	if (!m_bPressed)
-	{
-		return;
-	}
-	QPointF oOffset = pEvent->screenPos() - m_oPosMousePressStart;
-	move(pos() + oOffset.toPoint());
-	m_oPosMousePressStart = pEvent->screenPos();
-}
-
 void YCQUiItem::paintEvent(QPaintEvent* pEvent)
 {
-	qDebug("YCQUiItem::paintEvent");
+	//qDebug("YCQUiItem::paintEvent %f", m_fScale);
 
 	QPainter oPainter(this);
+	oPainter.scale(m_fScale, m_fScale);
 
 	if (NULL != m_pImage)
 	{
@@ -94,6 +58,50 @@ void YCQUiItem::paintEvent(QPaintEvent* pEvent)
 		oPainter.drawLine(QPoint(0, size().height() - 1), QPoint(size().width() - 1, size().height() - 1));
 		oPainter.drawLine(QPoint(size().width() - 1, 0), QPoint(size().width() - 1, size().height() - 1));
 	}
+	//
+}
+
+void YCQUiItem::mousePressEvent(QMouseEvent* pEvent)
+{
+	// can't move item
+	m_bPressed = true;
+	m_oPosMousePressStart = pEvent->screenPos();
+
+	onPressed(this);
+	setGrabed(true);
+	setSelected(true);
+}
+
+void YCQUiItem::mouseReleaseEvent(QMouseEvent* pEvent)
+{
+	m_bPressed = false;
+
+	setGrabed(false);
+}
+
+/*void YCQUiItem::mouseDoubleClickEvent(QMouseEvent* pEvent)
+{
+	m_bPressed = false;
+
+	if (m_bSelected)
+	{
+		setSelected(false);
+	}
+	else
+	{
+		setSelected(true);
+	}
+}*/
+
+void YCQUiItem::mouseMoveEvent(QMouseEvent* pEvent)
+{
+	if (!m_bPressed)
+	{
+		return;
+	}
+	QPointF oOffset = pEvent->screenPos() - m_oPosMousePressStart;
+	move(pos() + oOffset.toPoint());
+	m_oPosMousePressStart = pEvent->screenPos();
 }
 
 void YCQUiItem::setGrabed(const bool& rbGrabed)
@@ -170,6 +178,11 @@ void YCQUiItem::setColor(const uint& riColor)
 			m_pImage->setPixel(i, j, riColor);
 		}
 	}
+}
+
+void YCQUiItem::setScale(const qreal& rfScale)
+{
+	m_fScale = rfScale;
 }
 
 QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const

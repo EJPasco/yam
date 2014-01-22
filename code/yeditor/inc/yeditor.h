@@ -48,6 +48,7 @@ public Q_SLOTS:
 	void onClickedUiWidgetMenuItem_CreateButton();
 
 private:
+	void reloadFile(const yam::ystring& rsFileName);
 	void reloadFormat(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
 	void reloadWidget(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
 	QString getFullName(const yam::base::YITree* pTree);
@@ -58,6 +59,7 @@ private:
 	Ui_MainWindow			m_UI;
 	yam::base::YCTree		m_FileTreeData;
 	ymnamerelationship		m_mRelationship;
+	yam::ystring			m_sFileName;
 
 public:
 	const static QString	ms_sTitle;

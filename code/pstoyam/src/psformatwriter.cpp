@@ -76,7 +76,8 @@ void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, base::YIFormat* pFormatPa
 		return;
 	}
 	VRect stBox = rpLayerDesc->transparency->limitBounds;
-	if (YPSBLENDMODE_LAYERGROUP == rpLayerDesc->blendMode)
+	if (FALSE == rpLayerDesc->isPixelBased)
+	//if (YPSBLENDMODE_LAYERGROUP == rpLayerDesc->blendMode)
 	{
 		ystring sLayerName = rpLayerDesc->name;
 		if (0 >= sLayerName.size())

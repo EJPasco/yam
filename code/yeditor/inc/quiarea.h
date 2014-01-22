@@ -19,13 +19,19 @@ public:
 	virtual ~YCQUiArea();
 
 protected:
+	/*virtual void paintEvent(QPaintEvent* pEvent);*/
+
+protected:
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void mouseReleaseEvent(QMouseEvent* pEvent);
-	virtual void mouseDoubleClickEvent(QMouseEvent* pEvent);
 	virtual void mouseMoveEvent(QMouseEvent* pEvent);
+#ifndef QT_NO_WHEELEVENT
+	virtual void wheelEvent(QWheelEvent* pEvent);
+#endif
 
 public:
-	void setSelected(const YCQUiItem* const& rpItem);
+	void setSelected(const YCQUiItem* const& rpSelectedItem);
+	void setScale(const qreal& rfScale);
 	YCQUiItem* addChildItem(const yam::base::YIFormat*& rpFormat);
 	void clearChildrenItem();
 
@@ -33,6 +39,7 @@ private:
 	bool			m_bPressed;
 	QPointF			m_oPosMousePressStart;
 	yvuiitemptr		m_vItemPtr;
+	qreal			m_fScale;
 };
 
 #endif // Y_QUIAREA_H

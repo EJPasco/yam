@@ -38,46 +38,12 @@ void YEditor::onClickedOpen()
 {
 	qDebug("on clicked open");
 
-	m_UI.uiArea->clearChildrenItem();
-	m_UI.formatTree->clear();
-	m_mRelationship.clear();
-
-	int isize = 0;
-	if (m_UI.uiArea->layout() != NULL)
-	{
-		isize = m_UI.uiArea->layout()->children().size();
-	}
-
-	yam::ystring sFileName = "";
+	m_sFileName = "";
 	{
 		QString qsFileName = QFileDialog::getOpenFileName(this, tr("Open a yui file"), "", tr("YUI (*.yui)"));
-		sFileName.append(qsFileName.toLocal8Bit());
+		m_sFileName.append(qsFileName.toLocal8Bit());
 	}
-	
-	yam::storage::YCFileReader file;
-	file.Open(sFileName);
-	yam::base::YCBuffer buffer;
-	file >> buffer;
-	file.Close();
-	m_FileTreeData.Clear();
-	m_FileTreeData << buffer;
-
-	{
-		yam::base::YITree* pTreePsFormat = m_FileTreeData.FindChild(YNAME_FILE_PSFORMAT);
-		if (YNULL != pTreePsFormat && YOBJECT_GETCLASSNAME(yam::base::YCFormat) == pTreePsFormat->GetClassName())
-		{
-			const yam::base::YIFormat* pFormat = (yam::base::YIFormat*)pTreePsFormat;
-			reloadFormat(pFormat, NULL, NULL);
-		}
-	}
-	{
-		yam::base::YITree* pTreeUiWidget = m_FileTreeData.FindChild(YNAME_FILE_UIWIDGET);
-		if (YNULL != pTreeUiWidget && YOBJECT_GETCLASSNAME(yam::base::YCWidget) == pTreeUiWidget->GetClassName())
-		{
-			const yam::base::YIWidget* pWidget = (yam::base::YIWidget*)pTreeUiWidget;
-			reloadWidget(pWidget, NULL, NULL);
-		}
-	}
+	reloadFile(m_sFileName);
 }
 
 void YEditor::onClickedSave()
@@ -137,13 +103,12 @@ void YEditor::onClickedExport()
 
 void YEditor::onClickedSync()
 {
-	qDebug("on clicked sync");
-	//
+	reloadFile(m_sFileName);
 }
 
 void YEditor::onSelectedFormatTree(QTreeWidgetItem* pTreeItem, int iIndex)
 {
-	m_UI.uiArea->setSelected(getUiItem(pTreeItem));
+	m_UI.formatArea->setSelected(getUiItem(pTreeItem));
 }
 
 void YEditor::onFormatTreeContextMenu(QPoint oPos)
@@ -191,9 +156,7 @@ void YEditor::onPressedUiItem(YCQUiItem* pUiItem)
 	{
 		return;
 	}
-	m_UI.formatTree->clearSelection();
-	m_UI.formatTree->setItemSelected(pTreeItem, true);
-	//
+	m_UI.formatTree->setCurrentItem(pTreeItem);
 }
 
 void YEditor::onClickedFormatMenuItem_ShowHide()
@@ -237,6 +200,46 @@ void YEditor::onClickedUiWidgetMenuItem_CreateButton()
 	//
 }
 
+void YEditor::reloadFile(const yam::ystring& rsFileName)
+{
+	m_sFileName = rsFileName;
+
+	yam::base::YCBuffer buffer;
+	{
+		yam::storage::YCFileReader file;
+		file.Open(m_sFileName);
+		file >> buffer;
+		file.Close();
+	}
+
+	m_UI.formatArea->clearChildrenItem();
+	m_UI.formatArea->setScale(1.0f);
+	m_UI.formatTree->clear();
+	m_UI.uiArea->clearChildrenItem();
+	m_UI.uiArea->setScale(1.0f);
+	m_mRelationship.clear();
+	m_FileTreeData.Clear();
+
+	m_FileTreeData << buffer;
+
+	{
+		yam::base::YITree* pTreePsFormat = m_FileTreeData.FindChild(YNAME_FILE_PSFORMAT);
+		if (YNULL != pTreePsFormat && YOBJECT_GETCLASSNAME(yam::base::YCFormat) == pTreePsFormat->GetClassName())
+		{
+			const yam::base::YIFormat* pFormat = (yam::base::YIFormat*)pTreePsFormat;
+			reloadFormat(pFormat, NULL, NULL);
+		}
+	}
+	{
+		yam::base::YITree* pTreeUiWidget = m_FileTreeData.FindChild(YNAME_FILE_UIWIDGET);
+		if (YNULL != pTreeUiWidget && YOBJECT_GETCLASSNAME(yam::base::YCWidget) == pTreeUiWidget->GetClassName())
+		{
+			const yam::base::YIWidget* pWidget = (yam::base::YIWidget*)pTreeUiWidget;
+			reloadWidget(pWidget, NULL, NULL);
+		}
+	}
+}
+
 void YEditor::reloadFormat(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent)
 {
 	if (YNULL == rpFormat)
@@ -244,7 +247,7 @@ void YEditor::reloadFormat(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiP
 		return;
 	}
 
-	YCQUiItem* pUiItem = m_UI.uiArea->addChildItem(rpFormat);
+	YCQUiItem* pUiItem = m_UI.formatArea->addChildItem(rpFormat);
 	connect(pUiItem, SIGNAL(onPressed(YCQUiItem*)), this, SLOT(onPressedUiItem(YCQUiItem*)));
 
 	QTreeWidgetItem* pTreeItem = new QTreeWidgetItem;
