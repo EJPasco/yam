@@ -343,6 +343,9 @@ void YEditor::onClickedUiMenuItem_CreateScene()
 	stRelationship._pUiItem = pUiItem;
 	stRelationship._pTreeItem = pTreeItem;
 	m_mRelationship.insert(std::make_pair(getFullName(pWidget), stRelationship));
+
+	delete pWidget;
+	pWidget = YNULL;
 }
 
 void YEditor::onClickedUiMenuItem_CreatePanel()
