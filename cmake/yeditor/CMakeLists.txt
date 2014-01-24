@@ -43,6 +43,7 @@ set(LIBRARY_FILE_LIST
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 set(CODE_FILE_LIST_EDITOR
+    ${CODE_PATH_YEDITOR}/inc/yeditorcommon.h
     ${CODE_PATH_YEDITOR}/inc/yeditor.h
     ${CODE_PATH_YEDITOR}/src/yeditor.cpp
     ${CODE_PATH_YEDITOR}/inc/quiarea.h

@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 	}
 
 	{
-		ybuff iColorElem = 0xAB;
+		ybuff iColorElem = (ybuff)0xAB;
 		ycolor iColorData = 0x12345678;
 		yint32 iOffset = 0x10 / (sizeof(ybuff) * YBITCOUNT_INT8);
 		*((ybuff*)&iColorData + iOffset) = iColorElem;

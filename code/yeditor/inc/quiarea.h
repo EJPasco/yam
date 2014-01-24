@@ -29,8 +29,10 @@ protected:
 	virtual void mouseMoveEvent(QMouseEvent* pEvent);
 
 public:
+	void setGrabable(const bool& rbGrabable);
 	void setSelected(const YCQUiItem* const& rpSelectedItem);
-	YCQUiItem* addChildItem(const yam::base::YIFormat*& rpFormat);
+	YCQUiItem* addChildItem(const yam::base::YIFormat* pFormat);
+	YCQUiItem* addChildItem(const yam::base::YIWidget* pWidget);
 	void clearChildrenItem();
 	void toTiled();
 
@@ -41,6 +43,7 @@ private:
 	bool			m_bPressed;
 	QPointF			m_oPosMousePressStart;
 	yvuiitemptr		m_vItemPtr;
+	bool			m_bGrabable;
 };
 
 #endif // Y_QUIAREA_H

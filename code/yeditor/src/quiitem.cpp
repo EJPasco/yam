@@ -12,6 +12,8 @@ YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	, m_bPressed(false)
 	, m_bGrabed(false)
 	, m_bSelected(false)
+	, m_fAlpha(1.0f)
+	, m_bGrabable(true)
 {
 	QSizePolicy policy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	policy.setHeightForWidth(true);
@@ -33,6 +35,7 @@ void YCQUiItem::paintEvent(QPaintEvent* pEvent)
 
 	if (NULL != m_pImage)
 	{
+		oPainter.setOpacity(m_fAlpha);
 		oPainter.drawImage(0, 0, *m_pImage);
 	}
 
@@ -60,12 +63,14 @@ void YCQUiItem::paintEvent(QPaintEvent* pEvent)
 
 void YCQUiItem::mousePressEvent(QMouseEvent* pEvent)
 {
-	// can't move item
-	m_bPressed = true;
-	m_oPosMousePressStart = pEvent->screenPos();
-
 	onPressed(this);
-	setGrabed(true);
+	if (m_bGrabable)
+	{
+		m_bPressed = true;
+		m_oPosMousePressStart = pEvent->screenPos();
+
+		setGrabed(true);
+	}
 	setSelected(true);
 }
 
@@ -85,6 +90,11 @@ void YCQUiItem::mouseMoveEvent(QMouseEvent* pEvent)
 	QPointF oOffset = pEvent->screenPos() - m_oPosMousePressStart;
 	move(pos() + oOffset.toPoint());
 	m_oPosMousePressStart = pEvent->screenPos();
+}
+
+void YCQUiItem::setGrabable(const bool& rbGrabable)
+{
+	m_bGrabable = rbGrabable;
 }
 
 void YCQUiItem::setGrabed(const bool& rbGrabed)
@@ -116,17 +126,61 @@ void YCQUiItem::setSelected(const bool& rbSelected)
 
 void YCQUiItem::setFormat(const yam::base::YIFormat*& rpFormat)
 {
-	setFormat(rpFormat->GetBound(), rpFormat->GetColorData());
+	if (YNULL == rpFormat)
+	{
+		return;
+	}
+	setImage(rpFormat->GetBound(), rpFormat->GetColorData());
+	if (YNULL == rpFormat->GetColorData())
+	{
+		setAlpah(0.2f);
+	}
+	else
+	{
+		setAlpah(1.0f);
+	}
 
 	repaint();
 }
 
-void YCQUiItem::setFormat(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData)
+void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
+{
+	if (NULL == rpWidget)
+	{
+		return;
+	}
+	setImage(rpWidget->GetBound(), YNULL);
+	setColor(qRgba(qrand(), qrand(), qrand(), qrand()));
+	setAlpah(0.2f);
+
+	repaint();
+}
+
+void YCQUiItem::setColor(const uint& riColor)
+{
+	if (NULL == m_pImage)
+	{
+		m_pImage = new QImage(size(), QImage::Format_RGBA8888);
+	}
+	for (int j = 0; j < size().height(); ++j)
+	{
+		for (int i = 0; i < size().width(); ++i)
+		{
+			m_pImage->setPixel(i, j, riColor);
+		}
+	}
+}
+
+void YCQUiItem::setAlpah(const qreal& rfAlpha)
+{
+	m_fAlpha = rfAlpha;
+}
+
+void YCQUiItem::setImage(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData)
 {
 	move(rstRect.Pos.X, rstRect.Pos.Y);
 	resize(rstRect.Size.X, rstRect.Size.Y);
 
-	//setColor(convertFromYColor(0xff0000ff));
 	if (NULL != m_pImage)
 	{
 		delete m_pImage;
@@ -146,21 +200,6 @@ void YCQUiItem::setFormat(const yam::YRect2D& rstRect, const yam::ycolorptr& rpC
 	}
 
 	repaint();
-}
-
-void YCQUiItem::setColor(const uint& riColor)
-{
-	if (NULL == m_pImage)
-	{
-		m_pImage = new QImage(size(), QImage::Format_RGBA8888);
-	}
-	for (int j = 0; j < size().height(); ++j)
-	{
-		for (int i = 0; i < size().width(); ++i)
-		{
-			m_pImage->setPixel(i, j, riColor);
-		}
-	}
 }
 
 QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const

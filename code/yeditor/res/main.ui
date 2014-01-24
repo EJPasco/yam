@@ -97,8 +97,16 @@
     <addaction name="menuDock"/>
     <addaction name="menuArea"/>
    </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="actionEditor"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuWindow"/>
+   <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="resDock">
@@ -109,7 +117,7 @@
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
-    <string>Resource</string>
+    <string>Resource Dock</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -120,6 +128,9 @@
       <widget class="QTreeWidget" name="resTree">
        <property name="contextMenuPolicy">
         <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Panel</enum>
        </property>
        <column>
         <property name="text">
@@ -135,10 +146,23 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
-         <widget class="QTableWidget" name="resPropertyTableWidget">
+         <widget class="QTreeWidget" name="resPropertyTreeWidget">
           <property name="frameShape">
            <enum>QFrame::Panel</enum>
           </property>
+          <property name="columnCount">
+           <number>2</number>
+          </property>
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string notr="true">2</string>
+           </property>
+          </column>
          </widget>
         </item>
        </layout>
@@ -171,18 +195,8 @@
         <enum>QFrame::Panel</enum>
        </property>
        <property name="columnCount">
-        <number>2</number>
+        <number>0</number>
        </property>
-       <column>
-        <property name="text">
-         <string notr="true">1</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string notr="true">2</string>
-        </property>
-       </column>
       </widget>
      </item>
      <item>
@@ -192,46 +206,23 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QToolBox" name="uiPropertyBox">
-          <property name="currentIndex">
-           <number>0</number>
+         <widget class="QTreeWidget" name="uiPropertyTreeWidget">
+          <property name="frameShape">
+           <enum>QFrame::Panel</enum>
           </property>
-          <widget class="QWidget" name="uiBasicPage">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>185</width>
-             <height>182</height>
-            </rect>
+          <property name="columnCount">
+           <number>2</number>
+          </property>
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
            </property>
-           <attribute name="label">
-            <string>Basic</string>
-           </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <widget class="QTableWidget" name="uiBasicTableWidget">
-              <property name="frameShape">
-               <enum>QFrame::Panel</enum>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="uiAdvancedPage">
-           <attribute name="label">
-            <string>Advanced</string>
-           </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
-            <item>
-             <widget class="QTableWidget" name="uiAdvancedTableWidget">
-              <property name="frameShape">
-               <enum>QFrame::Panel</enum>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
+          </column>
+          <column>
+           <property name="text">
+            <string notr="true">2</string>
+           </property>
+          </column>
          </widget>
         </item>
        </layout>
@@ -258,6 +249,11 @@
    <addaction name="separator"/>
    <addaction name="actionBarExport"/>
    <addaction name="actionBarSync"/>
+   <addaction name="separator"/>
+   <addaction name="actionBarDockRes"/>
+   <addaction name="actionBarAreaRes"/>
+   <addaction name="actionBarDockUi"/>
+   <addaction name="actionBarAreaUi"/>
   </widget>
   <action name="actionOpen">
    <property name="text">
@@ -354,6 +350,60 @@
    </property>
    <property name="text">
     <string>Ui</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Document</string>
+   </property>
+  </action>
+  <action name="actionEditor">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionBarDockRes">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Resource Dock</string>
+   </property>
+  </action>
+  <action name="actionBarAreaRes">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Resource Area</string>
+   </property>
+  </action>
+  <action name="actionBarDockUi">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Ui Dock</string>
+   </property>
+  </action>
+  <action name="actionBarAreaUi">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Ui Area</string>
    </property>
   </action>
  </widget>
@@ -486,7 +536,7 @@
    <sender>resTree</sender>
    <signal>itemClicked(QTreeWidgetItem*,int)</signal>
    <receiver>MainWindow</receiver>
-   <slot>onSelectedResTree(QTreeWidgetItem*,int)</slot>
+   <slot>onResTreeItemSelected(QTreeWidgetItem*,int)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>136</x>
@@ -690,12 +740,124 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>resPropertyTreeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onResPropertyTreeItemChanged(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>110</x>
+     <y>397</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>uiTree</sender>
+   <signal>itemClicked(QTreeWidgetItem*,int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onUiTreeItemSelected(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>740</x>
+     <y>170</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>uiPropertyTreeWidget</sender>
+   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onUiPropertyTreeItemChanged(QTreeWidgetItem*,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>740</x>
+     <y>397</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionBarDockRes</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onClickedMenuWindowDockRes()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionBarAreaRes</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onClickedMenuWindowAreaRes()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionBarAreaUi</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onClickedMenuWindowAreaUi()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionBarDockUi</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onClickedMenuWindowDockUi()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onClickedOpen()</slot>
   <slot>onClickedSave()</slot>
   <slot>onClickedSync()</slot>
-  <slot>onSelectedResTree(QTreeWidgetItem*,int)</slot>
+  <slot>onResTreeItemSelected(QTreeWidgetItem*,int)</slot>
   <slot>onClickedExport()</slot>
   <slot>onResTreeContextMenu(QPoint)</slot>
   <slot>onUiTreeContextMenu(QPoint)</slot>
@@ -707,5 +869,8 @@
   <slot>onResAreaVisibilityChanged(bool)</slot>
   <slot>onUiDockVisibilityChanged(bool)</slot>
   <slot>onUiAreaVisibilityChanged(bool)</slot>
+  <slot>onResPropertyTreeItemChanged(QTreeWidgetItem*,int)</slot>
+  <slot>onUiTreeItemSelected(QTreeWidgetItem*,int)</slot>
+  <slot>onUiPropertyTreeItemChanged(QTreeWidgetItem*,int)</slot>
  </slots>
 </ui>

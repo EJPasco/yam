@@ -39,7 +39,7 @@ void YCPsFormatWriter::Do(FormatRecordPtr& rpRecord)
 	// keep other data
 	base::YIFormat* pFormat = YNULL;
 	{
-		base::YITree* pTreePsFormat = oTreeData.FindChild("psformat");
+		base::YITree* pTreePsFormat = oTreeData.FindChild(YFILE_KEY_RESOURCE);
 		if (YNULL != pTreePsFormat && YOBJECT_GETCLASSNAME(base::YCFormat) == pTreePsFormat->GetClassName())
 		{
 			pFormat = (base::YIFormat*)pTreePsFormat;
@@ -48,7 +48,7 @@ void YCPsFormatWriter::Do(FormatRecordPtr& rpRecord)
 	if (YNULL == pFormat)
 	{
 		pFormat = oTreeData.NewChild<base::YCFormat>();
-		pFormat->GetId() = "psformat";
+		pFormat->GetId() = YFILE_KEY_RESOURCE;
 	}
 	else
 	{

@@ -13,6 +13,7 @@
 YCQUiArea::YCQUiArea(QWidget* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	: QFrame(parent, f)
 	, m_bPressed(false)
+	, m_bGrabable(true)
 {
 	//
 }
@@ -75,6 +76,11 @@ void YCQUiArea::mouseMoveEvent(QMouseEvent* pEvent)
 	m_oPosMousePressStart = pEvent->screenPos();
 }
 
+void YCQUiArea::setGrabable(const bool& rbGrabable)
+{
+	m_bGrabable = rbGrabable;
+}
+
 void YCQUiArea::setSelected(const YCQUiItem* const& rpSelectedItem)
 {
 	yvuiitemptr::iterator it = m_vItemPtr.begin();
@@ -98,18 +104,30 @@ void YCQUiArea::setSelected(const YCQUiItem* const& rpSelectedItem)
 	}
 }
 
-YCQUiItem* YCQUiArea::addChildItem(const yam::base::YIFormat*& rpFormat)
+YCQUiItem* YCQUiArea::addChildItem(const yam::base::YIFormat* pFormat)
 {
-	if (YNULL == rpFormat->GetColorData())
+	if (YNULL == pFormat->GetColorData())
 	{
 		return NULL;
 	}
 	YCQUiItem* pNewItem = new YCQUiItem(this);
-	pNewItem->setFormat(rpFormat);
+	pNewItem->setGrabable(m_bGrabable);
+	pNewItem->setFormat(pFormat);
 	pNewItem->show();
 
 	m_vItemPtr.push_back(pNewItem);
 
+	return pNewItem;
+}
+
+YCQUiItem* YCQUiArea::addChildItem(const yam::base::YIWidget* pWidget)
+{
+	YCQUiItem* pNewItem = new YCQUiItem(this);
+	pNewItem->setGrabable(m_bGrabable);
+	pNewItem->setWidget(pWidget);
+	pNewItem->show();
+
+	m_vItemPtr.push_back(pNewItem);
 	return pNewItem;
 }
 

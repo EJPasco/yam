@@ -37,8 +37,8 @@
 // #pragma YCOMPILE_MESSAGE_TODO("write message in here")
 // 
 
-#define FILE_KEY_FORMAT					"format"
-#define FILE_KEY_WIDGET					"widget"
+#define YFILE_KEY_RESOURCE				"res"
+#define YFILE_KEY_UI					"ui"
 
 
 #define YOBJECT_DECL(_Class)		\

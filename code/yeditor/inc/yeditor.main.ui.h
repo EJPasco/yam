@@ -21,9 +21,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QToolBar>
-#include <QtWidgets/QToolBox>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -48,6 +46,12 @@ public:
     QAction *actionFff;
     QAction *actionAreaRes;
     QAction *actionAreaUi;
+    QAction *actionHelp;
+    QAction *actionEditor;
+    QAction *actionBarDockRes;
+    QAction *actionBarAreaRes;
+    QAction *actionBarDockUi;
+    QAction *actionBarAreaUi;
     QWidget *centralwidget;
     QHBoxLayout *horizontalLayout_3;
     QGroupBox *resAreaGroupBox;
@@ -61,6 +65,7 @@ public:
     QMenu *menuWindow;
     QMenu *menuDock;
     QMenu *menuArea;
+    QMenu *menuAbout;
     QStatusBar *statusbar;
     QDockWidget *resDock;
     QWidget *resDockLayout;
@@ -68,20 +73,14 @@ public:
     QTreeWidget *resTree;
     QGroupBox *resPropertyGroupBox;
     QVBoxLayout *verticalLayout_7;
-    QTableWidget *resPropertyTableWidget;
+    QTreeWidget *resPropertyTreeWidget;
     QDockWidget *uiDock;
     QWidget *uiTreeLayout;
     QVBoxLayout *verticalLayout;
     QTreeWidget *uiTree;
     QGroupBox *uiPropertyGroupBox;
     QVBoxLayout *verticalLayout_6;
-    QToolBox *uiPropertyBox;
-    QWidget *uiBasicPage;
-    QVBoxLayout *verticalLayout_4;
-    QTableWidget *uiBasicTableWidget;
-    QWidget *uiAdvancedPage;
-    QVBoxLayout *verticalLayout_5;
-    QTableWidget *uiAdvancedTableWidget;
+    QTreeWidget *uiPropertyTreeWidget;
     QToolBar *toolBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -126,6 +125,26 @@ public:
         actionAreaUi->setObjectName(QStringLiteral("actionAreaUi"));
         actionAreaUi->setCheckable(true);
         actionAreaUi->setChecked(true);
+        actionHelp = new QAction(MainWindow);
+        actionHelp->setObjectName(QStringLiteral("actionHelp"));
+        actionEditor = new QAction(MainWindow);
+        actionEditor->setObjectName(QStringLiteral("actionEditor"));
+        actionBarDockRes = new QAction(MainWindow);
+        actionBarDockRes->setObjectName(QStringLiteral("actionBarDockRes"));
+        actionBarDockRes->setCheckable(true);
+        actionBarDockRes->setChecked(true);
+        actionBarAreaRes = new QAction(MainWindow);
+        actionBarAreaRes->setObjectName(QStringLiteral("actionBarAreaRes"));
+        actionBarAreaRes->setCheckable(true);
+        actionBarAreaRes->setChecked(true);
+        actionBarDockUi = new QAction(MainWindow);
+        actionBarDockUi->setObjectName(QStringLiteral("actionBarDockUi"));
+        actionBarDockUi->setCheckable(true);
+        actionBarDockUi->setChecked(true);
+        actionBarAreaUi = new QAction(MainWindow);
+        actionBarAreaUi->setObjectName(QStringLiteral("actionBarAreaUi"));
+        actionBarAreaUi->setCheckable(true);
+        actionBarAreaUi->setChecked(true);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         horizontalLayout_3 = new QHBoxLayout(centralwidget);
@@ -170,6 +189,8 @@ public:
         menuDock->setObjectName(QStringLiteral("menuDock"));
         menuArea = new QMenu(menuWindow);
         menuArea->setObjectName(QStringLiteral("menuArea"));
+        menuAbout = new QMenu(menubar);
+        menuAbout->setObjectName(QStringLiteral("menuAbout"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QStringLiteral("statusbar"));
@@ -188,6 +209,7 @@ public:
         resTree->setHeaderItem(__qtreewidgetitem);
         resTree->setObjectName(QStringLiteral("resTree"));
         resTree->setContextMenuPolicy(Qt::CustomContextMenu);
+        resTree->setFrameShape(QFrame::Panel);
 
         verticalLayout_2->addWidget(resTree);
 
@@ -195,11 +217,16 @@ public:
         resPropertyGroupBox->setObjectName(QStringLiteral("resPropertyGroupBox"));
         verticalLayout_7 = new QVBoxLayout(resPropertyGroupBox);
         verticalLayout_7->setObjectName(QStringLiteral("verticalLayout_7"));
-        resPropertyTableWidget = new QTableWidget(resPropertyGroupBox);
-        resPropertyTableWidget->setObjectName(QStringLiteral("resPropertyTableWidget"));
-        resPropertyTableWidget->setFrameShape(QFrame::Panel);
+        resPropertyTreeWidget = new QTreeWidget(resPropertyGroupBox);
+        QTreeWidgetItem *__qtreewidgetitem1 = new QTreeWidgetItem();
+        __qtreewidgetitem1->setText(1, QStringLiteral("2"));
+        __qtreewidgetitem1->setText(0, QStringLiteral("1"));
+        resPropertyTreeWidget->setHeaderItem(__qtreewidgetitem1);
+        resPropertyTreeWidget->setObjectName(QStringLiteral("resPropertyTreeWidget"));
+        resPropertyTreeWidget->setFrameShape(QFrame::Panel);
+        resPropertyTreeWidget->setColumnCount(2);
 
-        verticalLayout_7->addWidget(resPropertyTableWidget);
+        verticalLayout_7->addWidget(resPropertyTreeWidget);
 
 
         verticalLayout_2->addWidget(resPropertyGroupBox);
@@ -215,14 +242,10 @@ public:
         verticalLayout = new QVBoxLayout(uiTreeLayout);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         uiTree = new QTreeWidget(uiTreeLayout);
-        QTreeWidgetItem *__qtreewidgetitem1 = new QTreeWidgetItem();
-        __qtreewidgetitem1->setText(1, QStringLiteral("2"));
-        __qtreewidgetitem1->setText(0, QStringLiteral("1"));
-        uiTree->setHeaderItem(__qtreewidgetitem1);
         uiTree->setObjectName(QStringLiteral("uiTree"));
         uiTree->setContextMenuPolicy(Qt::CustomContextMenu);
         uiTree->setFrameShape(QFrame::Panel);
-        uiTree->setColumnCount(2);
+        uiTree->setColumnCount(0);
 
         verticalLayout->addWidget(uiTree);
 
@@ -230,33 +253,16 @@ public:
         uiPropertyGroupBox->setObjectName(QStringLiteral("uiPropertyGroupBox"));
         verticalLayout_6 = new QVBoxLayout(uiPropertyGroupBox);
         verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
-        uiPropertyBox = new QToolBox(uiPropertyGroupBox);
-        uiPropertyBox->setObjectName(QStringLiteral("uiPropertyBox"));
-        uiBasicPage = new QWidget();
-        uiBasicPage->setObjectName(QStringLiteral("uiBasicPage"));
-        uiBasicPage->setGeometry(QRect(0, 0, 185, 182));
-        verticalLayout_4 = new QVBoxLayout(uiBasicPage);
-        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
-        uiBasicTableWidget = new QTableWidget(uiBasicPage);
-        uiBasicTableWidget->setObjectName(QStringLiteral("uiBasicTableWidget"));
-        uiBasicTableWidget->setFrameShape(QFrame::Panel);
+        uiPropertyTreeWidget = new QTreeWidget(uiPropertyGroupBox);
+        QTreeWidgetItem *__qtreewidgetitem2 = new QTreeWidgetItem();
+        __qtreewidgetitem2->setText(1, QStringLiteral("2"));
+        __qtreewidgetitem2->setText(0, QStringLiteral("1"));
+        uiPropertyTreeWidget->setHeaderItem(__qtreewidgetitem2);
+        uiPropertyTreeWidget->setObjectName(QStringLiteral("uiPropertyTreeWidget"));
+        uiPropertyTreeWidget->setFrameShape(QFrame::Panel);
+        uiPropertyTreeWidget->setColumnCount(2);
 
-        verticalLayout_4->addWidget(uiBasicTableWidget);
-
-        uiPropertyBox->addItem(uiBasicPage, QStringLiteral("Basic"));
-        uiAdvancedPage = new QWidget();
-        uiAdvancedPage->setObjectName(QStringLiteral("uiAdvancedPage"));
-        verticalLayout_5 = new QVBoxLayout(uiAdvancedPage);
-        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
-        uiAdvancedTableWidget = new QTableWidget(uiAdvancedPage);
-        uiAdvancedTableWidget->setObjectName(QStringLiteral("uiAdvancedTableWidget"));
-        uiAdvancedTableWidget->setFrameShape(QFrame::Panel);
-
-        verticalLayout_5->addWidget(uiAdvancedTableWidget);
-
-        uiPropertyBox->addItem(uiAdvancedPage, QStringLiteral("Advanced"));
-
-        verticalLayout_6->addWidget(uiPropertyBox);
+        verticalLayout_6->addWidget(uiPropertyTreeWidget);
 
 
         verticalLayout->addWidget(uiPropertyGroupBox);
@@ -270,6 +276,7 @@ public:
 
         menubar->addAction(menuFile->menuAction());
         menubar->addAction(menuWindow->menuAction());
+        menubar->addAction(menuAbout->menuAction());
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionSave);
         menuFile->addSeparator();
@@ -283,11 +290,18 @@ public:
         menuDock->addAction(actionDockUi);
         menuArea->addAction(actionAreaRes);
         menuArea->addAction(actionAreaUi);
+        menuAbout->addAction(actionHelp);
+        menuAbout->addAction(actionEditor);
         toolBar->addAction(actionBarOpen);
         toolBar->addAction(actionBarSave);
         toolBar->addSeparator();
         toolBar->addAction(actionBarExport);
         toolBar->addAction(actionBarSync);
+        toolBar->addSeparator();
+        toolBar->addAction(actionBarDockRes);
+        toolBar->addAction(actionBarAreaRes);
+        toolBar->addAction(actionBarDockUi);
+        toolBar->addAction(actionBarAreaUi);
 
         retranslateUi(MainWindow);
         QObject::connect(actionExit, SIGNAL(triggered()), MainWindow, SLOT(close()));
@@ -297,7 +311,7 @@ public:
         QObject::connect(actionBarOpen, SIGNAL(triggered()), MainWindow, SLOT(onClickedOpen()));
         QObject::connect(actionBarSave, SIGNAL(triggered()), MainWindow, SLOT(onClickedSave()));
         QObject::connect(actionBarSync, SIGNAL(triggered()), MainWindow, SLOT(onClickedSync()));
-        QObject::connect(resTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), MainWindow, SLOT(onSelectedResTree(QTreeWidgetItem*,int)));
+        QObject::connect(resTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), MainWindow, SLOT(onResTreeItemSelected(QTreeWidgetItem*,int)));
         QObject::connect(actionBarExport, SIGNAL(triggered()), MainWindow, SLOT(onClickedExport()));
         QObject::connect(actionExport, SIGNAL(triggered()), MainWindow, SLOT(onClickedExport()));
         QObject::connect(resTree, SIGNAL(customContextMenuRequested(QPoint)), MainWindow, SLOT(onResTreeContextMenu(QPoint)));
@@ -310,9 +324,13 @@ public:
         QObject::connect(resArea, SIGNAL(visibilityChanged(bool)), MainWindow, SLOT(onResAreaVisibilityChanged(bool)));
         QObject::connect(uiDock, SIGNAL(visibilityChanged(bool)), MainWindow, SLOT(onUiDockVisibilityChanged(bool)));
         QObject::connect(uiArea, SIGNAL(visibilityChanged(bool)), MainWindow, SLOT(onUiAreaVisibilityChanged(bool)));
-
-        uiPropertyBox->setCurrentIndex(0);
-
+        QObject::connect(resPropertyTreeWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)), MainWindow, SLOT(onResPropertyTreeItemChanged(QTreeWidgetItem*,int)));
+        QObject::connect(uiTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), MainWindow, SLOT(onUiTreeItemSelected(QTreeWidgetItem*,int)));
+        QObject::connect(uiPropertyTreeWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)), MainWindow, SLOT(onUiPropertyTreeItemChanged(QTreeWidgetItem*,int)));
+        QObject::connect(actionBarDockRes, SIGNAL(triggered()), MainWindow, SLOT(onClickedMenuWindowDockRes()));
+        QObject::connect(actionBarAreaRes, SIGNAL(triggered()), MainWindow, SLOT(onClickedMenuWindowAreaRes()));
+        QObject::connect(actionBarAreaUi, SIGNAL(triggered()), MainWindow, SLOT(onClickedMenuWindowAreaUi()));
+        QObject::connect(actionBarDockUi, SIGNAL(triggered()), MainWindow, SLOT(onClickedMenuWindowDockUi()));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -334,18 +352,23 @@ public:
         actionFff->setText(QApplication::translate("MainWindow", "fff", 0));
         actionAreaRes->setText(QApplication::translate("MainWindow", "Resource", 0));
         actionAreaUi->setText(QApplication::translate("MainWindow", "Ui", 0));
+        actionHelp->setText(QApplication::translate("MainWindow", "Document", 0));
+        actionEditor->setText(QApplication::translate("MainWindow", "About", 0));
+        actionBarDockRes->setText(QApplication::translate("MainWindow", "Resource Dock", 0));
+        actionBarAreaRes->setText(QApplication::translate("MainWindow", "Resource Area", 0));
+        actionBarDockUi->setText(QApplication::translate("MainWindow", "Ui Dock", 0));
+        actionBarAreaUi->setText(QApplication::translate("MainWindow", "Ui Area", 0));
         resAreaGroupBox->setTitle(QApplication::translate("MainWindow", "Resource Area", 0));
         uiAreaGroupBox->setTitle(QApplication::translate("MainWindow", "Ui Area", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
         menuWindow->setTitle(QApplication::translate("MainWindow", "Window", 0));
         menuDock->setTitle(QApplication::translate("MainWindow", "Dock", 0));
         menuArea->setTitle(QApplication::translate("MainWindow", "Area", 0));
-        resDock->setWindowTitle(QApplication::translate("MainWindow", "Resource", 0));
+        menuAbout->setTitle(QApplication::translate("MainWindow", "Help", 0));
+        resDock->setWindowTitle(QApplication::translate("MainWindow", "Resource Dock", 0));
         resPropertyGroupBox->setTitle(QApplication::translate("MainWindow", "Property", 0));
         uiDock->setWindowTitle(QApplication::translate("MainWindow", "UI", 0));
         uiPropertyGroupBox->setTitle(QApplication::translate("MainWindow", "Property", 0));
-        uiPropertyBox->setItemText(uiPropertyBox->indexOf(uiBasicPage), QApplication::translate("MainWindow", "Basic", 0));
-        uiPropertyBox->setItemText(uiPropertyBox->indexOf(uiAdvancedPage), QApplication::translate("MainWindow", "Advanced", 0));
         toolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0));
     } // retranslateUi
 

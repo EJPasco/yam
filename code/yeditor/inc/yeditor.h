@@ -1,15 +1,11 @@
 #ifndef Y_YEDITOR_H
 #define Y_YEDITOR_H
 
+#include "yeditorcommon.h"
+
 #include "yeditor.main.ui.h"
 
-#include <json.h>
-#include <yam.h>
-
 #include <QtWidgets/QMainWindow>
-
-#define YNAME_FILE_PSFORMAT		"psformat"
-#define YNAME_FILE_UIWIDGET		"uiwidget"
 
 class YEditor : public QMainWindow
 {
@@ -35,17 +31,20 @@ public Q_SLOTS:
 	void onClickedMenuWindowDockUi();
 	void onClickedMenuWindowAreaRes();
 	void onClickedMenuWindowAreaUi();
-	void onSelectedResTree(QTreeWidgetItem* pTreeItem, int iIndex);
+	void onResTreeItemSelected(QTreeWidgetItem* pTreeItem, int iColumn);
 	void onResTreeContextMenu(QPoint oPos);
+	void onResPropertyTreeItemChanged(QTreeWidgetItem* pItem, int iColumn);
+	void onUiTreeItemSelected(QTreeWidgetItem* pTreeItem, int iColumn);
 	void onUiTreeContextMenu(QPoint oPos);
+	void onUiPropertyTreeItemChanged(QTreeWidgetItem* pTreeItem, int iColumn);
 
 public Q_SLOTS:
 	void onPressedResItem(YCQUiItem* pUiItem);
+	void onPressedUiItem(YCQUiItem* pUiItem);
 
 public Q_SLOTS:
 	void onResDockVisibilityChanged(bool bVisible);
 	void onResAreaVisibilityChanged(bool bVisible);
-	void onClickedResMenuItem_ShowHide();
 	void onClickedResMenuItem_Tiled();
 
 public Q_SLOTS:
@@ -65,13 +64,17 @@ private:
 	QTreeWidgetItem* getTreeItem(YCQUiItem* pUiItem) const;
 
 private:
+	void refreshResProperty(YCQUiItem*& rpUiItem);
+	void refreshUiProperty(YCQUiItem*& rpUiItem);
+
+private:
+	void parseArgument(const QStringList& rvStr);
+
+private:
 	Ui_MainWindow			m_UI;
 	yam::base::YCTree		m_FileTreeData;
 	ymnamerelationship		m_mRelationship;
 	yam::ystring			m_sFileName;
-
-public:
-	const static QString	ms_sTitle;
 };
 
 #endif

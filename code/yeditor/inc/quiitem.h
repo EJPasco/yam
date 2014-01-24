@@ -27,11 +27,14 @@ protected:
 	virtual void mouseMoveEvent(QMouseEvent* pEvent);
 
 public:
+	void setGrabable(const bool& rbGrabable);
 	void setGrabed(const bool& rbGrabed);
 	void setSelected(const bool& rbSelected);
 	void setFormat(const yam::base::YIFormat*& rpFormat);
-	void setFormat(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData);
+	void setWidget(const yam::base::YIWidget*& rpWidget);
 	void setColor(const uint& riColor);
+	void setAlpah(const qreal& rfAlpha);
+	void setImage(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData);
 
 public:
 	QRgb convertFromYColor(const yam::ycolor& riColor) const;
@@ -41,8 +44,10 @@ private:
 	QImage*			m_pImage;
 	bool			m_bPressed;
 	QPointF			m_oPosMousePressStart;
+	bool			m_bGrabable;
 	bool			m_bGrabed;
 	bool			m_bSelected;
+	qreal			m_fAlpha;
 };
 
 
