@@ -18,10 +18,12 @@ public:
 	YCQUiArea(QFramePrivate &dd, QWidget* parent = 0, Qt::WindowFlags f = 0);
 	virtual ~YCQUiArea();
 
-protected:
-	/*virtual void paintEvent(QPaintEvent* pEvent);*/
+Q_SIGNALS:
+	void visibilityChanged(bool bVisible);
 
 protected:
+	virtual void showEvent(QShowEvent* pEvent);
+	virtual void hideEvent(QHideEvent* pEvent);
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void mouseReleaseEvent(QMouseEvent* pEvent);
 	virtual void mouseMoveEvent(QMouseEvent* pEvent);

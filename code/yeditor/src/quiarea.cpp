@@ -29,6 +29,18 @@ YCQUiArea::~YCQUiArea()
 	//
 }
 
+void YCQUiArea::showEvent(QShowEvent* pEvent)
+{
+	__super::showEvent(pEvent);
+	visibilityChanged(isVisible());
+}
+
+void YCQUiArea::hideEvent(QHideEvent* pEvent)
+{
+	__super::hideEvent(pEvent);
+	visibilityChanged(isVisible());
+}
+
 void YCQUiArea::mousePressEvent(QMouseEvent* pEvent)
 {
 	m_bPressed = true;

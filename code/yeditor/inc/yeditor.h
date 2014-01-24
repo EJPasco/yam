@@ -31,27 +31,35 @@ public Q_SLOTS:
 	void onClickedSave();
 	void onClickedExport();
 	void onClickedSync();
-	void onSelectedFormatTree(QTreeWidgetItem* pTreeItem, int iIndex);
-	void onFormatTreeContextMenu(QPoint oPos);
+	void onClickedMenuWindowDockRes();
+	void onClickedMenuWindowDockUi();
+	void onClickedMenuWindowAreaRes();
+	void onClickedMenuWindowAreaUi();
+	void onSelectedResTree(QTreeWidgetItem* pTreeItem, int iIndex);
+	void onResTreeContextMenu(QPoint oPos);
 	void onUiTreeContextMenu(QPoint oPos);
 
 public Q_SLOTS:
-	void onPressedUiItem(YCQUiItem* pUiItem);
+	void onPressedResItem(YCQUiItem* pUiItem);
 
 public Q_SLOTS:
-	void onClickedFormatMenuItem_ShowHide();
-	void onClickedFormatMenuItem_Tiled();
+	void onResDockVisibilityChanged(bool bVisible);
+	void onResAreaVisibilityChanged(bool bVisible);
+	void onClickedResMenuItem_ShowHide();
+	void onClickedResMenuItem_Tiled();
 
 public Q_SLOTS:
-	void onClickedUiWidgetMenuItem_CreateScene();
-	void onClickedUiWidgetMenuItem_CreatePanel();
-	void onClickedUiWidgetMenuItem_CreateImage();
-	void onClickedUiWidgetMenuItem_CreateButton();
+	void onUiDockVisibilityChanged(bool bVisible);
+	void onUiAreaVisibilityChanged(bool bVisible);
+	void onClickedUiMenuItem_CreateScene();
+	void onClickedUiMenuItem_CreatePanel();
+	void onClickedUiMenuItem_CreateImage();
+	void onClickedUiMenuItem_CreateButton();
 
 private:
 	void reloadFile(const yam::ystring& rsFileName);
-	void reloadFormat(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
-	void reloadWidget(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
+	void reloadRes(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
+	void reloadUi(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
 	QString getFullName(const yam::base::YITree* pTree);
 	YCQUiItem* getUiItem(QTreeWidgetItem* pTreeItem) const;
 	QTreeWidgetItem* getTreeItem(YCQUiItem* pUiItem) const;

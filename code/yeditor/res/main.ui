@@ -16,23 +16,41 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_3">
     <item>
-     <widget class="YCQUiArea" name="formatArea">
-      <property name="frameShape">
-       <enum>QFrame::Panel</enum>
+     <widget class="QGroupBox" name="resAreaGroupBox">
+      <property name="title">
+       <string>Resource Area</string>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Sunken</enum>
-      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <widget class="YCQUiArea" name="resArea">
+         <property name="frameShape">
+          <enum>QFrame::Panel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
     <item>
-     <widget class="YCQUiArea" name="uiArea">
-      <property name="frameShape">
-       <enum>QFrame::Panel</enum>
+     <widget class="QGroupBox" name="uiAreaGroupBox">
+      <property name="title">
+       <string>Ui Area</string>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Sunken</enum>
-      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_9">
+       <item>
+        <widget class="YCQUiArea" name="uiArea">
+         <property name="frameShape">
+          <enum>QFrame::Panel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Sunken</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>
@@ -58,26 +76,48 @@
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Window</string>
+    </property>
+    <widget class="QMenu" name="menuDock">
+     <property name="title">
+      <string>Dock</string>
+     </property>
+     <addaction name="actionDockRes"/>
+     <addaction name="actionDockUi"/>
+    </widget>
+    <widget class="QMenu" name="menuArea">
+     <property name="title">
+      <string>Area</string>
+     </property>
+     <addaction name="actionAreaRes"/>
+     <addaction name="actionAreaUi"/>
+    </widget>
+    <addaction name="menuDock"/>
+    <addaction name="menuArea"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuWindow"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QDockWidget" name="formatDock">
+  <widget class="QDockWidget" name="resDock">
    <property name="floating">
     <bool>false</bool>
    </property>
    <property name="features">
-    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+    <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
-    <string>Format</string>
+    <string>Resource</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="formatDockLayout">
+   <widget class="QWidget" name="resDockLayout">
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QTreeWidget" name="formatTree">
+      <widget class="QTreeWidget" name="resTree">
        <property name="contextMenuPolicy">
         <enum>Qt::CustomContextMenu</enum>
        </property>
@@ -88,18 +128,34 @@
        </column>
       </widget>
      </item>
+     <item>
+      <widget class="QGroupBox" name="resPropertyGroupBox">
+       <property name="title">
+        <string>Property</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <widget class="QTableWidget" name="resPropertyTableWidget">
+          <property name="frameShape">
+           <enum>QFrame::Panel</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="uiTreeDock">
+  <widget class="QDockWidget" name="uiDock">
    <property name="floating">
     <bool>false</bool>
    </property>
    <property name="features">
-    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+    <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
    <property name="windowTitle">
-    <string>UI Tree</string>
+    <string>UI</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -130,35 +186,55 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolBox" name="uiVarBox">
-       <property name="currentIndex">
-        <number>0</number>
+      <widget class="QGroupBox" name="uiPropertyGroupBox">
+       <property name="title">
+        <string>Property</string>
        </property>
-       <widget class="QWidget" name="uiBasePage">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>207</width>
-          <height>210</height>
-         </rect>
-        </property>
-        <attribute name="label">
-         <string>Base</string>
-        </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QTableView" name="uiBaseTableView">
-           <property name="frameShape">
-            <enum>QFrame::Panel</enum>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QToolBox" name="uiPropertyBox">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="uiBasicPage">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>185</width>
+             <height>182</height>
+            </rect>
            </property>
-           <property name="frameShadow">
-            <enum>QFrame::Sunken</enum>
-           </property>
+           <attribute name="label">
+            <string>Basic</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QTableWidget" name="uiBasicTableWidget">
+              <property name="frameShape">
+               <enum>QFrame::Panel</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </widget>
-         </item>
-        </layout>
-       </widget>
+          <widget class="QWidget" name="uiAdvancedPage">
+           <attribute name="label">
+            <string>Advanced</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QTableWidget" name="uiAdvancedTableWidget">
+              <property name="frameShape">
+               <enum>QFrame::Panel</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
     </layout>
@@ -231,6 +307,55 @@
     <string>Export</string>
    </property>
   </action>
+  <action name="actionDockRes">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Resource</string>
+   </property>
+  </action>
+  <action name="actionDockUi">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Ui</string>
+   </property>
+  </action>
+  <action name="actionFff">
+   <property name="text">
+    <string>fff</string>
+   </property>
+  </action>
+  <action name="actionAreaRes">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Resource</string>
+   </property>
+  </action>
+  <action name="actionAreaUi">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Ui</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -238,6 +363,9 @@
    <extends>QFrame</extends>
    <header>quiarea.h</header>
    <container>1</container>
+   <slots>
+    <signal>visibilityChanged(bool)</signal>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -355,10 +483,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>formatTree</sender>
+   <sender>resTree</sender>
    <signal>itemClicked(QTreeWidgetItem*,int)</signal>
    <receiver>MainWindow</receiver>
-   <slot>onSelectedFormatTree(QTreeWidgetItem*,int)</slot>
+   <slot>onSelectedResTree(QTreeWidgetItem*,int)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>136</x>
@@ -403,10 +531,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>formatTree</sender>
+   <sender>resTree</sender>
    <signal>customContextMenuRequested(QPoint)</signal>
    <receiver>MainWindow</receiver>
-   <slot>onFormatTreeContextMenu(QPoint)</slot>
+   <slot>onResTreeContextMenu(QPoint)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>136</x>
@@ -434,14 +562,150 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDockRes</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onClickedMenuWindowDockRes()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDockUi</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onClickedMenuWindowDockUi()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAreaUi</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onClickedMenuWindowAreaUi()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAreaRes</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onClickedMenuWindowAreaRes()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resDock</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onResDockVisibilityChanged(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>110</x>
+     <y>276</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resArea</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onResAreaVisibilityChanged(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>327</x>
+     <y>276</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>uiDock</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onUiDockVisibilityChanged(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>740</x>
+     <y>276</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>uiArea</sender>
+   <signal>visibilityChanged(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onUiAreaVisibilityChanged(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>521</x>
+     <y>276</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>426</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onClickedOpen()</slot>
   <slot>onClickedSave()</slot>
   <slot>onClickedSync()</slot>
-  <slot>onSelectedFormatTree(QTreeWidgetItem*,int)</slot>
+  <slot>onSelectedResTree(QTreeWidgetItem*,int)</slot>
   <slot>onClickedExport()</slot>
-  <slot>onFormatTreeContextMenu(QPoint)</slot>
+  <slot>onResTreeContextMenu(QPoint)</slot>
   <slot>onUiTreeContextMenu(QPoint)</slot>
+  <slot>onClickedMenuWindowDockRes()</slot>
+  <slot>onClickedMenuWindowDockUi()</slot>
+  <slot>onClickedMenuWindowAreaRes()</slot>
+  <slot>onClickedMenuWindowAreaUi()</slot>
+  <slot>onResDockVisibilityChanged(bool)</slot>
+  <slot>onResAreaVisibilityChanged(bool)</slot>
+  <slot>onUiDockVisibilityChanged(bool)</slot>
+  <slot>onUiAreaVisibilityChanged(bool)</slot>
  </slots>
 </ui>

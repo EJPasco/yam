@@ -24,7 +24,6 @@ protected:
 protected:
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void mouseReleaseEvent(QMouseEvent* pEvent);
-	/*virtual void mouseDoubleClickEvent(QMouseEvent* pEvent);*/
 	virtual void mouseMoveEvent(QMouseEvent* pEvent);
 
 public:

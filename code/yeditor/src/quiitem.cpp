@@ -76,20 +76,6 @@ void YCQUiItem::mouseReleaseEvent(QMouseEvent* pEvent)
 	setGrabed(false);
 }
 
-/*void YCQUiItem::mouseDoubleClickEvent(QMouseEvent* pEvent)
-{
-	m_bPressed = false;
-
-	if (m_bSelected)
-	{
-		setSelected(false);
-	}
-	else
-	{
-		setSelected(true);
-	}
-}*/
-
 void YCQUiItem::mouseMoveEvent(QMouseEvent* pEvent)
 {
 	if (!m_bPressed)
