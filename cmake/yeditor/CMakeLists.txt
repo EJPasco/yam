@@ -66,6 +66,8 @@ set(CODE_FILE_LIST_QT
     )
 
 set(CODE_FILE_LIST_EXPORT
+    ${CODE_PATH_YEDITOR}/inc/yconverter.h
+    ${CODE_PATH_YEDITOR}/src/yconverter.cpp
     ${CODE_PATH_YEDITOR}/inc/yexport.h
     ${CODE_PATH_YEDITOR}/src/yexport.cpp
     ${CODE_PATH_YEDITOR}/inc/yrectpacker.h

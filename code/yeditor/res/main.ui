@@ -62,8 +62,11 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="formatDock">
+   <property name="floating">
+    <bool>false</bool>
+   </property>
    <property name="features">
-    <set>QDockWidget::DockWidgetMovable</set>
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
     <string>Format</string>
@@ -89,8 +92,11 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="uiTreeDock">
+   <property name="floating">
+    <bool>false</bool>
+   </property>
    <property name="features">
-    <set>QDockWidget::DockWidgetMovable</set>
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
     <string>UI Tree</string>
@@ -123,18 +129,6 @@
        </column>
       </widget>
      </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QDockWidget" name="uiDetailDock">
-   <property name="windowTitle">
-    <string>UI Detail</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>2</number>
-   </attribute>
-   <widget class="QWidget" name="uiDetailLayout">
-    <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
       <widget class="QToolBox" name="uiVarBox">
        <property name="currentIndex">
@@ -145,8 +139,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>274</width>
-          <height>192</height>
+          <width>207</width>
+          <height>210</height>
          </rect>
         </property>
         <attribute name="label">

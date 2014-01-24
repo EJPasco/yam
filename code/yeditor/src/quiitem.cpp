@@ -12,13 +12,10 @@ YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	, m_bPressed(false)
 	, m_bGrabed(false)
 	, m_bSelected(false)
-	, m_fScale(1.0f)
 {
 	QSizePolicy policy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	policy.setHeightForWidth(true);
 	setSizePolicy(policy);
-	//setScaledContents(true);
-	//
 }
 
 YCQUiItem::~YCQUiItem()
@@ -32,33 +29,33 @@ YCQUiItem::~YCQUiItem()
 
 void YCQUiItem::paintEvent(QPaintEvent* pEvent)
 {
-	//qDebug("YCQUiItem::paintEvent %f", m_fScale);
-
 	QPainter oPainter(this);
-	oPainter.scale(m_fScale, m_fScale);
 
 	if (NULL != m_pImage)
 	{
 		oPainter.drawImage(0, 0, *m_pImage);
 	}
 
+	if (m_bGrabed || m_bSelected)
+	{
+		oPainter.setOpacity(0.05f);
+		oPainter.setBrush(QBrush(Qt::green));
+		oPainter.drawRect(0, 0, size().width() - 1, size().height() - 1);
+		oPainter.setBrush(Qt::NoBrush);
+	}
+
 	if (m_bGrabed)
 	{
+		oPainter.setOpacity(1.0f);
 		oPainter.setPen(QPen(Qt::red));
-		oPainter.drawLine(QPoint(0, 0), QPoint(size().width() - 1, 0));
-		oPainter.drawLine(QPoint(0, 0), QPoint(0, size().height() - 1));
-		oPainter.drawLine(QPoint(0, size().height() - 1), QPoint(size().width() - 1, size().height() - 1));
-		oPainter.drawLine(QPoint(size().width() - 1, 0), QPoint(size().width() - 1, size().height() - 1));
+		oPainter.drawRect(0, 0, size().width() - 1, size().height() - 1);
 	}
 	else if (m_bSelected)
 	{
+		oPainter.setOpacity(1.0f);
 		oPainter.setPen(QPen(Qt::yellow));
-		oPainter.drawLine(QPoint(0, 0), QPoint(size().width() - 1, 0));
-		oPainter.drawLine(QPoint(0, 0), QPoint(0, size().height() - 1));
-		oPainter.drawLine(QPoint(0, size().height() - 1), QPoint(size().width() - 1, size().height() - 1));
-		oPainter.drawLine(QPoint(size().width() - 1, 0), QPoint(size().width() - 1, size().height() - 1));
+		oPainter.drawRect(0, 0, size().width() - 1, size().height() - 1);
 	}
-	//
 }
 
 void YCQUiItem::mousePressEvent(QMouseEvent* pEvent)
@@ -178,11 +175,6 @@ void YCQUiItem::setColor(const uint& riColor)
 			m_pImage->setPixel(i, j, riColor);
 		}
 	}
-}
-
-void YCQUiItem::setScale(const qreal& rfScale)
-{
-	m_fScale = rfScale;
 }
 
 QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const

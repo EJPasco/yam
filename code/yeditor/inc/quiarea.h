@@ -25,21 +25,20 @@ protected:
 	virtual void mousePressEvent(QMouseEvent* pEvent);
 	virtual void mouseReleaseEvent(QMouseEvent* pEvent);
 	virtual void mouseMoveEvent(QMouseEvent* pEvent);
-#ifndef QT_NO_WHEELEVENT
-	virtual void wheelEvent(QWheelEvent* pEvent);
-#endif
 
 public:
 	void setSelected(const YCQUiItem* const& rpSelectedItem);
-	void setScale(const qreal& rfScale);
 	YCQUiItem* addChildItem(const yam::base::YIFormat*& rpFormat);
 	void clearChildrenItem();
+	void toTiled();
+
+private:
+	bool FindAndDelete(yam::yvrect& rvRect2D, const yam::YVec2D& rstVec2D, yam::YRect2D& rstRect2D) const;
 
 private:
 	bool			m_bPressed;
 	QPointF			m_oPosMousePressStart;
 	yvuiitemptr		m_vItemPtr;
-	qreal			m_fScale;
 };
 
 #endif // Y_QUIAREA_H

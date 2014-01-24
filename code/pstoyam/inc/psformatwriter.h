@@ -32,8 +32,8 @@ public:
 	virtual void Do(FormatRecordPtr& rpRecord);
 
 protected:
-	void Do(ReadLayerDesc*& rpLayerDesc, base::YIFormat* pFormatParent);
-	void Do(ReadChannelDesc*& rpChannelDesc, const VRect& rstBox, base::YIFormat*& rpFormat, const yuint32& riOffset);
+	void Do(const ReadLayerDesc* const& rpLayerDesc, base::YIFormat* pFormatParent);
+	void Do(const ReadChannelDesc* const& rpChannelDesc, const VRect& rstBox, base::YIFormat*& rpFormat, const yuint32& riOffset);
 	YRect2D Convert(const VRect& rstBox);
 
 protected:

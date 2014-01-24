@@ -94,7 +94,7 @@ void YCPsChannelProcs::operator=(ChannelPortProcs*& rpChannelProcs)
 	m_pProcReadForWrite = rpChannelProcs->readPortForWritePortProc;
 }
 
-void YCPsChannelProcs::ReadPixel(ReadChannelDesc*& rpChannelDesc, const VRect& rstBox, base::YCBuffer& rPixelBuffer)
+void YCPsChannelProcs::ReadPixel(const ReadChannelDesc* const& rpChannelDesc, const VRect& rstBox, base::YCBuffer& rPixelBuffer)
 {
 	if (NULL == m_pProcReadPixel || NULL == rpChannelDesc || rpChannelDesc->depth != YBITCOUNT_INT8)
 	{

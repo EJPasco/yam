@@ -33,7 +33,6 @@ public:
 	void setFormat(const yam::base::YIFormat*& rpFormat);
 	void setFormat(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData);
 	void setColor(const uint& riColor);
-	void setScale(const qreal& rfScale);
 
 public:
 	QRgb convertFromYColor(const yam::ycolor& riColor) const;
@@ -45,7 +44,6 @@ private:
 	QPointF			m_oPosMousePressStart;
 	bool			m_bGrabed;
 	bool			m_bSelected;
-	qreal			m_fScale;
 };
 
 

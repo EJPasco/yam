@@ -4,12 +4,16 @@
 #include <yam.h>
 
 #include <GuillotineBinPack.h>
+#include <MaxRectsBinPack.h>
+
+#include <QtCore/QRect>
+#include <QtCore/QSize>
 
 class YCRectPacker
 {
 	SINGLETON_DECL(YCRectPacker);
 
-public:
+protected:
 	YCRectPacker();
 	virtual ~YCRectPacker();
 
@@ -29,6 +33,7 @@ private:
 	rbp::Rect Convert(const yam::YRect2D& rstRect) const;
 	yam::yvrect Convert(const std::vector<rbp::Rect>& rvRect) const;
 	std::vector<rbp::Rect> Convert(const yam::yvrect& rvRect) const;
+	std::vector<rbp::Rect> ToPack(const yam::yvvec2d& rvSize, const yam::YVec2D& rstSize) const;
 };
 
 #endif // Y_RECTPACKER_H

@@ -52,7 +52,7 @@ public:
 	virtual void operator=(ChannelPortProcs*& rpChannelProcs) = 0;
 
 public:
-	virtual void ReadPixel(ReadChannelDesc*& rpChannelDesc, const VRect& rstBox, base::YCBuffer& rPixelBuffer) = 0;
+	virtual void ReadPixel(const ReadChannelDesc* const& rpChannelDesc, const VRect& rstBox, base::YCBuffer& rPixelBuffer) = 0;
 };
 
 class YCPsChannelProcs : public YIPsChannelProcs
@@ -66,7 +66,7 @@ public:
 	virtual void operator=(ChannelPortProcs*& rpChannelProcs);
 
 public:
-	virtual void ReadPixel(ReadChannelDesc*& rpChannelDesc, const VRect& rstBox, base::YCBuffer& rPixelBuffer);
+	virtual void ReadPixel(const ReadChannelDesc* const& rpChannelDesc, const VRect& rstBox, base::YCBuffer& rPixelBuffer);
 
 private:
 	ReadPixelsProc				m_pProcReadPixel;

@@ -13,6 +13,18 @@ int main(int argc, char* argv[])
 	using namespace yam::util;
 
 	{
+		YCFileReader file;
+		file.Open("test.yui");
+		YCBuffer buffer;
+		file >> buffer;
+		file.Close();
+		YCTree treedata;
+		treedata << buffer;
+		YITree* pFind = treedata.Find("0");
+		treedata.GetId();
+	}
+
+	{
 		yvvec2d vSizeList;
 		vSizeList.push_back(YVec2D(7, 2));
 		vSizeList.push_back(YVec2D(5, 15));

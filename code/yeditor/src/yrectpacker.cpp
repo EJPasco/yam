@@ -18,20 +18,14 @@ void YCRectPacker::Do(const yam::yvvec2d& rvSize, yam::YVec2D& rstSize, yam::yvr
 	stSize.X = 1024;
 	stSize.Y = 1024;
 	rstSize = TryPack(rvSize, stSize, 1.0f, 2.0f, 0.0f);
-
-	rbp::GuillotineBinPack oBinPack;
-	oBinPack.Init(rstSize.X, rstSize.Y);
-	std::vector<rbp::RectSize> rectsizes = Convert(rvSize);
-	oBinPack.Insert(rectsizes, false, rbp::GuillotineBinPack::RectBestShortSideFit, rbp::GuillotineBinPack::SplitMinimizeArea);
-	std::vector<rbp::Rect> rects = oBinPack.GetUsedRectangles();
-	rvRect = Convert(rects);
+	rvRect = Convert(ToPack(rvSize, rstSize));
 }
 
 yam::YVec2D YCRectPacker::TryPack(const yam::yvvec2d& rvSize, const yam::YVec2D& rstSize, const yam::yfloat32& rfPercentSmall, const yam::yfloat32& rfPercentBig, const yam::yfloat32& rfPercentLastInvalidSmall) const
 {
 	yam::YVec2D stSizeSmall = ToScale(rstSize, rfPercentSmall);
 	yam::YVec2D stSizeBig = ToScale(rstSize, rfPercentBig);
-	if (0.001f > (rfPercentSmall - rfPercentBig))
+	if (0.001f > (rfPercentBig - rfPercentSmall))
 	{
 		return stSizeBig;
 	}
@@ -58,11 +52,7 @@ yam::YVec2D YCRectPacker::TryPack(const yam::yvvec2d& rvSize, const yam::YVec2D&
 
 bool YCRectPacker::CanPack(const yam::yvvec2d& rvSize, const yam::YVec2D& rstSize) const
 {
-	rbp::GuillotineBinPack oBinPack;
-	oBinPack.Init(rstSize.X, rstSize.Y);
-	std::vector<rbp::RectSize> rectsizes = Convert(rvSize);
-	oBinPack.Insert(rectsizes, false, rbp::GuillotineBinPack::RectBestShortSideFit, rbp::GuillotineBinPack::SplitMinimizeArea);
-	std::vector<rbp::Rect> rects = oBinPack.GetUsedRectangles();
+	std::vector<rbp::Rect> rects = ToPack(rvSize, rstSize);
 	return (rects.size() == rvSize.size());
 }
 
@@ -163,4 +153,18 @@ std::vector<rbp::Rect> YCRectPacker::Convert(const yam::yvrect& rvRect) const
 		vRect.push_back(Convert(*cit));
 	}
 	return vRect;
+}
+
+std::vector<rbp::Rect> YCRectPacker::ToPack(const yam::yvvec2d& rvSize, const yam::YVec2D& rstSize) const
+{
+	std::vector<rbp::RectSize> rectsizes = Convert(rvSize);
+
+	//std::vector<rbp::Rect> rects;
+	//rbp::MaxRectsBinPack oBinPack(rstSize.X, rstSize.Y);
+	//oBinPack.Insert(rectsizes, rects, rbp::MaxRectsBinPack::RectBestAreaFit);
+
+	rbp::GuillotineBinPack oBinPack(rstSize.X, rstSize.Y);
+	oBinPack.Insert(rectsizes, false, rbp::GuillotineBinPack::RectBestAreaFit, rbp::GuillotineBinPack::SplitMinimizeArea);
+
+	return oBinPack.GetUsedRectangles();
 }

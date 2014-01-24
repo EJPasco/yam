@@ -40,6 +40,7 @@ public Q_SLOTS:
 
 public Q_SLOTS:
 	void onClickedFormatMenuItem_ShowHide();
+	void onClickedFormatMenuItem_Tiled();
 
 public Q_SLOTS:
 	void onClickedUiWidgetMenuItem_CreateScene();

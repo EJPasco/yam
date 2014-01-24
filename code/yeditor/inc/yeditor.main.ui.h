@@ -57,9 +57,6 @@ public:
     QWidget *uiTreeLayout;
     QVBoxLayout *verticalLayout;
     QTreeWidget *uiTree;
-    QDockWidget *uiDetailDock;
-    QWidget *uiDetailLayout;
-    QVBoxLayout *verticalLayout_3;
     QToolBox *uiVarBox;
     QWidget *uiBasePage;
     QVBoxLayout *verticalLayout_4;
@@ -120,7 +117,8 @@ public:
         MainWindow->setStatusBar(statusbar);
         formatDock = new QDockWidget(MainWindow);
         formatDock->setObjectName(QStringLiteral("formatDock"));
-        formatDock->setFeatures(QDockWidget::DockWidgetMovable);
+        formatDock->setFloating(false);
+        formatDock->setFeatures(QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable);
         formatDockLayout = new QWidget();
         formatDockLayout->setObjectName(QStringLiteral("formatDockLayout"));
         verticalLayout_2 = new QVBoxLayout(formatDockLayout);
@@ -138,7 +136,8 @@ public:
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), formatDock);
         uiTreeDock = new QDockWidget(MainWindow);
         uiTreeDock->setObjectName(QStringLiteral("uiTreeDock"));
-        uiTreeDock->setFeatures(QDockWidget::DockWidgetMovable);
+        uiTreeDock->setFloating(false);
+        uiTreeDock->setFeatures(QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable);
         uiTreeLayout = new QWidget();
         uiTreeLayout->setObjectName(QStringLiteral("uiTreeLayout"));
         verticalLayout = new QVBoxLayout(uiTreeLayout);
@@ -155,19 +154,11 @@ public:
 
         verticalLayout->addWidget(uiTree);
 
-        uiTreeDock->setWidget(uiTreeLayout);
-        MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(2), uiTreeDock);
-        uiDetailDock = new QDockWidget(MainWindow);
-        uiDetailDock->setObjectName(QStringLiteral("uiDetailDock"));
-        uiDetailLayout = new QWidget();
-        uiDetailLayout->setObjectName(QStringLiteral("uiDetailLayout"));
-        verticalLayout_3 = new QVBoxLayout(uiDetailLayout);
-        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        uiVarBox = new QToolBox(uiDetailLayout);
+        uiVarBox = new QToolBox(uiTreeLayout);
         uiVarBox->setObjectName(QStringLiteral("uiVarBox"));
         uiBasePage = new QWidget();
         uiBasePage->setObjectName(QStringLiteral("uiBasePage"));
-        uiBasePage->setGeometry(QRect(0, 0, 274, 192));
+        uiBasePage->setGeometry(QRect(0, 0, 207, 210));
         verticalLayout_4 = new QVBoxLayout(uiBasePage);
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
         uiBaseTableView = new QTableView(uiBasePage);
@@ -179,10 +170,10 @@ public:
 
         uiVarBox->addItem(uiBasePage, QStringLiteral("Base"));
 
-        verticalLayout_3->addWidget(uiVarBox);
+        verticalLayout->addWidget(uiVarBox);
 
-        uiDetailDock->setWidget(uiDetailLayout);
-        MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(2), uiDetailDock);
+        uiTreeDock->setWidget(uiTreeLayout);
+        MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(2), uiTreeDock);
         toolBar = new QToolBar(MainWindow);
         toolBar->setObjectName(QStringLiteral("toolBar"));
         toolBar->setMovable(false);
@@ -237,7 +228,6 @@ public:
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
         formatDock->setWindowTitle(QApplication::translate("MainWindow", "Format", 0));
         uiTreeDock->setWindowTitle(QApplication::translate("MainWindow", "UI Tree", 0));
-        uiDetailDock->setWindowTitle(QApplication::translate("MainWindow", "UI Detail", 0));
         uiVarBox->setItemText(uiVarBox->indexOf(uiBasePage), QApplication::translate("MainWindow", "Base", 0));
         toolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0));
     } // retranslateUi

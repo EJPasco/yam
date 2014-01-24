@@ -120,6 +120,7 @@ void YEditor::onFormatTreeContextMenu(QPoint oPos)
 	}
 	QMenu menu;
 	menu.addAction(tr("Show/Hide"), this, SLOT(onClickedFormatMenuItem_ShowHide()));
+	menu.addAction(tr("Tiled"), this, SLOT(onClickedFormatMenuItem_Tiled()));
 	menu.exec(QCursor::pos());
 }
 
@@ -177,7 +178,11 @@ void YEditor::onClickedFormatMenuItem_ShowHide()
 		}
 		pUiItem->setVisible(!pUiItem->isVisible());
 	}
-	//
+}
+
+void YEditor::onClickedFormatMenuItem_Tiled()
+{
+	m_UI.formatArea->toTiled();
 }
 
 void YEditor::onClickedUiWidgetMenuItem_CreateScene()
@@ -213,10 +218,8 @@ void YEditor::reloadFile(const yam::ystring& rsFileName)
 	}
 
 	m_UI.formatArea->clearChildrenItem();
-	m_UI.formatArea->setScale(1.0f);
 	m_UI.formatTree->clear();
 	m_UI.uiArea->clearChildrenItem();
-	m_UI.uiArea->setScale(1.0f);
 	m_mRelationship.clear();
 	m_FileTreeData.Clear();
 

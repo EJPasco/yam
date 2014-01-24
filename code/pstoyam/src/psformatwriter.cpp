@@ -56,8 +56,7 @@ void YCPsFormatWriter::Do(FormatRecordPtr& rpRecord)
 	}
 
 	// parse the layer
-	ReadLayerDesc* pLayerDesc = rpRecord->documentInfo->layersDescriptor;
-	Do(pLayerDesc, pFormat);
+	Do(rpRecord->documentInfo->layersDescriptor, pFormat);
 
 	base::YCBuffer oBuffer;
 	oBuffer.Begin();
@@ -69,7 +68,7 @@ void YCPsFormatWriter::Do(FormatRecordPtr& rpRecord)
 	FSWrite(rpRecord->dataFork, &iSize, pBuffer);
 }
 
-void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, base::YIFormat* pFormatParent)
+void YCPsFormatWriter::Do(const ReadLayerDesc* const& rpLayerDesc, base::YIFormat* pFormatParent)
 {
 	if (NULL == rpLayerDesc || NULL == rpLayerDesc->transparency || NULL == pFormatParent)
 	{
@@ -85,19 +84,20 @@ void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, base::YIFormat* pFormatPa
 			base::YIFormat* pFormat = new base::YCFormat;
 			pFormatParent->AddChild(pFormat);
 
-			rpLayerDesc = rpLayerDesc->next;
-			Do(rpLayerDesc, pFormat);
+			Do(rpLayerDesc->next, pFormat);
 		}
 		else
 		{
 			pFormatParent->GetId() = rpLayerDesc->name;
 
-			rpLayerDesc = rpLayerDesc->next;
-
 			base::YITree* pTreeParent = pFormatParent->GetParent();
 			if (YNULL != pTreeParent && YOBJECT_GETCLASSNAME(base::YCFormat) == pTreeParent->GetClassName())
 			{
-				Do(rpLayerDesc, (base::YIFormat*)pTreeParent);
+				Do(rpLayerDesc->next, (base::YIFormat*)pTreeParent);
+			}
+			else
+			{
+				Do(rpLayerDesc->next, pFormatParent);
 			}
 		}
 	}
@@ -160,12 +160,11 @@ void YCPsFormatWriter::Do(ReadLayerDesc*& rpLayerDesc, base::YIFormat* pFormatPa
 			}
 		}
 
-		rpLayerDesc = rpLayerDesc->next;
-		Do(rpLayerDesc, pFormatParent);
+		Do(rpLayerDesc->next, pFormatParent);
 	}
 }
 
-void YCPsFormatWriter::Do(ReadChannelDesc*& rpChannelDesc, const VRect& rstBox, base::YIFormat*& rpFormat, const yuint32& riOffset)
+void YCPsFormatWriter::Do(const ReadChannelDesc* const& rpChannelDesc, const VRect& rstBox, base::YIFormat*& rpFormat, const yuint32& riOffset)
 {
 	assert(YNULL != rpFormat);
 

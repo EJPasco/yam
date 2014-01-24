@@ -50,6 +50,9 @@ public:
 	/// Computes the ratio of used surface area to the total bin area.
 	float Occupancy() const;
 
+	std::vector<Rect> &GetFreeRectangles() { return freeRectangles; }
+	std::vector<Rect> &GetUsedRectangles() { return usedRectangles; }
+
 private:
 	int binWidth;
 	int binHeight;

@@ -32,6 +32,7 @@ public:
 	virtual void Clear() = 0;
 	virtual yint32 GetCountOfNext() const = 0;
 	virtual yint32 GetCountOfChildren() const = 0;
+	virtual YITree* Find(const ystring& rsId) const = 0;
 	virtual YITree* FindNext(const ystring& rsId) const = 0;
 	virtual YITree* FindChild(const ystring& rsId) const = 0;
 };
@@ -187,18 +188,52 @@ public:
 		return (YNULL == m_pChildren) ? 0 : (1 + m_pChildren->GetCountOfNext());
 	}
 
+	virtual YITree* Find(const ystring& rsId) const
+	{
+		if (YNULL != m_pNext)
+		{
+			if (rsId == m_pNext->GetId())
+			{
+				return m_pNext;
+			}
+			else
+			{
+				YITree* pFind = m_pNext->Find(rsId);
+				if (YNULL != pFind)
+				{
+					return pFind;
+				}
+			}
+		}
+		if (YNULL != m_pChildren)
+		{
+			if (rsId == m_pChildren->GetId())
+			{
+				return m_pChildren;
+			}
+			else
+			{
+				YITree* pFind = m_pChildren->Find(rsId);
+				if (YNULL != pFind)
+				{
+					return pFind;
+				}
+			}
+		}
+		return YNULL;
+	}
+
 	virtual YITree* FindNext(const ystring& rsId) const
 	{
-		YITree* pNext = m_pNext;
-		while (YNULL != pNext)
+		if (NULL == m_pNext)
 		{
-			if (rsId == pNext->GetId())
-			{
-				return pNext;
-			}
-			pNext = pNext->GetNext();
+			return YNULL;
 		}
-		return pNext;
+		if (rsId == m_pNext->GetId())
+		{
+			return m_pNext;
+		}
+		return m_pNext->FindNext(rsId);
 	}
 
 	virtual YITree* FindChild(const ystring& rsId) const 
@@ -211,7 +246,11 @@ public:
 		{
 			return m_pChildren;
 		}
-		return m_pChildren->FindNext(rsId);
+		else
+		{
+			return m_pChildren->FindNext(rsId);
+		}
+		return YNULL;
 	}
 
 public:

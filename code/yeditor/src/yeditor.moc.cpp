@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YEditor_t {
-    QByteArrayData data[21];
-    char stringdata[393];
+    QByteArrayData data[22];
+    char stringdata[423];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -46,10 +46,11 @@ QT_MOC_LITERAL(13, 171, 15),
 QT_MOC_LITERAL(14, 187, 10),
 QT_MOC_LITERAL(15, 198, 7),
 QT_MOC_LITERAL(16, 206, 32),
-QT_MOC_LITERAL(17, 239, 37),
-QT_MOC_LITERAL(18, 277, 37),
-QT_MOC_LITERAL(19, 315, 37),
-QT_MOC_LITERAL(20, 353, 38)
+QT_MOC_LITERAL(17, 239, 29),
+QT_MOC_LITERAL(18, 269, 37),
+QT_MOC_LITERAL(19, 307, 37),
+QT_MOC_LITERAL(20, 345, 37),
+QT_MOC_LITERAL(21, 383, 38)
     },
     "YEditor\0onClickedOpen\0\0onClickedSave\0"
     "onClickedExport\0onClickedSync\0"
@@ -57,6 +58,7 @@ QT_MOC_LITERAL(20, 353, 38)
     "pTreeItem\0iIndex\0onFormatTreeContextMenu\0"
     "oPos\0onUiTreeContextMenu\0onPressedUiItem\0"
     "YCQUiItem*\0pUiItem\0onClickedFormatMenuItem_ShowHide\0"
+    "onClickedFormatMenuItem_Tiled\0"
     "onClickedUiWidgetMenuItem_CreateScene\0"
     "onClickedUiWidgetMenuItem_CreatePanel\0"
     "onClickedUiWidgetMenuItem_CreateImage\0"
@@ -70,7 +72,7 @@ static const uint qt_meta_data_YEditor[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -78,19 +80,20 @@ static const uint qt_meta_data_YEditor[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   79,    2, 0x0a,
-       3,    0,   80,    2, 0x0a,
-       4,    0,   81,    2, 0x0a,
-       5,    0,   82,    2, 0x0a,
-       6,    2,   83,    2, 0x0a,
-      10,    1,   88,    2, 0x0a,
-      12,    1,   91,    2, 0x0a,
-      13,    1,   94,    2, 0x0a,
-      16,    0,   97,    2, 0x0a,
-      17,    0,   98,    2, 0x0a,
-      18,    0,   99,    2, 0x0a,
-      19,    0,  100,    2, 0x0a,
-      20,    0,  101,    2, 0x0a,
+       1,    0,   84,    2, 0x0a,
+       3,    0,   85,    2, 0x0a,
+       4,    0,   86,    2, 0x0a,
+       5,    0,   87,    2, 0x0a,
+       6,    2,   88,    2, 0x0a,
+      10,    1,   93,    2, 0x0a,
+      12,    1,   96,    2, 0x0a,
+      13,    1,   99,    2, 0x0a,
+      16,    0,  102,    2, 0x0a,
+      17,    0,  103,    2, 0x0a,
+      18,    0,  104,    2, 0x0a,
+      19,    0,  105,    2, 0x0a,
+      20,    0,  106,    2, 0x0a,
+      21,    0,  107,    2, 0x0a,
 
  // slots: parameters
     QMetaType::Void,
@@ -101,6 +104,7 @@ static const uint qt_meta_data_YEditor[] = {
     QMetaType::Void, QMetaType::QPoint,   11,
     QMetaType::Void, QMetaType::QPoint,   11,
     QMetaType::Void, 0x80000000 | 14,   15,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -124,22 +128,12 @@ void YEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 6: _t->onUiTreeContextMenu((*reinterpret_cast< QPoint(*)>(_a[1]))); break;
         case 7: _t->onPressedUiItem((*reinterpret_cast< YCQUiItem*(*)>(_a[1]))); break;
         case 8: _t->onClickedFormatMenuItem_ShowHide(); break;
-        case 9: _t->onClickedUiWidgetMenuItem_CreateScene(); break;
-        case 10: _t->onClickedUiWidgetMenuItem_CreatePanel(); break;
-        case 11: _t->onClickedUiWidgetMenuItem_CreateImage(); break;
-        case 12: _t->onClickedUiWidgetMenuItem_CreateButton(); break;
+        case 9: _t->onClickedFormatMenuItem_Tiled(); break;
+        case 10: _t->onClickedUiWidgetMenuItem_CreateScene(); break;
+        case 11: _t->onClickedUiWidgetMenuItem_CreatePanel(); break;
+        case 12: _t->onClickedUiWidgetMenuItem_CreateImage(); break;
+        case 13: _t->onClickedUiWidgetMenuItem_CreateButton(); break;
         default: ;
-        }
-    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        switch (_id) {
-        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 7:
-            switch (*reinterpret_cast<int*>(_a[1])) {
-            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-            case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< YCQUiItem* >(); break;
-            }
-            break;
         }
     }
 }
@@ -169,13 +163,13 @@ int YEditor::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 14;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 13)
-            qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        if (_id < 14)
+            *reinterpret_cast<int*>(_a[0]) = -1;
+        _id -= 14;
     }
     return _id;
 }

@@ -82,7 +82,7 @@ void GuillotineBinPack::Insert(std::vector<RectSize> &rects, bool merge,
 					i = freeRectangles.size(); // Force a jump out of the outer loop as well - we got an instant fit.
 					break;
 				}
-				// If flipping this rectangle is a perfect match, pick that then.
+				/*// If flipping this rectangle is a perfect match, pick that then.
 				else if (rects[j].height == freeRectangles[i].width && rects[j].width == freeRectangles[i].height)
 				{
 					bestFreeRect = i;
@@ -91,7 +91,7 @@ void GuillotineBinPack::Insert(std::vector<RectSize> &rects, bool merge,
 					bestScore = std::numeric_limits<int>::min();
 					i = freeRectangles.size(); // Force a jump out of the outer loop as well - we got an instant fit.
 					break;
-				}
+				}*/
 				// Try if we can fit the rectangle upright.
 				else if (rects[j].width <= freeRectangles[i].width && rects[j].height <= freeRectangles[i].height)
 				{
@@ -104,7 +104,7 @@ void GuillotineBinPack::Insert(std::vector<RectSize> &rects, bool merge,
 						bestScore = score;
 					}
 				}
-				// If not, then perhaps flipping sideways will make it fit?
+				/*// If not, then perhaps flipping sideways will make it fit?
 				else if (rects[j].height <= freeRectangles[i].width && rects[j].width <= freeRectangles[i].height)
 				{
 					int score = ScoreByHeuristic(rects[j].height, rects[j].width, freeRectangles[i], rectChoice);
@@ -115,7 +115,7 @@ void GuillotineBinPack::Insert(std::vector<RectSize> &rects, bool merge,
 						bestFlipped = true;
 						bestScore = score;
 					}
-				}
+				}*/
 			}
 		}
 
@@ -165,176 +165,6 @@ bool FitsPerfectly(const RectSize &r, const Rect &freeRect)
 	return (r.width == freeRect.width && r.height == freeRect.height) ||
 		(r.height == freeRect.width && r.width == freeRect.height);
 }
-
-/*
-// A helper function for GUILLOTINE-MAXFITTING. Counts how many rectangles fit into the given rectangle
-// after it has been split.
-void CountNumFitting(const Rect &freeRect, int width, int height, const std::vector<RectSize> &rects, 
-	int usedRectIndex, bool splitHorizontal, int &score1, int &score2)
-{
-	const int w = freeRect.width - width;
-	const int h = freeRect.height - height;
-
-	Rect bottom;
-	bottom.x = freeRect.x;
-	bottom.y = freeRect.y + height;
-	bottom.height = h;
-
-	Rect right;
-	right.x = freeRect.x + width;
-	right.y = freeRect.y;
-	right.width = w;
-
-	if (splitHorizontal)
-	{
-		bottom.width = freeRect.width;
-		right.height = height;
-	}
-	else // Split vertically
-	{
-		bottom.width = width;
-		right.height = freeRect.height;
-	}
-
-	int fitBottom = 0;
-	int fitRight = 0;
-	for(size_t i = 0; i < rects.size(); ++i)
-		if (i != usedRectIndex)
-		{
-			if (FitsPerfectly(rects[i], bottom))
-				fitBottom |= 0x10000000;
-			if (FitsPerfectly(rects[i], right))
-				fitRight |= 0x10000000;
-
-			if (Fits(rects[i], bottom))
-				++fitBottom;
-			if (Fits(rects[i], right))
-				++fitRight;
-		}
-
-	score1 = min(fitBottom, fitRight);
-	score2 = max(fitBottom, fitRight);
-}
-*/
-/*
-// Implements GUILLOTINE-MAXFITTING, an experimental heuristic that's really cool but didn't quite work in practice.
-void GuillotineBinPack::InsertMaxFitting(std::vector<RectSize> &rects, std::vector<Rect> &dst, bool merge, 
-	FreeRectChoiceHeuristic rectChoice, GuillotineSplitHeuristic splitMethod)
-{
-	dst.clear();
-	int bestRect = 0;
-	bool bestFlipped = false;
-	bool bestSplitHorizontal = false;
-
-	// Pick rectangles one at a time and pack the one that leaves the most choices still open.
-	while(rects.size() > 0 && freeRectangles.size() > 0)
-	{
-		int bestScore1 = -1;
-		int bestScore2 = -1;
-
-		///\todo Different sort predicates.
-		clb::sort::QuickSort(&freeRectangles[0], freeRectangles.size(), CompareRectShortSide);
-
-		Rect &freeRect = freeRectangles[0];
-
-		for(size_t j = 0; j < rects.size(); ++j)
-		{
-			int score1;
-			int score2;
-
-			if (rects[j].width == freeRect.width && rects[j].height == freeRect.height)
-			{
-				bestRect = j;
-				bestFlipped = false;
-				bestScore1 = bestScore2 = std::numeric_limits<int>::max();
-				break;
-			}
-			else if (rects[j].width <= freeRect.width && rects[j].height <= freeRect.height)
-			{
-				CountNumFitting(freeRect, rects[j].width, rects[j].height, rects, j, false, score1, score2);
-
-				if (score1 > bestScore1 || (score1 == bestScore1 && score2 > bestScore2))
-				{
-					bestRect = j;
-					bestScore1 = score1;
-					bestScore2 = score2;
-					bestFlipped = false;
-					bestSplitHorizontal = false;
-				}
-
-				CountNumFitting(freeRect, rects[j].width, rects[j].height, rects, j, true, score1, score2);
-
-				if (score1 > bestScore1 || (score1 == bestScore1 && score2 > bestScore2))
-				{
-					bestRect = j;
-					bestScore1 = score1;
-					bestScore2 = score2;
-					bestFlipped = false;
-					bestSplitHorizontal = true;
-				}
-			}
-
-			if (rects[j].height == freeRect.width && rects[j].width == freeRect.height)
-			{
-				bestRect = j;
-				bestFlipped = true;
-				bestScore1 = bestScore2 = std::numeric_limits<int>::max();
-				break;
-			}
-			else if (rects[j].height <= freeRect.width && rects[j].width <= freeRect.height)
-			{
-				CountNumFitting(freeRect, rects[j].height, rects[j].width, rects, j, false, score1, score2);
-
-				if (score1 > bestScore1 || (score1 == bestScore1 && score2 > bestScore2))
-				{
-					bestRect = j;
-					bestScore1 = score1;
-					bestScore2 = score2;
-					bestFlipped = true;
-					bestSplitHorizontal = false;
-				}
-
-				CountNumFitting(freeRect, rects[j].height, rects[j].width, rects, j, true, score1, score2);
-
-				if (score1 > bestScore1 || (score1 == bestScore1 && score2 > bestScore2))
-				{
-					bestRect = j;
-					bestScore1 = score1;
-					bestScore2 = score2;
-					bestFlipped = true;
-					bestSplitHorizontal = true;
-				}
-			}
-		}
-
-		if (bestScore1 >= 0)
-		{
-			Rect newNode;
-			newNode.x = freeRect.x;
-			newNode.y = freeRect.y;
-			newNode.width = rects[bestRect].width;
-			newNode.height = rects[bestRect].height;
-			if (bestFlipped)
-				std::swap(newNode.width, newNode.height);
-
-			assert(disjointRects.Disjoint(newNode));
-			SplitFreeRectAlongAxis(freeRect, newNode, bestSplitHorizontal);
-
-			rects.erase(rects.begin() + bestRect);
-
-			if (merge)
-				MergeFreeList();
-
-			usedRectangles.push_back(newNode);
-#ifdef _DEBUG
-			disjointRects.Add(newNode);
-#endif
-		}
-
-		freeRectangles.erase(freeRectangles.begin());
-	}
-}
-*/
 
 Rect GuillotineBinPack::Insert(int width, int height, bool merge, FreeRectChoiceHeuristic rectChoice, 
 	GuillotineSplitHeuristic splitMethod)
