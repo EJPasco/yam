@@ -21,6 +21,9 @@ public:
 Q_SIGNALS:
 	void visibilityChanged(bool bVisible);
 
+public Q_SLOTS:
+	void onClickedReset();
+
 protected:
 	virtual void showEvent(QShowEvent* pEvent);
 	virtual void hideEvent(QHideEvent* pEvent);
@@ -38,10 +41,12 @@ public:
 
 private:
 	bool FindAndDelete(yam::yvrect& rvRect2D, const yam::YVec2D& rstVec2D, yam::YRect2D& rstRect2D) const;
+	void MoveChildItem(const QPointF& rOffsetF);
 
 private:
 	bool			m_bPressed;
 	QPointF			m_oPosMousePressStart;
+	QPointF			m_oPosOffset;
 	yvuiitemptr		m_vItemPtr;
 	bool			m_bGrabable;
 };

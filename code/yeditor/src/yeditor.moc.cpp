@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YEditor_t {
-    QByteArrayData data[35];
-    char stringdata[684];
+    QByteArrayData data[34];
+    char stringdata[678];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -46,24 +46,23 @@ QT_MOC_LITERAL(13, 222, 7),
 QT_MOC_LITERAL(14, 230, 20),
 QT_MOC_LITERAL(15, 251, 4),
 QT_MOC_LITERAL(16, 256, 28),
-QT_MOC_LITERAL(17, 285, 5),
-QT_MOC_LITERAL(18, 291, 20),
-QT_MOC_LITERAL(19, 312, 19),
-QT_MOC_LITERAL(20, 332, 27),
-QT_MOC_LITERAL(21, 360, 16),
-QT_MOC_LITERAL(22, 377, 10),
-QT_MOC_LITERAL(23, 388, 7),
-QT_MOC_LITERAL(24, 396, 15),
-QT_MOC_LITERAL(25, 412, 26),
-QT_MOC_LITERAL(26, 439, 8),
-QT_MOC_LITERAL(27, 448, 26),
-QT_MOC_LITERAL(28, 475, 26),
-QT_MOC_LITERAL(29, 502, 25),
-QT_MOC_LITERAL(30, 528, 25),
-QT_MOC_LITERAL(31, 554, 31),
-QT_MOC_LITERAL(32, 586, 31),
-QT_MOC_LITERAL(33, 618, 31),
-QT_MOC_LITERAL(34, 650, 32)
+QT_MOC_LITERAL(17, 285, 20),
+QT_MOC_LITERAL(18, 306, 19),
+QT_MOC_LITERAL(19, 326, 27),
+QT_MOC_LITERAL(20, 354, 16),
+QT_MOC_LITERAL(21, 371, 10),
+QT_MOC_LITERAL(22, 382, 7),
+QT_MOC_LITERAL(23, 390, 15),
+QT_MOC_LITERAL(24, 406, 26),
+QT_MOC_LITERAL(25, 433, 8),
+QT_MOC_LITERAL(26, 442, 26),
+QT_MOC_LITERAL(27, 469, 26),
+QT_MOC_LITERAL(28, 496, 25),
+QT_MOC_LITERAL(29, 522, 25),
+QT_MOC_LITERAL(30, 548, 31),
+QT_MOC_LITERAL(31, 580, 31),
+QT_MOC_LITERAL(32, 612, 31),
+QT_MOC_LITERAL(33, 644, 32)
     },
     "YEditor\0onClickedOpen\0\0onClickedSave\0"
     "onClickedExport\0onClickedSync\0"
@@ -74,8 +73,8 @@ QT_MOC_LITERAL(34, 650, 32)
     "onResTreeItemSelected\0QTreeWidgetItem*\0"
     "pTreeItem\0iColumn\0onResTreeContextMenu\0"
     "oPos\0onResPropertyTreeItemChanged\0"
-    "pItem\0onUiTreeItemSelected\0"
-    "onUiTreeContextMenu\0onUiPropertyTreeItemChanged\0"
+    "onUiTreeItemSelected\0onUiTreeContextMenu\0"
+    "onUiPropertyTreeItemChanged\0"
     "onPressedResItem\0YCQUiItem*\0pUiItem\0"
     "onPressedUiItem\0onResDockVisibilityChanged\0"
     "bVisible\0onResAreaVisibilityChanged\0"
@@ -114,20 +113,20 @@ static const uint qt_meta_data_YEditor[] = {
       10,    2,  147,    2, 0x0a,
       14,    1,  152,    2, 0x0a,
       16,    2,  155,    2, 0x0a,
-      18,    2,  160,    2, 0x0a,
-      19,    1,  165,    2, 0x0a,
-      20,    2,  168,    2, 0x0a,
-      21,    1,  173,    2, 0x0a,
-      24,    1,  176,    2, 0x0a,
-      25,    1,  179,    2, 0x0a,
-      27,    1,  182,    2, 0x0a,
-      28,    0,  185,    2, 0x0a,
-      29,    1,  186,    2, 0x0a,
-      30,    1,  189,    2, 0x0a,
-      31,    0,  192,    2, 0x0a,
-      32,    0,  193,    2, 0x0a,
-      33,    0,  194,    2, 0x0a,
-      34,    0,  195,    2, 0x0a,
+      17,    2,  160,    2, 0x0a,
+      18,    1,  165,    2, 0x0a,
+      19,    2,  168,    2, 0x0a,
+      20,    1,  173,    2, 0x0a,
+      23,    1,  176,    2, 0x0a,
+      24,    1,  179,    2, 0x0a,
+      26,    1,  182,    2, 0x0a,
+      27,    0,  185,    2, 0x0a,
+      28,    1,  186,    2, 0x0a,
+      29,    1,  189,    2, 0x0a,
+      30,    0,  192,    2, 0x0a,
+      31,    0,  193,    2, 0x0a,
+      32,    0,  194,    2, 0x0a,
+      33,    0,  195,    2, 0x0a,
 
  // slots: parameters
     QMetaType::Void,
@@ -140,17 +139,17 @@ static const uint qt_meta_data_YEditor[] = {
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 11, QMetaType::Int,   12,   13,
     QMetaType::Void, QMetaType::QPoint,   15,
-    QMetaType::Void, 0x80000000 | 11, QMetaType::Int,   17,   13,
+    QMetaType::Void, 0x80000000 | 11, QMetaType::Int,   12,   13,
     QMetaType::Void, 0x80000000 | 11, QMetaType::Int,   12,   13,
     QMetaType::Void, QMetaType::QPoint,   15,
     QMetaType::Void, 0x80000000 | 11, QMetaType::Int,   12,   13,
-    QMetaType::Void, 0x80000000 | 22,   23,
-    QMetaType::Void, 0x80000000 | 22,   23,
-    QMetaType::Void, QMetaType::Bool,   26,
-    QMetaType::Void, QMetaType::Bool,   26,
+    QMetaType::Void, 0x80000000 | 21,   22,
+    QMetaType::Void, 0x80000000 | 21,   22,
+    QMetaType::Void, QMetaType::Bool,   25,
+    QMetaType::Void, QMetaType::Bool,   25,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Bool,   26,
-    QMetaType::Void, QMetaType::Bool,   26,
+    QMetaType::Void, QMetaType::Bool,   25,
+    QMetaType::Void, QMetaType::Bool,   25,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,

@@ -22,7 +22,37 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_8">
        <item>
+        <layout class="QHBoxLayout" name="resAreaBtnLayout">
+         <item>
+          <widget class="QToolButton" name="resAreaResetBtn">
+           <property name="text">
+            <string>Reset</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
         <widget class="YCQUiArea" name="resArea">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="frameShape">
           <enum>QFrame::Panel</enum>
          </property>
@@ -41,7 +71,37 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_9">
        <item>
+        <layout class="QHBoxLayout" name="uiAreaBtnLayout">
+         <item>
+          <widget class="QToolButton" name="uiAreaResetBtn">
+           <property name="text">
+            <string>Reset</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
         <widget class="YCQUiArea" name="uiArea">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="frameShape">
           <enum>QFrame::Panel</enum>
          </property>
@@ -146,7 +206,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
-         <widget class="QTreeWidget" name="resPropertyTreeWidget">
+         <widget class="YCQUiTree" name="resPropertyTreeWidget">
           <property name="frameShape">
            <enum>QFrame::Panel</enum>
           </property>
@@ -206,7 +266,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QTreeWidget" name="uiPropertyTreeWidget">
+         <widget class="YCQUiTree" name="uiPropertyTreeWidget">
           <property name="frameShape">
            <enum>QFrame::Panel</enum>
           </property>
@@ -415,7 +475,13 @@
    <container>1</container>
    <slots>
     <signal>visibilityChanged(bool)</signal>
+    <slot>onClickedReset()</slot>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>YCQUiTree</class>
+   <extends>QTreeWidget</extends>
+   <header>quitree.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -549,7 +615,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionBarExport</sender>
+   <sender>actionBarOpen</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>
    <slot>onClickedExport()</slot>
@@ -849,6 +915,38 @@
     <hint type="destinationlabel">
      <x>426</x>
      <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>resAreaResetBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>resArea</receiver>
+   <slot>onClickedReset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>345</x>
+     <y>81</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>365</x>
+     <y>296</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>uiAreaResetBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>uiArea</receiver>
+   <slot>onClickedReset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>465</x>
+     <y>81</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>486</x>
+     <y>296</y>
     </hint>
    </hints>
   </connection>

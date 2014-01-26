@@ -138,6 +138,14 @@ YIBuffer& YCBuffer::Clear()
 	return *this;
 }
 
+void YCBuffer::operator=(const YCBuffer& rBuffer)
+{
+	Clear();
+	Begin();
+	Write(rBuffer.GetSize(), rBuffer.GetData());
+	End();
+}
+
 void YCBuffer::Merge()
 {
 	if (0 >= m_vBufferSeg.size())

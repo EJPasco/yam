@@ -87,6 +87,9 @@ public:
 	virtual bool Read(const ybuffsize& riSize, const ybuffptr& rpDst);
 	virtual YIBuffer& Clear();
 
+public:
+	void operator=(const YCBuffer& rBuffer);
+
 protected:
 	void Merge();
 

@@ -13,6 +13,17 @@ int main(int argc, char* argv[])
 	using namespace yam::util;
 
 	{
+		YCWidget oWidget;
+		oWidget.GetBound().Pos.Y = 10;
+		oWidget.GetLayerWeight() = 9;
+		YCProperty oProperty;
+		oWidget >> oProperty;
+		oWidget.GetBound().Pos.Y = 100;
+		oWidget << oProperty;
+		oProperty.Clear();
+	}
+
+	{
 		YCFileReader file;
 		file.Open("test.yui");
 		YCBuffer buffer;

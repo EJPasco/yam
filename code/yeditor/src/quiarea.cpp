@@ -30,6 +30,14 @@ YCQUiArea::~YCQUiArea()
 	//
 }
 
+void YCQUiArea::onClickedReset()
+{
+	MoveChildItem(QPointF() - m_oPosOffset);
+
+	// all items were moved
+	m_oPosOffset *= 0.0f;
+}
+
 void YCQUiArea::showEvent(QShowEvent* pEvent)
 {
 	__super::showEvent(pEvent);
@@ -62,18 +70,10 @@ void YCQUiArea::mouseMoveEvent(QMouseEvent* pEvent)
 		return;
 	}
 	QPointF oOffset = pEvent->screenPos() - m_oPosMousePressStart;
-	yvuiitemptr::iterator it = m_vItemPtr.begin();
-	yvuiitemptr::iterator itEnd = m_vItemPtr.end();
-	for (; it != itEnd; ++it)
-	{
-		YCQUiItem*& rpItem = *it;
-		if (NULL == rpItem)
-		{
-			continue;
-		}
-		rpItem->move(rpItem->pos() + oOffset.toPoint());
-	}
 	m_oPosMousePressStart = pEvent->screenPos();
+
+	MoveChildItem(oOffset);
+	m_oPosOffset += oOffset;
 }
 
 void YCQUiArea::setGrabable(const bool& rbGrabable)
@@ -177,6 +177,9 @@ void YCQUiArea::toTiled()
 		rpUiItem->move(stRect2D.Pos.X, stRect2D.Pos.Y);
 	}
 	vRect.clear();
+
+	// all items were moved
+	m_oPosOffset *= 0.0f;
 }
 
 bool YCQUiArea::FindAndDelete(yam::yvrect& rvRect2D, const yam::YVec2D& rstVec2D, yam::YRect2D& rstRect2D) const
@@ -194,4 +197,19 @@ bool YCQUiArea::FindAndDelete(yam::yvrect& rvRect2D, const yam::YVec2D& rstVec2D
 		return true;
 	}
 	return false;
+}
+
+void YCQUiArea::MoveChildItem(const QPointF& rOffsetF)
+{
+	yvuiitemptr::iterator it = m_vItemPtr.begin();
+	yvuiitemptr::iterator itEnd = m_vItemPtr.end();
+	for (; it != itEnd; ++it)
+	{
+		YCQUiItem*& rpItem = *it;
+		if (NULL == rpItem)
+		{
+			continue;
+		}
+		rpItem->move(rpItem->pos() + rOffsetF.toPoint());
+	}
 }

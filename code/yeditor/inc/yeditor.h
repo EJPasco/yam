@@ -33,7 +33,7 @@ public Q_SLOTS:
 	void onClickedMenuWindowAreaUi();
 	void onResTreeItemSelected(QTreeWidgetItem* pTreeItem, int iColumn);
 	void onResTreeContextMenu(QPoint oPos);
-	void onResPropertyTreeItemChanged(QTreeWidgetItem* pItem, int iColumn);
+	void onResPropertyTreeItemChanged(QTreeWidgetItem* pTreeItem, int iColumn);
 	void onUiTreeItemSelected(QTreeWidgetItem* pTreeItem, int iColumn);
 	void onUiTreeContextMenu(QPoint oPos);
 	void onUiPropertyTreeItemChanged(QTreeWidgetItem* pTreeItem, int iColumn);

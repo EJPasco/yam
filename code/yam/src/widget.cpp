@@ -20,9 +20,9 @@ ybool YCWidget::operator>>(YCBuffer& rBuffer) const
 	buf.GetId() = GetId();
 	buf.GetClassName() = GetClassName();
 	buf.Begin();
-	YCProperty property;
-	*this >> property;
-	property >> buf;
+	YCProperty oProperty;
+	*this >> oProperty;
+	oProperty >> buf;
 	buf.End();
 	buf >> rBuffer;
 
@@ -40,29 +40,49 @@ ybool YCWidget::operator<<(YCBuffer& rBuffer)
 		return YFALSE;
 	}
 	GetId() = buf.GetId();
-	YCProperty property;
-	property << buf;
-	*this << property;
+	YCProperty oProperty;
+	oProperty << buf;
+	*this << oProperty;
 
 	return __super::operator <<(rBuffer);
 }
 
-ybool YCWidget::operator>>(YCProperty& rProperty) const
+void YCWidget::operator>>(YCProperty& rProperty) const
 {
-	YCProperty* pPropertyBound = rProperty.NewNext<YCProperty>();
-	pPropertyBound->GetId() = "bound";
-	pPropertyBound->FromRect2D(GetBound());
-	return YTRUE;
+	rProperty.Clear();
+
+	{
+		// bound
+		YCProperty* pProperty = rProperty.NewNext<YCProperty>();
+		pProperty->GetId() = "bound";
+		pProperty->FromRect2D(GetBound());
+	}
+	{
+		// layer weight
+		YCProperty* pProperty = rProperty.NewNext<YCProperty>();
+		pProperty->GetId() = "layerweight";
+		pProperty->FromInt32(GetLayerWeight());
+	}
 }
 
-ybool YCWidget::operator<<(YCProperty& rProperty)
+void YCWidget::operator<<(YCProperty& rProperty)
 {
-	YITree* pTreeBound = rProperty.FindNext("bound");
-	if (YNULL == pTreeBound || YOBJECT_GETCLASSNAME(YCProperty) != pTreeBound->GetClassName())
 	{
-		return YFALSE;
+		// bound
+		YITree* pProperty = rProperty.FindNext("bound");
+		if (YNULL != pProperty && YOBJECT_GETCLASSNAME(YCProperty) == pProperty->GetClassName())
+		{
+			((YCProperty*)pProperty)->ToRect2D(GetBound());
+		}
 	}
-	return ((YCProperty*)pTreeBound)->ToRect2D(GetBound());
+	{
+		// layer weight
+		YITree* pProperty = rProperty.FindNext("layerweight");
+		if (YNULL != pProperty && YOBJECT_GETCLASSNAME(YCProperty) == pProperty->GetClassName())
+		{
+			((YCProperty*)pProperty)->ToInt32(GetLayerWeight());
+		}
+	}
 }
 
 }}

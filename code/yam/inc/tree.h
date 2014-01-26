@@ -274,7 +274,6 @@ private:
 	YITree*		m_pParent;
 	YITree*		m_pNext;
 	YITree*		m_pChildren;
-	yint32		m_iCountOfChildren;
 };
 
 class YCTree : public YTTree<YITree, YCTree>
