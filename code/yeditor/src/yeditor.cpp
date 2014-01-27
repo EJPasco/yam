@@ -130,7 +130,7 @@ void YEditor::onClickedExport()
 	}
 
 	json::Array jAry;
-	jAry.push_back();
+	jAry.push_back("aa");
 	jObj["aa"] = jAry;
 
 	std::string sRes = json::Serialize(jObj);
