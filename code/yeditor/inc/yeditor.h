@@ -4,6 +4,7 @@
 #include "yeditorcommon.h"
 
 #include "yeditor.main.ui.h"
+#include "quitreewidgethelper.h"
 
 #include <QtWidgets/QMainWindow>
 
@@ -33,10 +34,8 @@ public Q_SLOTS:
 	void onClickedMenuWindowAreaUi();
 	void onResTreeItemSelected(QTreeWidgetItem* pTreeItem, int iColumn);
 	void onResTreeContextMenu(QPoint oPos);
-	void onResPropertyTreeItemChanged(QTreeWidgetItem* pTreeItem, int iColumn);
 	void onUiTreeItemSelected(QTreeWidgetItem* pTreeItem, int iColumn);
 	void onUiTreeContextMenu(QPoint oPos);
-	void onUiPropertyTreeItemChanged(QTreeWidgetItem* pTreeItem, int iColumn);
 
 public Q_SLOTS:
 	void onPressedResItem(YCQUiItem* pUiItem);
@@ -75,6 +74,7 @@ private:
 	yam::base::YCTree		m_FileTreeData;
 	ymnamerelationship		m_mRelationship;
 	yam::ystring			m_sFileName;
+	YCQUiTreeWidgetHelper*	m_pTreeWidgetHelper;
 };
 
 #endif

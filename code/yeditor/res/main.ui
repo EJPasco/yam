@@ -206,7 +206,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
-         <widget class="YCQUiTree" name="resPropertyTreeWidget">
+         <widget class="QTreeWidget" name="resPropertyTreeWidget">
           <property name="frameShape">
            <enum>QFrame::Panel</enum>
           </property>
@@ -266,7 +266,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="YCQUiTree" name="uiPropertyTreeWidget">
+         <widget class="QTreeWidget" name="uiPropertyTreeWidget">
           <property name="frameShape">
            <enum>QFrame::Panel</enum>
           </property>
@@ -477,11 +477,6 @@
     <signal>visibilityChanged(bool)</signal>
     <slot>onClickedReset()</slot>
    </slots>
-  </customwidget>
-  <customwidget>
-   <class>YCQUiTree</class>
-   <extends>QTreeWidget</extends>
-   <header>quitree.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -807,22 +802,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>resPropertyTreeWidget</sender>
-   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>onResPropertyTreeItemChanged(QTreeWidgetItem*,int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>110</x>
-     <y>397</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>426</x>
-     <y>265</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>uiTree</sender>
    <signal>itemClicked(QTreeWidgetItem*,int)</signal>
    <receiver>MainWindow</receiver>
@@ -831,22 +810,6 @@
     <hint type="sourcelabel">
      <x>740</x>
      <y>170</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>426</x>
-     <y>265</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>uiPropertyTreeWidget</sender>
-   <signal>itemChanged(QTreeWidgetItem*,int)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>onUiPropertyTreeItemChanged(QTreeWidgetItem*,int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>740</x>
-     <y>397</y>
     </hint>
     <hint type="destinationlabel">
      <x>426</x>
@@ -967,8 +930,6 @@
   <slot>onResAreaVisibilityChanged(bool)</slot>
   <slot>onUiDockVisibilityChanged(bool)</slot>
   <slot>onUiAreaVisibilityChanged(bool)</slot>
-  <slot>onResPropertyTreeItemChanged(QTreeWidgetItem*,int)</slot>
   <slot>onUiTreeItemSelected(QTreeWidgetItem*,int)</slot>
-  <slot>onUiPropertyTreeItemChanged(QTreeWidgetItem*,int)</slot>
  </slots>
 </ui>

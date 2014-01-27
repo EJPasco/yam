@@ -30,6 +30,7 @@
 
 YEditor::YEditor(QWidget* pParent /* = NULL */)
 	: QMainWindow(pParent)
+	, m_pTreeWidgetHelper(NULL)
 {
 	qsrand(QTime::currentTime().msec());
 
@@ -78,6 +79,11 @@ YEditor::YEditor(QWidget* pParent /* = NULL */)
 
 YEditor::~YEditor()
 {
+	if (NULL != m_pTreeWidgetHelper)
+	{
+		delete m_pTreeWidgetHelper;
+		m_pTreeWidgetHelper = NULL;
+	}
 	//
 }
 
@@ -222,23 +228,6 @@ void YEditor::onResTreeContextMenu(QPoint oPos)
 	menu.exec(QCursor::pos());
 }
 
-void YEditor::onResPropertyTreeItemChanged(QTreeWidgetItem* pTreeItem, int iColumn)
-{
-	if (NULL == pTreeItem)
-	{
-		return;
-	}
-	YCQUiItem* pUiItem = getUiItem(m_UI.resTree->currentItem());
-	if (NULL == pUiItem)
-	{
-		return;
-	}
-	if (pTreeItem->text(0) == tr("Visible"))
-	{
-		pUiItem->setVisible(pTreeItem->checkState(iColumn));
-	}
-}
-
 void YEditor::onUiTreeItemSelected(QTreeWidgetItem* pTreeItem, int iColumn)
 {
 	YCQUiItem* pUiItem = getUiItem(pTreeItem);
@@ -270,69 +259,6 @@ void YEditor::onUiTreeContextMenu(QPoint oPos)
 		pActionCreate->setEnabled(NULL != pCurrentItem);
 	}
 	menu.exec(QCursor::pos());
-}
-
-void YEditor::onUiPropertyTreeItemChanged(QTreeWidgetItem* pTreeItem, int iColumn)
-{
-	if (NULL == pTreeItem)
-	{
-		return;
-	}
-	
-	YCQUiItem* pUiItem = getUiItem(m_UI.uiTree->currentItem());
-	if (NULL == pUiItem)
-	{
-		return;
-	}
-	if (pTreeItem->text(0) == tr("Visible"))
-	{
-		pUiItem->setVisible(pTreeItem->checkState(iColumn));
-	}
-	else if (pTreeItem->text(0) == tr("X"))
-	{
-		QTreeWidgetItem* pTreeParent = pTreeItem->parent();
-		if (NULL != pTreeParent)
-		{
-			if (pTreeParent->text(0) == tr("Bound"))
-			{
-				pUiItem->move(pTreeItem->text(1).toInt(), pUiItem->pos().y());
-			}
-		}
-	}
-	else if (pTreeItem->text(0) == tr("Y"))
-	{
-		QTreeWidgetItem* pTreeParent = pTreeItem->parent();
-		if (NULL != pTreeParent)
-		{
-			if (pTreeParent->text(0) == tr("Bound"))
-			{
-				pUiItem->move(pUiItem->pos().x(), pTreeItem->text(1).toInt());
-			}
-		}
-	}
-	else if (pTreeItem->text(0) == tr("Width"))
-	{
-		QTreeWidgetItem* pTreeParent = pTreeItem->parent();
-		if (NULL != pTreeParent)
-		{
-			if (pTreeParent->text(0) == tr("Bound"))
-			{
-				pUiItem->resize(pTreeItem->text(1).toInt(), pUiItem->size().height());
-			}
-		}
-	}
-	else if (pTreeItem->text(0) == tr("Height"))
-	{
-		QTreeWidgetItem* pTreeParent = pTreeItem->parent();
-		if (NULL != pTreeParent)
-		{
-			if (pTreeParent->text(0) == tr("Bound"))
-			{
-				pUiItem->resize(pUiItem->size().width(), pTreeItem->text(1).toInt());
-			}
-		}
-	}
-	//
 }
 
 void YEditor::onPressedResItem(YCQUiItem* pUiItem)
@@ -629,62 +555,18 @@ void YEditor::refreshResProperty(YCQUiItem*& rpResItem)
 
 void YEditor::refreshUiProperty(YCQUiItem*& rpUiItem)
 {
-	m_UI.uiPropertyTreeWidget->setWidget(rpUiItem);
-	if (YNULL != rpUiItem)
+	m_UI.uiPropertyTreeWidget->clear();
+	if (NULL != rpUiItem)
 	{
-		QTreeWidgetItem* pTreeBasic = new QTreeWidgetItem;
-		pTreeBasic->setText(0, tr("Basic"));
-		m_UI.uiPropertyTreeWidget->insertTopLevelItem(0, pTreeBasic);
-
+		if (NULL != m_pTreeWidgetHelper)
 		{
-			QTreeWidgetItem* pTreeBasicVisible = new QTreeWidgetItem;
-			pTreeBasicVisible->setText(0, tr("Visible"));
-			pTreeBasicVisible->setCheckState(1, (rpUiItem->isVisible() ? Qt::Checked : Qt::Unchecked));
-			pTreeBasic->addChild(pTreeBasicVisible);
-
-			QTreeWidgetItem* pTreeBasicBound = new QTreeWidgetItem;
-			pTreeBasicBound->setText(0, tr("Bound"));
-			pTreeBasic->addChild(pTreeBasicBound);
-
-			{
-				QRect oBound = rpUiItem->rect();
-
-				QTreeWidgetItem* pTreeBasicBoundX = new QTreeWidgetItem;
-				pTreeBasicBoundX->setText(0, tr("X"));
-				pTreeBasicBound->addChild(pTreeBasicBoundX);
-				QSpinBox* pSpinBoxX = new QSpinBox;
-				pSpinBoxX->setRange(INT_MIN, INT_MAX);
-				pSpinBoxX->setValue(oBound.x());
-				m_UI.uiPropertyTreeWidget->setItemWidget(pTreeBasicBoundX, 1, pSpinBoxX);
-
-				QTreeWidgetItem* pTreeBasicBoundY = new QTreeWidgetItem;
-				pTreeBasicBoundY->setText(0, tr("Y"));
-				pTreeBasicBound->addChild(pTreeBasicBoundY);
-				QSpinBox* pSpinBoxY = new QSpinBox;
-				pSpinBoxY->setRange(INT_MIN, INT_MAX);
-				pSpinBoxY->setValue(oBound.y());
-				m_UI.uiPropertyTreeWidget->setItemWidget(pTreeBasicBoundY, 1, pSpinBoxY);
-
-				QTreeWidgetItem* pTreeBasicBoundW = new QTreeWidgetItem;
-				pTreeBasicBoundW->setText(0, tr("Width"));
-				pTreeBasicBound->addChild(pTreeBasicBoundW);
-				QSpinBox* pSpinBoxW = new QSpinBox;
-				pSpinBoxW->setRange(INT_MIN, INT_MAX);
-				pSpinBoxW->setValue(oBound.width());
-				m_UI.uiPropertyTreeWidget->setItemWidget(pTreeBasicBoundW, 1, pSpinBoxW);
-
-				QTreeWidgetItem* pTreeBasicBoundH = new QTreeWidgetItem;
-				pTreeBasicBoundH->setText(0, tr("Height"));
-				pTreeBasicBound->addChild(pTreeBasicBoundH);
-				QSpinBox* pSpinBoxH = new QSpinBox;
-				pSpinBoxH->setRange(INT_MIN, INT_MAX);
-				pSpinBoxH->setValue(oBound.height());
-				m_UI.uiPropertyTreeWidget->setItemWidget(pTreeBasicBoundH, 1, pSpinBoxH);
-			}
+			delete m_pTreeWidgetHelper;
+			m_pTreeWidgetHelper = NULL;
 		}
-
-		m_UI.uiPropertyTreeWidget->expandAll();
+		m_pTreeWidgetHelper = new YCQUiTreeWidgetHelper(m_UI.uiPropertyTreeWidget);
+		m_pTreeWidgetHelper->setUiItem(rpUiItem);
 	}
+	m_UI.uiPropertyTreeWidget->expandAll();
 }
 
 void YEditor::parseArgument(const QStringList& rvStr)

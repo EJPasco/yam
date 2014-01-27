@@ -37,6 +37,10 @@ public:
 	void setImage(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData);
 
 public:
+	void setLayerWeight(const int& riLayerWeight);
+	int getLayerWeight() const;
+
+public:
 	QRgb convertFromYColor(const yam::ycolor& riColor) const;
 
 private:
@@ -48,6 +52,7 @@ private:
 	bool			m_bGrabed;
 	bool			m_bSelected;
 	qreal			m_fAlpha;
+	int				m_iLayerWeight;
 };
 
 

@@ -28,7 +28,6 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "quiarea.h"
-#include "quitree.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -82,14 +81,14 @@ public:
     QTreeWidget *resTree;
     QGroupBox *resPropertyGroupBox;
     QVBoxLayout *verticalLayout_7;
-    YCQUiTree *resPropertyTreeWidget;
+    QTreeWidget *resPropertyTreeWidget;
     QDockWidget *uiDock;
     QWidget *uiTreeLayout;
     QVBoxLayout *verticalLayout;
     QTreeWidget *uiTree;
     QGroupBox *uiPropertyGroupBox;
     QVBoxLayout *verticalLayout_6;
-    YCQUiTree *uiPropertyTreeWidget;
+    QTreeWidget *uiPropertyTreeWidget;
     QToolBar *toolBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -261,7 +260,7 @@ public:
         resPropertyGroupBox->setObjectName(QStringLiteral("resPropertyGroupBox"));
         verticalLayout_7 = new QVBoxLayout(resPropertyGroupBox);
         verticalLayout_7->setObjectName(QStringLiteral("verticalLayout_7"));
-        resPropertyTreeWidget = new YCQUiTree(resPropertyGroupBox);
+        resPropertyTreeWidget = new QTreeWidget(resPropertyGroupBox);
         QTreeWidgetItem *__qtreewidgetitem1 = new QTreeWidgetItem();
         __qtreewidgetitem1->setText(1, QStringLiteral("2"));
         __qtreewidgetitem1->setText(0, QStringLiteral("1"));
@@ -297,7 +296,7 @@ public:
         uiPropertyGroupBox->setObjectName(QStringLiteral("uiPropertyGroupBox"));
         verticalLayout_6 = new QVBoxLayout(uiPropertyGroupBox);
         verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
-        uiPropertyTreeWidget = new YCQUiTree(uiPropertyGroupBox);
+        uiPropertyTreeWidget = new QTreeWidget(uiPropertyGroupBox);
         QTreeWidgetItem *__qtreewidgetitem2 = new QTreeWidgetItem();
         __qtreewidgetitem2->setText(1, QStringLiteral("2"));
         __qtreewidgetitem2->setText(0, QStringLiteral("1"));
@@ -368,9 +367,7 @@ public:
         QObject::connect(resArea, SIGNAL(visibilityChanged(bool)), MainWindow, SLOT(onResAreaVisibilityChanged(bool)));
         QObject::connect(uiDock, SIGNAL(visibilityChanged(bool)), MainWindow, SLOT(onUiDockVisibilityChanged(bool)));
         QObject::connect(uiArea, SIGNAL(visibilityChanged(bool)), MainWindow, SLOT(onUiAreaVisibilityChanged(bool)));
-        QObject::connect(resPropertyTreeWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)), MainWindow, SLOT(onResPropertyTreeItemChanged(QTreeWidgetItem*,int)));
         QObject::connect(uiTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), MainWindow, SLOT(onUiTreeItemSelected(QTreeWidgetItem*,int)));
-        QObject::connect(uiPropertyTreeWidget, SIGNAL(itemChanged(QTreeWidgetItem*,int)), MainWindow, SLOT(onUiPropertyTreeItemChanged(QTreeWidgetItem*,int)));
         QObject::connect(actionBarDockRes, SIGNAL(triggered()), MainWindow, SLOT(onClickedMenuWindowDockRes()));
         QObject::connect(actionBarAreaRes, SIGNAL(triggered()), MainWindow, SLOT(onClickedMenuWindowAreaRes()));
         QObject::connect(actionBarAreaUi, SIGNAL(triggered()), MainWindow, SLOT(onClickedMenuWindowAreaUi()));

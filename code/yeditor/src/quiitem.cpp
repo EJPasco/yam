@@ -14,6 +14,7 @@ YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	, m_bSelected(false)
 	, m_fAlpha(1.0f)
 	, m_bGrabable(true)
+	, m_iLayerWeight(0)
 {
 	QSizePolicy policy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	policy.setHeightForWidth(true);
@@ -36,7 +37,7 @@ void YCQUiItem::paintEvent(QPaintEvent* pEvent)
 	if (NULL != m_pImage)
 	{
 		oPainter.setOpacity(m_fAlpha);
-		oPainter.drawImage(0, 0, *m_pImage);
+		oPainter.drawImage(rect(), *m_pImage);
 	}
 
 	if (m_bGrabed || m_bSelected)
@@ -200,6 +201,16 @@ void YCQUiItem::setImage(const yam::YRect2D& rstRect, const yam::ycolorptr& rpCo
 	}
 
 	repaint();
+}
+
+void YCQUiItem::setLayerWeight(const int& riLayerWeight)
+{
+	m_iLayerWeight = riLayerWeight;
+}
+
+int YCQUiItem::getLayerWeight() const
+{
+	return m_iLayerWeight;
 }
 
 QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const
