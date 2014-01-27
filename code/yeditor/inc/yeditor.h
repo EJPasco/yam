@@ -4,7 +4,9 @@
 #include "yeditorcommon.h"
 
 #include "yeditor.main.ui.h"
-#include "quitreewidgethelper.h"
+#include "quitreeitem.h"
+#include "quitreereshelper.h"
+#include "quitreeuihelper.h"
 
 #include <QtWidgets/QMainWindow>
 
@@ -13,7 +15,7 @@ class YEditor : public QMainWindow
 	struct SRelationship
 	{
 		YCQUiItem*			_pUiItem;
-		QTreeWidgetItem*	_pTreeItem;
+		YCQUiTreeItem*		_pTreeItem;
 	};
 	typedef std::map<QString, SRelationship>		ymnamerelationship;
 
@@ -44,6 +46,7 @@ public Q_SLOTS:
 public Q_SLOTS:
 	void onResDockVisibilityChanged(bool bVisible);
 	void onResAreaVisibilityChanged(bool bVisible);
+	void onClickedResMenuItem_CopyImageSource();
 	void onClickedResMenuItem_Tiled();
 
 public Q_SLOTS:
@@ -60,7 +63,7 @@ private:
 	void reloadUi(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
 	QString getFullName(const yam::base::YITree* pTree);
 	YCQUiItem* getUiItem(QTreeWidgetItem* pTreeItem) const;
-	QTreeWidgetItem* getTreeItem(YCQUiItem* pUiItem) const;
+	YCQUiTreeItem* getTreeItem(YCQUiItem* pUiItem) const;
 
 private:
 	void refreshResProperty(YCQUiItem*& rpUiItem);
@@ -71,10 +74,10 @@ private:
 
 private:
 	Ui_MainWindow			m_UI;
-	yam::base::YCTree		m_FileTreeData;
 	ymnamerelationship		m_mRelationship;
 	yam::ystring			m_sFileName;
-	YCQUiTreeWidgetHelper*	m_pTreeWidgetHelper;
+	YCQUiTreeResHelper*		m_pTreeResHelper;
+	YCQUiTreeUiHelper*		m_pTreeUiHelper;
 };
 
 #endif

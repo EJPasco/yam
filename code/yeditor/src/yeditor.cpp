@@ -2,6 +2,7 @@
 
 #include "yexport.h"
 #include "yrectpacker.h"
+#include "quitreeitem.h"
 
 #include <crtdbg.h>
 
@@ -9,6 +10,7 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QBoxLayout>
 #include <QtWidgets/QSpinBox>
+#include <QtGui/QClipboard>
 
 #include <QtGui/QPixmap>
 #include <QtGui/QPainter>
@@ -28,9 +30,13 @@
 #endif // _DEBUG
 #define YEDITOR_TITLE					YEDITOR_NAME" "YEDITOR_VERSION_STRING
 
+
+yam::base::YCTree						gs_FileTreeData;
+
 YEditor::YEditor(QWidget* pParent /* = NULL */)
 	: QMainWindow(pParent)
-	, m_pTreeWidgetHelper(NULL)
+	, m_pTreeResHelper(NULL)
+	, m_pTreeUiHelper(NULL)
 {
 	qsrand(QTime::currentTime().msec());
 
@@ -79,10 +85,15 @@ YEditor::YEditor(QWidget* pParent /* = NULL */)
 
 YEditor::~YEditor()
 {
-	if (NULL != m_pTreeWidgetHelper)
+	if (NULL != m_pTreeResHelper)
 	{
-		delete m_pTreeWidgetHelper;
-		m_pTreeWidgetHelper = NULL;
+		delete m_pTreeResHelper;
+		m_pTreeResHelper = NULL;
+	}
+	if (NULL != m_pTreeUiHelper)
+	{
+		delete m_pTreeUiHelper;
+		m_pTreeUiHelper = NULL;
 	}
 	//
 }
@@ -224,6 +235,7 @@ void YEditor::onResTreeContextMenu(QPoint oPos)
 		return;
 	}
 	QMenu menu;
+	menu.addAction(tr("Copy Image Source"), this, SLOT(onClickedResMenuItem_CopyImageSource()));
 	menu.addAction(tr("Tiled"), this, SLOT(onClickedResMenuItem_Tiled()));
 	menu.exec(QCursor::pos());
 }
@@ -263,7 +275,7 @@ void YEditor::onUiTreeContextMenu(QPoint oPos)
 
 void YEditor::onPressedResItem(YCQUiItem* pUiItem)
 {
-	QTreeWidgetItem* pTreeItem = getTreeItem(pUiItem);
+	YCQUiTreeItem* pTreeItem = getTreeItem(pUiItem);
 	if (NULL == pTreeItem)
 	{
 		return;
@@ -273,7 +285,7 @@ void YEditor::onPressedResItem(YCQUiItem* pUiItem)
 
 void YEditor::onPressedUiItem(YCQUiItem* pUiItem)
 {
-	QTreeWidgetItem* pTreeItem = getTreeItem(pUiItem);
+	YCQUiTreeItem* pTreeItem = getTreeItem(pUiItem);
 	if (NULL == pTreeItem)
 	{
 		return;
@@ -291,6 +303,18 @@ void YEditor::onResAreaVisibilityChanged(bool bVisible)
 {
 	m_UI.actionAreaRes->setChecked(bVisible);
 	m_UI.actionBarAreaRes->setChecked(bVisible);
+}
+
+void YEditor::onClickedResMenuItem_CopyImageSource()
+{
+	YCQUiItem* pTreeItem = getUiItem(m_UI.resTree->currentItem());
+	if (NULL == pTreeItem)
+	{
+		return;
+	}
+	QApplication::clipboard()->setText(pTreeItem->getImageSource());
+	QString msg("copy image source from res tree item - "); msg.append(pTreeItem->getImageSource());
+	m_UI.statusbar->showMessage(msg, 5000);
 }
 
 void YEditor::onClickedResMenuItem_Tiled()
@@ -320,7 +344,7 @@ void YEditor::onClickedUiMenuItem_CreateScene()
 	YCQUiItem* pUiItem = m_UI.uiArea->addChildItem(pWidget);
 	connect(pUiItem, SIGNAL(onPressed(YCQUiItem*)), this, SLOT(onPressedUiItem(YCQUiItem*)));
 
-	QTreeWidgetItem* pTreeItem = new QTreeWidgetItem;
+	YCQUiTreeItem* pTreeItem = new YCQUiTreeItem;
 	pTreeItem->setText(0, pWidget->GetId().c_str());
 	m_UI.uiTree->insertTopLevelItem(0, pTreeItem);
 
@@ -374,13 +398,13 @@ void YEditor::reloadFile(const yam::ystring& rsFileName)
 	m_UI.uiTree->clear();
 	m_UI.uiPropertyTreeWidget->clear();
 	m_mRelationship.clear();
-	m_FileTreeData.Clear();
+	gs_FileTreeData.Clear();
 
 	// parse
-	m_FileTreeData << buffer;
+	gs_FileTreeData << buffer;
 
 	{
-		yam::base::YITree* pTreePsRes = m_FileTreeData.FindChild(YFILE_KEY_RESOURCE);
+		yam::base::YITree* pTreePsRes = gs_FileTreeData.FindChild(YFILE_KEY_RESOURCE);
 		if (YNULL != pTreePsRes && YOBJECT_GETCLASSNAME(yam::base::YCFormat) == pTreePsRes->GetClassName())
 		{
 			const yam::base::YIFormat* pRes = (yam::base::YIFormat*)pTreePsRes;
@@ -390,7 +414,7 @@ void YEditor::reloadFile(const yam::ystring& rsFileName)
 	m_UI.resTree->expandAll();
 
 	{
-		yam::base::YITree* pTreeUi = m_FileTreeData.FindChild(YFILE_KEY_UI);
+		yam::base::YITree* pTreeUi = gs_FileTreeData.FindChild(YFILE_KEY_UI);
 		if (YNULL != pTreeUi && YOBJECT_GETCLASSNAME(yam::base::YCWidget) == pTreeUi->GetClassName())
 		{
 			const yam::base::YIWidget* pUi = (yam::base::YIWidget*)pTreeUi;
@@ -408,10 +432,15 @@ void YEditor::reloadRes(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiPare
 	}
 
 	YCQUiItem* pUiItem = m_UI.resArea->addChildItem(rpFormat);
-	connect(pUiItem, SIGNAL(onPressed(YCQUiItem*)), this, SLOT(onPressedResItem(YCQUiItem*)));
+	if (NULL != pUiItem)
+	{
+		pUiItem->setImageSource(getFullName(rpFormat));
+		connect(pUiItem, SIGNAL(onPressed(YCQUiItem*)), this, SLOT(onPressedResItem(YCQUiItem*)));
+	}
 
-	QTreeWidgetItem* pTreeItem = new QTreeWidgetItem;
+	YCQUiTreeItem* pTreeItem = new YCQUiTreeItem;
 	pTreeItem->setText(0, rpFormat->GetId().c_str());
+	pTreeItem->setDataProperty("imagesource", getFullName(rpFormat));
 	if (NULL == pTreeParent)
 	{
 		m_UI.resTree->insertTopLevelItem(0, pTreeItem);
@@ -448,9 +477,12 @@ void YEditor::reloadUi(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParen
 		return;
 	}
 	YCQUiItem* pUiItem = m_UI.uiArea->addChildItem(rpWidget);
-	connect(pUiItem, SIGNAL(onPressed(YCQUiItem*)), this, SLOT(onPressedUiItem(YCQUiItem*)));
+	if (NULL != pUiItem)
+	{
+		connect(pUiItem, SIGNAL(onPressed(YCQUiItem*)), this, SLOT(onPressedUiItem(YCQUiItem*)));
+	}
 
-	QTreeWidgetItem* pTreeItem = new QTreeWidgetItem;
+	YCQUiTreeItem* pTreeItem = new YCQUiTreeItem;
 	pTreeItem->setText(0, rpWidget->GetId().c_str());
 	if (NULL == pTreeParent)
 	{
@@ -484,11 +516,20 @@ void YEditor::reloadUi(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParen
 QString YEditor::getFullName(const yam::base::YITree* pTree)
 {
 	QString sRes = "";
-	if (YNULL != pTree)
+	if (YNULL == pTree)
 	{
-		sRes.append(".");
-		sRes.append(pTree->GetId().c_str());
-		sRes.append(getFullName(pTree->GetParent()));
+		return sRes;
+	}
+	const yam::base::YITree* pParent = pTree;
+	while (YNULL != pParent)
+	{
+		if (0 < sRes.size())
+		{
+			sRes.insert(0, ".");
+		}
+		sRes.insert(0, pParent->GetId().c_str());
+		pParent = pParent->GetParent();
+
 	}
 	return sRes;
 }
@@ -513,7 +554,7 @@ YCQUiItem* YEditor::getUiItem(QTreeWidgetItem* pTreeItem) const
 	return NULL;
 }
 
-QTreeWidgetItem* YEditor::getTreeItem(YCQUiItem* pUiItem) const
+YCQUiTreeItem* YEditor::getTreeItem(YCQUiItem* pUiItem) const
 {
 	if (NULL == pUiItem)
 	{
@@ -538,16 +579,13 @@ void YEditor::refreshResProperty(YCQUiItem*& rpResItem)
 	m_UI.resPropertyTreeWidget->clear();
 	if (YNULL != rpResItem)
 	{
-		QTreeWidgetItem* pTreeBasic = new QTreeWidgetItem;
-		pTreeBasic->setText(0, tr("Basic"));
-		m_UI.resPropertyTreeWidget->insertTopLevelItem(0, pTreeBasic);
-
-		QTreeWidgetItem* pTreeBasicVisible = new QTreeWidgetItem;
-		pTreeBasicVisible->setText(0, tr("Visible"));
-		pTreeBasicVisible->setCheckState(1, (rpResItem->isVisible() ? Qt::Checked : Qt::Unchecked));
-		pTreeBasic->insertChild(0, pTreeBasicVisible);
-
-		//
+		if (NULL != m_pTreeResHelper)
+		{
+			delete m_pTreeResHelper;
+			m_pTreeResHelper = NULL;
+		}
+		m_pTreeResHelper = new YCQUiTreeResHelper(m_UI.resPropertyTreeWidget);
+		m_pTreeResHelper->setUiItem(rpResItem);
 
 		m_UI.resPropertyTreeWidget->expandAll();
 	}
@@ -558,15 +596,16 @@ void YEditor::refreshUiProperty(YCQUiItem*& rpUiItem)
 	m_UI.uiPropertyTreeWidget->clear();
 	if (NULL != rpUiItem)
 	{
-		if (NULL != m_pTreeWidgetHelper)
+		if (NULL != m_pTreeUiHelper)
 		{
-			delete m_pTreeWidgetHelper;
-			m_pTreeWidgetHelper = NULL;
+			delete m_pTreeUiHelper;
+			m_pTreeUiHelper = NULL;
 		}
-		m_pTreeWidgetHelper = new YCQUiTreeWidgetHelper(m_UI.uiPropertyTreeWidget);
-		m_pTreeWidgetHelper->setUiItem(rpUiItem);
+		m_pTreeUiHelper = new YCQUiTreeUiHelper(m_UI.uiPropertyTreeWidget);
+		m_pTreeUiHelper->setUiItem(rpUiItem);
+
+		m_UI.uiPropertyTreeWidget->expandAll();
 	}
-	m_UI.uiPropertyTreeWidget->expandAll();
 }
 
 void YEditor::parseArgument(const QStringList& rvStr)

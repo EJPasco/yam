@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YEditor_t {
-    QByteArrayData data[32];
-    char stringdata[621];
+    QByteArrayData data[33];
+    char stringdata[658];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -54,13 +54,14 @@ QT_MOC_LITERAL(21, 333, 15),
 QT_MOC_LITERAL(22, 349, 26),
 QT_MOC_LITERAL(23, 376, 8),
 QT_MOC_LITERAL(24, 385, 26),
-QT_MOC_LITERAL(25, 412, 26),
-QT_MOC_LITERAL(26, 439, 25),
-QT_MOC_LITERAL(27, 465, 25),
-QT_MOC_LITERAL(28, 491, 31),
-QT_MOC_LITERAL(29, 523, 31),
-QT_MOC_LITERAL(30, 555, 31),
-QT_MOC_LITERAL(31, 587, 32)
+QT_MOC_LITERAL(25, 412, 36),
+QT_MOC_LITERAL(26, 449, 26),
+QT_MOC_LITERAL(27, 476, 25),
+QT_MOC_LITERAL(28, 502, 25),
+QT_MOC_LITERAL(29, 528, 31),
+QT_MOC_LITERAL(30, 560, 31),
+QT_MOC_LITERAL(31, 592, 31),
+QT_MOC_LITERAL(32, 624, 32)
     },
     "YEditor\0onClickedOpen\0\0onClickedSave\0"
     "onClickedExport\0onClickedSync\0"
@@ -74,6 +75,7 @@ QT_MOC_LITERAL(31, 587, 32)
     "onPressedResItem\0YCQUiItem*\0pUiItem\0"
     "onPressedUiItem\0onResDockVisibilityChanged\0"
     "bVisible\0onResAreaVisibilityChanged\0"
+    "onClickedResMenuItem_CopyImageSource\0"
     "onClickedResMenuItem_Tiled\0"
     "onUiDockVisibilityChanged\0"
     "onUiAreaVisibilityChanged\0"
@@ -90,7 +92,7 @@ static const uint qt_meta_data_YEditor[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      23,   14, // methods
+      24,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -98,29 +100,30 @@ static const uint qt_meta_data_YEditor[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  129,    2, 0x0a,
-       3,    0,  130,    2, 0x0a,
-       4,    0,  131,    2, 0x0a,
-       5,    0,  132,    2, 0x0a,
-       6,    0,  133,    2, 0x0a,
-       7,    0,  134,    2, 0x0a,
-       8,    0,  135,    2, 0x0a,
-       9,    0,  136,    2, 0x0a,
-      10,    2,  137,    2, 0x0a,
-      14,    1,  142,    2, 0x0a,
-      16,    2,  145,    2, 0x0a,
-      17,    1,  150,    2, 0x0a,
-      18,    1,  153,    2, 0x0a,
-      21,    1,  156,    2, 0x0a,
-      22,    1,  159,    2, 0x0a,
-      24,    1,  162,    2, 0x0a,
-      25,    0,  165,    2, 0x0a,
-      26,    1,  166,    2, 0x0a,
-      27,    1,  169,    2, 0x0a,
-      28,    0,  172,    2, 0x0a,
-      29,    0,  173,    2, 0x0a,
-      30,    0,  174,    2, 0x0a,
-      31,    0,  175,    2, 0x0a,
+       1,    0,  134,    2, 0x0a,
+       3,    0,  135,    2, 0x0a,
+       4,    0,  136,    2, 0x0a,
+       5,    0,  137,    2, 0x0a,
+       6,    0,  138,    2, 0x0a,
+       7,    0,  139,    2, 0x0a,
+       8,    0,  140,    2, 0x0a,
+       9,    0,  141,    2, 0x0a,
+      10,    2,  142,    2, 0x0a,
+      14,    1,  147,    2, 0x0a,
+      16,    2,  150,    2, 0x0a,
+      17,    1,  155,    2, 0x0a,
+      18,    1,  158,    2, 0x0a,
+      21,    1,  161,    2, 0x0a,
+      22,    1,  164,    2, 0x0a,
+      24,    1,  167,    2, 0x0a,
+      25,    0,  170,    2, 0x0a,
+      26,    0,  171,    2, 0x0a,
+      27,    1,  172,    2, 0x0a,
+      28,    1,  175,    2, 0x0a,
+      29,    0,  178,    2, 0x0a,
+      30,    0,  179,    2, 0x0a,
+      31,    0,  180,    2, 0x0a,
+      32,    0,  181,    2, 0x0a,
 
  // slots: parameters
     QMetaType::Void,
@@ -139,6 +142,7 @@ static const uint qt_meta_data_YEditor[] = {
     QMetaType::Void, 0x80000000 | 19,   20,
     QMetaType::Void, QMetaType::Bool,   23,
     QMetaType::Void, QMetaType::Bool,   23,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Bool,   23,
     QMetaType::Void, QMetaType::Bool,   23,
@@ -171,13 +175,14 @@ void YEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 13: _t->onPressedUiItem((*reinterpret_cast< YCQUiItem*(*)>(_a[1]))); break;
         case 14: _t->onResDockVisibilityChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 15: _t->onResAreaVisibilityChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 16: _t->onClickedResMenuItem_Tiled(); break;
-        case 17: _t->onUiDockVisibilityChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 18: _t->onUiAreaVisibilityChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 19: _t->onClickedUiMenuItem_CreateScene(); break;
-        case 20: _t->onClickedUiMenuItem_CreatePanel(); break;
-        case 21: _t->onClickedUiMenuItem_CreateImage(); break;
-        case 22: _t->onClickedUiMenuItem_CreateButton(); break;
+        case 16: _t->onClickedResMenuItem_CopyImageSource(); break;
+        case 17: _t->onClickedResMenuItem_Tiled(); break;
+        case 18: _t->onUiDockVisibilityChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 19: _t->onUiAreaVisibilityChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 20: _t->onClickedUiMenuItem_CreateScene(); break;
+        case 21: _t->onClickedUiMenuItem_CreatePanel(); break;
+        case 22: _t->onClickedUiMenuItem_CreateImage(); break;
+        case 23: _t->onClickedUiMenuItem_CreateButton(); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -226,13 +231,13 @@ int YEditor::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 23)
+        if (_id < 24)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 23;
+        _id -= 24;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 23)
+        if (_id < 24)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 23;
+        _id -= 24;
     }
     return _id;
 }

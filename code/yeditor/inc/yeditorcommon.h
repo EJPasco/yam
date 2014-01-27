@@ -6,4 +6,6 @@
 
 #define YEDITOR_NAME					"Yam Editor"
 
+extern yam::base::YCTree				gs_FileTreeData;
+
 #endif // Y_EDITORCOMMON_H

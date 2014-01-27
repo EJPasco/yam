@@ -15,6 +15,7 @@ YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
 	, m_fAlpha(1.0f)
 	, m_bGrabable(true)
 	, m_iLayerWeight(0)
+	, m_sImageSource("")
 {
 	QSizePolicy policy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	policy.setHeightForWidth(true);
@@ -131,6 +132,9 @@ void YCQUiItem::setFormat(const yam::base::YIFormat*& rpFormat)
 	{
 		return;
 	}
+	move(rpFormat->GetBound().Pos.X, rpFormat->GetBound().Pos.Y);
+	resize(rpFormat->GetBound().Size.X, rpFormat->GetBound().Size.Y);
+
 	setImage(rpFormat->GetBound(), rpFormat->GetColorData());
 	if (YNULL == rpFormat->GetColorData())
 	{
@@ -150,7 +154,28 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
 	{
 		return;
 	}
-	setImage(rpWidget->GetBound(), YNULL);
+	move(rpWidget->GetBound().Pos.X, rpWidget->GetBound().Pos.Y);
+	resize(rpWidget->GetBound().Size.X, rpWidget->GetBound().Size.Y);
+
+	yam::base::YCBuffer oBufferImage;
+	{
+		const yam::base::YITree* pTreeImage = rpWidget->GetExternalProperty().Find("image");
+		if (NULL != pTreeImage && YOBJECT_GETCLASSNAME(yam::base::YCProperty) == pTreeImage->GetClassName())
+		{
+			const yam::base::YIProperty* pPropertyImage = YNULL;
+			pPropertyImage = (const yam::base::YIProperty*)pTreeImage;
+			pPropertyImage->ToBuffer(oBufferImage);
+		}
+	}
+
+	if ((sizeof(yam::ycolor) * rpWidget->GetBound().Size.X * rpWidget->GetBound().Size.Y) == oBufferImage.GetSize())
+	{
+		setImage(rpWidget->GetBound(), (const yam::ycolorptr)oBufferImage.GetData());
+	}
+	else
+	{
+		setImage(rpWidget->GetBound(), YNULL);
+	}
 	setColor(qRgba(qrand(), qrand(), qrand(), qrand()));
 	setAlpah(0.2f);
 
@@ -179,9 +204,6 @@ void YCQUiItem::setAlpah(const qreal& rfAlpha)
 
 void YCQUiItem::setImage(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData)
 {
-	move(rstRect.Pos.X, rstRect.Pos.Y);
-	resize(rstRect.Size.X, rstRect.Size.Y);
-
 	if (NULL != m_pImage)
 	{
 		delete m_pImage;
@@ -211,6 +233,16 @@ void YCQUiItem::setLayerWeight(const int& riLayerWeight)
 int YCQUiItem::getLayerWeight() const
 {
 	return m_iLayerWeight;
+}
+
+void YCQUiItem::setImageSource(const QString& rsImageSource)
+{
+	m_sImageSource = rsImageSource;
+}
+
+QString YCQUiItem::getImageSource() const
+{
+	return m_sImageSource;
 }
 
 QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const

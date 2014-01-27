@@ -33,6 +33,7 @@ public:
 	virtual yint32 GetCountOfNext() const = 0;
 	virtual yint32 GetCountOfChildren() const = 0;
 	virtual YITree* Find(const ystring& rsId) const = 0;
+	virtual YITree* Find(const std::vector<ystring>& rvsId) const = 0;
 	virtual YITree* FindNext(const ystring& rsId) const = 0;
 	virtual YITree* FindChild(const ystring& rsId) const = 0;
 };
@@ -221,6 +222,30 @@ public:
 			}
 		}
 		return YNULL;
+	}
+
+	virtual YITree* Find(const std::vector<ystring>& rvsId) const
+	{
+		YITree* pFind = YNULL;
+		std::vector<ystring>::const_iterator cit = rvsId.begin();
+		std::vector<ystring>::const_iterator citEnd = rvsId.end();
+		for (; cit != citEnd; ++cit)
+		{
+			if (YNULL == pFind)
+			{
+				pFind = FindChild(*cit);
+			}
+			else
+			{
+				pFind = pFind->FindChild(*cit);
+			}
+			if (YNULL == pFind)
+			{
+				break;
+			}
+			
+		}
+		return pFind;
 	}
 
 	virtual YITree* FindNext(const ystring& rsId) const

@@ -3,6 +3,7 @@
 
 #include "yam.h"
 
+#include <QtCore/QString>
 #include <QtWidgets/QWidget>
 
 class YCQUiArea;
@@ -39,6 +40,8 @@ public:
 public:
 	void setLayerWeight(const int& riLayerWeight);
 	int getLayerWeight() const;
+	void setImageSource(const QString& rsImageSource);
+	QString getImageSource() const;
 
 public:
 	QRgb convertFromYColor(const yam::ycolor& riColor) const;
@@ -53,6 +56,7 @@ private:
 	bool			m_bSelected;
 	qreal			m_fAlpha;
 	int				m_iLayerWeight;
+	QString			m_sImageSource;
 };
 
 

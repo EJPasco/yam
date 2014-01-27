@@ -5,18 +5,20 @@
 
 #include "quitreeitemboundhelper.h"
 #include "quitreeitemlayerweighthelper.h"
+#include "quitreeitemimagehelper.h"
 
-class YCQUiTreeWidgetHelper : public YCQUiTreeHelper
+class YCQUiTreeUiHelper : public YCQUiTreeHelper
 {
 	Q_OBJECT
 
 public:
-	explicit YCQUiTreeWidgetHelper(QTreeWidget* pTreeRoot);
-	virtual ~YCQUiTreeWidgetHelper();
+	explicit YCQUiTreeUiHelper(QTreeWidget* pTreeRoot);
+	virtual ~YCQUiTreeUiHelper();
 
 public Q_SLOTS:
 	void onItemChangedBound(const QRect& roBound);
 	void onItemChangedLayerWeight(const int& riLayerWeight);
+	void onItemChangedImageSource(const QString& rsImageSource);
 
 public:
 	virtual void setUiItem(YCQUiItem*& rpUiItem);
@@ -24,6 +26,7 @@ public:
 private:
 	YCQUiTreeItemBoundHelper*			m_pTreeItemBoundHelper;
 	YCQUiTreeItemLayerWeightHelper*		m_pTreeItemLayerWeightHelper;
+	YCQUiTreeItemImageHelper*			m_pTreeItemImageHelper;
 };
 
 #endif // Y_QUITREEWIDGETHELPER_H
