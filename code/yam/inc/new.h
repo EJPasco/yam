@@ -34,7 +34,7 @@ TNClass* New(const ystring& rsClass)
 base::YIObject* NewObject(const ystring& rsClass);
 base::YITree* NewTree(const ystring& rsClass);
 
-void MemSet(const ybuffptr& rpDst, const ybuffsize& riDstSize, const ybuffptr const& rpData, const ybuffsize& riDataSize);
+void MemSet(const ybuffptr& rpDst, const ybuffsize& riDstSize, const ybuffptr& rpData, const ybuffsize& riDataSize);
 
 }
 

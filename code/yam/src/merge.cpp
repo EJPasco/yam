@@ -16,6 +16,15 @@ YCMerge::~YCMerge()
 	//
 }
 
+class CompareYVec2D
+{
+public:
+	bool operator()(const YVec2D& rstA, const YVec2D& rstB)
+	{
+		return (YCMerge::CalcLengthSquare(rstA) > YCMerge::CalcLengthSquare(rstB));
+	}
+};
+
 void YCMerge::Do(const yvvec2d& rvSizeList, YRect2D& rstFinal, yvrect& rvDetail) const
 {
 	rstFinal = YRect2D::None;
@@ -26,14 +35,6 @@ void YCMerge::Do(const yvvec2d& rvSizeList, YRect2D& rstFinal, yvrect& rvDetail)
 		return;
 	}
 
-	class CompareYVec2D
-	{
-	public:
-		bool operator()(const YVec2D& rstA, const YVec2D& rstB)
-		{
-			return (CalcLengthSquare(rstA) > CalcLengthSquare(rstB));
-		}
-	};
 	yvvec2d vSizeList = rvSizeList;
 	std::sort(vSizeList.begin(), vSizeList.end(), CompareYVec2D());
 

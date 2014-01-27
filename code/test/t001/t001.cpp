@@ -70,13 +70,13 @@ int main(int argc, char* argv[])
 		iColorData = 0;
 	}
 
-	{
+	/*{
 		ystringhash ss;
 		std::string key = YTOSTRING(yam);
 		yint32 rsa = ss(key);
 		int rsb = ss("tt");
 		int rsc = ss(key);
-	}
+	}*/
 
 	{
 		json::Object obj;

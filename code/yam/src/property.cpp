@@ -26,7 +26,7 @@ ybool YCProperty::operator>>(YCBuffer& rBuffer) const
 	buf.End();
 	buf >> rBuffer;
 
-	return __super::operator >>(rBuffer);
+	return super::operator >>(rBuffer);
 }
 
 ybool YCProperty::operator<<(YCBuffer& rBuffer)
@@ -46,7 +46,7 @@ ybool YCProperty::operator<<(YCBuffer& rBuffer)
 	buf.Read(iSize, GetValue().GetData());
 	//buf.Out(GetValue());
 
-	return __super::operator <<(rBuffer);
+	return super::operator <<(rBuffer);
 }
 
 ybool YCProperty::FromString(const ystring& rsValue)
@@ -81,7 +81,11 @@ ybool YCProperty::FromInt32(const yint32& riValue)
 		ybuff iZero = 0;
 		MemSet(pStr, sizeof(yint8) * YSTRINGLEN_INT32_MAX, &iZero, sizeof(ybuff));
 	}
+#if defined(_WINDOWS)
 	::sprintf_s(pStr, YSTRINGLEN_INT32_MAX, "%d", riValue);
+#else
+	::sprintf(pStr, "%d", riValue);
+#endif
 	ystring sStr = "";
 	sStr.append(pStr);
 	delete[] pStr;
@@ -98,7 +102,11 @@ ybool YCProperty::ToInt32(yint32& riValue) const
 	}
 
 	yint32 iValue = 0;
+#if defined(_WINDOWS)
 	if (EOF == ::sscanf_s(sStr.c_str(), "%d", &iValue))
+#else
+	if (EOF == ::sscanf(sStr.c_str(), "%d", &iValue))
+#endif
 	{
 		return YFALSE;
 	}
@@ -113,7 +121,11 @@ ybool YCProperty::FromFloat32(const yfloat32& rfValue)
 		ybuff iZero = 0;
 		MemSet(pStr, sizeof(yint8) * YSTRINGLEN_FLOAT32_MAX, &iZero, sizeof(ybuff));
 	}
+#if defined(_WINDOWS)
 	::sprintf_s(pStr, YSTRINGLEN_FLOAT32_MAX, "%f", rfValue);
+#else
+	::sprintf(pStr, "%f", rfValue);
+#endif
 	ystring sStr = "";
 	sStr.append(pStr);
 	delete[] pStr;
@@ -129,7 +141,11 @@ ybool YCProperty::ToFloat32(yfloat32& rfValue) const
 	}
 
 	yfloat32 fValue = 0;
+#if defined(_WINDOWS)
 	if (EOF == ::sscanf_s(sStr.c_str(), "%f", &fValue))
+#else
+	if (EOF == ::sscanf(sStr.c_str(), "%f", &fValue))
+#endif
 	{
 		return YFALSE;
 	}
@@ -144,7 +160,11 @@ ybool YCProperty::FromRect2D(const YRect2D& rstValue)
 		ybuff iZero = 0;
 		MemSet(pStr, sizeof(yint8) * YSTRINGLEN_RECT2D32_MAX, &iZero, sizeof(ybuff));
 	}
+#if defined(_WINDOWS)
 	::sprintf_s(pStr, YSTRINGLEN_RECT2D32_MAX, "%d,%d,%d,%d", rstValue.Pos.X, rstValue.Pos.Y, rstValue.Size.X, rstValue.Size.Y);
+#else
+	::sprintf(pStr, "%d,%d,%d,%d", rstValue.Pos.X, rstValue.Pos.Y, rstValue.Size.X, rstValue.Size.Y);
+#endif
 	ystring sStr = "";
 	sStr.append(pStr);
 	delete[] pStr;
@@ -160,7 +180,11 @@ ybool YCProperty::ToRect2D(YRect2D& rstValue) const
 	}
 
 	YRect2D stValue;
+#if defined(_WINDOWS)
 	if (EOF == ::sscanf_s(sStr.c_str(), "%d,%d,%d,%d", &stValue.Pos.X, &stValue.Pos.Y, &stValue.Size.X, &stValue.Size.Y))
+#else
+	if (EOF == ::sscanf(sStr.c_str(), "%d,%d,%d,%d", &stValue.Pos.X, &stValue.Pos.Y, &stValue.Size.X, &stValue.Size.Y))
+#endif
 	{
 		return YFALSE;
 	}

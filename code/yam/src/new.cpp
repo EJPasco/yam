@@ -81,7 +81,7 @@ base::YITree* NewTree(const ystring& rsClass)
 	return YNULL;
 }
 
-void MemSet(const ybuffptr& rpDst, const ybuffsize& riDstSize, const ybuffptr const& rpData, const ybuffsize& riDataSize)
+void MemSet(const ybuffptr& rpDst, const ybuffsize& riDstSize, const ybuffptr& rpData, const ybuffsize& riDataSize)
 {
 	assert(YNULL != rpDst && YNULL != rpData && 0 < riDstSize && 0 < riDataSize && 0 == (riDstSize % riDataSize));
 	ysize iCount = riDstSize / riDataSize;

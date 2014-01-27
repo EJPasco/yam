@@ -50,6 +50,7 @@ protected:
 
 class YCWidget : public YTWidget<YIWidget, YCWidget>
 {
+	typedef YTWidget<YIWidget, YCWidget>		super;
 	YOBJECT_DECL(YCWidget);
 
 public:

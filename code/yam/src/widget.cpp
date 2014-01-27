@@ -26,7 +26,7 @@ ybool YCWidget::operator>>(YCBuffer& rBuffer) const
 	buf.End();
 	buf >> rBuffer;
 
-	return __super::operator >>(rBuffer);
+	return super::operator >>(rBuffer);
 }
 
 ybool YCWidget::operator<<(YCBuffer& rBuffer)
@@ -44,7 +44,7 @@ ybool YCWidget::operator<<(YCBuffer& rBuffer)
 	oProperty << buf;
 	*this << oProperty;
 
-	return __super::operator <<(rBuffer);
+	return super::operator <<(rBuffer);
 }
 
 void YCWidget::operator>>(YCProperty& rProperty) const

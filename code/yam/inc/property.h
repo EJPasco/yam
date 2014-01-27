@@ -48,6 +48,8 @@ private:
 
 class YCProperty : public YTProperty<YIProperty, YCProperty>
 {
+	typedef YTProperty<YIProperty, YCProperty>		super;
+
 	YOBJECT_DECL(YCProperty);
 
 public:

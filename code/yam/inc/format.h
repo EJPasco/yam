@@ -39,6 +39,7 @@ protected:
 
 class YCFormat : public YTFormat<YIFormat, YCFormat>
 {
+	typedef YTFormat<YIFormat, YCFormat>	super;
 	YOBJECT_DECL(YCFormat);
 
 public:

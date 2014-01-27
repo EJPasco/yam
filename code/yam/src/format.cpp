@@ -32,7 +32,7 @@ bool YCFormat::operator>>(YCBuffer& rBuffer) const
 	buf.End();
 	buf >> rBuffer;
 
-	return __super::operator >>(rBuffer);
+	return super::operator >>(rBuffer);
 }
 
 bool YCFormat::operator<<(YCBuffer& rBuffer)
@@ -62,7 +62,7 @@ bool YCFormat::operator<<(YCBuffer& rBuffer)
 		delete[] pColorData;
 	}
 
-	return __super::operator <<(rBuffer);
+	return super::operator <<(rBuffer);
 }
 
 void YCFormat::SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData)
