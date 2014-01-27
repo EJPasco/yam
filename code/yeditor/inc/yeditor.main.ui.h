@@ -374,6 +374,7 @@ public:
         QObject::connect(actionBarDockUi, SIGNAL(triggered()), MainWindow, SLOT(onClickedMenuWindowDockUi()));
         QObject::connect(resAreaResetBtn, SIGNAL(clicked()), resArea, SLOT(onClickedReset()));
         QObject::connect(uiAreaResetBtn, SIGNAL(clicked()), uiArea, SLOT(onClickedReset()));
+        QObject::connect(actionBarExport, SIGNAL(triggered()), MainWindow, SLOT(onClickedExport()));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi

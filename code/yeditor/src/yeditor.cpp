@@ -120,6 +120,21 @@ void YEditor::onClickedSave()
 
 void YEditor::onClickedExport()
 {
+	json::Object jObj;
+
+	int iTopItemCount = m_UI.uiTree->topLevelItemCount();
+	for (int i = 0; i < iTopItemCount; ++i)
+	{
+		QTreeWidgetItem* pTreeItem = m_UI.uiTree->topLevelItem(i);
+		exportUiTreeToJson(pTreeItem, jObj);
+	}
+
+	json::Array jAry;
+	jAry.push_back();
+	jObj["aa"] = jAry;
+
+	std::string sRes = json::Serialize(jObj);
+
 	/*yam::yvvec2d vSize;
 	yam::YVec2D stSize;
 	stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
@@ -620,6 +635,33 @@ void YEditor::parseArgument(const QStringList& rvStr)
 		sFileName.append(rvStr[1].toLocal8Bit());
 		reloadFile(sFileName);
 	}
+}
+
+void YEditor::exportUiTreeToJson(QTreeWidgetItem* pTreeItem, json::Object& rjObjParent)
+{
+	if (NULL == pTreeItem)
+	{
+		return;
+	}
+	json::Object jObjMy;
+
+	std::string sId(pTreeItem->text(0).toLocal8Bit());
+	jObjMy["id"] = sId.c_str();
+
+	YCQUiItem* pUiItem = getUiItem(pTreeItem);
+	if (NULL != pUiItem)
+	{
+		//
+	}
+
+	int iChildCount = pTreeItem->childCount();
+	for (int i = 0; i < iChildCount; ++i)
+	{
+		exportUiTreeToJson(pTreeItem->child(i), jObjMy);
+	}
+
+	rjObjParent["fff"] = jObjMy;
+	//
 }
 
 int main(int argc, char* argv[])
