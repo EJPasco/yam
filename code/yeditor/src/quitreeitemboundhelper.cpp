@@ -57,31 +57,7 @@ YCQUiTreeItemBoundHelper::YCQUiTreeItemBoundHelper(QTreeWidget* pTreeRoot, QTree
 
 YCQUiTreeItemBoundHelper::~YCQUiTreeItemBoundHelper()
 {
-	if (NULL != m_pSpinBoxX)
-	{
-		delete m_pSpinBoxX;
-		m_pSpinBoxX = NULL;
-	}
-	if (NULL != m_pSpinBoxY)
-	{
-		delete m_pSpinBoxY;
-		m_pSpinBoxY = NULL;
-	}
-	if (NULL != m_pSpinBoxW)
-	{
-		delete m_pSpinBoxW;
-		m_pSpinBoxW = NULL;
-	}
-	if (NULL != m_pSpinBoxH)
-	{
-		delete m_pSpinBoxH;
-		m_pSpinBoxH = NULL;
-	}
-	if (NULL != m_pTreeItemBound)
-	{
-		delete m_pTreeItemBound;
-		m_pTreeItemBound = NULL;
-	}
+	//
 }
 
 void YCQUiTreeItemBoundHelper::onItemChangedX(int iValue)

@@ -21,11 +21,7 @@ YCQUiTreeItemLayerWeightHelper::YCQUiTreeItemLayerWeightHelper(QTreeWidget* pTre
 
 YCQUiTreeItemLayerWeightHelper::~YCQUiTreeItemLayerWeightHelper()
 {
-	if (NULL != m_pSpinBox)
-	{
-		delete m_pSpinBox;
-		m_pSpinBox = NULL;
-	}
+	//
 }
 
 void YCQUiTreeItemLayerWeightHelper::onItemChanged(int iValue)

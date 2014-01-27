@@ -28,16 +28,7 @@ YCQUiTreeItemImageHelper::YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTree
 
 YCQUiTreeItemImageHelper::~YCQUiTreeItemImageHelper()
 {
-	if (NULL != m_pTreeItemImage)
-	{
-		delete m_pTreeItemImage;
-		m_pTreeItemImage = NULL;
-	}
-	if (NULL != m_pEditor)
-	{
-		delete m_pEditor;
-		m_pEditor = NULL;
-	}
+	//
 }
 
 void YCQUiTreeItemImageHelper::onItemChangedSource()
