@@ -1,4 +1,4 @@
-# [Yam][]
+# [Yam][] [![Build Status](https://travis-ci.org/code4game/yam.png?branch=dev)](https://travis-ci.org/code4game/yam)
 
 A User Interface System for Game. It belong to [Code4Game][].
 
