@@ -29,7 +29,9 @@ template<typename TNBase, typename TNReal>
 class YTObject : public TNBase
 {
 public:
-	YTObject() : m_sId(""), m_sClassName(YOBJECT_GETCLASSNAME(TNReal)) { ; }
+	// todo: research about gcc
+	//YTObject() : m_sId(""), m_sClassName(YOBJECT_GETCLASSNAME(TNReal)) { ; }
+	YTObject() : m_sId(""), m_sClassName(YTOSTRING(TNReal)) { ; }
 	virtual ~YTObject() { ; }
 
 public:

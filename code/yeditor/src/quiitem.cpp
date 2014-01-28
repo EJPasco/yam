@@ -186,7 +186,7 @@ void YCQUiItem::setColor(const uint& riColor)
 {
 	if (NULL == m_pImage)
 	{
-		m_pImage = new QImage(size(), QImage::Format_RGBA8888);
+		m_pImage = new QImage(size(), QImage::Format_ARGB32);
 	}
 	for (int j = 0; j < size().height(); ++j)
 	{
@@ -212,7 +212,7 @@ void YCQUiItem::setImage(const yam::YRect2D& rstRect, const yam::ycolorptr& rpCo
 
 	if (YNULL != rpColorData)
 	{
-		m_pImage = new QImage(QSize(rstRect.Size.X, rstRect.Size.Y), QImage::Format_RGBA8888);
+		m_pImage = new QImage(QSize(rstRect.Size.X, rstRect.Size.Y), QImage::Format_ARGB32);
 		for (int y = 0; y < rstRect.Size.Y; ++y)
 		{
 			for (int x = 0; x < rstRect.Size.X; ++x)

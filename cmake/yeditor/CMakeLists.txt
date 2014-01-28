@@ -11,26 +11,33 @@ set(DEPEND_PROJ_LIST
     )
 
 set(INCLUDE_PATH_LIST
-    ${QT_SDK_PATH}/include
+    ${QT_SDK_INC_PATH}
     ${CODE_PATH}/yam/inc
     ${CODE_PATH}/t3rd/supereasyjson
     ${CODE_PATH}/t3rd/rectanglebinpack
     ${CODE_PATH_YEDITOR}/inc
     )
 
+IF (YENV_SYSTEM_IS_LINUX)
+set(LINK_PATH_LIST
+    ${QT_SDK_PATH}/lib/x86_64-linux-gnu
+    ${OUT_PATH}/lib
+    )
+ELSEIF (YENV_SYSTEM_IS_WINDOWS)
 set(LINK_PATH_LIST
     ${QT_SDK_PATH}/lib
     ${OUT_PATH}/lib
     )
+ENDIF ()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
 set(LIBRARY_FILE_LIST
-    yam.a
-    supereasyjson.a
-    rectanglebinpack.a
-    Qt5Core.a
-    Qt5Gui.a
-	Qt5Widgets.a
+    yam
+    supereasyjson
+    rectanglebinpack
+    Qt5Core
+    Qt5Gui
+    Qt5Widgets
     )
 else()
 set(LIBRARY_FILE_LIST
@@ -107,6 +114,7 @@ link_directories(${LINK_PATH_LIST})
 link_libraries(${LIBRARY_FILE_LIST})
 
 #add_definitions("-DC4G_EXPORTS_API")
+SET (CMAKE_CXX_FLAGS "-fPIC")
 
 add_executable(yeditor ${CODE_FILE_LIST_EDITOR}
                        ${CODE_FILE_LIST_RES}
@@ -114,12 +122,12 @@ add_executable(yeditor ${CODE_FILE_LIST_EDITOR}
                        ${CODE_FILE_LIST_EXPORT}
                        )
 
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    set_target_properties(yeditor PROPERTIES LINK_FLAGS "-mwindows")
-endif()
+IF (YENV_SYSTEM_IS_WINDOWS AND YENV_COMPILER_IS_GNUC)
+    SET_TARGET_PROPERTIES (yeditor PROPERTIES LINK_FLAGS "-mwindows")
+ENDIF ()
 
 add_custom_command(OUTPUT quiarea.moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quiarea.h -o ${CODE_PATH_YEDITOR}/src/quiarea.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_PATH}/include -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_PATH}/include/QtCore -I${QT_SDK_PATH}/include/QtGui -I${QT_SDK_PATH}/include/QtWidgets
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quiarea.h -o ${CODE_PATH_YEDITOR}/src/quiarea.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/quiarea.h
                    )
@@ -128,7 +136,7 @@ add_custom_target(quiarea_moc_cpp
                   DEPENDS quiarea.moc.cpp)
 
 add_custom_command(OUTPUT quiitem.moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quiitem.h -o ${CODE_PATH_YEDITOR}/src/quiitem.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_PATH}/include -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_PATH}/include/QtCore -I${QT_SDK_PATH}/include/QtGui -I${QT_SDK_PATH}/include/QtWidgets
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quiitem.h -o ${CODE_PATH_YEDITOR}/src/quiitem.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/quiitem.h
                    )
@@ -137,7 +145,7 @@ add_custom_target(quiitem_moc_cpp
                   DEPENDS quiitem.moc.cpp)
 
 add_custom_command(OUTPUT quitreehelper.moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreehelper.h -o ${CODE_PATH_YEDITOR}/src/quitreehelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_PATH}/include -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_PATH}/include/QtCore -I${QT_SDK_PATH}/include/QtGui -I${QT_SDK_PATH}/include/QtWidgets
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreehelper.h -o ${CODE_PATH_YEDITOR}/src/quitreehelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreehelper.h
                    )
@@ -146,7 +154,7 @@ add_custom_target(quitreehelper_moc_cpp
                   DEPENDS quitreehelper.moc.cpp)
 
 add_custom_command(OUTPUT quitreereshelper.moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreereshelper.h -o ${CODE_PATH_YEDITOR}/src/quitreereshelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_PATH}/include -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_PATH}/include/QtCore -I${QT_SDK_PATH}/include/QtGui -I${QT_SDK_PATH}/include/QtWidgets
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreereshelper.h -o ${CODE_PATH_YEDITOR}/src/quitreereshelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreereshelper.h
                    )
@@ -155,7 +163,7 @@ add_custom_target(quitreereshelper_moc_cpp
                   DEPENDS quitreereshelper.moc.cpp)
 
 add_custom_command(OUTPUT quitreeuihelper.moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeuihelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeuihelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_PATH}/include -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_PATH}/include/QtCore -I${QT_SDK_PATH}/include/QtGui -I${QT_SDK_PATH}/include/QtWidgets
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeuihelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeuihelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeuihelper.h
                    )
@@ -164,7 +172,7 @@ add_custom_target(quitreeuihelper_moc_cpp
                   DEPENDS quitreeuihelper.moc.cpp)
 
 add_custom_command(OUTPUT quitreeitemboundhelper.moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemboundhelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemboundhelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_PATH}/include -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_PATH}/include/QtCore -I${QT_SDK_PATH}/include/QtGui -I${QT_SDK_PATH}/include/QtWidgets
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemboundhelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemboundhelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemboundhelper.h
                    )
@@ -173,7 +181,7 @@ add_custom_target(quitreeitemboundhelper_moc_cpp
                   DEPENDS quitreeitemboundhelper.moc.cpp)
 
 add_custom_command(OUTPUT quitreeitemlayerweighthelper.moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemlayerweighthelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemlayerweighthelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_PATH}/include -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_PATH}/include/QtCore -I${QT_SDK_PATH}/include/QtGui -I${QT_SDK_PATH}/include/QtWidgets
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemlayerweighthelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemlayerweighthelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemlayerweighthelper.h
                    )
@@ -182,7 +190,7 @@ add_custom_target(quitreeitemlayerweighthelper_moc_cpp
                   DEPENDS quitreeitemlayerweighthelper.moc.cpp)
 
 add_custom_command(OUTPUT quitreeitemimagehelper.moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemimagehelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemimagehelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_PATH}/include -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_PATH}/include/QtCore -I${QT_SDK_PATH}/include/QtGui -I${QT_SDK_PATH}/include/QtWidgets
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemimagehelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemimagehelper.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemimagehelper.h
                    )
@@ -191,7 +199,7 @@ add_custom_target(quitreeitemimagehelper_moc_cpp
                   DEPENDS quitreeitemimagehelper.moc.cpp)
 
 add_custom_command(OUTPUT yeditor.moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/yeditor.h -o ${CODE_PATH_YEDITOR}/src/yeditor.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_PATH}/include -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_PATH}/include/QtCore -I${QT_SDK_PATH}/include/QtGui -I${QT_SDK_PATH}/include/QtWidgets
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/yeditor.h -o ${CODE_PATH_YEDITOR}/src/yeditor.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
                    COMMAND echo "ok"
                    DEPENDS ${CODE_PATH_YEDITOR}/inc/yeditor.h
                    )

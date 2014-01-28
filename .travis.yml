@@ -8,14 +8,13 @@ compiler:
   - gcc
 
 before_install:
-  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev
+  - sudo apt-get update
+  - sudo apt-get install qt5-default qt5-qmake
 
 before_script:
   - mkdir build
   - cd build
-  - cmake -DQT_SDK_DIR=$QTDIR ../cmake
+  - cmake -DQT_SDK_PATH=/usr ../cmake
 
 script: make
 
