@@ -1,7 +1,6 @@
 branches:
   only:
-    - master
-    - stable
+    - dev
 
 language: cpp
 
@@ -15,7 +14,7 @@ before_install:
 before_script:
   - mkdir build
   - cd build
-  - cmake ../cmake
+  - cmake -DQT_SDK_DIR=$QTDIR ../cmake
 
 script: make
 
