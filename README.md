@@ -2,6 +2,15 @@
 
 A User Interface System for Game. It belong to [Code4Game][].
 
+## Overview
+
+* [Projects](#Projects)
+* [Ready](#Ready)
+* [Build](#Build)
+* [Usage](#Usage)
+* [Credits](#Credits)
+* [License](#License)
+* [Link](#Link)
 
 ## Projects
 
@@ -70,7 +79,12 @@ You can find all compiled files in "/out" directory.
 1. Find the plugin file(pstoyam.8bi) in "/out" directory.
 2. Copy it to the "/Plug-ins/File Formats" directory in the Photoshop directory __or__ Set the external plugin directory to the directory what contain the pstoyam.8bi file in Photoshop
 
-### License
+## Credits
+
+It is part of [Code4Game][] and was created by [Alex Chi][].
+
+
+## License
 
 See [MIT License][] or LICENSE file
 
@@ -83,11 +97,6 @@ See [MIT License][] or LICENSE file
 1. [MinGW][]
 1. [Qt][]
 1. [Photoshop SDK][]
-
-
-## Author
-
-1. [Alex Chi][] and [Alex Chi's Blog][]
 
 
 [CMake]: http://cmake.org/ "CMake"
