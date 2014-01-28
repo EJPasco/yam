@@ -1,0 +1,27 @@
+branches:
+  only:
+    - master
+    - stable
+
+language: cpp
+
+compiler:
+  - gcc
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq cmake qt5-dev
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake ../cmake
+
+script: make
+
+notifications:
+  email:
+    - alex@alexchi.me
+  on_success: change
+  on_failure: always
+
