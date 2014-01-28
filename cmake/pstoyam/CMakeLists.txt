@@ -79,7 +79,7 @@ set_target_properties(pstoyam PROPERTIES SUFFIX ".8bi")
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 add_custom_command(OUTPUT pstoyam.pipl
-                   COMMAND ${CMAKE_CXX_COMPILER} -I${PHOTOSHOP_SDK_PATH}/photoshopapi/PICA_SP -I${PHOTOSHOP_SDK_PATH}/photoshopapi/Photoshop -I${PHOTOSHOP_SDK_PATH}/photoshopapi/Resources -I${CODE_PATH_PSTOYAM}/inc -DMSWindows=1 -Tc"${CODE_PATH_PSTOYAM}/ps/pstoyam.r" > "${OUT_PATH}/pstoyam.rr"
+                   COMMAND ${CMAKE_CXX_COMPILER} -I${PHOTOSHOP_SDK_PATH}/photoshopapi/PICA_SP -I${PHOTOSHOP_SDK_PATH}/photoshopapi/Photoshop -I${PHOTOSHOP_SDK_PATH}/photoshopapi/Resources -I${CODE_PATH_PSTOYAM}/inc -DMSWindows=1 -c"${CODE_PATH_PSTOYAM}/ps/pstoyam.r" -o"${OUT_PATH}/pstoyam.rr"
                    COMMAND ${PHOTOSHOP_SDK_PATH}/samplecode/resources/cnvtpipl "${OUT_PATH}/pstoyam.rr" "${CODE_PATH_PSTOYAM}/ps/pstoyam.pipl"
                    #COMMAND del "${OUT_PATH}/pstoyam.rr"
                    COMMAND echo "ok"

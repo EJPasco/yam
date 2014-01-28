@@ -21,6 +21,7 @@ set(CODE_FILE_LIST_COMMON
     ${CODE_PATH_YAM}/inc/enum.h
     ${CODE_PATH_YAM}/inc/struct.h
     ${CODE_PATH_YAM}/src/struct.cpp
+    ${CODE_PATH_YAM}/inc/compiler.h
     ${CODE_PATH_YAM}/inc/common.h
     )
 
