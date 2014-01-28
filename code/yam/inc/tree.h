@@ -303,6 +303,7 @@ private:
 
 class YCTree : public YTTree<YITree, YCTree>
 {
+	typedef YTTree<YITree, YCTree>		super;
 	YOBJECT_DECL(YCTree);
 
 public:

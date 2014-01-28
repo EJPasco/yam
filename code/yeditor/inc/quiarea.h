@@ -9,6 +9,7 @@ class YCQUiItem;
 
 class YCQUiArea : public QFrame
 {
+	typedef QFrame							super;
 	typedef std::vector<YCQUiItem*>			yvuiitemptr;
 
 	Q_OBJECT

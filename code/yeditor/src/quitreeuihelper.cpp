@@ -80,7 +80,7 @@ void YCQUiTreeUiHelper::onItemChangedImageSource(const QString& rsImageSource)
 
 void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
 {
-	__super::setUiItem(rpUiItem);
+	super::setUiItem(rpUiItem);
 	if (NULL == rpUiItem)
 	{
 		return;

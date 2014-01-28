@@ -44,6 +44,7 @@ protected:
 
 class YCBuffer : public YTBuffer<YIBuffer, YCBuffer>
 {
+	typedef YTBuffer<YIBuffer, YCBuffer>		super;
 	YOBJECT_DECL(YCBuffer);
 
 public:

@@ -25,6 +25,7 @@ public:
 
 class YCPanel : public YTPanel<YIPanel, YCPanel>
 {
+	typedef YTPanel<YIPanel, YCPanel>		super;
 	YOBJECT_DECL(YCPanel);
 
 public:

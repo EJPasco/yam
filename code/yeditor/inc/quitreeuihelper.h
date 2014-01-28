@@ -9,6 +9,8 @@
 
 class YCQUiTreeUiHelper : public YCQUiTreeHelper
 {
+	typedef YCQUiTreeHelper		super;
+
 	Q_OBJECT
 
 public:

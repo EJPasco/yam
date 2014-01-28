@@ -33,6 +33,7 @@
 #define YFUNCTIONNAMEWITHLINE				__FUNCTION__"("YSLINE")"
 #define YTITLE_FUNCTIONNAMEWITHLINE			"["__FUNCTION__"("YSLINE")]"
 #define YCOMPILE_MESSAGE_TODO(msg)			message(YTITLE_FUNCTIONNAMEWITHLINE" to do: "msg)
+#define YCOMPILE_MESSAGE_ERR(msg)			message(YTITLE_FUNCTIONNAMEWITHLINE" error: "msg)
 // usage:
 // #pragma YCOMPILE_MESSAGE_TODO("write message in here")
 // 

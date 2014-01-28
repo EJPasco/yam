@@ -40,13 +40,13 @@ void YCQUiArea::onClickedReset()
 
 void YCQUiArea::showEvent(QShowEvent* pEvent)
 {
-	__super::showEvent(pEvent);
+	super::showEvent(pEvent);
 	visibilityChanged(isVisible());
 }
 
 void YCQUiArea::hideEvent(QHideEvent* pEvent)
 {
-	__super::hideEvent(pEvent);
+	super::hideEvent(pEvent);
 	visibilityChanged(isVisible());
 }
 

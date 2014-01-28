@@ -29,7 +29,13 @@ YIFileWriter& YCFileWriter::Save(const ystring& rsFileName)
 {
 	Close();
 
+#if defined(MSVC)
 	mFileStream.open(rsFileName, std::ios::out | std::ios::binary);
+#elif defined(GNUC)
+	mFileStream.open(rsFileName.c_str());
+#else
+#pragma YCOMPILE_MESSAGE_ERR("can't find the compiler type")
+#endif
 	mbOpened = true;
 	return *this;
 }
@@ -79,7 +85,13 @@ YIFileReader& YCFileReader::Open(const ystring& rsFileName)
 {
 	Close();
 
+#if defined(MSVC)
 	mFileStream.open(rsFileName, std::ios::in | std::ios::binary);
+#elif defined(GNUC)
+	mFileStream.open(rsFileName.c_str());
+#else
+#pragma YCOMPILE_MESSAGE_ERR("can't find the compiler type")
+#endif
 	mbOpened = true;
 	return *this;
 }
