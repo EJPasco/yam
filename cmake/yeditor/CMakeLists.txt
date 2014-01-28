@@ -114,6 +114,8 @@ add_executable(yeditor ${CODE_FILE_LIST_EDITOR}
                        ${CODE_FILE_LIST_EXPORT}
                        )
 
+set_target_properties(yeditor PROPERTIES LINK_FLAGS "-mwindows")
+
 add_custom_command(OUTPUT quiarea.moc.cpp
                    COMMAND ${QT_SDK_PATH}/bin/moc.exe ${CODE_PATH_YEDITOR}/inc/quiarea.h -o ${CODE_PATH_YEDITOR}/src/quiarea.moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_PATH}/include -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_PATH}/include/QtCore -I${QT_SDK_PATH}/include/QtGui -I${QT_SDK_PATH}/include/QtWidgets
                    COMMAND echo "ok"

@@ -17,9 +17,11 @@
 
 #include <QtCore/QTime>
 
-#ifdef _WINDOWS
+#if defined(MSVC)
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
-#endif // _WINDOWS_
+#elif defined(GNUC)
+//#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#endif
 
 #define YEDITOR_VERSION_MAIN			0
 #define YEDITOR_VERSION_SUB				1
