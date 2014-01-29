@@ -11,9 +11,10 @@ compiler:
 before_install:
   - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
   - sudo apt-get update
-  - sudo apt-get install qt5-default qt5-qmake
+  - sudo apt-get install qt5-default cppcheck
 
 before_script:
+  - cppcheck code/ -i code/t3rd --enable=all --quiet --error-exitcode=1
   - mkdir build
   - cd build
   - cmake -DQT_SDK_PATH=/usr ../cmake
