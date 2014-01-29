@@ -11,15 +11,22 @@ compiler:
 before_install:
   - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
   - sudo apt-get update
-  - sudo apt-get install qt5-default cppcheck
+  - sudo apt-get install cppcheck qt5-default valgrind
 
 before_script:
   - cppcheck code/ -i code/t3rd --enable=all --quiet --error-exitcode=1
   - mkdir build
-  - cd build
+  - cd build/
   - cmake -DQT_SDK_PATH=/usr ../cmake
+  - cd ../
 
-script: make
+script:
+  - cd build/
+  - make
+  - cd ../
+
+after_success:
+  - valgrind --leak-check=yes ./out/bin/t001
 
 notifications:
   email:
