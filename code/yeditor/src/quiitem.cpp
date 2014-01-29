@@ -162,8 +162,7 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
         const yam::base::YITree* pTreeImage = rpWidget->GetExternalProperty().Find("image");
         if (NULL != pTreeImage && YOBJECT_GETCLASSNAME(yam::base::YCProperty) == pTreeImage->GetClassName())
         {
-            const yam::base::YIProperty* pPropertyImage = YNULL;
-            pPropertyImage = (const yam::base::YIProperty*)pTreeImage;
+            const yam::base::YIProperty* pPropertyImage = (const yam::base::YIProperty*)pTreeImage;
             pPropertyImage->ToBuffer(oBufferImage);
         }
     }
