@@ -7,21 +7,21 @@
 
 class YCQUiTreeHelper : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit YCQUiTreeHelper(QTreeWidget* pTreeRoot);
-	virtual ~YCQUiTreeHelper();
+    explicit YCQUiTreeHelper(QTreeWidget* pTreeRoot);
+    virtual ~YCQUiTreeHelper();
 
 public Q_SLOTS:
-	virtual void onItemChanged(QTreeWidgetItem* pItem, int iColume);
+    virtual void onItemChanged(QTreeWidgetItem* pItem, int iColume);
 
 public:
-	void setUiItem(YCQUiItem*& rpUiItem);
+    void setUiItem(YCQUiItem*& rpUiItem);
 
 protected:
-	QTreeWidget*	m_pTreeRoot;
-	YCQUiItem*		m_pUiItem;
+    QTreeWidget*    m_pTreeRoot;
+    YCQUiItem*        m_pUiItem;
 };
 
 #endif // Y_QUITREE_H

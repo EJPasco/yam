@@ -9,26 +9,26 @@
 
 class YCQUiTreeUiHelper : public YCQUiTreeHelper
 {
-	typedef YCQUiTreeHelper		super;
+    typedef YCQUiTreeHelper        super;
 
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit YCQUiTreeUiHelper(QTreeWidget* pTreeRoot);
-	virtual ~YCQUiTreeUiHelper();
+    explicit YCQUiTreeUiHelper(QTreeWidget* pTreeRoot);
+    virtual ~YCQUiTreeUiHelper();
 
 public Q_SLOTS:
-	void onItemChangedBound(const QRect& roBound);
-	void onItemChangedLayerWeight(const int& riLayerWeight);
-	void onItemChangedImageSource(const QString& rsImageSource);
+    void onItemChangedBound(const QRect& roBound);
+    void onItemChangedLayerWeight(const int& riLayerWeight);
+    void onItemChangedImageSource(const QString& rsImageSource);
 
 public:
-	virtual void setUiItem(YCQUiItem*& rpUiItem);
+    virtual void setUiItem(YCQUiItem*& rpUiItem);
 
 private:
-	YCQUiTreeItemBoundHelper*			m_pTreeItemBoundHelper;
-	YCQUiTreeItemLayerWeightHelper*		m_pTreeItemLayerWeightHelper;
-	YCQUiTreeItemImageHelper*			m_pTreeItemImageHelper;
+    YCQUiTreeItemBoundHelper*            m_pTreeItemBoundHelper;
+    YCQUiTreeItemLayerWeightHelper*        m_pTreeItemLayerWeightHelper;
+    YCQUiTreeItemImageHelper*            m_pTreeItemImageHelper;
 };
 
 #endif // Y_QUITREEWIDGETHELPER_H

@@ -4,12 +4,12 @@ namespace yam{ namespace output{
 
 YCExport::YCExport()
 {
-	//
+    //
 }
 
 YCExport::~YCExport()
 {
-	//
+    //
 }
 
 }}

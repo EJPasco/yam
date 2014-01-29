@@ -8,7 +8,7 @@ namespace yam{ namespace output{
 class YIExport
 {
 public:
-	virtual ~YIExport() { ; }
+    virtual ~YIExport() { ; }
 
 public:
 };
@@ -17,8 +17,8 @@ template<typename TNBase>
 class YTExport : public TNBase
 {
 public:
-	YTExport() { ; }
-	virtual ~YTExport() { ; }
+    YTExport() { ; }
+    virtual ~YTExport() { ; }
 
 public:
 };
@@ -26,8 +26,8 @@ public:
 class YCExport : public YTExport<YIExport>
 {
 public:
-	YCExport();
-	virtual ~YCExport();
+    YCExport();
+    virtual ~YCExport();
 
 public:
 };

@@ -4,19 +4,19 @@ PROJECT (yam)
 
 # check the environment
 IF ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-	SET (YENV_SYSTEM_IS_LINUX "Linux")
+    SET (YENV_SYSTEM_IS_LINUX "Linux")
 ELSEIF ("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-	SET (YENV_SYSTEM_IS_WINDOWS "Windows")
+    SET (YENV_SYSTEM_IS_WINDOWS "Windows")
 ELSE ()
-	MESSAGE (FATAL_ERROR "Sorry, can't find the operator system type - CMAKE_SYSTEM_NAME:${CMAKE_SYSTEM_NAME} or not support your operator system")
+    MESSAGE (FATAL_ERROR "Sorry, can't find the operator system type - CMAKE_SYSTEM_NAME:${CMAKE_SYSTEM_NAME} or not support your operator system")
 ENDIF ()
 
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	SET (YENV_COMPILER_IS_GNUC "GNUC")
+    SET (YENV_COMPILER_IS_GNUC "GNUC")
 ELSEIF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	SET (YENV_COMPILER_IS_MSVC "MSVC")
+    SET (YENV_COMPILER_IS_MSVC "MSVC")
 ELSE ()
-	MESSAGE (FATAL_ERROR "Sorry, can't find the compiler type - CMAKE_CXX_COMPILER_ID:${CMAKE_CXX_COMPILER_ID} or not support your compiler")
+    MESSAGE (FATAL_ERROR "Sorry, can't find the compiler type - CMAKE_CXX_COMPILER_ID:${CMAKE_CXX_COMPILER_ID} or not support your compiler")
 ENDIF ()
 
 IF (YENV_SYSTEM_IS_LINUX)
@@ -58,9 +58,9 @@ ENDIF ()
 
 # can't compile the photoshop plugin for gnuc
 IF (YENV_COMPILER_IS_MSVC)
-	SET (PHOTOSHOP_SDK_PATH "${PHOTOSHOP_SDK_PATH}" CACHE STRING "Add the Photoshop SDK path" FORCE)
+    SET (PHOTOSHOP_SDK_PATH "${PHOTOSHOP_SDK_PATH}" CACHE STRING "Add the Photoshop SDK path" FORCE)
 ELSE ()
-	MESSAGE ("It will not build the photoshop plugin in non-msvc")
+    MESSAGE ("It will not build the photoshop plugin in non-msvc")
 ENDIF ()
 
 ADD_SUBDIRECTORY (yam)

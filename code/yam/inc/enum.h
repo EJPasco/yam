@@ -5,11 +5,11 @@ namespace yam{
 
 enum EColor
 {
-	EColor_Red,
-	EColor_Green,
-	EColor_Blue,
-	EColor_Alpah,
-	EColor_Max,
+    EColor_Red,
+    EColor_Green,
+    EColor_Blue,
+    EColor_Alpah,
+    EColor_Max,
 };
 
 

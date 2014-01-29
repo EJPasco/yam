@@ -6,12 +6,12 @@ YOBJECT_IMPL(YCPanel);
 
 YCPanel::YCPanel()
 {
-	//
+    //
 }
 
 YCPanel::~YCPanel()
 {
-	//
+    //
 }
 
 }}

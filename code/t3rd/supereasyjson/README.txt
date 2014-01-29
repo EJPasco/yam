@@ -79,16 +79,16 @@ EXAMPLE:
 ========
 
 A less complicated example:
-	#include "json.h"
-	
-	json::Object obj;
-	obj["int"] = 1;
-	obj["float"] = 1.1f;
-	obj["bool"] = true;
-	obj["string"] = "hi";
-	
-	std::string str = json::Serialize(obj);
-	
+    #include "json.h"
+    
+    json::Object obj;
+    obj["int"] = 1;
+    obj["float"] = 1.1f;
+    obj["bool"] = true;
+    obj["string"] = "hi";
+    
+    std::string str = json::Serialize(obj);
+    
 The value of "str" winds up being this: 
 {"bool":true,"float":1.100000,"int":1,"string":"hi"}
 
@@ -101,44 +101,44 @@ Which looks a lot nicer when it's run through a formatter:
 }
 
 Now for a complicated example with lots of nesting:
-	#include "json.h"
-	
-	json::Object sub_obj;
-	sub_obj["string"] = "sub_obj's string";
+    #include "json.h"
+    
+    json::Object sub_obj;
+    sub_obj["string"] = "sub_obj's string";
 
-	json::Array sub_array;
-	sub_array.push_back("sub_array string 1");
-	sub_array.push_back("sub_array string 2");
-	sub_array.push_back(1.234f);
+    json::Array sub_array;
+    sub_array.push_back("sub_array string 1");
+    sub_array.push_back("sub_array string 2");
+    sub_array.push_back(1.234f);
 
-	json::Array a;
-	a.push_back(10);
-	a.push_back(10.0f);
-	a.push_back(false);
-	a.push_back("array a's string");
-	a.push_back(sub_obj);
-	a.push_back(sub_array);
+    json::Array a;
+    a.push_back(10);
+    a.push_back(10.0f);
+    a.push_back(false);
+    a.push_back("array a's string");
+    a.push_back(sub_obj);
+    a.push_back(sub_array);
 
-	json::Object sub_obj3;
-	sub_obj3["sub_obj3 string"] = "whoah, I'm sub_obj3's string";
-	sub_obj3["sub_obj3 int"] = 31337;
+    json::Object sub_obj3;
+    sub_obj3["sub_obj3 string"] = "whoah, I'm sub_obj3's string";
+    sub_obj3["sub_obj3 int"] = 31337;
 
-	json::Object sub_obj2;
-	sub_obj2["int"] = 1000;
-	sub_obj2["bool"] = false;
-	sub_obj2["x"] = sub_array;
-	sub_obj2["z"] = sub_obj3;
+    json::Object sub_obj2;
+    sub_obj2["int"] = 1000;
+    sub_obj2["bool"] = false;
+    sub_obj2["x"] = sub_array;
+    sub_obj2["z"] = sub_obj3;
 
-	json::Object obj;
-	obj["int"] = 1;
-	obj["float"] = 1.1f;
-	obj["bool"] = true;
-	obj["string"] = "come here often?";
-	obj["array"] = a;
-	obj["sub_obj2"] = sub_obj2;
-	obj["null value"] = json::Value();
+    json::Object obj;
+    obj["int"] = 1;
+    obj["float"] = 1.1f;
+    obj["bool"] = true;
+    obj["string"] = "come here often?";
+    obj["array"] = a;
+    obj["sub_obj2"] = sub_obj2;
+    obj["null value"] = json::Value();
 
-	std::string str = json::Serialize(obj);
+    std::string str = json::Serialize(obj);
 
 The value of "str" winds up being this (returns added for wrapping purposes)
 
@@ -190,13 +190,13 @@ CHANGELOG:
 1/4/2014 v2
 -----------
 * Made internal Trim function be static to avoid linker errors with
-	other functions named Trim (and also just for correctness).
-		
+    other functions named Trim (and also just for correctness).
+        
 1/4/2014
 --------
 * Fixed bug where numbers written in scientific notation were
-	parsed as booleans in DeserializeValue (Gerry Beauregard).
-		
+    parsed as booleans in DeserializeValue (Gerry Beauregard).
+        
 1/2/2014 v2
 -----------
 * Added yet more missing headers for compiling on GNU and Linux systems
@@ -205,41 +205,41 @@ CHANGELOG:
 1/2/2014
 --------
 * Fixed previous changelog years. Got ahead of myself and marked them
-	as 2014 when they were in fact done in 2013.
+    as 2014 when they were in fact done in 2013.
 * Added const version of [] to Array/Object/Value
 * Removed C++11 requirements, should work with older compilers
-	(thanks to Meng Wang for pointing that out)
+    (thanks to Meng Wang for pointing that out)
 * Made ValueMap and ValueVector typedefs in Object/Value public
-	so you can actually iterate over the class
+    so you can actually iterate over the class
 * Added HasKey and HasValue to Object/Array for convenience
-	(note this could have been done comparing .find to .end)
+    (note this could have been done comparing .find to .end)
 
 12/29/2013 v2
 -------------
 * Added .size() field to Value. Returns 1 for non Array/Object types,
-	otherwise the number of elements contained.
+    otherwise the number of elements contained.
 * Added .find() to Object to search for a key. Returns Object::end()
-	if not found, otherwise the Value.
-	Example: bool found = my_obj.find("some key") != my_obj.end();
+    if not found, otherwise the Value.
+    Example: bool found = my_obj.find("some key") != my_obj.end();
 * Added .find() to Array to search for a value. Just a convenience
-	wrapper for std::find(Array::begin(), Array::end(), Value)
+    wrapper for std::find(Array::begin(), Array::end(), Value)
 * Added ==, !=, <, >, <=, >= operators to Object/Array/Value.
-	For Objects/Arrays, the operators function just like they do for a
-	std::map and std::vector, respectively.
+    For Objects/Arrays, the operators function just like they do for a
+    std::map and std::vector, respectively.
 * Added IsNumeric to Value to indicate if it's an int/float/double type.
 
 12/29/2013
 ----------
 * Added the DoubleVal type which stores, you guessed it, double values.
 * Bug fix for floats with an exact integer value. Now, setting any numerical
-	field will also set the fields for the other numerical types. So if you
-	have obj["value"] = 12, then the int/float/double cast methods will
-	return 12/12.0f/12.0. Previously, in the example above, only the int
-	value was set, making a cast to float return 0.
+    field will also set the fields for the other numerical types. So if you
+    have obj["value"] = 12, then the int/float/double cast methods will
+    return 12/12.0f/12.0. Previously, in the example above, only the int
+    value was set, making a cast to float return 0.
 * Bug fix for deserializing JSON strings that contained large integer values.
-	Now if the numerical value of a key in a JSON string contains a number
-	less than INT_MIN or greater than INT_MAX it will be stored as a double.
-	Note that as mentioned above, all numerical fields are set.
+    Now if the numerical value of a key in a JSON string contains a number
+    less than INT_MIN or greater than INT_MAX it will be stored as a double.
+    Note that as mentioned above, all numerical fields are set.
 * Should work fine with scientific notation values now.
 
 12/28/2013
@@ -251,4 +251,4 @@ string passed in to Deserialize, invalid results or asserts would occur.
 
 * Added method named "Clear()" to Object/Array/Value to reset state
 
-* Added license to header file for easyness (t	otally valid word).
+* Added license to header file for easyness (t    otally valid word).

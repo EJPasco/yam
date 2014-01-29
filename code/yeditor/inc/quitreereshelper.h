@@ -5,11 +5,11 @@
 
 class YCQUiTreeResHelper : public YCQUiTreeHelper
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit YCQUiTreeResHelper(QTreeWidget* pTreeRoot);
-	virtual ~YCQUiTreeResHelper();
+    explicit YCQUiTreeResHelper(QTreeWidget* pTreeRoot);
+    virtual ~YCQUiTreeResHelper();
 
 public:
 };

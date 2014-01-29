@@ -20,18 +20,18 @@ namespace yam{ namespace storage{
 class YIFile
 {
 public:
-	virtual ~YIFile() { ; }
+    virtual ~YIFile() { ; }
 
 public:
-	virtual void Close() = 0;
+    virtual void Close() = 0;
 };
 
 template<typename TNBase>
 class YTFile : public TNBase
 {
 public:
-	YTFile() { ; }
-	virtual ~YTFile() { ; }
+    YTFile() { ; }
+    virtual ~YTFile() { ; }
 
 public:
 
@@ -41,19 +41,19 @@ protected:
 class YIFileWriter : public YIFile
 {
 public:
-	virtual ~YIFileWriter() { ; }
+    virtual ~YIFileWriter() { ; }
 
 public:
-	virtual YIFileWriter& Save(const ystring& rsFileName) = 0;
-	virtual ybool operator<<(const base::YCBuffer& rBuffer) = 0;
+    virtual YIFileWriter& Save(const ystring& rsFileName) = 0;
+    virtual ybool operator<<(const base::YCBuffer& rBuffer) = 0;
 };
 
 template<typename TNBase>
 class YTFileWriter : public YTFile<TNBase>
 {
 public:
-	YTFileWriter() { ; }
-	virtual ~YTFileWriter() { ; }
+    YTFileWriter() { ; }
+    virtual ~YTFileWriter() { ; }
 
 public:
 
@@ -63,50 +63,50 @@ protected:
 class YCFileWriter : public YTFileWriter<YIFileWriter>
 {
 public:
-	YCFileWriter();
-	virtual ~YCFileWriter();
+    YCFileWriter();
+    virtual ~YCFileWriter();
 
 public:
-	template<typename TNType>
-	YIFileWriter& operator<<(const TNType& rData)
-	{
-		if (!mbOpened)
-		{
-			return *this;
-		}
-		Write(sizeof(TNType), (ybuffptr)&rData);
-		return *this;
-	}
+    template<typename TNType>
+    YIFileWriter& operator<<(const TNType& rData)
+    {
+        if (!mbOpened)
+        {
+            return *this;
+        }
+        Write(sizeof(TNType), (ybuffptr)&rData);
+        return *this;
+    }
 
 public:
-	virtual void Close();
-	virtual YIFileWriter& Save(const ystring& rsFileName);
-	virtual ybool operator<<(const base::YCBuffer& rBuffer);
+    virtual void Close();
+    virtual YIFileWriter& Save(const ystring& rsFileName);
+    virtual ybool operator<<(const base::YCBuffer& rBuffer);
 
 protected:
-	void Write(const ybuffsize& riSize, const ybuffptr& rpBuff);
+    void Write(const ybuffsize& riSize, const ybuffptr& rpBuff);
 
 private:
-	ybool				mbOpened;
-	yofstream			mFileStream;
+    ybool                mbOpened;
+    yofstream            mFileStream;
 };
 
 class YIFileReader : public YIFile
 {
 public:
-	virtual ~YIFileReader() { ; }
+    virtual ~YIFileReader() { ; }
 
 public:
-	virtual YIFileReader& Open(const ystring& rsFileName) = 0;
-	virtual ybool operator>>(base::YCBuffer& rBuffer) = 0;
+    virtual YIFileReader& Open(const ystring& rsFileName) = 0;
+    virtual ybool operator>>(base::YCBuffer& rBuffer) = 0;
 };
 
 template<typename TNBase>
 class YTFileReader : public YTFile<TNBase>
 {
 public:
-	YTFileReader() { ; }
-	virtual ~YTFileReader() { ; }
+    YTFileReader() { ; }
+    virtual ~YTFileReader() { ; }
 
 public:
 //
@@ -115,33 +115,33 @@ public:
 class YCFileReader : public YTFileReader<YIFileReader>
 {
 public:
-	YCFileReader();
-	virtual ~YCFileReader();
+    YCFileReader();
+    virtual ~YCFileReader();
 
 public:
-	template<typename TNType>
-	YIFileReader& operator>>(TNType& rData)
-	{
-		if (!mbOpened)
-		{
-			return *this;
-		}
-		ybuffptr pData = (ybuffptr)&rData;
-		Read(sizeof(TNType), pData);
-		return *this;
-	}
+    template<typename TNType>
+    YIFileReader& operator>>(TNType& rData)
+    {
+        if (!mbOpened)
+        {
+            return *this;
+        }
+        ybuffptr pData = (ybuffptr)&rData;
+        Read(sizeof(TNType), pData);
+        return *this;
+    }
 
 public:
-	virtual void Close();
-	virtual YIFileReader& Open(const ystring& rsFileName);
-	virtual ybool operator>>(base::YCBuffer& rBuffer);
+    virtual void Close();
+    virtual YIFileReader& Open(const ystring& rsFileName);
+    virtual ybool operator>>(base::YCBuffer& rBuffer);
 
 protected:
-	void Read(const ybuffsize& riSize, const ybuffptr& rpBuff);
+    void Read(const ybuffsize& riSize, const ybuffptr& rpBuff);
 
 private:
-	ybool				mbOpened;
-	yifstream			mFileStream;
+    ybool                mbOpened;
+    yifstream            mFileStream;
 };
 
 

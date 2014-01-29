@@ -13,7 +13,7 @@
 
 #include "yam.h"
 
-#define YPSBLENDMODE_LAYERGROUP			0x00000586
+#define YPSBLENDMODE_LAYERGROUP            0x00000586
 
 OSErr FSWrite(int32 refNum, int32* count, void* buffPtr);
 

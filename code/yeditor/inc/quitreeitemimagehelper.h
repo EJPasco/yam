@@ -6,25 +6,25 @@
 
 class YCQUiTreeItemImageHelper : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem);
-	virtual ~YCQUiTreeItemImageHelper();
+    explicit YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem);
+    virtual ~YCQUiTreeItemImageHelper();
 
 Q_SIGNALS:
-	void onChangedSource(const QString& rsImageSource);
+    void onChangedSource(const QString& rsImageSource);
 
 public Q_SLOTS:
-	void onItemChangedSource();
+    void onItemChangedSource();
 
 public:
-	void setImageSource(const QString& rsValue);
+    void setImageSource(const QString& rsValue);
 
 private:
-	QTreeWidgetItem*		m_pTreeItemImage;
-	QLineEdit*				m_pEditor;
-	QString					m_sImageSource;
+    QTreeWidgetItem*        m_pTreeItemImage;
+    QLineEdit*                m_pEditor;
+    QString                    m_sImageSource;
 };
 
 #endif // Y_QUITREEITEMIMAGEHELPER_H

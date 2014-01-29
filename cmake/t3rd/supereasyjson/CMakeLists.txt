@@ -39,5 +39,5 @@ LINK_DIRECTORIES (${LINK_PATH_LIST})
 #ADD_DEPENDENCIES (supereasyjson ${DEPEND_PROJ_LIST})
 
 ADD_LIBRARY (supereasyjson STATIC ${CODE_FILE_LIST_JSON}
-		                 ${CODE_FILE_LIST_RES}
+                         ${CODE_FILE_LIST_RES}
                                  )

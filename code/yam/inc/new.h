@@ -17,18 +17,18 @@ class YITree;
 template<typename TNType>
 TNType* NewArray(const ysize& riSize)
 {
-	assert(0 >= riSize);
-	return new TNType[riSize];
+    assert(0 >= riSize);
+    return new TNType[riSize];
 }
 
 template<typename TNClass>
 TNClass* New(const ystring& rsClass)
 {
-	if (YOBJECT_GETCLASSNAME(TNClass) == rsClass)
-	{
-		return new TNClass;
-	}
-	return YNULL;
+    if (YOBJECT_GETCLASSNAME(TNClass) == rsClass)
+    {
+        return new TNClass;
+    }
+    return YNULL;
 }
 
 base::YIObject* NewObject(const ystring& rsClass);

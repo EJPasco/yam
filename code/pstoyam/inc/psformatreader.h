@@ -10,7 +10,7 @@ namespace yam{ namespace external{
 class YIPsFormatReader : public YIPsFormat
 {
 public:
-	virtual ~YIPsFormatReader() { ; }
+    virtual ~YIPsFormatReader() { ; }
 
 public:
 };
@@ -19,8 +19,8 @@ template<typename TNBase>
 class YTPsFormatReader : public YTPsFormat<TNBase>
 {
 public:
-	YTPsFormatReader() { ; }
-	virtual ~YTPsFormatReader() { ; }
+    YTPsFormatReader() { ; }
+    virtual ~YTPsFormatReader() { ; }
 
 public:
 };
@@ -28,15 +28,15 @@ public:
 class YCPsFormatReader : public YTPsFormatReader<YIPsFormatReader>
 {
 public:
-	YCPsFormatReader();
-	virtual ~YCPsFormatReader();
+    YCPsFormatReader();
+    virtual ~YCPsFormatReader();
 
 public:
-	virtual void Do(FormatRecordPtr& rpRecord);
+    virtual void Do(FormatRecordPtr& rpRecord);
 
 protected:
-	void Do(ReadImageDocumentDesc*& rpDocu, yam::base::YCTree& rTree);
-	void Do(ReadLayerDesc*& rpLayer, yam::base::YCTree& rTree);
+    void Do(ReadImageDocumentDesc*& rpDocu, yam::base::YCTree& rTree);
+    void Do(ReadLayerDesc*& rpLayer, yam::base::YCTree& rTree);
 };
 
 }}

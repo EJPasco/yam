@@ -10,27 +10,27 @@ namespace yam{ namespace base{
 class YIPanel : public YIWidget
 {
 public:
-	virtual ~YIPanel() { ; }
+    virtual ~YIPanel() { ; }
 };
 
 template<typename TNBase, typename TNReal>
 class YTPanel : public YTWidget<TNBase, TNReal>
 {
 public:
-	YTPanel() { ; }
-	virtual ~YTPanel() { ; }
+    YTPanel() { ; }
+    virtual ~YTPanel() { ; }
 
 public:
 };
 
 class YCPanel : public YTPanel<YIPanel, YCPanel>
 {
-	typedef YTPanel<YIPanel, YCPanel>		super;
-	YOBJECT_DECL(YCPanel);
+    typedef YTPanel<YIPanel, YCPanel>        super;
+    YOBJECT_DECL(YCPanel);
 
 public:
-	YCPanel();
-	virtual ~YCPanel();
+    YCPanel();
+    virtual ~YCPanel();
 
 public:
 

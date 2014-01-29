@@ -6,12 +6,12 @@ YOBJECT_IMPL(YCTree);
 
 YCTree::YCTree()
 {
-	//
+    //
 }
 
 YCTree::~YCTree()
 {
-	//
+    //
 }
 
 }}

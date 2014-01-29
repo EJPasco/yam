@@ -6,24 +6,24 @@
 
 class YCQUiTreeItemLayerWeightHelper : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit YCQUiTreeItemLayerWeightHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem);
-	virtual ~YCQUiTreeItemLayerWeightHelper();
+    explicit YCQUiTreeItemLayerWeightHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem);
+    virtual ~YCQUiTreeItemLayerWeightHelper();
 
 Q_SIGNALS:
-	void onChanged(const int& riLayerWeight);
+    void onChanged(const int& riLayerWeight);
 
 public Q_SLOTS:
-	void onItemChanged(int iValue);
+    void onItemChanged(int iValue);
 
 public:
-	void setLayerWeight(const int& riLayerWeight);
+    void setLayerWeight(const int& riLayerWeight);
 
 private:
-	QSpinBox*	m_pSpinBox;
-	int			m_iLayerWeight;
+    QSpinBox*    m_pSpinBox;
+    int            m_iLayerWeight;
 };
 
 #endif // Y_QUITREEITEMLAYERWEIGHTHELPER_H

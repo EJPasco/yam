@@ -4,6 +4,7 @@
 #include "define.h"
 #include "typedef.h"
 #include "struct.h"
+#include "compiler.h"
 
 #include <assert.h>
 
