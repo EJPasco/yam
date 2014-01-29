@@ -14,7 +14,7 @@ before_install:
   - sudo apt-get install cppcheck qt5-default valgrind
 
 before_script:
-  - cppcheck code/ -i code/t3rd --enable=all --quiet --error-exitcode=1
+  - cppcheck code/ -i code/t3rd --quiet --error-exitcode=1
   - mkdir build
   - cd build/
   - cmake -DQT_SDK_PATH=/usr ../cmake/
