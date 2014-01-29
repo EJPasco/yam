@@ -17,7 +17,7 @@ before_script:
   - cppcheck code/ -i code/t3rd --enable=all --quiet --error-exitcode=1
   - mkdir build
   - cd build/
-  - cmake -DQT_SDK_PATH=/usr ../cmake
+  - cmake -DQT_SDK_PATH=/usr ../cmake/
   - cd ../
 
 script:
@@ -26,7 +26,7 @@ script:
   - cd ../
 
 after_success:
-  - valgrind --leak-check=yes ./out/bin/t001
+  - valgrind --leak-check=yes out/bin/t001
 
 notifications:
   email:
