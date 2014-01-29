@@ -114,7 +114,9 @@ link_directories(${LINK_PATH_LIST})
 link_libraries(${LIBRARY_FILE_LIST})
 
 #add_definitions("-DC4G_EXPORTS_API")
-SET (CMAKE_CXX_FLAGS "-fPIC")
+IF (YENV_SYSTEM_IS_LINUX)
+    SET (CMAKE_CXX_FLAGS "-fPIC")
+ENDIF ()
 
 add_executable(yeditor ${CODE_FILE_LIST_EDITOR}
                        ${CODE_FILE_LIST_RES}

@@ -41,12 +41,17 @@
 #define YFILE_KEY_RESOURCE				"res"
 #define YFILE_KEY_UI					"ui"
 
-
+// todo: try to use the static function to initialize the static variable for gcc in linux
 #define YOBJECT_DECL(_Class)		\
 	public:\
-		const static ystring		ssClassName;
-#define YOBJECT_IMPL(_Class)		const ystring _Class::ssClassName = YTOSTRING(_Class);
-#define YOBJECT_GETCLASSNAME(_Class)		_Class::ssClassName
+		static const ystring ClassName();
+#define YOBJECT_IMPL(_Class)		\
+	const ystring _Class::ClassName()\
+	{\
+		static const ystring ssClassName = YTOSTRING(_Class);\
+		return ssClassName;\
+	}
+#define YOBJECT_GETCLASSNAME(_Class)		_Class::ClassName()
 
 #define YTRUE			1
 #define YFALSE			0
