@@ -8,10 +8,6 @@ master: [![Build Status](https://travis-ci.org/code4game/yam.png?branch=master)]
 
 dev: [![Build Status](https://travis-ci.org/code4game/yam.png?branch=dev)](https://travis-ci.org/code4game/yam)
 
-#### Coverage Status
-
-[![Coverage Status](https://coveralls.io/repos/code4game/yam/badge.png)](https://coveralls.io/r/code4game/yam)
-
 
 ## Overview
 
