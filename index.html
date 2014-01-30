@@ -32,65 +32,137 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a name="yam" class="anchor" href="#yam"><span class="octicon octicon-link"></span></a>Yam</h1>
+<a name="yam" class="anchor" href="#yam"><span class="octicon octicon-link"></span></a><a href="http://c4g.alexchi.me/yam/" title="Yam">Yam</a>
+</h1>
 
-<p>A UI System</p>
+<p>A User Interface System for Game. It belong to <a href="http://c4g.alexchi.me/" title="Code 4 Game">Code4Game</a>.</p>
+
+<h4>
+<a name="build-status" class="anchor" href="#build-status"><span class="octicon octicon-link"></span></a>Build Status</h4>
+
+<p>master: <a href="https://travis-ci.org/code4game/yam"><img src="https://travis-ci.org/code4game/yam.png?branch=master" alt="Build Status"></a></p>
+
+<p>dev: <a href="https://travis-ci.org/code4game/yam"><img src="https://travis-ci.org/code4game/yam.png?branch=dev" alt="Build Status"></a></p>
 
 <h2>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h2>
+
+<ul>
+<li><a href="#Projects">Projects</a></li>
+<li><a href="#Ready">Ready</a></li>
+<li><a href="#Build">Build</a></li>
+<li><a href="#Usage">Usage</a></li>
+<li><a href="#Credits">Credits</a></li>
+<li><a href="#License">License</a></li>
+<li><a href="#Link">Link</a></li>
+</ul><h2>
 <a name="projects" class="anchor" href="#projects"><span class="octicon octicon-link"></span></a>Projects</h2>
 
 <ul>
-<li>Yam's library</li>
-<li>Photoshop Plug-In</li>
-<li>Yam's editor by Qt</li>
+<li>Yam Library</li>
+<li>Yam Editor</li>
+<li>
+<a href="http://www.adobe.com/products/photoshop.html" title="Photoshop">Photoshop</a> Plug-In (only compiled by <a href="http://www.visualstudio.com/" title="Visual C++">Visual C++</a>)</li>
 </ul><h3>
-<a name="yams-library" class="anchor" href="#yams-library"><span class="octicon octicon-link"></span></a>Yam's library</h3>
+<a name="yam-library" class="anchor" href="#yam-library"><span class="octicon octicon-link"></span></a>Yam Library</h3>
 
-<blockquote>
-<p>The core of yam, is a static library, was linked by other project.</p>
-</blockquote>
+<p><strong><em>The core of yam, is a static library, was linked by other projects.</em></strong></p>
 
 <p>It will include the basic element of UI system, likes widget, panel, layout and layer.</p>
 
 <h3>
-<a name="photoshop-plug-in" class="anchor" href="#photoshop-plug-in"><span class="octicon octicon-link"></span></a>Photoshop Plug-In</h3>
+<a name="yam-editor" class="anchor" href="#yam-editor"><span class="octicon octicon-link"></span></a>Yam Editor</h3>
 
-<blockquote>
-<p>The plugin of Adobe Photoshop, is the file format module, can save the yam to file.</p>
-</blockquote>
-
-<p>We need use Adobe Photoshop to save the layer and image to yam format.</p>
-
-<h3>
-<a name="yams-editor-by-qt" class="anchor" href="#yams-editor-by-qt"><span class="octicon octicon-link"></span></a>Yam's editor by Qt</h3>
-
-<blockquote>
-<p>A executable file, to edit/save the yam file.</p>
-</blockquote>
+<p><strong><em>A executable file, to edit/save the yam file(.yui).</em></strong></p>
 
 <p>You can use it to edit/save the yam file and export the new format file.</p>
 
+<h3>
+<a name="photoshop-plug-in-only-compiled-by-visual-c" class="anchor" href="#photoshop-plug-in-only-compiled-by-visual-c"><span class="octicon octicon-link"></span></a><a href="http://www.adobe.com/products/photoshop.html" title="Photoshop">Photoshop</a> Plug-In (only compiled by <a href="http://www.visualstudio.com/" title="Visual C++">Visual C++</a>)</h3>
+
+<p><strong><em>The plugin of <a href="http://www.adobe.com/" title="Adobe">Adobe</a> <a href="http://www.adobe.com/products/photoshop.html" title="Photoshop">Photoshop</a>, is the file format module, can save the yam to file.</em></strong></p>
+
+<p>It can save all layers and images of .psd file to yam format(.yui) by <a href="http://www.adobe.com/" title="Adobe">Adobe</a> <a href="http://www.adobe.com/products/photoshop.html" title="Photoshop">Photoshop</a>.</p>
+
 <h2>
-<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+<a name="ready" class="anchor" href="#ready"><span class="octicon octicon-link"></span></a>Ready</h2>
 
 <h3>
 <a name="requirement" class="anchor" href="#requirement"><span class="octicon octicon-link"></span></a>Requirement</h3>
 
 <ul>
-<li>CMake</li>
-<li>Visual Studio 2012 Express</li>
-<li>Qt</li>
+<li><a href="http://cmake.org/" title="CMake">CMake</a></li>
+<li>
+<a href="http://www.visualstudio.com/" title="Visual C++">Visual C++</a> or <a href="http://www.mingw.org/" title="MinGW">MinGW</a>
+</li>
+<li><a href="http://qt-project.org/" title="Qt">Qt</a></li>
+<li>
+<a href="http://www.adobe.com/devnet/photoshop/sdk.html" title="Photoshop SDK">Photoshop SDK</a> (only compiled by <a href="http://www.visualstudio.com/" title="Visual C++">Visual C++</a>)</li>
 </ul><h3>
 <a name="environment" class="anchor" href="#environment"><span class="octicon octicon-link"></span></a>Environment</h3>
 
 <ul>
-<li>set the PS_PLUGIN_SDK to the SDK directory for Photoshop Plug-In</li>
-<li>set the QT_MSVC2012_X32 to the Qt directory for VC2012 x32</li>
-<li>set the QT_MSVC2012_X64 to the Qt directory for VC2012 x64</li>
-</ul><h3>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h3>
+<li>Add the <a href="http://www.mingw.org/" title="MinGW">MinGW</a> installation directory to the "PATH" environment variable if you want compile by <a href="http://www.mingw.org/" title="MinGW">MinGW</a>.</li>
+</ul><h2>
+<a name="build" class="anchor" href="#build"><span class="octicon octicon-link"></span></a>Build</h2>
 
-<p>See The MIT License or LICENSE file</p>
+<ol>
+<li>
+<p>Configure the environment by <a href="http://cmake.org/" title="CMake">CMake</a>.</p>
+
+<ul>
+<li>Set QT_SDK_PATH to the <a href="http://qt-project.org/" title="Qt">Qt</a> SDK installation directory.</li>
+<li>Set PHOTOSHOP_SDK_PATH to the <a href="http://www.adobe.com/devnet/photoshop/sdk.html" title="Photoshop SDK">Photoshop SDK</a> installation directory.</li>
+</ul>
+</li>
+</ol><ol>
+<li>
+<p>Generate the solution by <a href="http://cmake.org/" title="CMake">CMake</a>.</p>
+
+<ul>
+<li>Generate the <a href="http://www.visualstudio.com/" title="Visual C++">Visual C++</a> soluction or <a href="http://www.mingw.org/" title="MinGW">MinGW</a> Makefile.</li>
+</ul>
+</li>
+</ol><ol>
+<li>Compile/Build the project/makefile.</li>
+</ol><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>You can find all compiled files in "/out" directory.</p>
+
+<h3>
+<a name="yam-editor-1" class="anchor" href="#yam-editor-1"><span class="octicon octicon-link"></span></a>Yam Editor</h3>
+
+<ol>
+<li>Find the yeditor.exe in "/out" directory.</li>
+<li>Run and use it.</li>
+</ol><h3>
+<a name="photoshop-plug-in-only-compiled-by-visual-c-1" class="anchor" href="#photoshop-plug-in-only-compiled-by-visual-c-1"><span class="octicon octicon-link"></span></a><a href="http://www.adobe.com/products/photoshop.html" title="Photoshop">Photoshop</a> Plug-In (only compiled by <a href="http://www.visualstudio.com/" title="Visual C++">Visual C++</a>)</h3>
+
+<ol>
+<li>Find the plugin file(pstoyam.8bi) in "/out" directory.</li>
+<li>Copy it to the "/Plug-ins/File Formats" directory in the Photoshop directory <strong>or</strong> Set the external plugin directory to the directory what contain the pstoyam.8bi file in Photoshop</li>
+</ol><h2>
+<a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h2>
+
+<p>It is part of <a href="http://c4g.alexchi.me/" title="Code 4 Game">Code4Game</a> and was created by <a href="http://alexchi.me/" title="Alex Chi">Alex Chi</a>.</p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>See <a href="http://opensource.org/licenses/MIT" title="MIT License">MIT License</a> or LICENSE file</p>
+
+<h2>
+<a name="link" class="anchor" href="#link"><span class="octicon octicon-link"></span></a>Link</h2>
+
+<ol>
+<li><a href="http://opensource.org/licenses/MIT" title="MIT License">MIT License</a></li>
+<li><a href="http://cmake.org/" title="CMake">CMake</a></li>
+<li><a href="http://www.visualstudio.com/" title="Visual C++">Visual C++</a></li>
+<li><a href="http://www.mingw.org/" title="MinGW">MinGW</a></li>
+<li><a href="http://qt-project.org/" title="Qt">Qt</a></li>
+<li><a href="http://www.adobe.com/devnet/photoshop/sdk.html" title="Photoshop SDK">Photoshop SDK</a></li>
+</ol>
       </section>
     </div>
 
