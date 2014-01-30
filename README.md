@@ -2,22 +2,26 @@
 
 A User Interface System for Game. It belong to [Code4Game][].
 
-####Build Status
+#### Build Status
 
 master: [![Build Status](https://travis-ci.org/code4game/yam.png?branch=master)](https://travis-ci.org/code4game/yam)
 
 dev: [![Build Status](https://travis-ci.org/code4game/yam.png?branch=dev)](https://travis-ci.org/code4game/yam)
 
+#### Coverage Status
+
+[![Coverage Status](https://coveralls.io/repos/code4game/yam/badge.png)](https://coveralls.io/r/code4game/yam)
+
 
 ## Overview
 
-* [Projects](#Projects)
-* [Ready](#Ready)
-* [Build](#Build)
-* [Usage](#Usage)
-* [Credits](#Credits)
-* [License](#License)
-* [Link](#Link)
+* [**Projects**](#projects)
+* [**Ready**](#ready)
+* [**Build**](#build)
+* [**Usage**](#usage)
+* [**Credits**](#credits)
+* [**License**](#license)
+* [**Link**](#link)
 
 
 ## Projects
