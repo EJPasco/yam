@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         iColorData = 0;
     }
 
-    {
+    /*{
         std::cout << "hash test" << std::endl;
         ystringhash ss;
         std::string key = YTOSTRING(yam);
@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
         std::cout << "key:" << "tt" << " | " << "value:" << rsb << std::endl;
         int rsc = ss(key);
         std::cout << "key:" << key << " | " << "value:" << rsc << std::endl;
-    }
+    }*/
 
     {
         json::Object obj;

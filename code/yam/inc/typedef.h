@@ -5,8 +5,8 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include <functional>
-#include <tr1/functional_hash.h>
+/*#include <functional>
+#include <tr1/functional_hash.h>*/
 
 #if defined(GNUC)
 #include <cstring>
@@ -31,7 +31,7 @@ typedef std::fstream                yfstream;
 typedef std::ifstream               yifstream;
 typedef std::ofstream               yofstream;
 typedef std::streambuf              ystreambuff;
-typedef std::hash<ystring>          ystringhash;
+/*typedef std::hash<ystring>          ystringhash;*/
 
 typedef yint8                       ybuff;
 typedef ybuff*                      ybuffptr;
