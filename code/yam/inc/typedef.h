@@ -6,6 +6,7 @@
 #include <sstream>
 #include <fstream>
 #include <functional>
+#include <bits/functional_hash.h>
 
 #if defined(GNUC)
 #include <cstring>
