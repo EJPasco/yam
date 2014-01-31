@@ -1,13 +1,13 @@
 #include <json.h>
 #include <yam.h>
 
-#if defined(OS_WINDOWS)
+#if defined(MSVC)
 #include <crtdbg.h>
 #endif
 
 int main(int argc, char* argv[])
 {
-#if defined(OS_WINDOWS)
+#if defined(MSVC)
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
