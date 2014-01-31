@@ -5,16 +5,12 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-
-#if defined(GNUC)
-//#include <functional_hash.h>
-#elif defined(MSVC)
 #include <functional>
-#endif
 
 #if defined(GNUC)
 #include <cstring>
 #endif
+
 
 namespace yam{
 
@@ -34,7 +30,7 @@ typedef std::fstream                yfstream;
 typedef std::ifstream               yifstream;
 typedef std::ofstream               yofstream;
 typedef std::streambuf              ystreambuff;
-//typedef std::hash<ystring>        ystringhash;
+typedef std::hash<ystring>          ystringhash;
 
 typedef yint8                       ybuff;
 typedef ybuff*                      ybuffptr;
