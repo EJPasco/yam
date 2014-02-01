@@ -36,7 +36,7 @@ YCQUiTreeItemBoundHelper::YCQUiTreeItemBoundHelper(QTreeWidget* pTreeRoot, QTree
         pTreeRoot->setItemWidget(pTreeBoundY, 1, m_pSpinBoxY);
 
         m_pSpinBoxW = new QSpinBox;
-        m_pSpinBoxW->setRange(INT_MIN, INT_MAX);
+        m_pSpinBoxW->setRange(1, INT_MAX);
         m_pSpinBoxW->setValue(0);
         connect(m_pSpinBoxW, SIGNAL(valueChanged(int)), this, SLOT(onItemChangedW(int)));
         QTreeWidgetItem* pTreeBoundW = new QTreeWidgetItem;
@@ -45,7 +45,7 @@ YCQUiTreeItemBoundHelper::YCQUiTreeItemBoundHelper(QTreeWidget* pTreeRoot, QTree
         pTreeRoot->setItemWidget(pTreeBoundW, 1, m_pSpinBoxW);
 
         m_pSpinBoxH = new QSpinBox;
-        m_pSpinBoxH->setRange(INT_MIN, INT_MAX);
+        m_pSpinBoxH->setRange(1, INT_MAX);
         m_pSpinBoxH->setValue(0);
         connect(m_pSpinBoxH, SIGNAL(valueChanged(int)), this, SLOT(onItemChangedH(int)));
         QTreeWidgetItem* pTreeBoundH = new QTreeWidgetItem;
@@ -62,7 +62,9 @@ YCQUiTreeItemBoundHelper::~YCQUiTreeItemBoundHelper()
 
 void YCQUiTreeItemBoundHelper::onItemChangedX(int iValue)
 {
+    int iWidth = m_Bound.width();
     m_Bound.setX(iValue);
+    m_Bound.setWidth(iWidth);
 
     setBoundText(m_Bound);
 
@@ -71,7 +73,9 @@ void YCQUiTreeItemBoundHelper::onItemChangedX(int iValue)
 
 void YCQUiTreeItemBoundHelper::onItemChangedY(int iValue)
 {
+    int iHeight = m_Bound.height();
     m_Bound.setY(iValue);
+    m_Bound.setHeight(iHeight);
 
     setBoundText(m_Bound);
 

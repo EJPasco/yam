@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YCQUiTreeUiHelper_t {
     QByteArrayData data[8];
-    char stringdata[125];
+    char stringdata[123];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,16 +30,16 @@ struct qt_meta_stringdata_YCQUiTreeUiHelper_t {
 static const qt_meta_stringdata_YCQUiTreeUiHelper_t qt_meta_stringdata_YCQUiTreeUiHelper = {
     {
 QT_MOC_LITERAL(0, 0, 17),
-QT_MOC_LITERAL(1, 18, 18),
-QT_MOC_LITERAL(2, 37, 0),
-QT_MOC_LITERAL(3, 38, 7),
-QT_MOC_LITERAL(4, 46, 24),
-QT_MOC_LITERAL(5, 71, 13),
-QT_MOC_LITERAL(6, 85, 24),
-QT_MOC_LITERAL(7, 110, 13)
+QT_MOC_LITERAL(1, 18, 17),
+QT_MOC_LITERAL(2, 36, 0),
+QT_MOC_LITERAL(3, 37, 6),
+QT_MOC_LITERAL(4, 44, 24),
+QT_MOC_LITERAL(5, 69, 13),
+QT_MOC_LITERAL(6, 83, 24),
+QT_MOC_LITERAL(7, 108, 13)
     },
-    "YCQUiTreeUiHelper\0onItemChangedBound\0"
-    "\0roBound\0onItemChangedLayerWeight\0"
+    "YCQUiTreeUiHelper\0onItemChangedSize\0"
+    "\0roSize\0onItemChangedLayerWeight\0"
     "riLayerWeight\0onItemChangedImageSource\0"
     "rsImageSource\0"
 };
@@ -64,7 +64,7 @@ static const uint qt_meta_data_YCQUiTreeUiHelper[] = {
        6,    1,   35,    2, 0x0a,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QRect,    3,
+    QMetaType::Void, QMetaType::QSize,    3,
     QMetaType::Void, QMetaType::Int,    5,
     QMetaType::Void, QMetaType::QString,    7,
 
@@ -76,7 +76,7 @@ void YCQUiTreeUiHelper::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
     if (_c == QMetaObject::InvokeMetaMethod) {
         YCQUiTreeUiHelper *_t = static_cast<YCQUiTreeUiHelper *>(_o);
         switch (_id) {
-        case 0: _t->onItemChangedBound((*reinterpret_cast< const QRect(*)>(_a[1]))); break;
+        case 0: _t->onItemChangedSize((*reinterpret_cast< const QSize(*)>(_a[1]))); break;
         case 1: _t->onItemChangedLayerWeight((*reinterpret_cast< const int(*)>(_a[1]))); break;
         case 2: _t->onItemChangedImageSource((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;

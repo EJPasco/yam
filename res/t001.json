@@ -1,0 +1,96 @@
+{
+	"logic":{
+		"name":"test001"
+	},
+	"assetgroup":[
+		{
+			"name":"bg01",
+			"type":"image",
+			"file":"asset/bg01.png"
+		},
+		{
+			"name":"bg02",
+			"type":"image",
+			"file":"asset/bg02.png"
+		}
+		
+	],
+	"root":{
+		"layoutstrategy":{
+			"type":"layoutgridstrategy",
+			"value":{
+				"row":[
+					100,
+					0,
+					0
+				],
+				"line":[
+					100,
+					0,
+					0
+				]
+				
+			}
+			
+		},
+		"layer":0,
+		"dst":{
+			"pos":{
+				"x":0,
+				"y":0
+			},
+			"sizef":{
+				"x":1.0f,
+				"y":1.0f
+			}
+			
+		},
+		"widgetgroup":[
+			{
+				"type":"staticimage",
+				"value":{
+					"layout":{
+						"type":"layoutgrid",
+						"value":{
+							"pos":{
+								"row":1,
+								"line":1
+							}
+							
+						}
+						
+					},
+					"layer":1,
+					"image":"bg02",
+					"src":{
+						"pos":{
+							"x":0,
+							"y":0
+						},
+						"sizef":{
+							"x":1.0,
+							"y":1.0
+						}
+						
+					},
+					"dst":{
+						"pos":{
+							"x":0,
+							"y":0
+						},
+						"size":{
+							"x":200,
+							"y":200
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		]
+		
+	}
+	
+}

@@ -2,9 +2,13 @@
 
 #include "quitreeuihelper.h"
 
+#include "quitreeitemsizehelper.h"
+#include "quitreeitemlayerweighthelper.h"
+#include "quitreeitemimagehelper.h"
+
 YCQUiTreeUiHelper::YCQUiTreeUiHelper(QTreeWidget* pTreeRoot)
     : YCQUiTreeHelper(pTreeRoot)
-    , m_pTreeItemBoundHelper(NULL)
+    , m_pTreeItemSizeHelper(NULL)
     , m_pTreeItemLayerWeightHelper(NULL)
     , m_pTreeItemImageHelper(NULL)
 {
@@ -13,10 +17,10 @@ YCQUiTreeUiHelper::YCQUiTreeUiHelper(QTreeWidget* pTreeRoot)
 
 YCQUiTreeUiHelper::~YCQUiTreeUiHelper()
 {
-    if (NULL != m_pTreeItemBoundHelper)
+    if (NULL != m_pTreeItemSizeHelper)
     {
-        delete m_pTreeItemBoundHelper;
-        m_pTreeItemBoundHelper = NULL;
+        delete m_pTreeItemSizeHelper;
+        m_pTreeItemSizeHelper = NULL;
     }
     if (NULL != m_pTreeItemLayerWeightHelper)
     {
@@ -30,14 +34,13 @@ YCQUiTreeUiHelper::~YCQUiTreeUiHelper()
     }
 }
 
-void YCQUiTreeUiHelper::onItemChangedBound(const QRect& roBound)
+void YCQUiTreeUiHelper::onItemChangedSize(const QSize& roSize)
 {
     if (NULL == m_pUiItem)
     {
         return;
     }
-    m_pUiItem->move(roBound.topLeft());
-    m_pUiItem->resize(roBound.size());
+    m_pUiItem->resize(roSize);
 }
 
 void YCQUiTreeUiHelper::onItemChangedLayerWeight(const int& riLayerWeight)
@@ -75,7 +78,7 @@ void YCQUiTreeUiHelper::onItemChangedImageSource(const QString& rsImageSource)
         pFormat = (const yam::base::YIFormat*)pImage;
     }
     m_pUiItem->setImage(pFormat->GetBound(), pFormat->GetColorData());
-    m_pTreeItemBoundHelper->setBound(m_pUiItem->rect());
+    m_pTreeItemSizeHelper->setSize(m_pUiItem->size());
 }
 
 void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
@@ -90,11 +93,11 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
     pTreeWidget->setText(0, tr("Widget"));
     m_pTreeRoot->insertTopLevelItem(m_pTreeRoot->topLevelItemCount(), pTreeWidget);
 
-    if (NULL == m_pTreeItemBoundHelper)
+    if (NULL == m_pTreeItemSizeHelper)
     {
-        m_pTreeItemBoundHelper = new YCQUiTreeItemBoundHelper(m_pTreeRoot, pTreeWidget);
-        m_pTreeItemBoundHelper->setBound(rpUiItem->rect());
-        connect(m_pTreeItemBoundHelper, SIGNAL(onChanged(const QRect&)), this, SLOT(onItemChangedBound(const QRect&)));
+        m_pTreeItemSizeHelper = new YCQUiTreeItemSizeHelper(m_pTreeRoot, pTreeWidget);
+        m_pTreeItemSizeHelper->setSize(rpUiItem->size());
+        connect(m_pTreeItemSizeHelper, SIGNAL(onChanged(const QSize&)), this, SLOT(onItemChangedSize(const QSize&)));
     }
 
     if (NULL == m_pTreeItemLayerWeightHelper)
