@@ -12,6 +12,15 @@ enum EColor
     EColor_Max,
 };
 
+enum EWidgetType
+{
+    eWidgetType_None,
+    eWidgetType_Scene,
+    eWidgetType_Panel,
+    eWidgetType_Image,
+    eWidgetType_Button,
+    eWidgetType_Max,
+};
 
 }
 

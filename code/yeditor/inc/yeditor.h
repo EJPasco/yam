@@ -3,7 +3,7 @@
 
 #include "yeditorcommon.h"
 
-#include "yeditor.main.ui.h"
+#include "yeditor_main_ui.h"
 #include "quitreeitem.h"
 #include "quitreereshelper.h"
 #include "quitreeuihelper.h"
@@ -74,11 +74,11 @@ private:
     void exportUiTreeToJson(QTreeWidgetItem* pTreeItem, json::Object& rjObjParent);
 
 private:
-    Ui_MainWindow            m_UI;
-    ymnamerelationship        m_mRelationship;
-    yam::ystring            m_sFileName;
-    YCQUiTreeResHelper*        m_pTreeResHelper;
-    YCQUiTreeUiHelper*        m_pTreeUiHelper;
+    Ui_MainWindow               m_Ui;
+    ymnamerelationship          m_mRelationship;
+    yam::ystring                m_sFileName;
+    YCQUiTreeResHelper*         m_pTreeResHelper;
+    YCQUiTreeUiHelper*          m_pTreeUiHelper;
 };
 
 #endif

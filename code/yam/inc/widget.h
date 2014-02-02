@@ -15,6 +15,8 @@ public:
     virtual ~YIWidget() { ; }
 
 public:
+    virtual GET_DECL(EWidgetType&, GetType) = 0;
+    virtual GET_DECL_CONST(EWidgetType&, GetType) = 0;
     virtual GET_DECL(YRect2D&, GetBound) = 0;
     virtual GET_DECL_CONST(YRect2D&, GetBound) = 0;
     virtual GET_DECL(ylayerweight&, GetLayerWeight) = 0;
@@ -35,6 +37,8 @@ public:
     virtual ~YTWidget() { ; }
 
 public:
+    virtual GET_FUNC(EWidgetType&, GetType, m_eType);
+    virtual GET_FUNC_CONST(EWidgetType&, GetType, m_eType);
     virtual GET_FUNC(YRect2D&, GetBound, m_stBound);
     virtual GET_FUNC_CONST(YRect2D&, GetBound, m_stBound);
     virtual GET_FUNC(ylayerweight&, GetLayerWeight, m_iLayerWeight);
@@ -43,9 +47,10 @@ public:
     virtual GET_FUNC_CONST(YCProperty&, GetExternalProperty, m_oExternalProperty);
 
 protected:
-    YRect2D                m_stBound;
-    ylayerweight        m_iLayerWeight;
-    YCProperty            m_oExternalProperty;
+    EWidgetType             m_eType;
+    YRect2D                 m_stBound;
+    ylayerweight            m_iLayerWeight;
+    YCProperty              m_oExternalProperty;
 };
 
 class YCWidget : public YTWidget<YIWidget, YCWidget>

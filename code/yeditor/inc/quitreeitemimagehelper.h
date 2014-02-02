@@ -13,10 +13,10 @@ public:
     virtual ~YCQUiTreeItemImageHelper();
 
 Q_SIGNALS:
-    void onChangedSource(const QString& rsImageSource);
+    void onChanged(const QString& rsImageSource);
 
 public Q_SLOTS:
-    void onItemChangedSource();
+    void onItemChangedSource(const QString& rsImageSource);
 
 public:
     void setImageSource(const QString& rsValue);

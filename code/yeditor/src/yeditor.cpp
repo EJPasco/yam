@@ -3,6 +3,7 @@
 #include "yexport.h"
 #include "yrectpacker.h"
 #include "quitreeitem.h"
+#include "qdlgcreatewidget.h"
 
 #if defined(MSVC)
 #include <crtdbg.h>
@@ -44,22 +45,22 @@ YEditor::YEditor(QWidget* pParent /* = NULL */)
 {
     qsrand(QTime::currentTime().msec());
 
-    m_UI.setupUi(this);
+    m_Ui.setupUi(this);
 
     setWindowTitle(YEDITOR_TITLE);
 
-    connect(m_UI.resDock, SIGNAL(visibilityChanged(bool)), this, SLOT(onResDockVisibilityChanged(bool)));
-    connect(m_UI.uiDock, SIGNAL(visibilityChanged(bool)), this, SLOT(onUiDockVisibilityChanged(bool)));
+    connect(m_Ui.resDock, SIGNAL(visibilityChanged(bool)), this, SLOT(onResDockVisibilityChanged(bool)));
+    connect(m_Ui.uiDock, SIGNAL(visibilityChanged(bool)), this, SLOT(onUiDockVisibilityChanged(bool)));
 
     {
-        QTreeWidgetItem* pHeaderItem = m_UI.resTree->headerItem();
+        QTreeWidgetItem* pHeaderItem = m_Ui.resTree->headerItem();
         if (NULL != pHeaderItem)
         {
             pHeaderItem->setText(0, tr("Tree"));
         }
     }
     {
-        QTreeWidgetItem* pHeaderItem = m_UI.resPropertyTreeWidget->headerItem();
+        QTreeWidgetItem* pHeaderItem = m_Ui.resPropertyTreeWidget->headerItem();
         if (NULL != pHeaderItem)
         {
             pHeaderItem->setText(0, tr("Key"));
@@ -67,14 +68,14 @@ YEditor::YEditor(QWidget* pParent /* = NULL */)
         }
     }
     {
-        QTreeWidgetItem* pHeaderItem = m_UI.uiTree->headerItem();
+        QTreeWidgetItem* pHeaderItem = m_Ui.uiTree->headerItem();
         if (NULL != pHeaderItem)
         {
             pHeaderItem->setText(0, tr("Tree"));
         }
     }
     {
-        QTreeWidgetItem* pHeaderItem = m_UI.uiPropertyTreeWidget->headerItem();
+        QTreeWidgetItem* pHeaderItem = m_Ui.uiPropertyTreeWidget->headerItem();
         if (NULL != pHeaderItem)
         {
             pHeaderItem->setText(0, tr("Key"));
@@ -82,7 +83,7 @@ YEditor::YEditor(QWidget* pParent /* = NULL */)
         }
     }
 
-    m_UI.uiArea->setGrabable(false);
+    m_Ui.uiArea->setGrabable(false);
 
     parseArgument(QApplication::arguments());
 }
@@ -126,10 +127,10 @@ void YEditor::onClickedExport()
 {
     json::Object jObj;
 
-    int iTopItemCount = m_UI.uiTree->topLevelItemCount();
+    int iTopItemCount = m_Ui.uiTree->topLevelItemCount();
     for (int i = 0; i < iTopItemCount; ++i)
     {
-        QTreeWidgetItem* pTreeItem = m_UI.uiTree->topLevelItem(i);
+        QTreeWidgetItem* pTreeItem = m_Ui.uiTree->topLevelItem(i);
         exportUiTreeToJson(pTreeItem, jObj);
     }
 
@@ -193,62 +194,62 @@ void YEditor::onClickedSync()
 
 void YEditor::onClickedMenuWindowDockRes()
 {
-    if (m_UI.resDock->isVisible())
+    if (m_Ui.resDock->isVisible())
     {
-        m_UI.resDock->close();
+        m_Ui.resDock->close();
     }
     else
     {
-        m_UI.resDock->show();
+        m_Ui.resDock->show();
     }
 }
 
 void YEditor::onClickedMenuWindowDockUi()
 {
-    if (m_UI.uiDock->isVisible())
+    if (m_Ui.uiDock->isVisible())
     {
-        m_UI.uiDock->close();
+        m_Ui.uiDock->close();
     }
     else
     {
-        m_UI.uiDock->show();
+        m_Ui.uiDock->show();
     }
 }
 
 void YEditor::onClickedMenuWindowAreaRes()
 {
-    if (m_UI.resAreaGroupBox->isVisible())
+    if (m_Ui.resAreaGroupBox->isVisible())
     {
-        m_UI.resAreaGroupBox->close();
+        m_Ui.resAreaGroupBox->close();
     }
     else
     {
-        m_UI.resAreaGroupBox->show();
+        m_Ui.resAreaGroupBox->show();
     }
 }
 
 void YEditor::onClickedMenuWindowAreaUi()
 {
-    if (m_UI.uiAreaGroupBox->isVisible())
+    if (m_Ui.uiAreaGroupBox->isVisible())
     {
-        m_UI.uiAreaGroupBox->close();
+        m_Ui.uiAreaGroupBox->close();
     }
     else
     {
-        m_UI.uiAreaGroupBox->show();
+        m_Ui.uiAreaGroupBox->show();
     }
 }
 
 void YEditor::onResTreeItemSelected(QTreeWidgetItem* pTreeItem, int iColumn)
 {
     YCQUiItem* pUiItem = getUiItem(pTreeItem);
-    m_UI.resArea->setSelected(pUiItem);
+    m_Ui.resArea->setSelected(pUiItem);
     refreshResProperty(pUiItem);
 }
 
 void YEditor::onResTreeContextMenu(QPoint oPos)
 {
-    QModelIndex index = m_UI.resTree->currentIndex();
+    QModelIndex index = m_Ui.resTree->currentIndex();
     if (!index.isValid())
     {
         return;
@@ -262,19 +263,19 @@ void YEditor::onResTreeContextMenu(QPoint oPos)
 void YEditor::onUiTreeItemSelected(QTreeWidgetItem* pTreeItem, int iColumn)
 {
     YCQUiItem* pUiItem = getUiItem(pTreeItem);
-    m_UI.uiArea->setSelected(pUiItem);
+    m_Ui.uiArea->setSelected(pUiItem);
     refreshUiProperty(pUiItem);
 }
 
 void YEditor::onUiTreeContextMenu(QPoint oPos)
 {
-    QTreeWidgetItem* pCurrentItem = m_UI.uiTree->currentItem();
+    QTreeWidgetItem* pCurrentItem = m_Ui.uiTree->currentItem();
 
     QMenu menu;
     QMenu* pMenuCreate = menu.addMenu(tr("Create"));
     {
         QAction* pActionCreate = pMenuCreate->addAction(tr("Scene"), this, SLOT(onClickedUiMenuItem_CreateScene()));
-        pActionCreate->setEnabled(0 == m_UI.uiTree->topLevelItemCount());
+        pActionCreate->setEnabled(0 == m_Ui.uiTree->topLevelItemCount());
     }
 
     {
@@ -299,7 +300,7 @@ void YEditor::onPressedResItem(YCQUiItem* pUiItem)
     {
         return;
     }
-    m_UI.resTree->setCurrentItem(pTreeItem);
+    m_Ui.resTree->setCurrentItem(pTreeItem);
 }
 
 void YEditor::onPressedUiItem(YCQUiItem* pUiItem)
@@ -309,63 +310,64 @@ void YEditor::onPressedUiItem(YCQUiItem* pUiItem)
     {
         return;
     }
-    m_UI.uiTree->setCurrentItem(pTreeItem);
+    m_Ui.uiTree->setCurrentItem(pTreeItem);
 }
 
 void YEditor::onResDockVisibilityChanged(bool bVisible)
 {
-    m_UI.actionDockRes->setChecked(bVisible);
-    m_UI.actionBarDockRes->setChecked(bVisible);
+    m_Ui.actionDockRes->setChecked(bVisible);
+    m_Ui.actionBarDockRes->setChecked(bVisible);
 }
 
 void YEditor::onResAreaVisibilityChanged(bool bVisible)
 {
-    m_UI.actionAreaRes->setChecked(bVisible);
-    m_UI.actionBarAreaRes->setChecked(bVisible);
+    m_Ui.actionAreaRes->setChecked(bVisible);
+    m_Ui.actionBarAreaRes->setChecked(bVisible);
 }
 
 void YEditor::onClickedResMenuItem_CopyImageSource()
 {
-    YCQUiItem* pTreeItem = getUiItem(m_UI.resTree->currentItem());
+    YCQUiItem* pTreeItem = getUiItem(m_Ui.resTree->currentItem());
     if (NULL == pTreeItem)
     {
         return;
     }
     QApplication::clipboard()->setText(pTreeItem->getImageSource());
     QString msg("copy image source from res tree item - "); msg.append(pTreeItem->getImageSource());
-    m_UI.statusbar->showMessage(msg, 5000);
+    m_Ui.statusbar->showMessage(msg, 5000);
 }
 
 void YEditor::onClickedResMenuItem_Tiled()
 {
-    m_UI.resArea->toTiled();
+    m_Ui.resArea->toTiled();
 }
 
 void YEditor::onUiDockVisibilityChanged(bool bVisible)
 {
-    m_UI.actionDockUi->setChecked(bVisible);
-    m_UI.actionBarDockUi->setChecked(bVisible);
+    m_Ui.actionDockUi->setChecked(bVisible);
+    m_Ui.actionBarDockUi->setChecked(bVisible);
 }
 
 void YEditor::onUiAreaVisibilityChanged(bool bVisible)
 {
-    m_UI.actionAreaUi->setChecked(bVisible);
-    m_UI.actionBarAreaUi->setChecked(bVisible);
+    m_Ui.actionAreaUi->setChecked(bVisible);
+    m_Ui.actionBarAreaUi->setChecked(bVisible);
 }
 
 void YEditor::onClickedUiMenuItem_CreateScene()
 {
     yam::base::YIWidget* pWidget = new yam::base::YCWidget;
     pWidget->GetId() = "scene";
+    pWidget->GetType() = yam::eWidgetType_Scene;
     pWidget->GetBound().Size.X = 300;
     pWidget->GetBound().Size.Y = 300;
 
-    YCQUiItem* pUiItem = m_UI.uiArea->addChildItem(pWidget);
+    YCQUiItem* pUiItem = m_Ui.uiArea->addChildItem(pWidget);
     connect(pUiItem, SIGNAL(onPressed(YCQUiItem*)), this, SLOT(onPressedUiItem(YCQUiItem*)));
 
     YCQUiTreeItem* pTreeItem = new YCQUiTreeItem;
     pTreeItem->setText(0, pWidget->GetId().c_str());
-    m_UI.uiTree->insertTopLevelItem(0, pTreeItem);
+    m_Ui.uiTree->insertTopLevelItem(0, pTreeItem);
 
     SRelationship stRelationship;
     stRelationship._pUiItem = pUiItem;
@@ -378,13 +380,31 @@ void YEditor::onClickedUiMenuItem_CreateScene()
 
 void YEditor::onClickedUiMenuItem_CreatePanel()
 {
-    QTreeWidgetItem* pItem = m_UI.uiTree->currentItem();
+    QTreeWidgetItem* pItem = m_Ui.uiTree->currentItem();
     if (NULL == pItem)
     {
         return;
     }
-    //pItem->addChild();
-    //
+
+    yam::base::YIWidget* pWidget = new yam::base::YCWidget;
+    pWidget->GetId() = "panel";
+    pWidget->GetType() = yam::eWidgetType_Panel;
+    pWidget->GetBound().Size.X = 300;
+    pWidget->GetBound().Size.Y = 300;
+
+    YCQUiItem* pUiItem = m_Ui.uiArea->addChildItem(pWidget);
+    connect(pUiItem, SIGNAL(onPressed(YCQUiItem*)), this, SLOT(onPressedUiItem(YCQUiItem*)));
+
+    YCQUiTreeItem* pTreeItem = new YCQUiTreeItem;
+    pTreeItem->setText(0, pWidget->GetId().c_str());
+    pItem->addChild(pTreeItem);
+
+    SRelationship stRelationship;
+    stRelationship._pUiItem = pUiItem;
+    stRelationship._pTreeItem = pTreeItem;
+    m_mRelationship.insert(std::make_pair(getFullName(pWidget), stRelationship));
+
+    YEDITOR_DELETE(pWidget);
 }
 
 void YEditor::onClickedUiMenuItem_CreateImage()
@@ -410,12 +430,12 @@ void YEditor::reloadFile(const yam::ystring& rsFileName)
     }
 
     // clear
-    m_UI.resArea->clearChildrenItem();
-    m_UI.resTree->clear();
-    m_UI.resPropertyTreeWidget->clear();
-    m_UI.uiArea->clearChildrenItem();
-    m_UI.uiTree->clear();
-    m_UI.uiPropertyTreeWidget->clear();
+    m_Ui.resArea->clearChildrenItem();
+    m_Ui.resTree->clear();
+    m_Ui.resPropertyTreeWidget->clear();
+    m_Ui.uiArea->clearChildrenItem();
+    m_Ui.uiTree->clear();
+    m_Ui.uiPropertyTreeWidget->clear();
     m_mRelationship.clear();
     gs_FileTreeData.Clear();
 
@@ -430,7 +450,7 @@ void YEditor::reloadFile(const yam::ystring& rsFileName)
             reloadRes(pRes, NULL, NULL);
         }
     }
-    m_UI.resTree->expandAll();
+    m_Ui.resTree->expandAll();
 
     {
         yam::base::YITree* pTreeUi = gs_FileTreeData.FindChild(YFILE_KEY_UI);
@@ -440,7 +460,7 @@ void YEditor::reloadFile(const yam::ystring& rsFileName)
             reloadUi(pUi, NULL, NULL);
         }
     }
-    m_UI.uiTree->expandAll();
+    m_Ui.uiTree->expandAll();
 }
 
 void YEditor::reloadRes(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent)
@@ -450,7 +470,7 @@ void YEditor::reloadRes(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiPare
         return;
     }
 
-    YCQUiItem* pUiItem = m_UI.resArea->addChildItem(rpFormat);
+    YCQUiItem* pUiItem = m_Ui.resArea->addChildItem(rpFormat);
     if (NULL != pUiItem)
     {
         pUiItem->setImageSource(getFullName(rpFormat));
@@ -462,7 +482,7 @@ void YEditor::reloadRes(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiPare
     pTreeItem->setDataProperty("imagesource", getFullName(rpFormat));
     if (NULL == pTreeParent)
     {
-        m_UI.resTree->insertTopLevelItem(0, pTreeItem);
+        m_Ui.resTree->insertTopLevelItem(0, pTreeItem);
     }
     else
     {
@@ -495,7 +515,7 @@ void YEditor::reloadUi(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParen
     {
         return;
     }
-    YCQUiItem* pUiItem = m_UI.uiArea->addChildItem(rpWidget);
+    YCQUiItem* pUiItem = m_Ui.uiArea->addChildItem(rpWidget);
     if (NULL != pUiItem)
     {
         connect(pUiItem, SIGNAL(onPressed(YCQUiItem*)), this, SLOT(onPressedUiItem(YCQUiItem*)));
@@ -505,7 +525,7 @@ void YEditor::reloadUi(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParen
     pTreeItem->setText(0, rpWidget->GetId().c_str());
     if (NULL == pTreeParent)
     {
-        m_UI.uiTree->insertTopLevelItem(0, pTreeItem);
+        m_Ui.uiTree->insertTopLevelItem(0, pTreeItem);
     }
     else
     {
@@ -595,7 +615,7 @@ YCQUiTreeItem* YEditor::getTreeItem(YCQUiItem* pUiItem) const
 
 void YEditor::refreshResProperty(YCQUiItem*& rpResItem)
 {
-    m_UI.resPropertyTreeWidget->clear();
+    m_Ui.resPropertyTreeWidget->clear();
     if (YNULL != rpResItem)
     {
         if (NULL != m_pTreeResHelper)
@@ -603,16 +623,16 @@ void YEditor::refreshResProperty(YCQUiItem*& rpResItem)
             delete m_pTreeResHelper;
             m_pTreeResHelper = NULL;
         }
-        m_pTreeResHelper = new YCQUiTreeResHelper(m_UI.resPropertyTreeWidget);
+        m_pTreeResHelper = new YCQUiTreeResHelper(m_Ui.resPropertyTreeWidget);
         m_pTreeResHelper->setUiItem(rpResItem);
 
-        m_UI.resPropertyTreeWidget->expandAll();
+        m_Ui.resPropertyTreeWidget->expandAll();
     }
 }
 
 void YEditor::refreshUiProperty(YCQUiItem*& rpUiItem)
 {
-    m_UI.uiPropertyTreeWidget->clear();
+    m_Ui.uiPropertyTreeWidget->clear();
     if (NULL != rpUiItem)
     {
         if (NULL != m_pTreeUiHelper)
@@ -620,10 +640,10 @@ void YEditor::refreshUiProperty(YCQUiItem*& rpUiItem)
             delete m_pTreeUiHelper;
             m_pTreeUiHelper = NULL;
         }
-        m_pTreeUiHelper = new YCQUiTreeUiHelper(m_UI.uiPropertyTreeWidget);
+        m_pTreeUiHelper = new YCQUiTreeUiHelper(m_Ui.uiPropertyTreeWidget);
         m_pTreeUiHelper->setUiItem(rpUiItem);
 
-        m_UI.uiPropertyTreeWidget->expandAll();
+        m_Ui.uiPropertyTreeWidget->expandAll();
     }
 }
 

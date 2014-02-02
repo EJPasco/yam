@@ -17,7 +17,7 @@ YCQUiTreeItemImageHelper::YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTree
     {
         m_pEditor = new QLineEdit;
         m_pEditor->setText(m_sImageSource);
-        connect(m_pEditor, SIGNAL(editingFinished()), this, SLOT(onItemChangedSource()));
+        connect(m_pEditor, SIGNAL(textChanged(const QString&)), this, SLOT(onItemChangedSource(const QString&)));
         QTreeWidgetItem* pTreeImageSrc = new QTreeWidgetItem;
         pTreeImageSrc->setText(0, tr("Source"));
         m_pTreeItemImage->addChild(pTreeImageSrc);
@@ -31,10 +31,10 @@ YCQUiTreeItemImageHelper::~YCQUiTreeItemImageHelper()
     //
 }
 
-void YCQUiTreeItemImageHelper::onItemChangedSource()
+void YCQUiTreeItemImageHelper::onItemChangedSource(const QString& rsImageSource)
 {
-    m_sImageSource = m_pEditor->text();
-    onChangedSource(m_sImageSource);
+    m_sImageSource = rsImageSource;
+    onChanged(rsImageSource);
 }
 
 void YCQUiTreeItemImageHelper::setImageSource(const QString& rsValue)

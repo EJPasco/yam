@@ -4,6 +4,7 @@
 #include "quitreehelper.h"
 
 class YCQUiTreeItemSizeHelper;
+class YCQUiTreeItemBoundHelper;
 class YCQUiTreeItemLayerWeightHelper;
 class YCQUiTreeItemImageHelper;
 
@@ -18,7 +19,8 @@ public:
     virtual ~YCQUiTreeUiHelper();
 
 public Q_SLOTS:
-	void onItemChangedSize(const QSize& roSize);
+    void onItemChangedSize(const QSize& roSize);
+    void onItemChangedBound(const QRect& roBound);
     void onItemChangedLayerWeight(const int& riLayerWeight);
     void onItemChangedImageSource(const QString& rsImageSource);
 
@@ -27,6 +29,7 @@ public:
 
 private:
     YCQUiTreeItemSizeHelper*                m_pTreeItemSizeHelper;
+    YCQUiTreeItemBoundHelper*               m_pTreeItemBoundHelper;
     YCQUiTreeItemLayerWeightHelper*         m_pTreeItemLayerWeightHelper;
     YCQUiTreeItemImageHelper*               m_pTreeItemImageHelper;
 };

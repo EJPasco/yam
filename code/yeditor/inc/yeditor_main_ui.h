@@ -6,8 +6,8 @@
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef YEDITOR_H
-#define YEDITOR_H
+#ifndef YEDITOR_MAIN_UI_H
+#define YEDITOR_MAIN_UI_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -426,4 +426,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // YEDITOR_H
+#endif // YEDITOR_MAIN_UI_H

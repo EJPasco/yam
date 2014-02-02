@@ -16,6 +16,7 @@ YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
     , m_bGrabable(true)
     , m_iLayerWeight(0)
     , m_sImageSource("")
+    , m_eType(yam::eWidgetType_None)
 {
     QSizePolicy policy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     policy.setHeightForWidth(true);
@@ -154,6 +155,9 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
     {
         return;
     }
+
+    m_eType = rpWidget->GetType();
+
     move(rpWidget->GetBound().Pos.X, rpWidget->GetBound().Pos.Y);
     resize(rpWidget->GetBound().Size.X, rpWidget->GetBound().Size.Y);
 
@@ -170,13 +174,13 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
     if ((sizeof(yam::ycolor) * rpWidget->GetBound().Size.X * rpWidget->GetBound().Size.Y) == oBufferImage.GetSize())
     {
         setImage(rpWidget->GetBound(), (const yam::ycolorptr)oBufferImage.GetData());
+        setAlpah(1.0f);
     }
     else
     {
-        setImage(rpWidget->GetBound(), YNULL);
+        setColor(qRgba(qrand(), qrand(), qrand(), qrand()));
+        setAlpah(0.2f);
     }
-    setColor(qRgba(qrand(), qrand(), qrand(), qrand()));
-    setAlpah(0.2f);
 
     repaint();
 }
@@ -224,9 +228,10 @@ void YCQUiItem::setImage(const yam::YRect2D& rstRect, const yam::ycolorptr& rpCo
     repaint();
 }
 
-void YCQUiItem::setLayerWeight(const int& riLayerWeight)
+YCQUiItem* YCQUiItem::setLayerWeight(const int& riLayerWeight)
 {
     m_iLayerWeight = riLayerWeight;
+    return this;
 }
 
 int YCQUiItem::getLayerWeight() const
@@ -234,14 +239,20 @@ int YCQUiItem::getLayerWeight() const
     return m_iLayerWeight;
 }
 
-void YCQUiItem::setImageSource(const QString& rsImageSource)
+YCQUiItem* YCQUiItem::setImageSource(const QString& rsImageSource)
 {
     m_sImageSource = rsImageSource;
+    return this;
 }
 
 QString YCQUiItem::getImageSource() const
 {
     return m_sImageSource;
+}
+
+yam::EWidgetType YCQUiItem::getType() const
+{
+    return m_eType;
 }
 
 QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const

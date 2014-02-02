@@ -52,6 +52,12 @@ void YCWidget::operator>>(YCProperty& rProperty) const
     rProperty.Clear();
 
     {
+        // widget type
+        YCProperty* pProperty = rProperty.NewNext<YCProperty>();
+        pProperty->GetId() = "type";
+        pProperty->FromInt32(GetType());
+    }
+    {
         // bound
         YCProperty* pProperty = rProperty.NewNext<YCProperty>();
         pProperty->GetId() = "bound";
@@ -67,6 +73,19 @@ void YCWidget::operator>>(YCProperty& rProperty) const
 
 void YCWidget::operator<<(YCProperty& rProperty)
 {
+    {
+        // widget type
+        YITree* pProperty = rProperty.FindNext("type");
+        if (YNULL != pProperty && YOBJECT_GETCLASSNAME(YCProperty) == pProperty->GetClassName())
+        {
+            yint32 iType = eWidgetType_None;
+            ((YCProperty*)pProperty)->ToInt32(iType);
+            if (eWidgetType_None < iType && eWidgetType_Max > iType)
+            {
+                GetType() = (EWidgetType)iType;
+            }
+        }
+    }
     {
         // bound
         YITree* pProperty = rProperty.FindNext("bound");

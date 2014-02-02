@@ -1,9 +1,8 @@
 #ifndef Y_QUIITEM_H
 #define Y_QUIITEM_H
 
-#include "yam.h"
+#include "yeditorcommon.h"
 
-#include <QtCore/QString>
 #include <QtWidgets/QWidget>
 
 class YCQUiArea;
@@ -38,25 +37,27 @@ public:
     void setImage(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData);
 
 public:
-    void setLayerWeight(const int& riLayerWeight);
+    YCQUiItem* setLayerWeight(const int& riLayerWeight);
     int getLayerWeight() const;
-    void setImageSource(const QString& rsImageSource);
+    YCQUiItem* setImageSource(const QString& rsImageSource);
     QString getImageSource() const;
+    yam::EWidgetType getType() const;
 
 public:
     QRgb convertFromYColor(const yam::ycolor& riColor) const;
 
 private:
-    YCQUiArea*        m_pUiArea;
-    QImage*            m_pImage;
-    bool            m_bPressed;
-    QPointF            m_oPosMousePressStart;
-    bool            m_bGrabable;
-    bool            m_bGrabed;
-    bool            m_bSelected;
-    qreal            m_fAlpha;
-    int                m_iLayerWeight;
-    QString            m_sImageSource;
+    YCQUiArea*          m_pUiArea;
+    QImage*             m_pImage;
+    bool                m_bPressed;
+    QPointF             m_oPosMousePressStart;
+    bool                m_bGrabable;
+    bool                m_bGrabed;
+    bool                m_bSelected;
+    qreal               m_fAlpha;
+    int                 m_iLayerWeight;
+    QString             m_sImageSource;
+    yam::EWidgetType    m_eType;
 };
 
 
