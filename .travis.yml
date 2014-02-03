@@ -17,7 +17,7 @@ before_script:
   - cppcheck code/ -i code/t3rd --quiet --error-exitcode=1
   - mkdir build
   - cd build/
-  - cmake -DQT_SDK_PATH=/usr ../cmake/
+  - cmake -DOUTPUT_PATH=out -DQT_SDK_PATH=/usr ../cmake/
   - cd ../
 
 script:

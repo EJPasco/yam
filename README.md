@@ -1,6 +1,8 @@
 # [Yam][] [![Build Status](https://travis-ci.org/code4game/yam.png)](https://travis-ci.org/code4game/yam)
 
-A User Interface System for Game. It belong to [Code4Game][].
+A User Interface System for Game. It belongs to [Code4Game][].
+
+[![Visit our IRC channel](https://kiwiirc.com/buttons/chat.au.freenode.net/c4g.png)](https://kiwiirc.com/client/chat.au.freenode.net/#c4g)
 
 
 ## Overview
