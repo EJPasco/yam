@@ -33,7 +33,7 @@ template<typename TNBase, typename TNReal>
 class YTWidget : public YTTree<TNBase, TNReal>
 {
 public:
-    YTWidget() : m_iLayerWeight(0) { ; }
+    YTWidget() : m_eType(eWidgetType_None), m_iLayerWeight(0) { ; }
     virtual ~YTWidget() { ; }
 
 public:

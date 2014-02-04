@@ -18,7 +18,7 @@ public:
 
 public:
     virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData) = 0;
-    virtual void Refine() = 0;
+//     virtual void Refine() = 0;
 };
 
 template<typename TNBase, typename TNReal>
@@ -52,12 +52,12 @@ public:
 
 public:
     virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData);
-    virtual void Refine();
+//    virtual void Refine();
 
 private:
     void SetColorData(const yint32& riSize, const ycolorptr& rpColorData);
-    YRect2D CalculateSmallestBound() const;
-    void Crop(YRect2D rstBound);
+//    YRect2D CalculateSmallestBound() const;
+//    void Crop(YRect2D rstBound);
 };
 
 #define YGETCOLORBIT(_Color, _Offset) (*((ycolorbitptr)&_Color + _Offset / (sizeof(ycolorbit) * YBITCOUNT_INT8)))
