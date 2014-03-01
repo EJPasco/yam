@@ -610,22 +610,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionBarOpen</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>onClickedExport()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>426</x>
-     <y>265</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionExport</sender>
    <signal>triggered()</signal>
    <receiver>MainWindow</receiver>

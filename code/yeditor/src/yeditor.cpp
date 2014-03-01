@@ -4,6 +4,7 @@
 #include "yrectpacker.h"
 #include "quitreeitem.h"
 #include "qdlgcreatewidget.h"
+#include "qdlgexport.h"
 
 #if defined(MSVC)
 #include <crtdbg.h>
@@ -107,7 +108,13 @@ void YEditor::onClickedOpen()
 {
     m_sFileName = "";
     {
-        QString qsFileName = QFileDialog::getOpenFileName(this, tr("Open a yui file"), "", tr("YUI (*.yui)"));
+        QString sSelectedFilter = "";
+        QString qsFileName = QFileDialog::getOpenFileName(this
+            , tr("Open a yui file"), ""
+            , tr("YUI (*.yui)"), &sSelectedFilter
+            , QFileDialog::DontUseCustomDirectoryIcons
+            | QFileDialog::DontUseSheet
+            | QFileDialog::ReadOnly);
         m_sFileName.append(qsFileName.toLocal8Bit());
     }
     if (0 >= m_sFileName.size())
@@ -125,20 +132,96 @@ void YEditor::onClickedSave()
 
 void YEditor::onClickedExport()
 {
-    json::Object jObj;
-
-    int iTopItemCount = m_Ui.uiTree->topLevelItemCount();
-    for (int i = 0; i < iTopItemCount; ++i)
+    SConfigExport stConfig;
+    if (!YCQDlgExport::showDialog(stConfig, this))
     {
-        QTreeWidgetItem* pTreeItem = m_Ui.uiTree->topLevelItem(i);
-        exportUiTreeToJson(pTreeItem, jObj);
+        return;
     }
 
-    json::Array jAry;
-    jAry.push_back("aa");
-    jObj["aa"] = jAry;
+    json::Object jObj;
+    {
+        json::Object jObjLogic;
+        {
+            jObjLogic["name"] = stConfig._sLogicName.toLocal8Bit().data();
+        }
+        jObj["logic"] = jObjLogic;
+    }
+    {
+        json::Array jObjAssetGroup;
+        {
+            json::Object jObjAsset;
+            QFileInfo fileInfo(stConfig._sPngFileName);
+            jObjAsset["name"] = fileInfo.baseName().toLocal8Bit().data();
+            jObjAsset["type"] = "image";
+            jObjAsset["file"] = fileInfo.fileName().toLocal8Bit().data();
+            jObjAssetGroup.push_back(jObjAsset);
+        }
+        jObj["assetgroup"] = jObjAssetGroup;
+    }
+    {
+        json::Object jObjRoot;
+        {
+            json::Object jObjLayoutStrategy;
+            jObjLayoutStrategy["type"] = "layoutgridstrategy";
+            {
+                json::Object jObjLayoutStrategyValue;
+                {
+                    json::Array jArrRow;
+                    jArrRow.push_back(100);
+                    jArrRow.push_back(0);
+                    jArrRow.push_back(0);
+                    jObjLayoutStrategyValue["row"] = jArrRow;
+                    json::Array jArrLine;
+                    jArrLine.push_back(100);
+                    jArrLine.push_back(0);
+                    jArrLine.push_back(0);
+                    jObjLayoutStrategyValue["line"] = jArrLine;
+                }
+                jObjLayoutStrategy["value"] = jObjLayoutStrategyValue;
+            }
+            jObjRoot["layoutstrategy"] = jObjLayoutStrategy;
+        }
+        jObjRoot["layer"] = 0;
+        {
+            json::Object jObjRootDst;
+            {
+                json::Object jObjRootDstPos;
+                jObjRootDstPos["x"] = 0;
+                jObjRootDstPos["y"] = 0;
+                jObjRootDst["pos"] = jObjRootDstPos;
+            }
+            {
+                json::Object jObjRootDstSizef;
+                jObjRootDstSizef["x"] = 1.0f;
+                jObjRootDstSizef["y"] = 1.0f;
+                jObjRootDst["sizef"] = jObjRootDstSizef;
+            }
+            jObjRoot["dst"] = jObjRootDst;
+        }
+        {
+            json::Array jObjWidgetGroup;
+            {
+                json::Object jObjWidget;
+                int iTopItemCount = m_Ui.uiTree->topLevelItemCount();
+                for (int i = 0; i < iTopItemCount; ++i)
+                {
+                    QTreeWidgetItem* pTreeItem = m_Ui.uiTree->topLevelItem(i);
+                    exportUiTreeToJson(pTreeItem, jObjWidget);
+                }
+                jObjWidgetGroup.push_back(jObjWidget);
+            }
+            jObjRoot["widgetgroup"] = jObjWidgetGroup;
+        }
+        jObj["root"] = jObjRoot;
+    }
 
     std::string sRes = json::Serialize(jObj);
+    sRes = "";
+
+    /*QFile file(stConfig._sJsonFileName);
+    file.open(QIODevice::WriteOnly);
+    file.write(sRes.c_str());
+    file.close();*/
 
     /*yam::yvvec2d vSize;
     yam::YVec2D stSize;

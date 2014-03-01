@@ -355,7 +355,6 @@ public:
         QObject::connect(actionBarSave, SIGNAL(triggered()), MainWindow, SLOT(onClickedSave()));
         QObject::connect(actionBarSync, SIGNAL(triggered()), MainWindow, SLOT(onClickedSync()));
         QObject::connect(resTree, SIGNAL(itemClicked(QTreeWidgetItem*,int)), MainWindow, SLOT(onResTreeItemSelected(QTreeWidgetItem*,int)));
-        QObject::connect(actionBarOpen, SIGNAL(triggered()), MainWindow, SLOT(onClickedExport()));
         QObject::connect(actionExport, SIGNAL(triggered()), MainWindow, SLOT(onClickedExport()));
         QObject::connect(resTree, SIGNAL(customContextMenuRequested(QPoint)), MainWindow, SLOT(onResTreeContextMenu(QPoint)));
         QObject::connect(uiTree, SIGNAL(customContextMenuRequested(QPoint)), MainWindow, SLOT(onUiTreeContextMenu(QPoint)));

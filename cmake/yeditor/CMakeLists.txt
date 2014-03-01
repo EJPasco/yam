@@ -60,6 +60,8 @@ SET (CODE_FILE_LIST_EDITOR
 SET (CODE_FILE_LIST_QT_WIDGET
     ${CODE_PATH_YEDITOR}/inc/qdlgcreatewidget.h
     ${CODE_PATH_YEDITOR}/src/qdlgcreatewidget.cpp
+    ${CODE_PATH_YEDITOR}/inc/qdlgexport.h
+    ${CODE_PATH_YEDITOR}/src/qdlgexport.cpp
     ${CODE_PATH_YEDITOR}/inc/quiarea.h
     ${CODE_PATH_YEDITOR}/src/quiarea.cpp
     ${CODE_PATH_YEDITOR}/inc/quiitem.h
@@ -88,13 +90,16 @@ SET (CODE_FILE_LIST_QT_HELPER
 SET (CODE_FILE_LIST_RES
     ${CODE_PATH_YEDITOR}/res/main.ui
     ${CODE_PATH_YEDITOR}/res/createwidget.ui
+    ${CODE_PATH_YEDITOR}/res/export.ui
     )
 
 SET (CODE_FILE_LIST_QT_GENERATE
     ${CODE_PATH_YEDITOR}/inc/yeditor_main_ui.h
     ${CODE_PATH_YEDITOR}/inc/yeditor_createwidget_ui.h
+    ${CODE_PATH_YEDITOR}/inc/yeditor_export_ui.h
     ${CODE_PATH_YEDITOR}/src/yeditor_moc.cpp
     ${CODE_PATH_YEDITOR}/src/qdlgcreatewidget_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/qdlgexport_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quiarea_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quiitem_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreehelper_moc.cpp
@@ -154,6 +159,15 @@ ADD_CUSTOM_COMMAND (OUTPUT qdlgcreatewidget_moc.cpp
 
 ADD_CUSTOM_TARGET (qdlgcreatewidget_moc_cpp
                   DEPENDS qdlgcreatewidget_moc.cpp)
+
+ADD_CUSTOM_COMMAND (OUTPUT qdlgexport_moc.cpp
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/qdlgexport.h -o ${CODE_PATH_YEDITOR}/src/qdlgexport_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
+                   COMMAND echo "ok"
+                   DEPENDS ${CODE_PATH_YEDITOR}/inc/qdlgexport.h
+                   )
+
+ADD_CUSTOM_TARGET (qdlgexport_moc_cpp
+                  DEPENDS qdlgexport_moc.cpp)
 
 ADD_CUSTOM_COMMAND (OUTPUT quiarea_moc.cpp
                    COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quiarea.h -o ${CODE_PATH_YEDITOR}/src/quiarea_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
@@ -263,8 +277,19 @@ ADD_CUSTOM_COMMAND (OUTPUT yeditor_createwidget_ui.h
 ADD_CUSTOM_TARGET (yeditor_createwidget_ui_h
                   DEPENDS yeditor_createwidget_ui.h)
 
+ADD_CUSTOM_COMMAND (OUTPUT yeditor_export_ui.h
+                   COMMAND ${QT_SDK_PATH}/bin/uic -o ${CODE_PATH_YEDITOR}/inc/yeditor_export_ui.h ${CODE_PATH_YEDITOR}/res/export.ui
+                   COMMAND echo "ok"
+                   DEPENDS ${CODE_PATH_YEDITOR}/res/export.ui
+                   )
+
+ADD_CUSTOM_TARGET (yeditor_export_ui_h
+                  DEPENDS yeditor_export_ui.h)
+
+
 ADD_DEPENDENCIES (yeditor ${DEPEND_PROJ_LIST}
                          qdlgcreatewidget_moc_cpp
+                         qdlgexport_moc_cpp
                          quiarea_moc_cpp
                          quiitem_moc_cpp
                          quitreehelper_moc_cpp
@@ -276,4 +301,5 @@ ADD_DEPENDENCIES (yeditor ${DEPEND_PROJ_LIST}
                          quitreeitemimagehelper_moc_cpp
                          yeditor_moc_cpp
                          yeditor_main_ui_h
-                         yeditor_createwidget_ui_h)
+                         yeditor_createwidget_ui_h
+                         yeditor_export_ui_h)
