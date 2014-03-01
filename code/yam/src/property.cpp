@@ -216,4 +216,18 @@ ybool YCProperty::ToBuffer(YCBuffer& roValue) const
     return YTRUE;
 }
 
+YCProperty* YCProperty::AddChild(const yam::ystring& rsId)
+{
+    // no same id objects
+    YITree* pProperty = Find(rsId);
+    if (YNULL != pProperty && YOBJECT_GETCLASSNAME(yam::base::YCProperty) == pProperty->GetClassName())
+    {
+        return (YCProperty*)pProperty;
+    }
+    YCProperty* pNew = new YCProperty();
+    pNew->GetId() = rsId;
+    super::AddChild((yam::base::YITree*)pNew);
+    return pNew;
+}
+
 }}

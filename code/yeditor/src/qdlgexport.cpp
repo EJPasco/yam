@@ -23,37 +23,32 @@ YCQDlgExport::~YCQDlgExport()
     //
 }
 
-void YCQDlgExport::onBrowserJson()
+void YCQDlgExport::onBrowserDirectory()
 {
-    QString sSelectedFilter = "";
-    m_Ui.leJsonFileName->setText(QFileDialog::getSaveFileName(this
-        , tr("Save a json file"), ""
-        , tr("json (*.json)"), &sSelectedFilter
-        , QFileDialog::DontUseCustomDirectoryIcons | QFileDialog::DontUseSheet));
-}
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::Directory);
+    dialog.setOption(QFileDialog::ShowDirsOnly);
 
-void YCQDlgExport::onBrowserPng()
-{
-    QString sSelectedFilter = "";
-    m_Ui.lePngFileName->setText(QFileDialog::getSaveFileName(this
-        , tr("Save a png file"), ""
-        , tr("json (*.png)"), &sSelectedFilter
-        , QFileDialog::DontUseCustomDirectoryIcons | QFileDialog::DontUseSheet));
+    if (dialog.exec() == 0)
+    {
+        return;
+    }
+    m_Ui.leDirectory->setText(dialog.directory().path());
 }
 
 bool YCQDlgExport::toConfig(SConfigExport& rstConfig) const
 {
+    rstConfig._sDirectory = m_Ui.leDirectory->text();
+    rstConfig._sFileName = m_Ui.leFileName->text();
     rstConfig._sLogicName = m_Ui.leLogicName->text();
-    rstConfig._sJsonFileName = m_Ui.leJsonFileName->text();
-    rstConfig._sPngFileName = m_Ui.lePngFileName->text();
     return toCheck(rstConfig);
 }
 
 bool YCQDlgExport::toCheck(const SConfigExport& rstConfig) const
 {
-    if (0 >= rstConfig._sLogicName.size()
-        || 0 >= rstConfig._sJsonFileName.size()
-        || 0 >= rstConfig._sPngFileName.size())
+    if (0 >= rstConfig._sDirectory.size()
+        || 0 >= rstConfig._sFileName.size()
+        || 0 >= rstConfig._sLogicName.size())
     {
         return false;
     }

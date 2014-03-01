@@ -29,6 +29,9 @@ public:
     virtual ybool ToRect2D(YRect2D& rstValue) const = 0;
     virtual ybool FromBuffer(const YCBuffer& roValue) = 0;
     virtual ybool ToBuffer(YCBuffer& roValue) const = 0;
+
+public:
+    virtual YIProperty* AddChild(const yam::ystring& rsId) = 0;
 };
 
 template<typename TNBase, typename TNReal>
@@ -70,6 +73,9 @@ public:
     virtual ybool ToRect2D(YRect2D& rstValue) const;
     virtual ybool FromBuffer(const YCBuffer& roValue);
     virtual ybool ToBuffer(YCBuffer& roValue) const;
+
+public:
+    virtual YCProperty* AddChild(const yam::ystring& rsId);
 };
 
 }}

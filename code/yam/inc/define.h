@@ -49,7 +49,7 @@
 // todo: try to use the static function to initialize the static variable for gcc in linux
 #define YOBJECT_DECL(_Class)                                        \
     public:                                                         \
-        static const ystring ClassName();
+    static const ystring ClassName();
 #define YOBJECT_IMPL(_Class)                                        \
     const ystring _Class::ClassName()                               \
     {                                                               \

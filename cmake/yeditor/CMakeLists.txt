@@ -79,8 +79,12 @@ SET (CODE_FILE_LIST_QT_HELPER
     ${CODE_PATH_YEDITOR}/src/quitreeuihelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitemsizehelper.h
     ${CODE_PATH_YEDITOR}/src/quitreeitemsizehelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitemsizefhelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitemsizefhelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitemboundhelper.h
     ${CODE_PATH_YEDITOR}/src/quitreeitemboundhelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitemboundfhelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitemboundfhelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitemlayerweighthelper.h
     ${CODE_PATH_YEDITOR}/src/quitreeitemlayerweighthelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitemimagehelper.h
@@ -106,7 +110,9 @@ SET (CODE_FILE_LIST_QT_GENERATE
     ${CODE_PATH_YEDITOR}/src/quitreereshelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeuihelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemsizehelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitemsizefhelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemboundhelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitemboundfhelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemlayerweighthelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemimagehelper_moc.cpp
     )
@@ -116,6 +122,10 @@ SET (CODE_FILE_LIST_EXPORT
     ${CODE_PATH_YEDITOR}/src/yconverter.cpp
     ${CODE_PATH_YEDITOR}/inc/yexport.h
     ${CODE_PATH_YEDITOR}/src/yexport.cpp
+    ${CODE_PATH_YEDITOR}/inc/yexportyam.h
+    ${CODE_PATH_YEDITOR}/src/yexportyam.cpp
+    ${CODE_PATH_YEDITOR}/inc/yqt2yam.h
+    ${CODE_PATH_YEDITOR}/src/yqt2yam.cpp
     ${CODE_PATH_YEDITOR}/inc/yrectpacker.h
     ${CODE_PATH_YEDITOR}/src/yrectpacker.cpp
     )
@@ -223,6 +233,15 @@ ADD_CUSTOM_COMMAND (OUTPUT quitreeitemsizehelper_moc.cpp
 ADD_CUSTOM_TARGET (quitreeitemsizehelper_moc_cpp
                   DEPENDS quitreeitemsizehelper_moc.cpp)
 
+ADD_CUSTOM_COMMAND (OUTPUT quitreeitemsizefhelper_moc.cpp
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemsizefhelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemsizefhelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
+                   COMMAND echo "ok"
+                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemsizefhelper.h
+                   )
+
+ADD_CUSTOM_TARGET (quitreeitemsizefhelper_moc_cpp
+                  DEPENDS quitreeitemsizefhelper_moc.cpp)
+
 ADD_CUSTOM_COMMAND (OUTPUT quitreeitemboundhelper_moc.cpp
                    COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemboundhelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemboundhelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
                    COMMAND echo "ok"
@@ -231,6 +250,15 @@ ADD_CUSTOM_COMMAND (OUTPUT quitreeitemboundhelper_moc.cpp
 
 ADD_CUSTOM_TARGET (quitreeitemboundhelper_moc_cpp
                   DEPENDS quitreeitemboundhelper_moc.cpp)
+
+ADD_CUSTOM_COMMAND (OUTPUT quitreeitemboundfhelper_moc.cpp
+                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemboundfhelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemboundfhelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
+                   COMMAND echo "ok"
+                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemboundfhelper.h
+                   )
+
+ADD_CUSTOM_TARGET (quitreeitemboundfhelper_moc_cpp
+                  DEPENDS quitreeitemboundfhelper_moc.cpp)
 
 ADD_CUSTOM_COMMAND (OUTPUT quitreeitemlayerweighthelper_moc.cpp
                    COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemlayerweighthelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemlayerweighthelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
@@ -296,6 +324,7 @@ ADD_DEPENDENCIES (yeditor ${DEPEND_PROJ_LIST}
                          quitreeuihelper_moc_cpp
                          quitreereshelper_moc_cpp
                          quitreeitemsizehelper_moc_cpp
+                         quitreeitemsizefhelper_moc_cpp
                          quitreeitemboundhelper_moc_cpp
                          quitreeitemlayerweighthelper_moc_cpp
                          quitreeitemimagehelper_moc_cpp

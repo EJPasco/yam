@@ -20,56 +20,44 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QGroupBox" name="groupBox_3">
-       <property name="title">
-        <string>Logic</string>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLineEdit" name="leLogicName"/>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
       <widget class="QGroupBox" name="groupBox">
        <property name="title">
         <string>Json</string>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QLineEdit" name="leJsonFileName"/>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLineEdit" name="leDirectory"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pbtnBrowserDirectory">
+            <property name="text">
+             <string>Browser</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="pbtnJsonFileBrowser">
-          <property name="text">
-           <string>Browser</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="title">
-        <string>Png</string>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLineEdit" name="lePngFileName"/>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pbtnPngFileBrowser">
-          <property name="text">
-           <string>Browser</string>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="leFileName"/>
         </item>
        </layout>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Set Data</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLineEdit" name="leLogicName"/>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -118,10 +106,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>pbtnJsonFileBrowser</sender>
+   <sender>pbtnBrowserDirectory</sender>
    <signal>clicked()</signal>
    <receiver>Export</receiver>
-   <slot>onBrowserJson()</slot>
+   <slot>onBrowserDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>343</x>
@@ -133,25 +121,8 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>pbtnPngFileBrowser</sender>
-   <signal>clicked()</signal>
-   <receiver>Export</receiver>
-   <slot>onBrowserPng()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>343</x>
-     <y>190</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <slots>
-  <slot>onBrowserJson()</slot>
-  <slot>onBrowserPng()</slot>
+  <slot>onBrowserDirectory()</slot>
  </slots>
 </ui>

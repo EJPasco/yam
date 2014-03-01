@@ -7,6 +7,7 @@
 #include "panel.h"
 #include "file.h"
 #include "merge.h"
+#include "property.h"
 
 
 #endif//__YAM_H__

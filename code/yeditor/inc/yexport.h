@@ -3,7 +3,7 @@
 
 #include <yam.h>
 
-namespace yam{ namespace output{
+namespace yam{ namespace io{
 
 class YIExport
 {
@@ -11,6 +11,11 @@ public:
     virtual ~YIExport() { ; }
 
 public:
+    virtual GET_DECL(yam::base::YCProperty&, GetProperty) = 0;
+    virtual GET_DECL_CONST(yam::base::YCProperty&, GetProperty) = 0;
+
+public:
+    virtual void Save(const yam::base::YCTree& rTree) const = 0;
 };
 
 template<typename TNBase>
@@ -21,6 +26,11 @@ public:
     virtual ~YTExport() { ; }
 
 public:
+    virtual GET_FUNC(yam::base::YCProperty&, GetProperty, m_oProperty);
+    virtual GET_FUNC_CONST(yam::base::YCProperty&, GetProperty, m_oProperty);
+
+protected:
+    yam::base::YCProperty              m_oProperty;
 };
 
 class YCExport : public YTExport<YIExport>
@@ -30,6 +40,7 @@ public:
     virtual ~YCExport();
 
 public:
+    virtual void Save(const yam::base::YCTree& rTree) const;
 };
 
 }}

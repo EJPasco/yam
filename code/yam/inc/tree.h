@@ -26,9 +26,9 @@ public:
 public:
     virtual void SetParent(YITree* const& rpParent) = 0;
     // caution: don't call this directly
-    virtual void AddNext(YITree* pChild) = 0;
+    virtual YITree* AddNext(YITree* pChild) = 0;
     // caution: don't call this directly
-    virtual void AddChild(YITree* pChild) = 0;
+    virtual YITree* AddChild(YITree* pChild) = 0;
     virtual void Clear() = 0;
     virtual yint32 GetCountOfNext() const = 0;
     virtual yint32 GetCountOfChildren() const = 0;
@@ -121,7 +121,7 @@ public:
         }
     }
 
-    virtual void AddNext(YITree* pNext)
+    virtual YITree* AddNext(YITree* pNext)
     {
         assert(YNULL != pNext);
 
@@ -140,9 +140,10 @@ public:
             }
             pNextTemp->GetNext() = pNext;
         }
+        return pNext;
     }
 
-    virtual void AddChild(YITree* pChild)
+    virtual YITree* AddChild(YITree* pChild)
     {
         assert(YNULL != pChild);
 
@@ -156,6 +157,7 @@ public:
         {
             m_pChildren->AddNext(pChild);
         }
+        return pChild;
     }
 
     virtual void Clear()
@@ -222,6 +224,17 @@ public:
             }
         }
         return YNULL;
+    }
+
+    template<typename TNOutput>
+    TNOutput* Find(const ystring& rsId) const
+    {
+        YITree* pFind = Find(rsId);
+        if (YNULL == pFind || YOBJECT_GETCLASSNAME(TNOutput) != pFind->GetClassName())
+        {
+            return NULL;
+        }
+        return (TNOutput*)pFind;
     }
 
     virtual YITree* Find(const std::vector<ystring>& rvsId) const

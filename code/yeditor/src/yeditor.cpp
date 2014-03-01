@@ -1,6 +1,7 @@
 #include "yeditor.h"
 
-#include "yexport.h"
+#include "yexportyam.h"
+#include "yqt2yam.h"
 #include "yrectpacker.h"
 #include "quitreeitem.h"
 #include "qdlgcreatewidget.h"
@@ -138,7 +139,16 @@ void YEditor::onClickedExport()
         return;
     }
 
-    json::Object jObj;
+    YCQUiTreeItem* pTreeItem = dynamic_cast<YCQUiTreeItem*>(m_Ui.uiTree->topLevelItem(0));
+    yam::io::CYQt2Yam::Instance().Convert(this, pTreeItem, gs_FileTreeData);
+
+    yam::io::YCExportYam oExportYam;
+    oExportYam.GetProperty().AddChild("file")->AddChild("directory")->FromString(stConfig._sDirectory.toLocal8Bit().data());
+    oExportYam.GetProperty().AddChild("file")->AddChild("name")->FromString(stConfig._sFileName.toLocal8Bit().data());
+    oExportYam.GetProperty().AddChild("data")->AddChild("logic")->FromString(stConfig._sLogicName.toLocal8Bit().data());
+    oExportYam.Save(gs_FileTreeData);
+
+    /*json::Object jObj;
     {
         json::Object jObjLogic;
         {
@@ -215,7 +225,7 @@ void YEditor::onClickedExport()
     }
 
     std::string sRes = json::Serialize(jObj);
-    sRes = "";
+    sRes = "";*/
 
     /*QFile file(stConfig._sJsonFileName);
     file.open(QIODevice::WriteOnly);
@@ -676,7 +686,7 @@ QString YEditor::getFullName(const yam::base::YITree* pTree)
     return sRes;
 }
 
-YCQUiItem* YEditor::getUiItem(QTreeWidgetItem* pTreeItem) const
+YCQUiItem* YEditor::getUiItem(const QTreeWidgetItem* pTreeItem) const
 {
     if (NULL == pTreeItem)
     {
@@ -696,7 +706,7 @@ YCQUiItem* YEditor::getUiItem(QTreeWidgetItem* pTreeItem) const
     return NULL;
 }
 
-YCQUiTreeItem* YEditor::getTreeItem(YCQUiItem* pUiItem) const
+YCQUiTreeItem* YEditor::getTreeItem(const YCQUiItem* pUiItem) const
 {
     if (NULL == pUiItem)
     {

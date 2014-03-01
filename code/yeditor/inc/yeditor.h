@@ -62,8 +62,10 @@ private:
     void reloadRes(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
     void reloadUi(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
     QString getFullName(const yam::base::YITree* pTree);
-    YCQUiItem* getUiItem(QTreeWidgetItem* pTreeItem) const;
-    YCQUiTreeItem* getTreeItem(YCQUiItem* pUiItem) const;
+
+public:
+    YCQUiItem* getUiItem(const QTreeWidgetItem* pTreeItem) const;
+    YCQUiTreeItem* getTreeItem(const YCQUiItem* pUiItem) const;
 
 private:
     void refreshResProperty(YCQUiItem*& rpUiItem);

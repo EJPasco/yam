@@ -31,6 +31,7 @@ class YTObject : public TNBase
 public:
     // todo: research the object initialization order of gcc in linux
     YTObject() : m_sId(""), m_sClassName(YOBJECT_GETCLASSNAME(TNReal)) { ; }
+    YTObject(const yam::ystring& rsId) : m_sId(rsId), m_sClassName(YOBJECT_GETCLASSNAME(TNReal)) { ; }
     virtual ~YTObject() { ; }
 
 public:

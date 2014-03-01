@@ -29,17 +29,15 @@ class Ui_Export
 public:
     QVBoxLayout *verticalLayout_2;
     QVBoxLayout *verticalLayout;
+    QGroupBox *groupBox;
+    QVBoxLayout *verticalLayout_3;
+    QHBoxLayout *horizontalLayout_2;
+    QLineEdit *leDirectory;
+    QPushButton *pbtnBrowserDirectory;
+    QLineEdit *leFileName;
     QGroupBox *groupBox_3;
     QHBoxLayout *horizontalLayout_3;
     QLineEdit *leLogicName;
-    QGroupBox *groupBox;
-    QHBoxLayout *horizontalLayout;
-    QLineEdit *leJsonFileName;
-    QPushButton *pbtnJsonFileBrowser;
-    QGroupBox *groupBox_2;
-    QHBoxLayout *horizontalLayout_2;
-    QLineEdit *lePngFileName;
-    QPushButton *pbtnPngFileBrowser;
     QDialogButtonBox *buttonBox;
 
     void setupUi(QDialog *Export)
@@ -52,6 +50,36 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        groupBox = new QGroupBox(Export);
+        groupBox->setObjectName(QStringLiteral("groupBox"));
+        verticalLayout_3 = new QVBoxLayout(groupBox);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        leDirectory = new QLineEdit(groupBox);
+        leDirectory->setObjectName(QStringLiteral("leDirectory"));
+
+        horizontalLayout_2->addWidget(leDirectory);
+
+        pbtnBrowserDirectory = new QPushButton(groupBox);
+        pbtnBrowserDirectory->setObjectName(QStringLiteral("pbtnBrowserDirectory"));
+
+        horizontalLayout_2->addWidget(pbtnBrowserDirectory);
+
+
+        verticalLayout_3->addLayout(horizontalLayout_2);
+
+        leFileName = new QLineEdit(groupBox);
+        leFileName->setObjectName(QStringLiteral("leFileName"));
+
+        verticalLayout_3->addWidget(leFileName);
+
+
+        verticalLayout->addWidget(groupBox);
+
+
+        verticalLayout_2->addLayout(verticalLayout);
+
         groupBox_3 = new QGroupBox(Export);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
         horizontalLayout_3 = new QHBoxLayout(groupBox_3);
@@ -62,44 +90,7 @@ public:
         horizontalLayout_3->addWidget(leLogicName);
 
 
-        verticalLayout->addWidget(groupBox_3);
-
-        groupBox = new QGroupBox(Export);
-        groupBox->setObjectName(QStringLiteral("groupBox"));
-        horizontalLayout = new QHBoxLayout(groupBox);
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        leJsonFileName = new QLineEdit(groupBox);
-        leJsonFileName->setObjectName(QStringLiteral("leJsonFileName"));
-
-        horizontalLayout->addWidget(leJsonFileName);
-
-        pbtnJsonFileBrowser = new QPushButton(groupBox);
-        pbtnJsonFileBrowser->setObjectName(QStringLiteral("pbtnJsonFileBrowser"));
-
-        horizontalLayout->addWidget(pbtnJsonFileBrowser);
-
-
-        verticalLayout->addWidget(groupBox);
-
-        groupBox_2 = new QGroupBox(Export);
-        groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
-        horizontalLayout_2 = new QHBoxLayout(groupBox_2);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        lePngFileName = new QLineEdit(groupBox_2);
-        lePngFileName->setObjectName(QStringLiteral("lePngFileName"));
-
-        horizontalLayout_2->addWidget(lePngFileName);
-
-        pbtnPngFileBrowser = new QPushButton(groupBox_2);
-        pbtnPngFileBrowser->setObjectName(QStringLiteral("pbtnPngFileBrowser"));
-
-        horizontalLayout_2->addWidget(pbtnPngFileBrowser);
-
-
-        verticalLayout->addWidget(groupBox_2);
-
-
-        verticalLayout_2->addLayout(verticalLayout);
+        verticalLayout_2->addWidget(groupBox_3);
 
         buttonBox = new QDialogButtonBox(Export);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
@@ -112,8 +103,7 @@ public:
         retranslateUi(Export);
         QObject::connect(buttonBox, SIGNAL(accepted()), Export, SLOT(accept()));
         QObject::connect(buttonBox, SIGNAL(rejected()), Export, SLOT(reject()));
-        QObject::connect(pbtnJsonFileBrowser, SIGNAL(clicked()), Export, SLOT(onBrowserJson()));
-        QObject::connect(pbtnPngFileBrowser, SIGNAL(clicked()), Export, SLOT(onBrowserPng()));
+        QObject::connect(pbtnBrowserDirectory, SIGNAL(clicked()), Export, SLOT(onBrowserDirectory()));
 
         QMetaObject::connectSlotsByName(Export);
     } // setupUi
@@ -121,11 +111,9 @@ public:
     void retranslateUi(QDialog *Export)
     {
         Export->setWindowTitle(QApplication::translate("Export", "Dialog", 0));
-        groupBox_3->setTitle(QApplication::translate("Export", "Logic", 0));
         groupBox->setTitle(QApplication::translate("Export", "Json", 0));
-        pbtnJsonFileBrowser->setText(QApplication::translate("Export", "Browser", 0));
-        groupBox_2->setTitle(QApplication::translate("Export", "Png", 0));
-        pbtnPngFileBrowser->setText(QApplication::translate("Export", "Browser", 0));
+        pbtnBrowserDirectory->setText(QApplication::translate("Export", "Browser", 0));
+        groupBox_3->setTitle(QApplication::translate("Export", "Set Data", 0));
     } // retranslateUi
 
 };

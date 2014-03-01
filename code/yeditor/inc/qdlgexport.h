@@ -9,9 +9,9 @@
 
 typedef struct tagConfigExport
 {
+    QString     _sDirectory;
+    QString     _sFileName;
     QString     _sLogicName;
-    QString     _sJsonFileName;
-    QString     _sPngFileName;
 } SConfigExport;
 
 class YCQDlgExport : public QDialog
@@ -26,8 +26,7 @@ public:
     virtual ~YCQDlgExport();
 
 public Q_SLOTS:
-    void onBrowserJson();
-    void onBrowserPng();
+    void onBrowserDirectory();
 
 public:
     bool toConfig(SConfigExport& rstConfig) const;
