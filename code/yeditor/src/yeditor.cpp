@@ -149,85 +149,6 @@ void YEditor::onClickedExport()
     oExportYam.GetProperty().AddChild("file")->AddChild("name")->FromString(stConfig._sFileName.toLocal8Bit().data());
     oExportYam.GetProperty().AddChild("data")->AddChild("logic")->FromString(stConfig._sLogicName.toLocal8Bit().data());
     oExportYam.Save(&gs_FileTreeData);
-
-    /*json::Object jObj;
-    {
-        json::Object jObjLogic;
-        {
-            jObjLogic["name"] = stConfig._sLogicName.toLocal8Bit().data();
-        }
-        jObj["logic"] = jObjLogic;
-    }
-    {
-        json::Array jObjAssetGroup;
-        {
-            json::Object jObjAsset;
-            QFileInfo fileInfo(stConfig._sPngFileName);
-            jObjAsset["name"] = fileInfo.baseName().toLocal8Bit().data();
-            jObjAsset["type"] = "image";
-            jObjAsset["file"] = fileInfo.fileName().toLocal8Bit().data();
-            jObjAssetGroup.push_back(jObjAsset);
-        }
-        jObj["assetgroup"] = jObjAssetGroup;
-    }
-    {
-        json::Object jObjRoot;
-        {
-            json::Object jObjLayoutStrategy;
-            jObjLayoutStrategy["type"] = "layoutgridstrategy";
-            {
-                json::Object jObjLayoutStrategyValue;
-                {
-                    json::Array jArrRow;
-                    jArrRow.push_back(100);
-                    jArrRow.push_back(0);
-                    jArrRow.push_back(0);
-                    jObjLayoutStrategyValue["row"] = jArrRow;
-                    json::Array jArrLine;
-                    jArrLine.push_back(100);
-                    jArrLine.push_back(0);
-                    jArrLine.push_back(0);
-                    jObjLayoutStrategyValue["line"] = jArrLine;
-                }
-                jObjLayoutStrategy["value"] = jObjLayoutStrategyValue;
-            }
-            jObjRoot["layoutstrategy"] = jObjLayoutStrategy;
-        }
-        jObjRoot["layer"] = 0;
-        {
-            json::Object jObjRootDst;
-            {
-                json::Object jObjRootDstPos;
-                jObjRootDstPos["x"] = 0;
-                jObjRootDstPos["y"] = 0;
-                jObjRootDst["pos"] = jObjRootDstPos;
-            }
-            {
-                json::Object jObjRootDstSizef;
-                jObjRootDstSizef["x"] = 1.0f;
-                jObjRootDstSizef["y"] = 1.0f;
-                jObjRootDst["sizef"] = jObjRootDstSizef;
-            }
-            jObjRoot["dst"] = jObjRootDst;
-        }
-        {
-            json::Array jObjWidgetGroup;
-            {
-                QTreeWidgetItem* pTreeItem = m_Ui.uiTree->topLevelItem(0);
-                if (NULL != pTreeItem)
-                {
-                    json::Object jObjWidget;
-                    exportUiTreeToJson(pTreeItem, jObjWidget);
-                    jObjWidgetGroup.push_back(jObjWidget);
-                }
-            }
-            jObjRoot["widgetgroup"] = jObjWidgetGroup;
-        }
-        jObj["root"] = jObjRoot;
-    }
-
-    std::string sRes = json::Serialize(jObj);
-    sRes = "";*/
 }
 
 void YEditor::onClickedSync()
@@ -723,44 +644,6 @@ void YEditor::parseArgument(const QStringList& rvStr)
         sFileName.append(rvStr[1].toLocal8Bit());
         reloadFile(sFileName);
     }
-}
-
-void YEditor::exportUiTreeToJson(QTreeWidgetItem* pTreeItem, json::Object& rjObjSelf)
-{
-    if (NULL == pTreeItem)
-    {
-        return;
-    }
-
-    YCQUiItem* pUiItem = getUiItem(pTreeItem);
-    if (NULL == pUiItem)
-    {
-        return;
-    }
-
-    /*rjObjSelf["type"] = YCQUiItem::convertFromWidgetType(pUiItem->getType());
-
-    json::Object jObjValue;
-    {
-        pUiItem->exportToJson(jObjValue);
-
-        jObjValue["id"] =  pTreeItem->text(0).toLocal8Bit().data();
-
-        int iChildCount = pTreeItem->childCount();
-        if (0 < iChildCount)
-        {
-            json::Array jArrWidgetGroup;
-            for (int i = 0; i < iChildCount; ++i)
-            {
-                json::Object jObjWidget;
-                exportUiTreeToJson(pTreeItem->child(i), jObjWidget);
-                jArrWidgetGroup.push_back(jObjWidget);
-            }
-            jObjValue["widgetgroup"] = jArrWidgetGroup;
-        }
-    }
-
-    rjObjSelf["value"] = jObjValue;*/
 }
 
 int main(int argc, char* argv[])

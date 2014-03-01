@@ -73,7 +73,6 @@ private:
 
 private:
     void parseArgument(const QStringList& rvStr);
-    void exportUiTreeToJson(QTreeWidgetItem* pTreeItem, json::Object& rjObjSelf);
 
 private:
     Ui_MainWindow               m_Ui;
