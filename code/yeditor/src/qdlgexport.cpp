@@ -5,6 +5,10 @@
 bool YCQDlgExport::showDialog(SConfigExport& rstConfig, QWidget *parent /* = 0 */)
 {
     YCQDlgExport dlg(parent);
+    if (dlg.exec() == 0)
+    {
+        return false;
+    }
     return dlg.toConfig(rstConfig);
 }
 
@@ -37,19 +41,15 @@ void YCQDlgExport::onBrowserPng()
         , QFileDialog::DontUseCustomDirectoryIcons | QFileDialog::DontUseSheet));
 }
 
-bool YCQDlgExport::toConfig(SConfigExport& rstConfig)
+bool YCQDlgExport::toConfig(SConfigExport& rstConfig) const
 {
-    if (exec() == 0)
-    {
-        return false;
-    }
     rstConfig._sLogicName = m_Ui.leLogicName->text();
     rstConfig._sJsonFileName = m_Ui.leJsonFileName->text();
     rstConfig._sPngFileName = m_Ui.lePngFileName->text();
     return toCheck(rstConfig);
 }
 
-bool YCQDlgExport::toCheck(const SConfigExport& rstConfig)
+bool YCQDlgExport::toCheck(const SConfigExport& rstConfig) const
 {
     if (0 >= rstConfig._sLogicName.size()
         || 0 >= rstConfig._sJsonFileName.size()
@@ -57,5 +57,6 @@ bool YCQDlgExport::toCheck(const SConfigExport& rstConfig)
     {
         return false;
     }
+    //TODO: more detail
     return true;
 }

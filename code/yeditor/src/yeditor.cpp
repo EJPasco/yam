@@ -201,14 +201,13 @@ void YEditor::onClickedExport()
         {
             json::Array jObjWidgetGroup;
             {
-                json::Object jObjWidget;
-                int iTopItemCount = m_Ui.uiTree->topLevelItemCount();
-                for (int i = 0; i < iTopItemCount; ++i)
+                QTreeWidgetItem* pTreeItem = m_Ui.uiTree->topLevelItem(0);
+                if (NULL != pTreeItem)
                 {
-                    QTreeWidgetItem* pTreeItem = m_Ui.uiTree->topLevelItem(i);
+                    json::Object jObjWidget;
                     exportUiTreeToJson(pTreeItem, jObjWidget);
+                    jObjWidgetGroup.push_back(jObjWidget);
                 }
-                jObjWidgetGroup.push_back(jObjWidget);
             }
             jObjRoot["widgetgroup"] = jObjWidgetGroup;
         }
@@ -439,8 +438,18 @@ void YEditor::onUiAreaVisibilityChanged(bool bVisible)
 
 void YEditor::onClickedUiMenuItem_CreateScene()
 {
+    SConfigCreateWidget stConfig;
+    if (!YCQDlgCreateWidget::showDialog(stConfig, this))
+    {
+        return;
+    }
+    if (m_mRelationship.find(stConfig._sId.toLocal8Bit().data()) != m_mRelationship.end())
+    {
+        return;
+    }
+
     yam::base::YIWidget* pWidget = new yam::base::YCWidget;
-    pWidget->GetId() = "scene";
+    pWidget->GetId() = stConfig._sId.toLocal8Bit().data();
     pWidget->GetType() = yam::eWidgetType_Scene;
     pWidget->GetBound().Size.X = 300;
     pWidget->GetBound().Size.Y = 300;
@@ -455,7 +464,8 @@ void YEditor::onClickedUiMenuItem_CreateScene()
     SRelationship stRelationship;
     stRelationship._pUiItem = pUiItem;
     stRelationship._pTreeItem = pTreeItem;
-    m_mRelationship.insert(std::make_pair(getFullName(pWidget), stRelationship));
+    //m_mRelationship.insert(std::make_pair(getFullName(pWidget), stRelationship));
+    m_mRelationship.insert(std::make_pair(pWidget->GetId().c_str(), stRelationship));
 
     delete pWidget;
     pWidget = YNULL;
@@ -469,8 +479,18 @@ void YEditor::onClickedUiMenuItem_CreatePanel()
         return;
     }
 
+    SConfigCreateWidget stConfig;
+    if (!YCQDlgCreateWidget::showDialog(stConfig, this))
+    {
+        return;
+    }
+    if (m_mRelationship.find(stConfig._sId.toLocal8Bit().data()) != m_mRelationship.end())
+    {
+        return;
+    }
+
     yam::base::YIWidget* pWidget = new yam::base::YCWidget;
-    pWidget->GetId() = "panel";
+    pWidget->GetId() = stConfig._sId.toLocal8Bit().data();
     pWidget->GetType() = yam::eWidgetType_Panel;
     pWidget->GetBound().Size.X = 300;
     pWidget->GetBound().Size.Y = 300;
@@ -744,31 +764,42 @@ void YEditor::parseArgument(const QStringList& rvStr)
     }
 }
 
-void YEditor::exportUiTreeToJson(QTreeWidgetItem* pTreeItem, json::Object& rjObjParent)
+void YEditor::exportUiTreeToJson(QTreeWidgetItem* pTreeItem, json::Object& rjObjSelf)
 {
     if (NULL == pTreeItem)
     {
         return;
     }
-    json::Object jObjMy;
-
-    std::string sId(pTreeItem->text(0).toLocal8Bit());
-    jObjMy["id"] = sId.c_str();
 
     YCQUiItem* pUiItem = getUiItem(pTreeItem);
-    if (NULL != pUiItem)
+    if (NULL == pUiItem)
     {
-        //
+        return;
     }
 
-    int iChildCount = pTreeItem->childCount();
-    for (int i = 0; i < iChildCount; ++i)
+    rjObjSelf["type"] = YCQUiItem::convertFromWidgetType(pUiItem->getType());
+
+    json::Object jObjValue;
     {
-        exportUiTreeToJson(pTreeItem->child(i), jObjMy);
+        pUiItem->exportToJson(jObjValue);
+
+        jObjValue["id"] =  pTreeItem->text(0).toLocal8Bit().data();
+
+        int iChildCount = pTreeItem->childCount();
+        if (0 < iChildCount)
+        {
+            json::Array jArrWidgetGroup;
+            for (int i = 0; i < iChildCount; ++i)
+            {
+                json::Object jObjWidget;
+                exportUiTreeToJson(pTreeItem->child(i), jObjWidget);
+                jArrWidgetGroup.push_back(jObjWidget);
+            }
+            jObjValue["widgetgroup"] = jArrWidgetGroup;
+        }
     }
 
-    rjObjParent["fff"] = jObjMy;
-    //
+    rjObjSelf["value"] = jObjValue;
 }
 
 int main(int argc, char* argv[])

@@ -30,10 +30,10 @@ public Q_SLOTS:
     void onBrowserPng();
 
 public:
-    bool toConfig(SConfigExport& rstConfig);
+    bool toConfig(SConfigExport& rstConfig) const;
 
 protected:
-    bool toCheck(const SConfigExport& rstConfig);
+    bool toCheck(const SConfigExport& rstConfig) const;
 
 private:
     Ui_Export   m_Ui;

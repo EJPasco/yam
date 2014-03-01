@@ -263,3 +263,50 @@ QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const
                 , YGETCOLORBIT(riColor, YBITOFFSET_BLUE)
                 , YGETCOLORBIT(riColor, YBITOFFSET_ALPHA));
 }
+
+void YCQUiItem::exportToJson(json::Object& rjObj) const
+{
+    rjObj["layer"] = getLayerWeight();
+    rjObj["image"] = getImageSource().toLocal8Bit().data();
+    //
+    {
+        json::Object jObjSrc;
+        rjObj["src"] = jObjSrc;
+    }
+    {
+        json::Object jObjDst;
+        {
+            json::Object jObjDstPos;
+            jObjDstPos["x"] = pos().x();
+            jObjDstPos["y"] = pos().y();
+            jObjDst["pos"] = jObjDstPos;
+            json::Object jObjDstSize;
+            jObjDstSize["x"] = size().width();
+            jObjDstSize["y"] = size().height();
+            jObjDst["size"] = jObjDstSize;
+        }
+        rjObj["dst"] = jObjDst;
+    }
+}
+
+yam::ystring YCQUiItem::convertFromWidgetType(const yam::EWidgetType& reType)
+{
+    switch (reType)
+    {
+    case yam::eWidgetType_Scene:
+        return "scene";
+
+    case yam::eWidgetType_Panel:
+        return "panel";
+
+    case yam::eWidgetType_Image:
+        return "staticimage";
+
+    case yam::eWidgetType_Button:
+        return "button";
+
+    default:
+        return "none";
+    }
+    
+}

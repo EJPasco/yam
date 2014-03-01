@@ -17,28 +17,36 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_CreateWidget
 {
 public:
+    QVBoxLayout *verticalLayout;
+    QLineEdit *leId;
     QDialogButtonBox *buttonBox;
-    QLineEdit *idLineEdit;
 
     void setupUi(QDialog *CreateWidget)
     {
         if (CreateWidget->objectName().isEmpty())
             CreateWidget->setObjectName(QStringLiteral("CreateWidget"));
-        CreateWidget->resize(400, 300);
+        CreateWidget->resize(231, 69);
+        verticalLayout = new QVBoxLayout(CreateWidget);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        leId = new QLineEdit(CreateWidget);
+        leId->setObjectName(QStringLiteral("leId"));
+
+        verticalLayout->addWidget(leId);
+
         buttonBox = new QDialogButtonBox(CreateWidget);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(30, 240, 341, 32));
         buttonBox->setOrientation(Qt::Horizontal);
         buttonBox->setStandardButtons(QDialogButtonBox::Ok);
-        idLineEdit = new QLineEdit(CreateWidget);
-        idLineEdit->setObjectName(QStringLiteral("idLineEdit"));
-        idLineEdit->setGeometry(QRect(50, 20, 113, 20));
+
+        verticalLayout->addWidget(buttonBox);
+
 
         retranslateUi(CreateWidget);
         QObject::connect(buttonBox, SIGNAL(accepted()), CreateWidget, SLOT(accept()));
