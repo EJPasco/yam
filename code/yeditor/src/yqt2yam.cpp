@@ -18,22 +18,30 @@ CYQt2Yam::~CYQt2Yam()
     //
 }
 
-yam::ybool CYQt2Yam::Convert(const YEditor* pEditor, const YCQUiTreeItem* pUiItem, yam::base::YCTree& rTree) const
+yam::ybool CYQt2Yam::Convert(const YEditor* pEditor, const YCQUiTreeItem* pUiItem, yam::base::YITree* pTree) const
 {
     YCQUiItem* pItem = pEditor->getUiItem(pUiItem);
     if (NULL == pEditor || NULL == pItem|| NULL == pUiItem)
     {
         return false;
     }
-    rTree.Clear();
 
-    yam::base::YIWidget* rpWidget = YNULL;
-    if (!Generate(pEditor, pItem, pUiItem, rpWidget))
+    yam::base::YIWidget* pWidget = YNULL;
     {
-        return false;
+        yam::base::YITree* pTreeUi = pTree->FindChild(YFILE_KEY_UI);
+        if (YNULL != pTreeUi && YOBJECT_GETCLASSNAME(yam::base::YCWidget) == pTreeUi->GetClassName())
+        {
+            pTreeUi->Clear();
+            pWidget = (yam::base::YIWidget*)pTreeUi;
+        }
+        else
+        {
+            pWidget = new yam::base::YCWidget;
+            pWidget->GetId() = YFILE_KEY_UI;
+            pTree->AddChild(pWidget);
+        }
     }
-    rTree.AddChild(rpWidget);
-    return true;
+    return Generate(pEditor, pItem, pUiItem, pWidget);
 }
 
 yam::ybool CYQt2Yam::Generate(const YEditor* pEditor, const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
@@ -47,7 +55,6 @@ yam::ybool CYQt2Yam::Generate(const YEditor* pEditor, const YCQUiItem* pItem, co
     switch (eType)
     {
     case eWidgetType_Scene: {
-        rpWidget = new yam::base::YCWidget;
         GenerateScene(pItem, pUiItem, rpWidget);
         } break;
 
@@ -66,7 +73,10 @@ yam::ybool CYQt2Yam::Generate(const YEditor* pEditor, const YCQUiItem* pItem, co
 
 yam::ybool CYQt2Yam::GenerateWidget(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
 {
-    rpWidget->GetId() = pUiItem->text(0).toLocal8Bit().data();
+    if (eWidgetType_Scene != pItem->getType())
+    {
+        rpWidget->GetId() = pUiItem->text(0).toLocal8Bit().data();
+    }
     rpWidget->GetType() = pItem->getType();
     rpWidget->GetLayerWeight() = pItem->getLayerWeight();
     rpWidget->GetBound().Pos.X = pItem->pos().x();

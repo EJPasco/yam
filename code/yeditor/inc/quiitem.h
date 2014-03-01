@@ -49,9 +49,6 @@ public:
 public:
     void exportToJson(json::Object& rjObj) const;
 
-public:
-    static yam::ystring convertFromWidgetType(const yam::EWidgetType& reType);
-
 private:
     YCQUiArea*          m_pUiArea;
     QImage*             m_pImage;

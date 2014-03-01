@@ -2,7 +2,6 @@
 
 #include "yexportyam.h"
 #include "yqt2yam.h"
-#include "yrectpacker.h"
 #include "quitreeitem.h"
 #include "qdlgcreatewidget.h"
 #include "qdlgexport.h"
@@ -128,6 +127,9 @@ void YEditor::onClickedOpen()
 void YEditor::onClickedSave()
 {
     qDebug("on clicked save");
+
+    YCQUiTreeItem* pTreeItem = dynamic_cast<YCQUiTreeItem*>(m_Ui.uiTree->topLevelItem(0));
+    yam::io::CYQt2Yam::Instance().Convert(this, pTreeItem, &gs_FileTreeData);
     //
 }
 
@@ -140,13 +142,13 @@ void YEditor::onClickedExport()
     }
 
     YCQUiTreeItem* pTreeItem = dynamic_cast<YCQUiTreeItem*>(m_Ui.uiTree->topLevelItem(0));
-    yam::io::CYQt2Yam::Instance().Convert(this, pTreeItem, gs_FileTreeData);
+    yam::io::CYQt2Yam::Instance().Convert(this, pTreeItem, &gs_FileTreeData);
 
     yam::io::YCExportYam oExportYam;
     oExportYam.GetProperty().AddChild("file")->AddChild("directory")->FromString(stConfig._sDirectory.toLocal8Bit().data());
     oExportYam.GetProperty().AddChild("file")->AddChild("name")->FromString(stConfig._sFileName.toLocal8Bit().data());
     oExportYam.GetProperty().AddChild("data")->AddChild("logic")->FromString(stConfig._sLogicName.toLocal8Bit().data());
-    oExportYam.Save(gs_FileTreeData);
+    oExportYam.Save(&gs_FileTreeData);
 
     /*json::Object jObj;
     {
@@ -226,57 +228,6 @@ void YEditor::onClickedExport()
 
     std::string sRes = json::Serialize(jObj);
     sRes = "";*/
-
-    /*QFile file(stConfig._sJsonFileName);
-    file.open(QIODevice::WriteOnly);
-    file.write(sRes.c_str());
-    file.close();*/
-
-    /*yam::yvvec2d vSize;
-    yam::YVec2D stSize;
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = 500; stSize.Y = 500;
-    yam::yvrect vRect;
-    YCRectPacker::Instance().Do(vSize, stSize, vRect);
-    QVector<QRect> vQRects;
-    yam::yvrect::const_iterator cit = vRect.begin();
-    yam::yvrect::const_iterator citEnd = vRect.end();
-    for (; cit != citEnd; ++cit)
-    {
-        const yam::YRect2D& rstRect2D = *cit;
-        vQRects.push_back(QRect(rstRect2D.Pos.X, rstRect2D.Pos.Y, rstRect2D.Size.X, rstRect2D.Size.Y));
-    }
-
-    QImage oImage(stSize.X, stSize.Y, QImage::Format_ARGB32);
-    oImage.fill(Qt::transparent);
-    QPainter oPainter(&oImage);
-    for (int i = 0; i < vQRects.size(); ++i)
-    {
-        QRgb rgb = qRgba((qrand() % 0xFF), (qrand() % 0xFF), (qrand() % 0xFF), ((qrand() % 0xFF) + 0x55) % 0xFF);
-        QImage oImageBox(vQRects[i].width(), vQRects[i].height(), QImage::Format_ARGB32);
-        oImageBox.fill(rgb);
-        oPainter.drawImage(vQRects[i].x(), vQRects[i].y(), oImageBox);
-    }
-    oImage.save("D:\\workspace\\github\\temp\\temp.png", "PNG");*/
 }
 
 void YEditor::onClickedSync()
@@ -787,7 +738,7 @@ void YEditor::exportUiTreeToJson(QTreeWidgetItem* pTreeItem, json::Object& rjObj
         return;
     }
 
-    rjObjSelf["type"] = YCQUiItem::convertFromWidgetType(pUiItem->getType());
+    /*rjObjSelf["type"] = YCQUiItem::convertFromWidgetType(pUiItem->getType());
 
     json::Object jObjValue;
     {
@@ -809,7 +760,7 @@ void YEditor::exportUiTreeToJson(QTreeWidgetItem* pTreeItem, json::Object& rjObj
         }
     }
 
-    rjObjSelf["value"] = jObjValue;
+    rjObjSelf["value"] = jObjValue;*/
 }
 
 int main(int argc, char* argv[])

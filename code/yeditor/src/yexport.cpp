@@ -12,7 +12,7 @@ YCExport::~YCExport()
     //
 }
 
-void YCExport::Save(const yam::base::YCTree& rTree) const
+void YCExport::Save(const yam::base::YITree* pTree) const
 {
     //
 }

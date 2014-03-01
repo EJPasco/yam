@@ -18,7 +18,7 @@ public:
     virtual ~CYQt2Yam();
 
 public:
-    yam::ybool Convert(const YEditor* pEditor, const YCQUiTreeItem* pUiItem, yam::base::YCTree& rTree) const;
+    yam::ybool Convert(const YEditor* pEditor, const YCQUiTreeItem* pUiItem, yam::base::YITree* pTree) const;
 
 private:
     yam::ybool Generate(const YEditor* pEditor, const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const;

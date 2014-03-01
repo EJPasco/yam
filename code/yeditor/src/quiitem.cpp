@@ -288,25 +288,3 @@ void YCQUiItem::exportToJson(json::Object& rjObj) const
         rjObj["dst"] = jObjDst;
     }
 }
-
-yam::ystring YCQUiItem::convertFromWidgetType(const yam::EWidgetType& reType)
-{
-    switch (reType)
-    {
-    case yam::eWidgetType_Scene:
-        return "scene";
-
-    case yam::eWidgetType_Panel:
-        return "panel";
-
-    case yam::eWidgetType_Image:
-        return "staticimage";
-
-    case yam::eWidgetType_Button:
-        return "button";
-
-    default:
-        return "none";
-    }
-    
-}
