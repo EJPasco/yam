@@ -112,8 +112,7 @@ void YEditor::onClickedOpen()
         QString qsFileName = QFileDialog::getOpenFileName(this
             , tr("Open a yui file"), ""
             , tr("YUI (*.yui)"), &sSelectedFilter
-            , QFileDialog::DontUseCustomDirectoryIcons
-            | QFileDialog::DontUseSheet
+            , QFileDialog::DontUseSheet
             | QFileDialog::ReadOnly);
         m_sFileName.append(qsFileName.toLocal8Bit());
     }
