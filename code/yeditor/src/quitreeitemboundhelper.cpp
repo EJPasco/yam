@@ -53,6 +53,8 @@ YCQUiTreeItemBoundHelper::YCQUiTreeItemBoundHelper(QTreeWidget* pTreeRoot, QTree
         m_pTreeItemBound->addChild(pTreeBoundH);
         pTreeRoot->setItemWidget(pTreeBoundH, 1, m_pSpinBoxH);
     }
+
+    pTreeRoot->collapseItem(pTreeItem);
 }
 
 YCQUiTreeItemBoundHelper::~YCQUiTreeItemBoundHelper()
@@ -122,6 +124,27 @@ void YCQUiTreeItemBoundHelper::setBound(const QRect& roBound)
     {
         m_pSpinBoxH->setValue(m_Bound.height());
     }
+}
+
+void YCQUiTreeItemBoundHelper::setEnabled(const bool& rbEnable)
+{
+    if (NULL != m_pSpinBoxX)
+    {
+        m_pSpinBoxX->setEnabled(rbEnable);
+    }
+    if (NULL != m_pSpinBoxY)
+    {
+        m_pSpinBoxY->setEnabled(rbEnable);
+    }
+    if (NULL != m_pSpinBoxW)
+    {
+        m_pSpinBoxW->setEnabled(rbEnable);
+    }
+    if (NULL != m_pSpinBoxH)
+    {
+        m_pSpinBoxH->setEnabled(rbEnable);
+    }
+    //
 }
 
 void YCQUiTreeItemBoundHelper::setBoundText(const QRect& roBound)

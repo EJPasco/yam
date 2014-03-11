@@ -166,6 +166,7 @@ void YCBuffer::Merge()
 
     if (0 >= iSize || iSize == m_iSize)
     {
+        m_vBufferSeg.clear();
         return;
     }
 

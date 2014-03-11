@@ -206,13 +206,18 @@ ybool YCProperty::ToRect2D(YRect2D& rstValue) const
 
 ybool YCProperty::FromBuffer(const YCBuffer& roValue)
 {
-    //
+    GetValue().Begin();
+    GetValue().Write(roValue.GetSize(), roValue.GetData());
+    GetValue().End();
     return YTRUE;
 }
 
 ybool YCProperty::ToBuffer(YCBuffer& roValue) const
 {
-    //
+    roValue.Clear();
+    roValue.Begin();
+    roValue.Write(GetValue().GetSize(), GetValue().GetData());
+    roValue.End();
     return YTRUE;
 }
 

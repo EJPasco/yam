@@ -1,5 +1,7 @@
 #include "yqt2yam.h"
+
 #include "yeditor.h"
+#include "yconverter.h"
 
 #include "quiitem.h"
 #include "quitreeitem.h"
@@ -63,6 +65,16 @@ yam::ybool CYQt2Yam::Generate(const YEditor* pEditor, const YCQUiItem* pItem, co
         GeneratePanel(pItem, pUiItem, rpWidget);
         } break;
 
+    case eWidgetType_Image: {
+        rpWidget = new yam::base::YCWidget;
+        GenerateImage(pItem, pUiItem, rpWidget);
+        } break;
+
+    case eWidgetType_Button: {
+        rpWidget = new yam::base::YCWidget;
+        GenerateButton(pItem, pUiItem, rpWidget);
+        } break;
+
     default:
         return false;
     }
@@ -105,7 +117,6 @@ void CYQt2Yam::GenerateWidgetGroup(const YEditor* pEditor, const YCQUiTreeItem* 
 
 yam::ybool CYQt2Yam::GenerateScene(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
 {
-    //rpWidget->GetBound().Pos.X = pItem->;
     //
     return GenerateWidget(pItem, pUiItem, rpWidget);
 }
@@ -114,6 +125,32 @@ yam::ybool CYQt2Yam::GeneratePanel(const YCQUiItem* pItem, const YCQUiTreeItem* 
 {
     //
     return GenerateWidget(pItem, pUiItem, rpWidget);
+}
+
+yam::ybool CYQt2Yam::GenerateImage(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
+{
+    GenerateWidget(pItem, pUiItem, rpWidget);
+
+    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("source")->FromString(pItem->getImageSource(YCQUiItem::eImageType_Normal).toLocal8Bit().data());
+    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(pItem->getImageBound(YCQUiItem::eImageType_Normal)));
+    //
+    return true;
+}
+
+yam::ybool CYQt2Yam::GenerateButton(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
+{
+    GenerateWidget(pItem, pUiItem, rpWidget);
+
+    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("source")->FromString(pItem->getImageSource(YCQUiItem::eImageType_Normal).toLocal8Bit().data());
+    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(pItem->getImageBound(YCQUiItem::eImageType_Normal)));
+    rpWidget->GetExternalProperty().AddChild("image")->AddChild("hover")->AddChild("source")->FromString(pItem->getImageSource(YCQUiItem::eImageType_Hover).toLocal8Bit().data());
+    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(pItem->getImageBound(YCQUiItem::eImageType_Hover)));
+    rpWidget->GetExternalProperty().AddChild("image")->AddChild("press")->AddChild("source")->FromString(pItem->getImageSource(YCQUiItem::eImageType_Press).toLocal8Bit().data());
+    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(pItem->getImageBound(YCQUiItem::eImageType_Press)));
+    rpWidget->GetExternalProperty().AddChild("image")->AddChild("disable")->AddChild("source")->FromString(pItem->getImageSource(YCQUiItem::eImageType_Disable).toLocal8Bit().data());
+    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(pItem->getImageBound(YCQUiItem::eImageType_Disable)));
+    //
+    return true;
 }
 
 }}

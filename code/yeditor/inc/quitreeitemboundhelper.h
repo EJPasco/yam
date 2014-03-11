@@ -23,6 +23,7 @@ public Q_SLOTS:
 
 public:
     void setBound(const QRect& roBound);
+    void setEnabled(const bool& rbEnable);
 
 private:
     void setBoundText(const QRect& roBound);

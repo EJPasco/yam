@@ -1,5 +1,6 @@
 #include "quiitem.h"
 
+#include "yeditorcommon.h"
 #include "quiarea.h"
 #include <QtGui/QtEvents>
 #include <QtGui/QPainter>
@@ -8,27 +9,31 @@
 YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
     : QWidget(parent, f)
     , m_pUiArea(parent)
-    , m_pImage(NULL)
     , m_bPressed(false)
     , m_bGrabed(false)
     , m_bSelected(false)
     , m_fAlpha(1.0f)
     , m_bGrabable(true)
     , m_iLayerWeight(0)
-    , m_sImageSource("")
     , m_eType(yam::eWidgetType_None)
+    , m_eImageType(YCQUiItem::eImageType_Normal)
 {
     QSizePolicy policy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     policy.setHeightForWidth(true);
     setSizePolicy(policy);
+
+    for (int i = 0; i < eImageType_Max; ++i)
+    {
+        m_apImage[i] = NULL;
+    }
+    
 }
 
 YCQUiItem::~YCQUiItem()
 {
-    if (NULL != m_pImage)
+    for (int i = 0; i < eImageType_Max; ++i)
     {
-        delete m_pImage;
-        m_pImage = NULL;
+        YEDITOR_DELETE(m_apImage[i]);
     }
 }
 
@@ -36,10 +41,15 @@ void YCQUiItem::paintEvent(QPaintEvent* pEvent)
 {
     QPainter oPainter(this);
 
-    if (NULL != m_pImage)
+    QImage* pImage = m_apImage[m_eImageType];
+    if (NULL == pImage)
+    {
+        pImage = m_apImage[eImageType_Normal];
+    }
+    if (NULL != pImage)
     {
         oPainter.setOpacity(m_fAlpha);
-        oPainter.drawImage(rect(), *m_pImage);
+        oPainter.drawImage(rect(), *pImage);
     }
 
     if (m_bGrabed || m_bSelected)
@@ -136,7 +146,7 @@ void YCQUiItem::setFormat(const yam::base::YIFormat*& rpFormat)
     move(rpFormat->GetBound().Pos.X, rpFormat->GetBound().Pos.Y);
     resize(rpFormat->GetBound().Size.X, rpFormat->GetBound().Size.Y);
 
-    setImage(rpFormat->GetBound(), rpFormat->GetColorData());
+    setImage(eImageType_Normal, rpFormat->GetBound(), rpFormat->GetColorData());
     if (YNULL == rpFormat->GetColorData())
     {
         setAlpah(0.2f);
@@ -161,19 +171,20 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
     move(rpWidget->GetBound().Pos.X, rpWidget->GetBound().Pos.Y);
     resize(rpWidget->GetBound().Size.X, rpWidget->GetBound().Size.Y);
 
+    yam::base::YIProperty* pPropertyImageSource = NULL;
     yam::base::YCBuffer oBufferImage;
     {
-        const yam::base::YITree* pTreeImage = rpWidget->GetExternalProperty().Find("image");
-        if (NULL != pTreeImage && YOBJECT_GETCLASSNAME(yam::base::YCProperty) == pTreeImage->GetClassName())
+        yam::base::YIProperty* pPropertyImage = rpWidget->GetExternalProperty().Find<yam::base::YCProperty>("image");
+        if (NULL != pPropertyImage)
         {
-            const yam::base::YIProperty* pPropertyImage = (const yam::base::YIProperty*)pTreeImage;
+            //pPropertyImageSource = pPropertyImage->Find()
             pPropertyImage->ToBuffer(oBufferImage);
         }
     }
 
     if ((sizeof(yam::ycolor) * rpWidget->GetBound().Size.X * rpWidget->GetBound().Size.Y) == oBufferImage.GetSize())
     {
-        setImage(rpWidget->GetBound(), (const yam::ycolorptr)oBufferImage.GetData());
+        setImage(eImageType_Normal, rpWidget->GetBound(), (const yam::ycolorptr)oBufferImage.GetData());
         setAlpah(1.0f);
     }
     else
@@ -187,15 +198,15 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
 
 void YCQUiItem::setColor(const uint& riColor)
 {
-    if (NULL == m_pImage)
+    if (NULL == m_apImage[eImageType_Normal])
     {
-        m_pImage = new QImage(size(), QImage::Format_ARGB32);
+        m_apImage[eImageType_Normal] = new QImage(size(), QImage::Format_ARGB32);
     }
     for (int j = 0; j < size().height(); ++j)
     {
         for (int i = 0; i < size().width(); ++i)
         {
-            m_pImage->setPixel(i, j, riColor);
+            m_apImage[eImageType_Normal]->setPixel(i, j, riColor);
         }
     }
 }
@@ -205,27 +216,42 @@ void YCQUiItem::setAlpah(const qreal& rfAlpha)
     m_fAlpha = rfAlpha;
 }
 
-void YCQUiItem::setImage(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData)
+void YCQUiItem::setImage(const EImageType& reImageType, const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData)
 {
-    if (NULL != m_pImage)
+    if (NULL != m_apImage[reImageType])
     {
-        delete m_pImage;
-        m_pImage = NULL;
+        delete m_apImage[reImageType];
+        m_apImage[reImageType] = NULL;
     }
 
     if (YNULL != rpColorData)
     {
-        m_pImage = new QImage(QSize(rstRect.Size.X, rstRect.Size.Y), QImage::Format_ARGB32);
+        m_apImage[reImageType] = new QImage(QSize(rstRect.Size.X, rstRect.Size.Y), QImage::Format_ARGB32);
         for (int y = 0; y < rstRect.Size.Y; ++y)
         {
             for (int x = 0; x < rstRect.Size.X; ++x)
             {
-                m_pImage->setPixel(x, y, convertFromYColor(rpColorData[x + y * rstRect.Size.X]));
+                m_apImage[reImageType]->setPixel(x, y, convertFromYColor(rpColorData[x + y * rstRect.Size.X]));
             }
         }
     }
 
-    repaint();
+    if (reImageType == m_eImageType)
+    {
+        repaint();
+    }
+}
+
+YCQUiItem* YCQUiItem::setImageSource(const EImageType& reImageType, const QString& rsImageSource)
+{
+    m_asImageSource[reImageType] = rsImageSource;
+    return this;
+}
+
+YCQUiItem* YCQUiItem::setImageBound(const EImageType& reImageType, const QRect& roImageBound)
+{
+    m_aoImageBound[reImageType] = roImageBound;
+    return this;
 }
 
 YCQUiItem* YCQUiItem::setLayerWeight(const int& riLayerWeight)
@@ -234,20 +260,34 @@ YCQUiItem* YCQUiItem::setLayerWeight(const int& riLayerWeight)
     return this;
 }
 
+void YCQUiItem::setImageType(const EImageType& reImageType)
+{
+    if (m_eImageType == reImageType)
+    {
+        return;
+    }
+    m_eImageType = reImageType;
+    repaint();
+}
+
 int YCQUiItem::getLayerWeight() const
 {
     return m_iLayerWeight;
 }
 
-YCQUiItem* YCQUiItem::setImageSource(const QString& rsImageSource)
+QImage* const& YCQUiItem::getImage(const EImageType& reImageType) const
 {
-    m_sImageSource = rsImageSource;
-    return this;
+    return m_apImage[reImageType];
 }
 
-QString YCQUiItem::getImageSource() const
+QString YCQUiItem::getImageSource(const EImageType& reImageType) const
 {
-    return m_sImageSource;
+    return m_asImageSource[reImageType];
+}
+
+QRect YCQUiItem::getImageBound(const EImageType& reImageType) const
+{
+    return m_aoImageBound[reImageType];
 }
 
 yam::EWidgetType YCQUiItem::getType() const
@@ -262,29 +302,4 @@ QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const
                 , YGETCOLORBIT(riColor, YBITOFFSET_GREEN)
                 , YGETCOLORBIT(riColor, YBITOFFSET_BLUE)
                 , YGETCOLORBIT(riColor, YBITOFFSET_ALPHA));
-}
-
-void YCQUiItem::exportToJson(json::Object& rjObj) const
-{
-    rjObj["layer"] = getLayerWeight();
-    rjObj["image"] = getImageSource().toLocal8Bit().data();
-    //
-    {
-        json::Object jObjSrc;
-        rjObj["src"] = jObjSrc;
-    }
-    {
-        json::Object jObjDst;
-        {
-            json::Object jObjDstPos;
-            jObjDstPos["x"] = pos().x();
-            jObjDstPos["y"] = pos().y();
-            jObjDst["pos"] = jObjDstPos;
-            json::Object jObjDstSize;
-            jObjDstSize["x"] = size().width();
-            jObjDstSize["y"] = size().height();
-            jObjDst["size"] = jObjDstSize;
-        }
-        rjObj["dst"] = jObjDst;
-    }
 }

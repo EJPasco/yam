@@ -1,5 +1,7 @@
 #include "yexportyam.h"
 
+#include <QtCore/QFile>
+
 #include <json.h>
 #include "yrectpacker.h"
 
@@ -56,13 +58,12 @@ void YCExportYam::Save(const yam::base::YITree* pTree) const
     const yam::base::YIWidget* pUi = (yam::base::YIWidget*)pTreeUi;
     ToJson(pUi, jObj);
 
-    std::string sRes = json::Serialize(jObj);
-    sRes = "";
 
-    /*QFile file(stConfig._sJsonFileName);
+    QFile file(sJsonFileName.c_str());
     file.open(QIODevice::WriteOnly);
+    std::string sRes = json::Serialize(jObj);
     file.write(sRes.c_str());
-    file.close();*/
+    file.close();
 
     /*yam::yvvec2d vSize;
     yam::YVec2D stSize;
@@ -184,6 +185,15 @@ void YCExportYam::ToJsonWidgetGroup(const yam::base::YIWidget* pWidget, json::Ob
 void YCExportYam::ToJsonScene(const yam::base::YIWidget* pWidget, json::Object& rjObj) const
 {
     ToJsonWidgetCommon(pWidget, rjObj);
+
+    rjObj["logic"] = "testlog";
+    json::Array jArr;
+    json::Object jObjAst;
+    jObjAst["name"] = "test";
+    jObjAst["type"] = "image";
+    jObjAst["file"] = "test.png";
+    jArr.push_back(jObjAst);
+    rjObj["assetgroup"] = jArr;
 }
 
 void YCExportYam::ToJsonPanel(const yam::base::YIWidget* pWidget, json::Object& rjObj) const

@@ -1,30 +1,40 @@
 #ifndef Y_QUITREEITEMIMAGEHELPER_H
 #define Y_QUITREEITEMIMAGEHELPER_H
 
-#include <QtWidgets/QTreeWidgetItem>
-#include <QtWidgets/QLineEdit>
+#include <QtCore/QRect>
+#include <QtCore/QString>
+#include <QtCore/QObject>
+
+class QTreeWidget;
+class QTreeWidgetItem;
+class QLineEdit;
+class YCQUiTreeItemBoundHelper;
 
 class YCQUiTreeItemImageHelper : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem);
+    explicit YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem, const QString sName = "Image");
     virtual ~YCQUiTreeItemImageHelper();
 
 Q_SIGNALS:
-    void onChanged(const QString& rsImageSource);
+    void onChanged(const QString& rsImageSource, const QRect& roBound);
 
 public Q_SLOTS:
     void onItemChangedSource(const QString& rsImageSource);
+    void onItemChangedBound(const QRect& roBound);
 
 public:
-    void setImageSource(const QString& rsValue);
+    void setSource(const QString& rsValue);
+    void setBound(const QRect& rBound);
 
 private:
-    QTreeWidgetItem*        m_pTreeItemImage;
-    QLineEdit*                m_pEditor;
-    QString                    m_sImageSource;
+    QTreeWidgetItem*            m_pTreeItemImage;
+    QLineEdit*                  m_pEditor;
+    YCQUiTreeItemBoundHelper*   m_pTreeItemBoundHelper;
+    QString                     m_sImageSource;
+    QRect                       m_oRect;
 };
 
 #endif // Y_QUITREEITEMIMAGEHELPER_H

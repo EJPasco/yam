@@ -1,8 +1,15 @@
 #include "quitreeitemimagehelper.h"
 
-YCQUiTreeItemImageHelper::YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem)
+#include <QtWidgets/QTreeWidgetItem>
+#include <QtWidgets/QLineEdit>
+
+#include "yeditorcommon.h"
+#include "quitreeitemboundhelper.h"
+
+YCQUiTreeItemImageHelper::YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem, const QString sName /*= "Image"*/)
     : m_pTreeItemImage(NULL)
     , m_pEditor(NULL)
+    , m_pTreeItemBoundHelper(NULL)
     , m_sImageSource("")
 {
     if (NULL == pTreeRoot || NULL == pTreeItem)
@@ -11,7 +18,7 @@ YCQUiTreeItemImageHelper::YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTree
     }
 
     m_pTreeItemImage = new QTreeWidgetItem;
-    m_pTreeItemImage->setText(0, tr("Image"));
+    m_pTreeItemImage->setText(0, sName);
     pTreeItem->addChild(m_pTreeItemImage);
 
     {
@@ -23,25 +30,45 @@ YCQUiTreeItemImageHelper::YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTree
         m_pTreeItemImage->addChild(pTreeImageSrc);
         pTreeRoot->setItemWidget(pTreeImageSrc, 1, m_pEditor);
     }
-    //
+
+    {
+        m_pTreeItemBoundHelper = new YCQUiTreeItemBoundHelper(pTreeRoot, m_pTreeItemImage);
+        connect(m_pTreeItemBoundHelper, SIGNAL(onChanged(const QRect&)), this, SLOT(onItemChangedBound(const QRect&)));
+        m_pTreeItemBoundHelper->setEnabled(false);
+    }
 }
 
 YCQUiTreeItemImageHelper::~YCQUiTreeItemImageHelper()
 {
-    //
+    YEDITOR_DELETE(m_pTreeItemBoundHelper);
 }
 
 void YCQUiTreeItemImageHelper::onItemChangedSource(const QString& rsImageSource)
 {
     m_sImageSource = rsImageSource;
-    onChanged(rsImageSource);
+    onChanged(m_sImageSource, m_oRect);
 }
 
-void YCQUiTreeItemImageHelper::setImageSource(const QString& rsValue)
+void YCQUiTreeItemImageHelper::onItemChangedBound(const QRect& roBound)
+{
+    m_oRect = roBound;
+    onChanged(m_sImageSource, m_oRect);
+}
+
+void YCQUiTreeItemImageHelper::setSource(const QString& rsValue)
 {
     m_sImageSource = rsValue;
     if (NULL != m_pEditor)
     {
         m_pEditor->setText(m_sImageSource);
+    }
+}
+
+void YCQUiTreeItemImageHelper::setBound(const QRect& rBound)
+{
+    m_oRect = rBound;
+    if (NULL != m_pTreeItemBoundHelper)
+    {
+        m_pTreeItemBoundHelper->setBound(m_oRect);
     }
 }

@@ -69,6 +69,20 @@ void YCWidget::operator>>(YCProperty& rProperty) const
         pProperty->GetId() = "layerweight";
         pProperty->FromInt32(GetLayerWeight());
     }
+    {
+        // external property
+        YCBuffer oBuffer;
+        oBuffer.Begin();
+        m_oExternalProperty >> oBuffer;
+        oBuffer.End();
+
+        if (0 < oBuffer.GetSize())
+        {
+            YCProperty* pProperty = rProperty.NewNext<YCProperty>();
+            (*pProperty) << oBuffer;
+            pProperty->GetId() = "external";
+        }
+    }
 }
 
 void YCWidget::operator<<(YCProperty& rProperty)
@@ -100,6 +114,23 @@ void YCWidget::operator<<(YCProperty& rProperty)
         if (YNULL != pProperty && YOBJECT_GETCLASSNAME(YCProperty) == pProperty->GetClassName())
         {
             ((YCProperty*)pProperty)->ToInt32(GetLayerWeight());
+        }
+    }
+    {
+        // external property
+        YCBuffer oBuffer;
+
+        YITree* pProperty = rProperty.FindNext("external");
+        if (YNULL != pProperty && YOBJECT_GETCLASSNAME(YCProperty) == pProperty->GetClassName())
+        {
+            oBuffer.Begin();
+            (*((YCProperty*)pProperty)) >> oBuffer;
+            oBuffer.End();
+        }
+        m_oExternalProperty.Clear();
+        if (0 < oBuffer.GetSize())
+        {
+            m_oExternalProperty << oBuffer;
         }
     }
 }

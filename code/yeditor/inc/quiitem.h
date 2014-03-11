@@ -12,6 +12,18 @@ class YCQUiItem : public QWidget
     Q_OBJECT
 
 public:
+    enum EImageType
+    {
+        eImageType_Normal,
+        eImageType_Hover,
+        eImageType_Press,
+        eImageType_Disable,
+        eImageType_Checked,
+        eImageType_Unchecked,
+        eImageType_Max,
+    };
+
+public:
     explicit YCQUiItem(YCQUiArea* parent = 0, Qt::WindowFlags f = 0);
     virtual ~YCQUiItem();
 
@@ -34,24 +46,27 @@ public:
     void setWidget(const yam::base::YIWidget*& rpWidget);
     void setColor(const uint& riColor);
     void setAlpah(const qreal& rfAlpha);
-    void setImage(const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData);
+    void setImage(const EImageType& reImageType, const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData);
+    YCQUiItem* setImageSource(const EImageType& reImageType, const QString& rsImageSource);
+    YCQUiItem* setImageBound(const EImageType& reImageType, const QRect& roImageBound);
+    YCQUiItem* setLayerWeight(const int& riLayerWeight);
+    void setImageType(const EImageType& reImageType);
 
 public:
-    YCQUiItem* setLayerWeight(const int& riLayerWeight);
     int getLayerWeight() const;
-    YCQUiItem* setImageSource(const QString& rsImageSource);
-    QString getImageSource() const;
+    QImage* const& getImage(const EImageType& reImageType) const;
+    QString getImageSource(const EImageType& reImageType) const;
+    QRect getImageBound(const EImageType& reImageType) const;
     yam::EWidgetType getType() const;
 
 public:
     QRgb convertFromYColor(const yam::ycolor& riColor) const;
 
-public:
-    void exportToJson(json::Object& rjObj) const;
-
 private:
     YCQUiArea*          m_pUiArea;
-    QImage*             m_pImage;
+    QImage*             m_apImage[eImageType_Max];
+    QString             m_asImageSource[eImageType_Max];
+    QRect               m_aoImageBound[eImageType_Max];
     bool                m_bPressed;
     QPointF             m_oPosMousePressStart;
     bool                m_bGrabable;
@@ -59,8 +74,8 @@ private:
     bool                m_bSelected;
     qreal               m_fAlpha;
     int                 m_iLayerWeight;
-    QString             m_sImageSource;
     yam::EWidgetType    m_eType;
+    EImageType          m_eImageType;
 };
 
 

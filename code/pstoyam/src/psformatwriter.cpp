@@ -120,41 +120,41 @@ void YCPsFormatWriter::Do(const ReadLayerDesc* const& rpLayerDesc, base::YIForma
             pColorData = YNULL;
         }
 
-        ReadChannelDesc* apChannelDesc[EColor_Max] = {NULL, NULL, NULL, NULL};
+        ReadChannelDesc* apChannelDesc[eColor_Max] = {NULL, NULL, NULL, NULL};
         ReadChannelDesc* pChannelDesc = rpLayerDesc->compositeChannelsList;
         while (NULL != pChannelDesc)
         {
             if (ctRed == pChannelDesc->channelType)
             {
-                apChannelDesc[EColor_Red] = pChannelDesc;
+                apChannelDesc[eColor_Red] = pChannelDesc;
             }
             else if (ctGreen == pChannelDesc->channelType)
             {
-                apChannelDesc[EColor_Green] = pChannelDesc;
+                apChannelDesc[eColor_Green] = pChannelDesc;
             }
             else if (ctBlue == pChannelDesc->channelType)
             {
-                apChannelDesc[EColor_Blue] = pChannelDesc;
+                apChannelDesc[eColor_Blue] = pChannelDesc;
             }
             pChannelDesc = pChannelDesc->next;
         }
-        apChannelDesc[EColor_Alpah] = rpLayerDesc->transparency;
+        apChannelDesc[eColor_Alpah] = rpLayerDesc->transparency;
 
-        for (yint32 i = 0; i < EColor_Max; ++i)
+        for (yint32 i = 0; i < eColor_Max; ++i)
         {
-            if (EColor_Red == i)
+            if (eColor_Red == i)
             {
                 Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_RED);
             }
-            else if (EColor_Green == i)
+            else if (eColor_Green == i)
             {
                 Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_GREEN);
             }
-            else if (EColor_Blue == i)
+            else if (eColor_Blue == i)
             {
                 Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_BLUE);
             }
-            else if (EColor_Alpah == i)
+            else if (eColor_Alpah == i)
             {
                 Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_ALPHA);
             }
