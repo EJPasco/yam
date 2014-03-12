@@ -133,6 +133,7 @@ void YCQUiItem::setSelected(const bool& rbSelected)
     {
         m_pUiArea->setSelected(this);
     }
+    onSelected(this);
 
     repaint();
 }
@@ -171,20 +172,30 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
     move(rpWidget->GetBound().Pos.X, rpWidget->GetBound().Pos.Y);
     resize(rpWidget->GetBound().Size.X, rpWidget->GetBound().Size.Y);
 
-    yam::base::YIProperty* pPropertyImageSource = NULL;
-    yam::base::YCBuffer oBufferImage;
-    {
-        yam::base::YIProperty* pPropertyImage = rpWidget->GetExternalProperty().Find<yam::base::YCProperty>("image");
-        if (NULL != pPropertyImage)
-        {
-            //pPropertyImageSource = pPropertyImage->Find()
-            pPropertyImage->ToBuffer(oBufferImage);
-        }
-    }
+    yam::ystring sImageSourceNormal = "";
+    const yam::base::YIFormat* pFormatNormal = getFormat(eImageType_Normal, rpWidget, sImageSourceNormal);
 
-    if ((sizeof(yam::ycolor) * rpWidget->GetBound().Size.X * rpWidget->GetBound().Size.Y) == oBufferImage.GetSize())
+    if (NULL != pFormatNormal)
     {
-        setImage(eImageType_Normal, rpWidget->GetBound(), (const yam::ycolorptr)oBufferImage.GetData());
+        setImage(eImageType_Normal, pFormatNormal->GetBound(), pFormatNormal->GetColorData());
+        setImageSource(eImageType_Normal, sImageSourceNormal.c_str());
+
+        for (int i = 0; i < eImageType_Max; ++i)
+        {
+            EImageType eType = (EImageType)i;
+            if (eImageType_Normal == eType)
+            {
+                continue;
+            }
+            yam::ystring sImageSource = "";
+            const yam::base::YIFormat* pFormat = getFormat(eType, rpWidget, sImageSource);
+            if (YNULL == pFormat)
+            {
+                continue;
+            }
+            setImage(eType, pFormat->GetBound(), pFormat->GetColorData());
+            setImageSource(eType, sImageSource.c_str());
+        }
         setAlpah(1.0f);
     }
     else
@@ -238,6 +249,8 @@ void YCQUiItem::setImage(const EImageType& reImageType, const yam::YRect2D& rstR
 
     if (reImageType == m_eImageType)
     {
+        setAlpah(1.0f);
+
         repaint();
     }
 }
@@ -295,6 +308,11 @@ yam::EWidgetType YCQUiItem::getType() const
     return m_eType;
 }
 
+YCQUiArea* YCQUiItem::getArea() const
+{
+    return m_pUiArea;
+}
+
 QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const
 {
     using namespace yam;
@@ -302,4 +320,62 @@ QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const
                 , YGETCOLORBIT(riColor, YBITOFFSET_GREEN)
                 , YGETCOLORBIT(riColor, YBITOFFSET_BLUE)
                 , YGETCOLORBIT(riColor, YBITOFFSET_ALPHA));
+}
+
+yam::ystring YCQUiItem::convertImageTypeToString(const EImageType& reImageType)
+{
+    yam::ystring sTypeName = "";
+    if (eImageType_Normal == reImageType)
+    {
+        sTypeName = "normal";
+    }
+    else if (eImageType_Hover == reImageType)
+    {
+        sTypeName = "hover";
+    }
+    else if (eImageType_Press == reImageType)
+    {
+        sTypeName = "press";
+    }
+    else if (eImageType_Disable == reImageType)
+    {
+        sTypeName = "disable";
+    }
+    else if (eImageType_Checked == reImageType)
+    {
+        sTypeName = "checked";
+    }
+    else if (eImageType_Unchecked == reImageType)
+    {
+        sTypeName = "unchecked";
+    }
+    return sTypeName;
+}
+
+const yam::base::YIFormat* YCQUiItem::getFormat(const EImageType& reImageType, const yam::base::YIWidget*& rpWidget, yam::ystring& rsImagesource)
+{
+    yam::base::YIProperty* pPropertyImageSource = NULL;
+    {
+        std::vector<yam::ystring> vsPath;
+        vsPath.push_back("image");
+        vsPath.push_back(convertImageTypeToString(reImageType));
+        vsPath.push_back("source");
+        pPropertyImageSource = rpWidget->GetExternalProperty().Find<yam::base::YCProperty>(vsPath);
+        if (NULL != pPropertyImageSource)
+        {
+            pPropertyImageSource->ToString(rsImagesource);
+        }
+    }
+
+    std::vector<yam::ystring> vsPathSeg;
+    {
+        QString qsImageSource(rsImagesource.c_str());
+        QStringList qvsPathSeg = qsImageSource.split(".");
+        for (int i = 1; i < qvsPathSeg.size(); ++i)
+        {
+            yam::ystring sPathSeg(qvsPathSeg[i].toLocal8Bit());
+            vsPathSeg.push_back(sPathSeg);
+        }
+    }
+    return gs_FileTreeData.Find<yam::base::YCFormat>(vsPathSeg);
 }

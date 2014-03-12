@@ -14,6 +14,7 @@ YCQUiArea::YCQUiArea(QWidget* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
     : QFrame(parent, f)
     , m_bPressed(false)
     , m_bGrabable(true)
+    , m_bRaiseBySelected(true)
 {
     //
 }
@@ -81,6 +82,11 @@ void YCQUiArea::setGrabable(const bool& rbGrabable)
     m_bGrabable = rbGrabable;
 }
 
+void YCQUiArea::setRaiseBySelected(const bool& rbRaiseBySelected)
+{
+    m_bRaiseBySelected = rbRaiseBySelected;
+}
+
 void YCQUiArea::setSelected(const YCQUiItem* const& rpSelectedItem)
 {
     yvuiitemptr::iterator it = m_vItemPtr.begin();
@@ -95,7 +101,10 @@ void YCQUiArea::setSelected(const YCQUiItem* const& rpSelectedItem)
         if (rpItem == rpSelectedItem)
         {
             rpItem->setSelected(true);
-            rpItem->raise();
+            if (m_bRaiseBySelected)
+            {
+                rpItem->raise();
+            }
         }
         else
         {
@@ -129,6 +138,21 @@ YCQUiItem* YCQUiArea::addChildItem(const yam::base::YIWidget* pWidget)
 
     m_vItemPtr.push_back(pNewItem);
     return pNewItem;
+}
+
+void YCQUiArea::removeChildItem(const YCQUiItem* const& rpItem)
+{
+    yvuiitemptr::iterator it = m_vItemPtr.begin();
+    yvuiitemptr::iterator itEnd = m_vItemPtr.end();
+    for (; it != itEnd; ++it)
+    {
+        if (rpItem != *it)
+        {
+            continue;
+        }
+        m_vItemPtr.erase(it);
+        break;
+    }
 }
 
 void YCQUiArea::clearChildrenItem()

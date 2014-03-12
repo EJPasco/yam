@@ -29,6 +29,7 @@ public:
 
 Q_SIGNALS:
     void onPressed(YCQUiItem* pUiItem);
+    void onSelected(YCQUiItem* pUiItem);
 
 protected:
     virtual void paintEvent(QPaintEvent* pEvent);
@@ -58,9 +59,14 @@ public:
     QString getImageSource(const EImageType& reImageType) const;
     QRect getImageBound(const EImageType& reImageType) const;
     yam::EWidgetType getType() const;
+    YCQUiArea* getArea() const;
 
 public:
     QRgb convertFromYColor(const yam::ycolor& riColor) const;
+    static yam::ystring convertImageTypeToString(const EImageType& reImageType);
+
+private:
+    const yam::base::YIFormat* getFormat(const EImageType& reImageType, const yam::base::YIWidget*& rpWidget, yam::ystring& rsImagesource);
 
 private:
     YCQUiArea*          m_pUiArea;

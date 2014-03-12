@@ -15,7 +15,7 @@ public:
     virtual GET_DECL_CONST(yam::base::YCProperty&, GetProperty) = 0;
 
 public:
-    virtual void Save(const yam::base::YITree* pTree) const = 0;
+    virtual void Save(const yam::base::YCTree* pTree) const = 0;
 };
 
 template<typename TNBase>
@@ -40,7 +40,7 @@ public:
     virtual ~YCExport();
 
 public:
-    virtual void Save(const yam::base::YITree* pTree) const;
+    virtual void Save(const yam::base::YCTree* pTree) const;
 };
 
 }}

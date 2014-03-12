@@ -4,21 +4,14 @@
 #include "yeditorcommon.h"
 
 #include "yeditor_main_ui.h"
-#include "quitreeitem.h"
-#include "quitreereshelper.h"
-#include "quitreeuihelper.h"
 
 #include <QtWidgets/QMainWindow>
 
+class YCQUiTreeResHelper;
+class YCQUiTreeUiHelper;
+
 class YEditor : public QMainWindow
 {
-    struct SRelationship
-    {
-        YCQUiItem*            _pUiItem;
-        YCQUiTreeItem*        _pTreeItem;
-    };
-    typedef std::map<QString, SRelationship>        ymnamerelationship;
-
     Q_OBJECT
 
 public:
@@ -40,8 +33,8 @@ public Q_SLOTS:
     void onUiTreeContextMenu(QPoint oPos);
 
 public Q_SLOTS:
-    void onPressedResItem(YCQUiItem* pUiItem);
-    void onPressedUiItem(YCQUiItem* pUiItem);
+    void onSelectedResItem(YCQUiItem* pUiItem);
+    void onSelectedUiItem(YCQUiItem* pUiItem);
 
 public Q_SLOTS:
     void onResDockVisibilityChanged(bool bVisible);
@@ -56,16 +49,19 @@ public Q_SLOTS:
     void onClickedUiMenuItem_CreatePanel();
     void onClickedUiMenuItem_CreateImage();
     void onClickedUiMenuItem_CreateButton();
+    void onClickedUiMenuItem_EditRemove();
 
 private:
     void reloadFile(const yam::ystring& rsFileName);
     void reloadRes(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
     void reloadUi(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
-    QString getFullName(const yam::base::YITree* pTree);
+    yam::ystring getFullName(const yam::base::YITree* pTree);
 
 public:
-    YCQUiItem* getUiItem(const QTreeWidgetItem* pTreeItem) const;
-    YCQUiTreeItem* getTreeItem(const YCQUiItem* pUiItem) const;
+    static SRelationship getRelationship(const yam::ystring& rsKey);
+    static YCQUiTreeItem* getTreeItem(const YCQUiItem* pUiItem);
+    static YCQUiItem* getUiItem(const QTreeWidgetItem* pTreeItem);
+    static void removeUiItem(QTreeWidgetItem*& rpTreeItem, const bool bRemove = true);
 
 private:
     void refreshResProperty(YCQUiItem*& rpUiItem);
@@ -76,7 +72,6 @@ private:
 
 private:
     Ui_MainWindow               m_Ui;
-    ymnamerelationship          m_mRelationship;
     yam::ystring                m_sFileName;
     YCQUiTreeResHelper*         m_pTreeResHelper;
     YCQUiTreeUiHelper*          m_pTreeUiHelper;

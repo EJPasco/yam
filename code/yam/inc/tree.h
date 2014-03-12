@@ -261,6 +261,17 @@ public:
         return pFind;
     }
 
+    template<typename TNOutput>
+    TNOutput* Find(const std::vector<ystring>& rvsId) const
+    {
+        YITree* pFind = Find(rvsId);
+        if (YNULL == pFind || YOBJECT_GETCLASSNAME(TNOutput) != pFind->GetClassName())
+        {
+            return NULL;
+        }
+        return (TNOutput*)pFind;
+    }
+
     virtual YITree* FindNext(const ystring& rsId) const
     {
         if (NULL == m_pNext)
@@ -274,7 +285,18 @@ public:
         return m_pNext->FindNext(rsId);
     }
 
-    virtual YITree* FindChild(const ystring& rsId) const 
+    template<typename TNOutput>
+    TNOutput* FindNext(const ystring& rsId) const
+    {
+        YITree* pFind = FindNext(rsId);
+        if (YNULL == pFind || YOBJECT_GETCLASSNAME(TNOutput) != pFind->GetClassName())
+        {
+            return NULL;
+        }
+        return (TNOutput*)pFind;
+    }
+
+    virtual YITree* FindChild(const ystring& rsId) const
     {
         if (YNULL == m_pChildren)
         {
@@ -289,6 +311,17 @@ public:
             return m_pChildren->FindNext(rsId);
         }
         return YNULL;
+    }
+
+    template<typename TNOutput>
+    TNOutput* FindChild(const ystring& rsId) const
+    {
+        YITree* pFind = FindChild(rsId);
+        if (YNULL == pFind || YOBJECT_GETCLASSNAME(TNOutput) != pFind->GetClassName())
+        {
+            return NULL;
+        }
+        return (TNOutput*)pFind;
     }
 
 public:

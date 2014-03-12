@@ -34,9 +34,11 @@ protected:
 
 public:
     void setGrabable(const bool& rbGrabable);
+    void setRaiseBySelected(const bool& rbRaiseBySelected);
     void setSelected(const YCQUiItem* const& rpSelectedItem);
     YCQUiItem* addChildItem(const yam::base::YIFormat* pFormat);
     YCQUiItem* addChildItem(const yam::base::YIWidget* pWidget);
+    void removeChildItem(const YCQUiItem* const& rpItem);
     void clearChildrenItem();
     void toTiled();
 
@@ -46,10 +48,11 @@ private:
 
 private:
     bool            m_bPressed;
-    QPointF            m_oPosMousePressStart;
-    QPointF            m_oPosOffset;
-    yvuiitemptr        m_vItemPtr;
+    QPointF         m_oPosMousePressStart;
+    QPointF         m_oPosOffset;
+    yvuiitemptr     m_vItemPtr;
     bool            m_bGrabable;
+    bool            m_bRaiseBySelected;
 };
 
 #endif // Y_QUIAREA_H

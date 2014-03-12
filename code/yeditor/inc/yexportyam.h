@@ -16,7 +16,7 @@ public:
     virtual ~YCExportYam();
 
 public:
-    virtual void Save(const yam::base::YITree* pTree) const;
+    virtual void Save(const yam::base::YCTree* pTree) const;
 
 private:
     void ToJson(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
@@ -28,7 +28,10 @@ private:
     void ToJsonButton(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
 
 public:
+    static void GetStringByIdFromProperty(const yam::base::YITree* const& rpTree, const yam::ystring& rsId, yam::ystring& rsValue);
     static yam::ystring GetNameByWidgetType(const yam::EWidgetType& reType);
+    static void ToJsonVec2D(const yam::YVec2D& rstVec2D, json::Object& rjObj);
+    static void ToJsonRect2D(const yam::YRect2D& rstRect2D, json::Object& rjObj);
 };
 
 }}

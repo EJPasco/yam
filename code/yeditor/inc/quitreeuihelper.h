@@ -24,10 +24,7 @@ public Q_SLOTS:
     void onItemChangedBound(const QRect& roBound);
     void onItemChangedLayerWeight(const int& riLayerWeight);
     void onItemChangedImageType(const YCQUiItem::EImageType& reImageType);
-    void onItemChangedNormalImage(const QString& rsImageSource, const QRect& roBound);
-    void onItemChangedHoverImage(const QString& rsImageSource, const QRect& roBound);
-    void onItemChangedPressImage(const QString& rsImageSource, const QRect& roBound);
-    void onItemChangedDisableImage(const QString& rsImageSource, const QRect& roBound);
+    void onItemChangedImageSource(const YCQUiItem::EImageType& reImageType, const QString& rsImageSource, const QRect& roBound);
 
 public:
     virtual void setUiItem(YCQUiItem*& rpUiItem);
@@ -37,10 +34,7 @@ private:
     YCQUiTreeItemBoundHelper*               m_pTreeItemBoundHelper;
     YCQUiTreeItemLayerWeightHelper*         m_pTreeItemLayerWeightHelper;
     YCQUiTreeItemImageTypeHelper*           m_pTreeItemImageTypeHelper;
-    YCQUiTreeItemImageHelper*               m_pTreeItemImageNormalHelper;
-    YCQUiTreeItemImageHelper*               m_pTreeItemImageHoverHelper;
-    YCQUiTreeItemImageHelper*               m_pTreeItemImagePressHelper;
-    YCQUiTreeItemImageHelper*               m_pTreeItemImageDisableHelper;
+    YCQUiTreeItemImageHelper*               m_apTreeItemImageHelper[YCQUiItem::eImageType_Max];
 };
 
 #endif // Y_QUITREEWIDGETHELPER_H

@@ -6,10 +6,11 @@
 #include "yeditorcommon.h"
 #include "quitreeitemboundhelper.h"
 
-YCQUiTreeItemImageHelper::YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem, const QString sName /*= "Image"*/)
+YCQUiTreeItemImageHelper::YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem, const YCQUiItem::EImageType& reImageType, const QString sName /*= "Image"*/)
     : m_pTreeItemImage(NULL)
     , m_pEditor(NULL)
     , m_pTreeItemBoundHelper(NULL)
+    , m_eImageType(reImageType)
     , m_sImageSource("")
 {
     if (NULL == pTreeRoot || NULL == pTreeItem)
@@ -46,13 +47,13 @@ YCQUiTreeItemImageHelper::~YCQUiTreeItemImageHelper()
 void YCQUiTreeItemImageHelper::onItemChangedSource(const QString& rsImageSource)
 {
     m_sImageSource = rsImageSource;
-    onChanged(m_sImageSource, m_oRect);
+    onChanged(m_eImageType, m_sImageSource, m_oRect);
 }
 
 void YCQUiTreeItemImageHelper::onItemChangedBound(const QRect& roBound)
 {
     m_oRect = roBound;
-    onChanged(m_sImageSource, m_oRect);
+    onChanged(m_eImageType, m_sImageSource, m_oRect);
 }
 
 void YCQUiTreeItemImageHelper::setSource(const QString& rsValue)

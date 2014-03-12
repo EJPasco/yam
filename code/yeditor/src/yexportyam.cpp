@@ -1,8 +1,11 @@
 #include "yexportyam.h"
 
-#include <QtCore/QFile>
-
 #include <json.h>
+#include <QtCore/QFile>
+#include <QtGui/QPainter>
+
+#include "yeditor.h"
+#include "yconverter.h"
 #include "yrectpacker.h"
 
 namespace yam{ namespace io{
@@ -17,7 +20,7 @@ YCExportYam::~YCExportYam()
     //
 }
 
-void YCExportYam::Save(const yam::base::YITree* pTree) const
+void YCExportYam::Save(const yam::base::YCTree* pTree) const
 {
     yam::base::YCProperty* pFile = GetProperty().Find<yam::base::YCProperty>("file");
     yam::base::YCProperty* pData = GetProperty().Find<yam::base::YCProperty>("data");
@@ -50,14 +53,12 @@ void YCExportYam::Save(const yam::base::YITree* pTree) const
     yam::ystring sPngFileName = sDirectory + sFileName + ".png";
 
     json::Object jObj;
-    yam::base::YITree* pTreeUi = pTree->FindChild(YFILE_KEY_UI);
-    if (YNULL == pTreeUi || YOBJECT_GETCLASSNAME(yam::base::YCWidget) != pTreeUi->GetClassName())
+    yam::base::YIWidget* pUi = pTree->FindChild<yam::base::YCWidget>(YFILE_KEY_UI);
+    if (YNULL == pUi)
     {
         return;
     }
-    const yam::base::YIWidget* pUi = (yam::base::YIWidget*)pTreeUi;
     ToJson(pUi, jObj);
-
 
     QFile file(sJsonFileName.c_str());
     file.open(QIODevice::WriteOnly);
@@ -65,51 +66,34 @@ void YCExportYam::Save(const yam::base::YITree* pTree) const
     file.write(sRes.c_str());
     file.close();
 
-    /*yam::yvvec2d vSize;
-    yam::YVec2D stSize;
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = qrand() % 80 + 1; stSize.Y = qrand() % 80 + 1;
-    vSize.push_back(stSize);
-    stSize.X = 500; stSize.Y = 500;
-    yam::yvrect vRect;
-    YCRectPacker::Instance().Do(vSize, stSize, vRect);
-    QVector<QRect> vQRects;
-    yam::yvrect::const_iterator cit = vRect.begin();
-    yam::yvrect::const_iterator citEnd = vRect.end();
-    for (; cit != citEnd; ++cit)
+    QRect stAreaBound;
+    ymnamerelationship::const_iterator citEnd = gs_mRelationship.end();
+    for (ymnamerelationship::const_iterator cit = gs_mRelationship.begin(); cit != citEnd; ++cit)
     {
-        const yam::YRect2D& rstRect2D = *cit;
-        vQRects.push_back(QRect(rstRect2D.Pos.X, rstRect2D.Pos.Y, rstRect2D.Size.X, rstRect2D.Size.Y));
+        if (cit->second._eType != eRelationshipType_Res || NULL == cit->second._pUiItem)
+        {
+            continue;
+        }
+        stAreaBound |= QRect(cit->second._pUiItem->pos(), cit->second._pUiItem->size());
     }
 
-    QImage oImage(stSize.X, stSize.Y, QImage::Format_ARGB32);
+    QImage oImage(stAreaBound.size(), QImage::Format_ARGB32);
     oImage.fill(Qt::transparent);
     QPainter oPainter(&oImage);
-    for (int i = 0; i < vQRects.size(); ++i)
+    for (ymnamerelationship::const_iterator cit = gs_mRelationship.begin(); cit != citEnd; ++cit)
     {
-        QRgb rgb = qRgba((qrand() % 0xFF), (qrand() % 0xFF), (qrand() % 0xFF), ((qrand() % 0xFF) + 0x55) % 0xFF);
-        QImage oImageBox(vQRects[i].width(), vQRects[i].height(), QImage::Format_ARGB32);
-        oImageBox.fill(rgb);
-        oPainter.drawImage(vQRects[i].x(), vQRects[i].y(), oImageBox);
+        if (cit->second._eType != eRelationshipType_Res || NULL == cit->second._pUiItem)
+        {
+            continue;
+        }
+        QImage* const& pImage = cit->second._pUiItem->getImage(YCQUiItem::eImageType_Normal);
+        if (NULL == pImage)
+        {
+            continue;
+        }
+        oPainter.drawImage(cit->second._pUiItem->pos(), *pImage);
     }
-    oImage.save("D:\\workspace\\github\\temp\\temp.png", "PNG");*/
+    oImage.save(sPngFileName.c_str(), "PNG");
     //
 }
 
@@ -186,14 +170,38 @@ void YCExportYam::ToJsonScene(const yam::base::YIWidget* pWidget, json::Object& 
 {
     ToJsonWidgetCommon(pWidget, rjObj);
 
-    rjObj["logic"] = "testlog";
+    yam::base::YCProperty* pLogic = pWidget->GetExternalProperty().Find<yam::base::YCProperty>("logic");
+    yam::ystring sLogicName;
+    if (YNULL != pLogic)
+    {
+        pLogic->ToString(sLogicName);
+        rjObj["logic"] = sLogicName;
+    }
+
     json::Array jArr;
-    json::Object jObjAst;
-    jObjAst["name"] = "test";
-    jObjAst["type"] = "image";
-    jObjAst["file"] = "test.png";
-    jArr.push_back(jObjAst);
-    rjObj["assetgroup"] = jArr;
+    yam::base::YITree* pAssetGroup = pWidget->GetExternalProperty().Find("assetgroup");
+    if (YNULL != pAssetGroup)
+    {
+        yam::base::YITree* pFile = pAssetGroup->GetChildren();
+        while (YNULL != pFile)
+        {
+            yam::ystring sFile = "";
+            yam::ystring sName = "";
+            yam::ystring sType = "";
+            GetStringByIdFromProperty(pFile, "file", sFile);
+            GetStringByIdFromProperty(pFile, "name", sName);
+            GetStringByIdFromProperty(pFile, "type", sType);
+
+            json::Object jObjAst;
+            jObjAst["file"] = sFile;
+            jObjAst["name"] = sName;
+            jObjAst["type"] = sType;
+            jArr.push_back(jObjAst);
+
+            pFile = pFile->GetNext();
+        }
+        rjObj["assetgroup"] = jArr;
+    }
 }
 
 void YCExportYam::ToJsonPanel(const yam::base::YIWidget* pWidget, json::Object& rjObj) const
@@ -205,12 +213,59 @@ void YCExportYam::ToJsonPanel(const yam::base::YIWidget* pWidget, json::Object& 
 void YCExportYam::ToJsonImage(const yam::base::YIWidget* pWidget, json::Object& rjObj) const
 {
     ToJsonWidgetCommon(pWidget, rjObj);
+
+    yam::ystring sTypeName = YCQUiItem::convertImageTypeToString(YCQUiItem::eImageType_Normal);
+
+    std::vector<yam::ystring> vsPath;
+    vsPath.push_back("image");
+    vsPath.push_back(sTypeName);
+    vsPath.push_back("source");
+    yam::base::YIProperty* pPropertySrc = pWidget->GetExternalProperty().Find<yam::base::YCProperty>(vsPath);
+    if (YNULL != pPropertySrc)
+    {
+        yam::ystring sSrc;
+        pPropertySrc->ToString(sSrc);
+        SRelationship stRelationship = YEditor::getRelationship(sSrc);
+        if (stRelationship._pUiItem)
+        {
+            json::Object jObjBound;
+            ToJsonRect2D(YCConverter::Instance().Convert(QRect(stRelationship._pUiItem->pos(), stRelationship._pUiItem->size())), jObjBound);
+            rjObj["src"] = jObjBound;
+        }
+    }
     //
 }
 
 void YCExportYam::ToJsonButton(const yam::base::YIWidget* pWidget, json::Object& rjObj) const
 {
     ToJsonWidgetCommon(pWidget, rjObj);
+
+    json::Object jObjSrc;
+
+    for (int i = 0; i < YCQUiItem::eImageType_Max; ++i)
+    {
+        YCQUiItem::EImageType eImageType = (YCQUiItem::EImageType)i;
+        yam::ystring sTypeName = YCQUiItem::convertImageTypeToString(eImageType);
+
+        std::vector<yam::ystring> vsPath;
+        vsPath.push_back("image");
+        vsPath.push_back(sTypeName);
+        vsPath.push_back("source");
+        yam::base::YIProperty* pPropertySrc = pWidget->GetExternalProperty().Find<yam::base::YCProperty>(vsPath);
+        if (YNULL != pPropertySrc)
+        {
+            yam::ystring sSrc;
+            pPropertySrc->ToString(sSrc);
+            SRelationship stRelationship = YEditor::getRelationship(sSrc);
+            if (stRelationship._pUiItem)
+            {
+                json::Object jObjBound;
+                ToJsonRect2D(YCConverter::Instance().Convert(QRect(stRelationship._pUiItem->pos(), stRelationship._pUiItem->size())), jObjBound);
+                jObjSrc[sTypeName] = jObjBound;
+            }
+        }
+    }
+    rjObj["src"] = jObjSrc;
     //
 }
 
@@ -233,7 +288,37 @@ yam::ystring YCExportYam::GetNameByWidgetType(const yam::EWidgetType& reType)
     default:
         return "none";
     }
+}
 
+void YCExportYam::GetStringByIdFromProperty(const yam::base::YITree* const& rpTree, const yam::ystring& rsId, yam::ystring& rsValue)
+{
+    if (YNULL == rpTree)
+    {
+        return;
+    }
+    const yam::base::YITree* pChild = rpTree->FindChild(rsId);
+    if (YNULL == pChild || YOBJECT_GETCLASSNAME(yam::base::YCProperty) != pChild->GetClassName())
+    {
+        return;
+    }
+    ((yam::base::YCProperty*)pChild)->ToString(rsValue);
+}
+
+void YCExportYam::ToJsonVec2D(const yam::YVec2D& rstVec2D, json::Object& rjObj)
+{
+    rjObj["x"] = rstVec2D.X;
+    rjObj["y"] = rstVec2D.Y;
+}
+
+void YCExportYam::ToJsonRect2D(const yam::YRect2D& rstRect2D, json::Object& rjObj)
+{
+    json::Object jObjPos;
+    ToJsonVec2D(rstRect2D.Pos, jObjPos);
+    rjObj["pos"] = jObjPos;
+
+    json::Object jObjSize;
+    ToJsonVec2D(rstRect2D.Size, jObjSize);
+    rjObj["size"] = jObjSize;
 }
 
 }}

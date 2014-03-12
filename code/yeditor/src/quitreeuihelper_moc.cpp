@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YCQUiTreeUiHelper_t {
-    QByteArrayData data[16];
-    char stringdata[281];
+    QByteArrayData data[13];
+    char stringdata[207];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -41,19 +41,14 @@ QT_MOC_LITERAL(8, 110, 22),
 QT_MOC_LITERAL(9, 133, 21),
 QT_MOC_LITERAL(10, 155, 11),
 QT_MOC_LITERAL(11, 167, 24),
-QT_MOC_LITERAL(12, 192, 13),
-QT_MOC_LITERAL(13, 206, 23),
-QT_MOC_LITERAL(14, 230, 23),
-QT_MOC_LITERAL(15, 254, 25)
+QT_MOC_LITERAL(12, 192, 13)
     },
     "YCQUiTreeUiHelper\0onItemChangedSize\0"
     "\0roSize\0onItemChangedBound\0roBound\0"
     "onItemChangedLayerWeight\0riLayerWeight\0"
     "onItemChangedImageType\0YCQUiItem::EImageType\0"
-    "reImageType\0onItemChangedNormalImage\0"
-    "rsImageSource\0onItemChangedHoverImage\0"
-    "onItemChangedPressImage\0"
-    "onItemChangedDisableImage\0"
+    "reImageType\0onItemChangedImageSource\0"
+    "rsImageSource\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -63,7 +58,7 @@ static const uint qt_meta_data_YCQUiTreeUiHelper[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -71,24 +66,18 @@ static const uint qt_meta_data_YCQUiTreeUiHelper[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   54,    2, 0x0a,
-       4,    1,   57,    2, 0x0a,
-       6,    1,   60,    2, 0x0a,
-       8,    1,   63,    2, 0x0a,
-      11,    2,   66,    2, 0x0a,
-      13,    2,   71,    2, 0x0a,
-      14,    2,   76,    2, 0x0a,
-      15,    2,   81,    2, 0x0a,
+       1,    1,   39,    2, 0x0a,
+       4,    1,   42,    2, 0x0a,
+       6,    1,   45,    2, 0x0a,
+       8,    1,   48,    2, 0x0a,
+      11,    3,   51,    2, 0x0a,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QSize,    3,
     QMetaType::Void, QMetaType::QRect,    5,
     QMetaType::Void, QMetaType::Int,    7,
     QMetaType::Void, 0x80000000 | 9,   10,
-    QMetaType::Void, QMetaType::QString, QMetaType::QRect,   12,    5,
-    QMetaType::Void, QMetaType::QString, QMetaType::QRect,   12,    5,
-    QMetaType::Void, QMetaType::QString, QMetaType::QRect,   12,    5,
-    QMetaType::Void, QMetaType::QString, QMetaType::QRect,   12,    5,
+    QMetaType::Void, 0x80000000 | 9, QMetaType::QString, QMetaType::QRect,   10,   12,    5,
 
        0        // eod
 };
@@ -102,10 +91,7 @@ void YCQUiTreeUiHelper::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         case 1: _t->onItemChangedBound((*reinterpret_cast< const QRect(*)>(_a[1]))); break;
         case 2: _t->onItemChangedLayerWeight((*reinterpret_cast< const int(*)>(_a[1]))); break;
         case 3: _t->onItemChangedImageType((*reinterpret_cast< const YCQUiItem::EImageType(*)>(_a[1]))); break;
-        case 4: _t->onItemChangedNormalImage((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QRect(*)>(_a[2]))); break;
-        case 5: _t->onItemChangedHoverImage((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QRect(*)>(_a[2]))); break;
-        case 6: _t->onItemChangedPressImage((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QRect(*)>(_a[2]))); break;
-        case 7: _t->onItemChangedDisableImage((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QRect(*)>(_a[2]))); break;
+        case 4: _t->onItemChangedImageSource((*reinterpret_cast< const YCQUiItem::EImageType(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QRect(*)>(_a[3]))); break;
         default: ;
         }
     }
@@ -136,13 +122,13 @@ int YCQUiTreeUiHelper::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 5)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 5;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 5)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 8;
+        _id -= 5;
     }
     return _id;
 }

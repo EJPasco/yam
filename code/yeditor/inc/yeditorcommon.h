@@ -13,6 +13,27 @@
         _Object_Ptr = NULL;\
     }
 
-extern yam::base::YCTree                gs_FileTreeData;
+extern yam::base::YCTree                    gs_FileTreeData;
+
+class YCQUiItem;
+class YCQUiTreeItem;
+
+enum ERelationshipType
+{
+    eRelationshipType_None,
+    eRelationshipType_Res,
+    eRelationshipType_Ui,
+};
+
+typedef struct tagRelationship
+{
+    ERelationshipType   _eType;
+    YCQUiItem*          _pUiItem;
+    YCQUiTreeItem*      _pTreeItem;
+} SRelationship;
+
+typedef std::map<yam::ystring, SRelationship>    ymnamerelationship;
+
+extern ymnamerelationship                   gs_mRelationship;
 
 #endif // Y_EDITORCOMMON_H
