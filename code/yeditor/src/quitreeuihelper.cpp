@@ -130,16 +130,16 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
         if (NULL == m_pTreeItemSizeHelper)
         {
             m_pTreeItemSizeHelper = new YCQUiTreeItemSizeHelper(m_pTreeRoot, pTreeWidget);
+            m_pTreeItemSizeHelper->setSize(rpUiItem->size());
+            connect(m_pTreeItemSizeHelper, SIGNAL(onChanged(const QSize&)), this, SLOT(onItemChangedSize(const QSize&)));
         }
-        m_pTreeItemSizeHelper->setSize(rpUiItem->size());
-        connect(m_pTreeItemSizeHelper, SIGNAL(onChanged(const QSize&)), this, SLOT(onItemChangedSize(const QSize&)));
     }
     else
     {
         if (NULL == m_pTreeItemBoundHelper)
         {
             m_pTreeItemBoundHelper = new YCQUiTreeItemBoundHelper(m_pTreeRoot, pTreeWidget);
-            m_pTreeItemBoundHelper->setBound(rpUiItem->rect());
+            m_pTreeItemBoundHelper->setBound(QRect(rpUiItem->pos(), rpUiItem->size()));
             connect(m_pTreeItemBoundHelper, SIGNAL(onChanged(const QRect&)), this, SLOT(onItemChangedBound(const QRect&)));
         }
 
@@ -162,6 +162,7 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
                 m_pTreeItemImageTypeHelper->setImageType(YCQUiItem::eImageType_Normal);
                 connect(m_pTreeItemImageTypeHelper, SIGNAL(onChanged(const YCQUiItem::EImageType&)), this, SLOT(onItemChangedImageType(const YCQUiItem::EImageType&)));
             }
+
             if (NULL == m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal])
             {
                 m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal] = new YCQUiTreeItemImageHelper(m_pTreeRoot, pTreeWidget, YCQUiItem::eImageType_Normal);
@@ -179,6 +180,7 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
                 m_pTreeItemImageTypeHelper->setImageType(YCQUiItem::eImageType_Normal);
                 connect(m_pTreeItemImageTypeHelper, SIGNAL(onChanged(const YCQUiItem::EImageType&)), this, SLOT(onItemChangedImageType(const YCQUiItem::EImageType&)));
             }
+
             if (NULL == m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal])
             {
                 m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal] = new YCQUiTreeItemImageHelper(m_pTreeRoot, pTreeWidget, YCQUiItem::eImageType_Normal, tr("Normal Image"));
@@ -186,6 +188,7 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
                 m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal]->setBound(rpUiItem->getImageBound(YCQUiItem::eImageType_Normal));
                 connect(m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal], SIGNAL(onChanged(const YCQUiItem::EImageType&, const QString&, const QRect&)), this, SLOT(onItemChangedImageSource(const YCQUiItem::EImageType&, const QString&, const QRect&)));
             }
+
             if (NULL == m_apTreeItemImageHelper[YCQUiItem::eImageType_Hover])
             {
                 m_apTreeItemImageHelper[YCQUiItem::eImageType_Hover] = new YCQUiTreeItemImageHelper(m_pTreeRoot, pTreeWidget, YCQUiItem::eImageType_Hover, tr("Hover Image"));
@@ -193,6 +196,7 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
                 m_apTreeItemImageHelper[YCQUiItem::eImageType_Hover]->setBound(rpUiItem->getImageBound(YCQUiItem::eImageType_Hover));
                 connect(m_apTreeItemImageHelper[YCQUiItem::eImageType_Hover], SIGNAL(onChanged(const YCQUiItem::EImageType&, const QString&, const QRect&)), this, SLOT(onItemChangedImageSource(const YCQUiItem::EImageType&, const QString&, const QRect&)));
             }
+
             if (NULL == m_apTreeItemImageHelper[YCQUiItem::eImageType_Press])
             {
                 m_apTreeItemImageHelper[YCQUiItem::eImageType_Press] = new YCQUiTreeItemImageHelper(m_pTreeRoot, pTreeWidget, YCQUiItem::eImageType_Press, tr("Press Image"));
@@ -200,6 +204,7 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
                 m_apTreeItemImageHelper[YCQUiItem::eImageType_Press]->setBound(rpUiItem->getImageBound(YCQUiItem::eImageType_Press));
                 connect(m_apTreeItemImageHelper[YCQUiItem::eImageType_Press], SIGNAL(onChanged(const YCQUiItem::EImageType&, const QString&, const QRect&)), this, SLOT(onItemChangedImageSource(const YCQUiItem::EImageType&, const QString&, const QRect&)));
             }
+
             if (NULL == m_apTreeItemImageHelper[YCQUiItem::eImageType_Disable])
             {
                 m_apTreeItemImageHelper[YCQUiItem::eImageType_Disable] = new YCQUiTreeItemImageHelper(m_pTreeRoot, pTreeWidget, YCQUiItem::eImageType_Disable, tr("Disable Image"));

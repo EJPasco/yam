@@ -21,7 +21,7 @@ public:
 private:
     void ToJson(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonWidgetCommon(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
-    void ToJsonWidgetGroup(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
+    void ToJsonWidgetChildren(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonScene(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonPanel(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonImage(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;

@@ -176,9 +176,12 @@ void YEditor::onClickedExport()
     yam::io::CYQt2Yam::Instance().Convert(this, pTreeItem, &gs_FileTreeData);
 
     yam::io::YCExportYam oExportYam;
-    oExportYam.GetProperty().AddChild("file")->AddChild("directory")->FromString(stConfig._sDirectory.toLocal8Bit().data());
-    oExportYam.GetProperty().AddChild("file")->AddChild("name")->FromString(stConfig._sFileName.toLocal8Bit().data());
-    oExportYam.GetProperty().AddChild("data")->AddChild("logic")->FromString(stConfig._sLogicName.toLocal8Bit().data());
+    oExportYam.GetProperty().AddChild("logic")->FromString(stConfig._sLogicName.toLocal8Bit().data());
+    oExportYam.GetProperty().AddChild("filename")->FromString(stConfig._sFileName.toLocal8Bit().data());
+    oExportYam.GetProperty().AddChild("directory")->FromString(stConfig._sDirectory.toLocal8Bit().data());
+    oExportYam.GetProperty().AddChild("assets")->AddChild("image")->AddChild("file")->FromString(stConfig._sFileName.toLocal8Bit().data());
+    oExportYam.GetProperty().AddChild("assets")->AddChild("image")->AddChild("name")->FromString(stConfig._sFileName.toLocal8Bit().data());
+    oExportYam.GetProperty().AddChild("assets")->AddChild("image")->AddChild("type")->FromString("image");
     oExportYam.Save(&gs_FileTreeData);
 }
 
@@ -807,7 +810,7 @@ void YEditor::refreshResProperty(YCQUiItem*& rpResItem)
         m_pTreeResHelper = new YCQUiTreeResHelper(m_Ui.resPropertyTreeWidget);
         m_pTreeResHelper->setUiItem(rpResItem);
 
-        //m_Ui.resPropertyTreeWidget->expandAll();
+        m_Ui.resPropertyTreeWidget->expandAll();
     }
 }
 
@@ -824,7 +827,7 @@ void YEditor::refreshUiProperty(YCQUiItem*& rpUiItem)
         m_pTreeUiHelper = new YCQUiTreeUiHelper(m_Ui.uiPropertyTreeWidget);
         m_pTreeUiHelper->setUiItem(rpUiItem);
 
-        //m_Ui.uiPropertyTreeWidget->expandAll();
+        m_Ui.uiPropertyTreeWidget->expandAll();
     }
 }
 

@@ -1,6 +1,7 @@
 #include "quiitem.h"
 
 #include "yeditorcommon.h"
+#include "yconverter.h"
 #include "quiarea.h"
 #include <QtGui/QtEvents>
 #include <QtGui/QPainter>
@@ -178,6 +179,7 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
     if (NULL != pFormatNormal)
     {
         setImage(eImageType_Normal, pFormatNormal->GetBound(), pFormatNormal->GetColorData());
+        setImageBound(eImageType_Normal, YCConverter::Instance().Convert(pFormatNormal->GetBound()));
         setImageSource(eImageType_Normal, sImageSourceNormal.c_str());
 
         for (int i = 0; i < eImageType_Max; ++i)
@@ -194,6 +196,7 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
                 continue;
             }
             setImage(eType, pFormat->GetBound(), pFormat->GetColorData());
+            setImageBound(eImageType_Normal, YCConverter::Instance().Convert(pFormat->GetBound()));
             setImageSource(eType, sImageSource.c_str());
         }
         setAlpah(1.0f);

@@ -77,25 +77,29 @@ ADD_LIBRARY (pstoyam SHARED ${CODE_FILE_LIST_PS}
 
 set_target_properties(pstoyam PROPERTIES SUFFIX ".8bi")
 
+ADD_CUSTOM_TARGET (pstoyam_pipl
+                   DEPENDS pstoyam.pipl
+                   SOURCES ${CODE_PATH_PSTOYAM}/ps/pstoyam.r
+                   VERBATIM)
+
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 ADD_CUSTOM_COMMAND (OUTPUT pstoyam.pipl
-                   COMMAND ${CMAKE_CXX_COMPILER} -I${PHOTOSHOP_SDK_PATH}/photoshopapi/PICA_SP -I${PHOTOSHOP_SDK_PATH}/photoshopapi/Photoshop -I${PHOTOSHOP_SDK_PATH}/photoshopapi/Resources -I${CODE_PATH_PSTOYAM}/inc -DMSWindows=1 -c"${CODE_PATH_PSTOYAM}/ps/pstoyam.r" -o"${OUT_PATH}/pstoyam.rr"
-                   COMMAND ${PHOTOSHOP_SDK_PATH}/samplecode/resources/cnvtpipl "${OUT_PATH}/pstoyam.rr" "${CODE_PATH_PSTOYAM}/ps/pstoyam.pipl"
-                   #COMMAND del "${OUT_PATH}/pstoyam.rr"
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_PSTOYAM}/ps/pstoyam.r
-                   )
+                    DEPENDS ${CODE_PATH_PSTOYAM}/ps/pstoyam.r
+                    COMMAND ${CMAKE_CXX_COMPILER} -I${PHOTOSHOP_SDK_PATH}/photoshopapi/PICA_SP -I${PHOTOSHOP_SDK_PATH}/photoshopapi/Photoshop -I${PHOTOSHOP_SDK_PATH}/photoshopapi/Resources -I${CODE_PATH_PSTOYAM}/inc -DMSWindows=1 -c"${CODE_PATH_PSTOYAM}/ps/pstoyam.r" -o"${OUT_PATH}/pstoyam.rr"
+                    COMMAND ${PHOTOSHOP_SDK_PATH}/samplecode/resources/cnvtpipl "${OUT_PATH}/pstoyam.rr" "${CODE_PATH_PSTOYAM}/ps/pstoyam.pipl"
+                    COMMAND ${CMAKE_COMMAND} -E remove -f "${OUT_PATH}/pstoyam.rr"
+                    COMMENT "Generating pipl file ${CODE_PATH_PSTOYAM}/ps/pstoyam.pipl by ${CODE_PATH_PSTOYAM}/ps/pstoyam.r and ${OUT_PATH}/pstoyam.rr"
+                    )
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 ADD_CUSTOM_COMMAND (OUTPUT pstoyam.pipl
-                   COMMAND ${CMAKE_CXX_COMPILER} /I${PHOTOSHOP_SDK_PATH}/photoshopapi/PICA_SP /I${PHOTOSHOP_SDK_PATH}/photoshopapi/Photoshop /I${PHOTOSHOP_SDK_PATH}/photoshopapi/Resources /I${CODE_PATH_PSTOYAM}/inc /EP /DMSWindows=1 /Tc"${CODE_PATH_PSTOYAM}/ps/pstoyam.r" > "${OUT_PATH}/pstoyam.rr"
-                   COMMAND ${PHOTOSHOP_SDK_PATH}/samplecode/resources/cnvtpipl "${OUT_PATH}/pstoyam.rr" "${CODE_PATH_PSTOYAM}/ps/pstoyam.pipl"
-                   #COMMAND del "${OUT_PATH}/pstoyam.rr"
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_PSTOYAM}/ps/pstoyam.r
-                   )
+                    DEPENDS ${CODE_PATH_PSTOYAM}/ps/pstoyam.r
+                    COMMAND ${CMAKE_CXX_COMPILER} /I${PHOTOSHOP_SDK_PATH}/photoshopapi/PICA_SP /I${PHOTOSHOP_SDK_PATH}/photoshopapi/Photoshop /I${PHOTOSHOP_SDK_PATH}/photoshopapi/Resources /I${CODE_PATH_PSTOYAM}/inc /EP /DMSWindows=1 /Tc"${CODE_PATH_PSTOYAM}/ps/pstoyam.r" > "${OUT_PATH}/pstoyam.rr"
+                    COMMAND ${PHOTOSHOP_SDK_PATH}/samplecode/resources/cnvtpipl "${OUT_PATH}/pstoyam.rr" "${CODE_PATH_PSTOYAM}/ps/pstoyam.pipl"
+                    COMMAND ${CMAKE_COMMAND} -E remove -f "${OUT_PATH}/pstoyam.rr"
+                    COMMENT "Generating pipl file ${CODE_PATH_PSTOYAM}/ps/pstoyam.pipl by ${CODE_PATH_PSTOYAM}/ps/pstoyam.r and ${OUT_PATH}/pstoyam.rr"
+                    )
 ENDIF ()
 
-ADD_CUSTOM_TARGET (pstoyam_pipl DEPENDS pstoyam.pipl)
 ADD_DEPENDENCIES (pstoyam ${DEPEND_PROJ_LIST}
                          pstoyam_pipl)
 

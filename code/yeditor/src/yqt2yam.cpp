@@ -79,7 +79,7 @@ yam::ybool CYQt2Yam::Generate(const YEditor* pEditor, const YCQUiItem* pItem, co
         return false;
     }
 
-    GenerateWidgetGroup(pEditor, pUiItem, rpWidget);
+    GenerateWidgetChildren(pEditor, pUiItem, rpWidget);
     return rpWidget != YNULL;
 }
 
@@ -99,7 +99,7 @@ yam::ybool CYQt2Yam::GenerateWidget(const YCQUiItem* pItem, const YCQUiTreeItem*
     return true;
 }
 
-void CYQt2Yam::GenerateWidgetGroup(const YEditor* pEditor, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
+void CYQt2Yam::GenerateWidgetChildren(const YEditor* pEditor, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
 {
     int iCount = pUiItem->childCount();
     for (int i = 0; i < iCount; ++i)
@@ -117,8 +117,9 @@ void CYQt2Yam::GenerateWidgetGroup(const YEditor* pEditor, const YCQUiTreeItem* 
 
 yam::ybool CYQt2Yam::GenerateScene(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
 {
+    GenerateWidget(pItem, pUiItem, rpWidget);
     //
-    return GenerateWidget(pItem, pUiItem, rpWidget);
+    return true;
 }
 
 yam::ybool CYQt2Yam::GeneratePanel(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const

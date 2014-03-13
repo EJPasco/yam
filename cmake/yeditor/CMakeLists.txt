@@ -164,167 +164,66 @@ IF (YENV_SYSTEM_IS_WINDOWS AND YENV_COMPILER_IS_GNUC)
     SET_TARGET_PROPERTIES (yeditor PROPERTIES LINK_FLAGS "-mwindows")
 ENDIF ()
 
-ADD_CUSTOM_COMMAND (OUTPUT qdlgcreatewidget_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/qdlgcreatewidget.h -o ${CODE_PATH_YEDITOR}/src/qdlgcreatewidget_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/qdlgcreatewidget.h
-                   )
+MACRO(QT_GENERATE_MOC directory filename)
+ADD_CUSTOM_TARGET (${filename}_moc_cpp
+                   DEPENDS ${directory}/src/${filename}_moc.cpp
+                   SOURCES ${directory}/inc/${filename}.h
+                   VERBATIM)
+ADD_CUSTOM_COMMAND (OUTPUT ${directory}/src/${filename}_moc.cpp
+                    DEPENDS ${directory}/inc/${filename}.h
+                    COMMAND ${QT_SDK_PATH}/bin/moc ${directory}/inc/${filename}.h -o ${directory}/src/${filename}_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
+                    COMMENT "Generating C++ source file ${directory}/src/${filename}_moc.cpp by ${directory}/inc/${filename}.h"
+                    VERBATIM
+                    )
+ENDMACRO(QT_GENERATE_MOC)
 
-ADD_CUSTOM_TARGET (qdlgcreatewidget_moc_cpp
-                  DEPENDS qdlgcreatewidget_moc.cpp)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} qdlgcreatewidget)
 
-ADD_CUSTOM_COMMAND (OUTPUT qdlgexport_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/qdlgexport.h -o ${CODE_PATH_YEDITOR}/src/qdlgexport_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/qdlgexport.h
-                   )
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} qdlgexport)
 
-ADD_CUSTOM_TARGET (qdlgexport_moc_cpp
-                  DEPENDS qdlgexport_moc.cpp)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quiarea)
 
-ADD_CUSTOM_COMMAND (OUTPUT quiarea_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quiarea.h -o ${CODE_PATH_YEDITOR}/src/quiarea_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quiarea.h
-                   )
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quiitem)
 
-ADD_CUSTOM_TARGET (quiarea_moc_cpp
-                  DEPENDS quiarea_moc.cpp)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreehelper)
 
-ADD_CUSTOM_COMMAND (OUTPUT quiitem_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quiitem.h -o ${CODE_PATH_YEDITOR}/src/quiitem_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quiitem.h
-                   )
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreereshelper)
 
-ADD_CUSTOM_TARGET (quiitem_moc_cpp
-                  DEPENDS quiitem_moc.cpp)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeuihelper)
 
-ADD_CUSTOM_COMMAND (OUTPUT quitreehelper_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreehelper.h -o ${CODE_PATH_YEDITOR}/src/quitreehelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreehelper.h
-                   )
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemsizehelper)
 
-ADD_CUSTOM_TARGET (quitreehelper_moc_cpp
-                  DEPENDS quitreehelper_moc.cpp)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemsizefhelper)
 
-ADD_CUSTOM_COMMAND (OUTPUT quitreereshelper_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreereshelper.h -o ${CODE_PATH_YEDITOR}/src/quitreereshelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreereshelper.h
-                   )
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemboundhelper)
 
-ADD_CUSTOM_TARGET (quitreereshelper_moc_cpp
-                  DEPENDS quitreereshelper_moc.cpp)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemboundfhelper)
 
-ADD_CUSTOM_COMMAND (OUTPUT quitreeuihelper_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeuihelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeuihelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeuihelper.h
-                   )
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemlayerweighthelper)
 
-ADD_CUSTOM_TARGET (quitreeuihelper_moc_cpp
-                  DEPENDS quitreeuihelper_moc.cpp)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemimagehelper)
 
-ADD_CUSTOM_COMMAND (OUTPUT quitreeitemsizehelper_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemsizehelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemsizehelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemsizehelper.h
-                   )
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemimagetypehelper)
 
-ADD_CUSTOM_TARGET (quitreeitemsizehelper_moc_cpp
-                  DEPENDS quitreeitemsizehelper_moc.cpp)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} yeditor)
 
-ADD_CUSTOM_COMMAND (OUTPUT quitreeitemsizefhelper_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemsizefhelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemsizefhelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemsizefhelper.h
-                   )
+MACRO(QT_GENERATE_UIC directory resname filename)
+ADD_CUSTOM_TARGET (${filename}_ui_h
+                   DEPENDS ${directory}/inc/${filename}_ui.h
+                   SOURCE ${directory}/res/${resname}.ui
+                   VERBATIM)
+ADD_CUSTOM_COMMAND (OUTPUT ${directory}/inc/${filename}_ui.h
+                    DEPENDS ${directory}/res/${resname}.ui
+                    COMMAND ${QT_SDK_PATH}/bin/uic ${directory}/res/${resname}.ui -o ${directory}/inc/${filename}_ui.h
+                    COMMENT "Generating C++ header file ${directory}/inc/${filename}_ui.h by ${directory}/res/${resname}.ui"
+                    VERBATIM)
+ENDMACRO(QT_GENERATE_UIC)
 
-ADD_CUSTOM_TARGET (quitreeitemsizefhelper_moc_cpp
-                  DEPENDS quitreeitemsizefhelper_moc.cpp)
+QT_GENERATE_UIC(${CODE_PATH_YEDITOR} main yeditor_main)
 
-ADD_CUSTOM_COMMAND (OUTPUT quitreeitemboundhelper_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemboundhelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemboundhelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemboundhelper.h
-                   )
+QT_GENERATE_UIC(${CODE_PATH_YEDITOR} createwidget yeditor_createwidget)
 
-ADD_CUSTOM_TARGET (quitreeitemboundhelper_moc_cpp
-                  DEPENDS quitreeitemboundhelper_moc.cpp)
-
-ADD_CUSTOM_COMMAND (OUTPUT quitreeitemboundfhelper_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemboundfhelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemboundfhelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemboundfhelper.h
-                   )
-
-ADD_CUSTOM_TARGET (quitreeitemboundfhelper_moc_cpp
-                  DEPENDS quitreeitemboundfhelper_moc.cpp)
-
-ADD_CUSTOM_COMMAND (OUTPUT quitreeitemlayerweighthelper_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemlayerweighthelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemlayerweighthelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemlayerweighthelper.h
-                   )
-
-ADD_CUSTOM_TARGET (quitreeitemlayerweighthelper_moc_cpp
-                  DEPENDS quitreeitemlayerweighthelper_moc.cpp)
-
-ADD_CUSTOM_COMMAND (OUTPUT quitreeitemimagehelper_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemimagehelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemimagehelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemimagehelper.h
-                   )
-
-ADD_CUSTOM_TARGET (quitreeitemimagehelper_moc_cpp
-                  DEPENDS quitreeitemimagehelper_moc.cpp)
-
-ADD_CUSTOM_COMMAND (OUTPUT quitreeitemimagetypehelper_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/quitreeitemimagetypehelper.h -o ${CODE_PATH_YEDITOR}/src/quitreeitemimagetypehelper_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/quitreeitemimagetypehelper.h
-                   )
-
-ADD_CUSTOM_TARGET (quitreeitemimagetypehelper_moc_cpp
-                  DEPENDS quitreeitemimagetypehelper_moc.cpp)
-
-ADD_CUSTOM_COMMAND (OUTPUT yeditor_moc.cpp
-                   COMMAND ${QT_SDK_PATH}/bin/moc ${CODE_PATH_YEDITOR}/inc/yeditor.h -o ${CODE_PATH_YEDITOR}/src/yeditor_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/inc/yeditor.h
-                   )
-
-ADD_CUSTOM_TARGET (yeditor_moc_cpp
-                  DEPENDS yeditor_moc.cpp)
-
-ADD_CUSTOM_COMMAND (OUTPUT yeditor_main_ui.h
-                   COMMAND ${QT_SDK_PATH}/bin/uic -o ${CODE_PATH_YEDITOR}/inc/yeditor_main_ui.h ${CODE_PATH_YEDITOR}/res/main.ui
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/res/main.ui
-                   )
-
-ADD_CUSTOM_TARGET (yeditor_main_ui_h
-                  DEPENDS yeditor_main_ui.h)
-
-ADD_CUSTOM_COMMAND (OUTPUT yeditor_createwidget_ui.h
-                   COMMAND ${QT_SDK_PATH}/bin/uic -o ${CODE_PATH_YEDITOR}/inc/yeditor_createwidget_ui.h ${CODE_PATH_YEDITOR}/res/createwidget.ui
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/res/createwidget.ui
-                   )
-
-ADD_CUSTOM_TARGET (yeditor_createwidget_ui_h
-                  DEPENDS yeditor_createwidget_ui.h)
-
-ADD_CUSTOM_COMMAND (OUTPUT yeditor_export_ui.h
-                   COMMAND ${QT_SDK_PATH}/bin/uic -o ${CODE_PATH_YEDITOR}/inc/yeditor_export_ui.h ${CODE_PATH_YEDITOR}/res/export.ui
-                   COMMAND echo "ok"
-                   DEPENDS ${CODE_PATH_YEDITOR}/res/export.ui
-                   )
-
-ADD_CUSTOM_TARGET (yeditor_export_ui_h
-                  DEPENDS yeditor_export_ui.h)
+QT_GENERATE_UIC(${CODE_PATH_YEDITOR} export yeditor_export)
 
 
 ADD_DEPENDENCIES (yeditor ${DEPEND_PROJ_LIST}
