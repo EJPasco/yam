@@ -165,17 +165,14 @@ IF (YENV_SYSTEM_IS_WINDOWS AND YENV_COMPILER_IS_GNUC)
 ENDIF ()
 
 MACRO(QT_GENERATE_MOC directory filename)
+ADD_CUSTOM_TARGET (${filename}_moc_cpp
+                   DEPENDS ${directory}/src/${filename}_moc.cpp
+                   VERBATIM)
 ADD_CUSTOM_COMMAND (OUTPUT ${directory}/src/${filename}_moc.cpp
                     DEPENDS ${directory}/inc/${filename}.h
                     COMMAND ${QT_SDK_PATH}/bin/moc ${directory}/inc/${filename}.h -o ${directory}/src/${filename}_moc.cpp -DQT_CORE_LIB -DQT_DLL -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -I${CODE_PATH_YEDITOR}/inc -I. -I${QT_SDK_INC_PATH} -I${CODE_PATH_YEDITOR}/inc -I${QT_SDK_INC_PATH}/QtCore -I${QT_SDK_INC_PATH}/QtGui -I${QT_SDK_INC_PATH}/QtWidgets
                     COMMENT "Generating C++ source file ${directory}/src/${filename}_moc.cpp by ${directory}/inc/${filename}.h"
-                    VERBATIM
-                    )
-ADD_CUSTOM_TARGET (${filename}_moc_cpp
-                   DEPENDS ${directory}/src/${filename}_moc.cpp
-                   SOURCES ${directory}/inc/${filename}.h
-                   VERBATIM
-                   )
+                    VERBATIM)
 ENDMACRO(QT_GENERATE_MOC)
 
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} qdlgcreatewidget)
@@ -209,15 +206,14 @@ QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemimagetypehelper)
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} yeditor)
 
 MACRO(QT_GENERATE_UIC directory resname filename)
+ADD_CUSTOM_TARGET (${filename}_ui_h
+                   DEPENDS ${directory}/inc/${filename}_ui.h
+                   VERBATIM)
 ADD_CUSTOM_COMMAND (OUTPUT ${directory}/inc/${filename}_ui.h
                     DEPENDS ${directory}/res/${resname}.ui
                     COMMAND ${QT_SDK_PATH}/bin/uic ${directory}/res/${resname}.ui -o ${directory}/inc/${filename}_ui.h
                     COMMENT "Generating C++ header file ${directory}/inc/${filename}_ui.h by ${directory}/res/${resname}.ui"
                     VERBATIM)
-ADD_CUSTOM_TARGET (${filename}_ui_h
-                   DEPENDS ${directory}/inc/${filename}_ui.h
-                   SOURCE ${directory}/res/${resname}.ui
-                   VERBATIM)
 ENDMACRO(QT_GENERATE_UIC)
 
 QT_GENERATE_UIC(${CODE_PATH_YEDITOR} main yeditor_main)

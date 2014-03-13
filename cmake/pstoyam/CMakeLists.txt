@@ -79,7 +79,6 @@ set_target_properties(pstoyam PROPERTIES SUFFIX ".8bi")
 
 ADD_CUSTOM_TARGET (pstoyam_pipl
                    DEPENDS pstoyam.pipl
-                   SOURCES ${CODE_PATH_PSTOYAM}/ps/pstoyam.r
                    VERBATIM)
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
