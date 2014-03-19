@@ -1,0 +1,1186 @@
+{
+	"id":"main",
+	"logic":{
+		"id":"main"
+	},
+	"assetgroup":[
+		{
+			"name":"bg01",
+			"type":"image",
+			"file":"asset/bg01.png"
+		},
+		{
+			"name":"bg02",
+			"type":"image",
+			"file":"asset/bg02.png"
+		},
+		{
+			"name":"anim_bomb",
+			"type":"image",
+			"file":"asset/anim_bomb.png"
+		},
+		{
+			"name":"microhei",
+			"type":"font",
+			"file":"asset/wqy-microhei.ttc"
+		},
+		{
+			"name":"btn_giveup",
+			"type":"image",
+			"file":"asset/btn_giveup.png"
+		},
+		{
+			"name":"flipanim_rocket",
+			"type":"image",
+			"file":"asset/flipanim_rocket.png"
+		}
+		
+	],
+	"layoutstrategy":{
+		"type":"layoutgridstrategy",
+		"value":{
+			"row":3,
+			"line":3,
+			"size": {
+				"row": [100, 0, 100 ],
+				"line": [100, 0, 100 ]
+			}
+		}
+		
+	},
+	"widgetgroup":[
+		{
+			"type":"staticimage",
+			"value":{
+				"layout":{
+					"type":"layoutgrid",
+					"value":{
+						"row":0,
+						"line":0,
+						"size": {
+							"row": 1,
+							"line": 1
+						}
+					}
+					
+				},
+				"layer":0,
+				"image":"bg02",
+				"src":{
+					"dim":{
+						"position":{
+							"axis":{
+								"position":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								},
+								"direction":{
+									"x":{
+										"type":"int",
+										"value":1
+									},
+									"y":{
+										"type":"int",
+										"value":1
+									}
+									
+								}
+								
+							},
+							"offset":{
+								"x":{
+									"type":"int",
+									"value":0
+								},
+								"y":{
+									"type":"int",
+									"value":0
+								}
+								
+							}
+							
+						},
+						"size":{
+							"x":{
+								"type":"int",
+								"value":368
+							},
+							"y":{
+								"type":"int",
+								"value":540
+							}
+							
+						}
+						
+					}
+					
+				},
+				"dst":{
+					"dim":{
+						"position":{
+							"axis":{
+								"position":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								},
+								"direction":{
+									"x":{
+										"type":"int",
+										"value":1
+									},
+									"y":{
+										"type":"int",
+										"value":1
+									}
+									
+								}
+								
+							},
+							"offset":{
+								"x":{
+									"type":"int",
+									"value":0
+								},
+								"y":{
+									"type":"int",
+									"value":0
+								}
+								
+							}
+							
+						},
+						"size":{
+							"x":{
+								"type":"percent",
+								"value":1.0
+							},
+							"y":{
+								"type":"percent",
+								"value":1.0
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		},
+		{
+			"type":"panel",
+			"value":{
+				"layoutstrategy":{
+					"type":"layoutgridstrategy",
+					"value":{
+						"row":3,
+						"line":3
+					}
+					
+				},
+				"layer":3,
+				"dst":{
+					"dim":{
+						"position":{
+							"axis":{
+								"position":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								},
+								"direction":{
+									"x":{
+										"type":"int",
+										"value":1
+									},
+									"y":{
+										"type":"int",
+										"value":1
+									}
+									
+								}
+								
+							},
+							"offset":{
+								"x":{
+									"type":"int",
+									"value":0
+								},
+								"y":{
+									"type":"int",
+									"value":0
+								}
+								
+							}
+							
+						},
+						"size":{
+							"x":{
+								"type":"int",
+								"value":200
+							},
+							"y":{
+								"type":"int",
+								"value":300
+							}
+							
+						}
+						
+					}
+					
+				},
+				"widgetgroup":[
+					{
+						"type":"staticimage",
+						"value":{
+							"layout":{
+								"type":"layoutgrid",
+								"value":{
+									"row":1,
+									"line":1
+								}
+								
+							},
+							"layer":0,
+							"image":"bg02",
+							"src":{
+								"dim":{
+									"position":{
+										"axis":{
+											"position":{
+												"x":{
+													"type":"int",
+													"value":0
+												},
+												"y":{
+													"type":"int",
+													"value":0
+												}
+												
+											},
+											"direction":{
+												"x":{
+													"type":"int",
+													"value":1
+												},
+												"y":{
+													"type":"int",
+													"value":1
+												}
+												
+											}
+											
+										},
+										"offset":{
+											"x":{
+												"type":"int",
+												"value":0
+											},
+											"y":{
+												"type":"int",
+												"value":0
+											}
+											
+										}
+										
+									},
+									"size":{
+										"x":{
+											"type":"int",
+											"value":368
+										},
+										"y":{
+											"type":"int",
+											"value":540
+										}
+										
+									}
+									
+								}
+								
+							},
+							"dst":{
+								"dim":{
+									"position":{
+										"axis":{
+											"position":{
+												"x":{
+													"type":"int",
+													"value":0
+												},
+												"y":{
+													"type":"int",
+													"value":0
+												}
+												
+											},
+											"direction":{
+												"x":{
+													"type":"int",
+													"value":1
+												},
+												"y":{
+													"type":"int",
+													"value":1
+												}
+												
+											}
+											
+										},
+										"offset":{
+											"x":{
+												"type":"int",
+												"value":0
+											},
+											"y":{
+												"type":"int",
+												"value":0
+											}
+											
+										}
+										
+									},
+									"size":{
+										"x":{
+											"type":"percent",
+											"value":1.0
+										},
+										"y":{
+											"type":"percent",
+											"value":1.0
+										}
+										
+									}
+									
+								}
+								
+							}
+							
+						}
+						
+					}
+					
+				]
+				
+			}
+			
+		},
+		{
+			"type":"staticimage",
+			"value":{
+				"layout":{
+					"type":"layoutgrid",
+					"value":{
+						"row":1,
+						"line":1
+					}
+					
+				},
+				"layer":1,
+				"image":"bg01",
+				"src":{
+					"dim":{
+						"position":{
+							"axis":{
+								"position":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								},
+								"direction":{
+									"x":{
+										"type":"int",
+										"value":1
+									},
+									"y":{
+										"type":"int",
+										"value":1
+									}
+									
+								}
+								
+							},
+							"offset":{
+								"x":{
+									"type":"int",
+									"value":0
+								},
+								"y":{
+									"type":"int",
+									"value":0
+								}
+								
+							}
+							
+						},
+						"size":{
+							"x":{
+								"type":"int",
+								"value":320
+							},
+							"y":{
+								"type":"int",
+								"value":120
+							}
+							
+						}
+						
+					}
+					
+				},
+				"dst":{
+					"dim":{
+						"position":{
+							"axis":{
+								"position":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								},
+								"direction":{
+									"x":{
+										"type":"int",
+										"value":1
+									},
+									"y":{
+										"type":"int",
+										"value":1
+									}
+									
+								}
+								
+							},
+							"offset":{
+								"x":{
+									"type":"int",
+									"value":0
+								},
+								"y":{
+									"type":"int",
+									"value":0
+								}
+								
+							}
+							
+						},
+						"size":{
+							"x":{
+								"type":"int",
+								"value":200
+							},
+							"y":{
+								"type":"int",
+								"value":100
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		},
+		{
+			"type":"staticimage",
+			"value":{
+				"layout":{
+					"type":"layoutgrid",
+					"value":{
+						"row":0,
+						"line":1
+					}
+					
+				},
+				"layer":1,
+				"image":"bg01",
+				"src":{
+					"dim":{
+						"position":{
+							"axis":{
+								"position":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								},
+								"direction":{
+									"x":{
+										"type":"int",
+										"value":1
+									},
+									"y":{
+										"type":"int",
+										"value":1
+									}
+									
+								}
+								
+							},
+							"offset":{
+								"x":{
+									"type":"int",
+									"value":0
+								},
+								"y":{
+									"type":"int",
+									"value":0
+								}
+								
+							}
+							
+						},
+						"size":{
+							"x":{
+								"type":"int",
+								"value":320
+							},
+							"y":{
+								"type":"int",
+								"value":120
+							}
+							
+						}
+						
+					}
+					
+				},
+				"dst":{
+					"dim":{
+						"position":{
+							"axis":{
+								"position":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								},
+								"direction":{
+									"x":{
+										"type":"int",
+										"value":1
+									},
+									"y":{
+										"type":"int",
+										"value":1
+									}
+									
+								}
+								
+							},
+							"offset":{
+								"x":{
+									"type":"int",
+									"value":0
+								},
+								"y":{
+									"type":"int",
+									"value":200
+								}
+								
+							}
+							
+						},
+						"size":{
+							"x":{
+								"type":"int",
+								"value":200
+							},
+							"y":{
+								"type":"int",
+								"value":100
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		},
+		{
+			"type":"flipanim",
+			"value":{
+				"id":"fa_bomb",
+				"layout":{
+					"type":"layoutgrid",
+					"value":{
+						"row":1,
+						"line":0
+					}
+					
+				},
+				"layer":1,
+				"image":"anim_bomb",
+				"row":6,
+				"line":1,
+				"start":0,
+				"end":5,
+				"speed":0.3,
+				"dst":{
+					"dim":{
+						"position":{
+							"axis":{
+								"position":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								},
+								"direction":{
+									"x":{
+										"type":"int",
+										"value":1
+									},
+									"y":{
+										"type":"int",
+										"value":1
+									}
+									
+								}
+								
+							},
+							"offset":{
+								"x":{
+									"type":"int",
+									"value":0
+								},
+								"y":{
+									"type":"int",
+									"value":0
+								}
+								
+							}
+							
+						},
+						"size":{
+							"x":{
+								"type":"int",
+								"value":64
+							},
+							"y":{
+								"type":"int",
+								"value":64
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		},
+		{
+			"type":"text",
+			"value":{
+				"id":"txt_center",
+				"layout":{
+					"type":"layoutgrid",
+					"value":{
+						"row":0,
+						"line":1
+					}
+					
+				},
+				"layer":1,
+				"face":"microhei",
+				"size":28.0,
+				"align":"left",
+				"value":"hello world!你好!",
+				"dst":{
+					"dim":{
+						"position":{
+							"axis":{
+								"position":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								},
+								"direction":{
+									"x":{
+										"type":"int",
+										"value":1
+									},
+									"y":{
+										"type":"int",
+										"value":1
+									}
+									
+								}
+								
+							},
+							"offset":{
+								"x":{
+									"type":"int",
+									"value":0
+								},
+								"y":{
+									"type":"int",
+									"value":0
+								}
+								
+							}
+							
+						},
+						"size":{
+							"x":{
+								"type":"int",
+								"value":100
+							},
+							"y":{
+								"type":"int",
+								"value":30
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		},
+		{
+			"type":"button",
+			"value":{
+				"id":"btn_start",
+				"visible":"true",
+				"layout":{
+					"type":"layoutgrid",
+					"value":{
+						"row":1,
+						"line":2
+					}
+					
+				},
+				"layer":1,
+				"image":"btn_giveup",
+				"src":{
+					"normal":{
+						"dim":{
+							"position":{
+								"axis":{
+									"position":{
+										"x":{
+											"type":"int",
+											"value":0
+										},
+										"y":{
+											"type":"int",
+											"value":0
+										}
+										
+									},
+									"direction":{
+										"x":{
+											"type":"int",
+											"value":1
+										},
+										"y":{
+											"type":"int",
+											"value":1
+										}
+										
+									}
+									
+								},
+								"offset":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								}
+								
+							},
+							"size":{
+								"x":{
+									"type":"int",
+									"value":64
+								},
+								"y":{
+									"type":"int",
+									"value":28
+								}
+								
+							}
+							
+						}
+						
+					},
+					"hover":{
+						"dim":{
+							"position":{
+								"axis":{
+									"position":{
+										"x":{
+											"type":"int",
+											"value":0
+										},
+										"y":{
+											"type":"int",
+											"value":0
+										}
+										
+									},
+									"direction":{
+										"x":{
+											"type":"int",
+											"value":1
+										},
+										"y":{
+											"type":"int",
+											"value":1
+										}
+										
+									}
+									
+								},
+								"offset":{
+									"x":{
+										"type":"int",
+										"value":79
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								}
+								
+							},
+							"size":{
+								"x":{
+									"type":"int",
+									"value":64
+								},
+								"y":{
+									"type":"int",
+									"value":28
+								}
+								
+							}
+							
+						}
+						
+					},
+					"pressed":{
+						"dim":{
+							"position":{
+								"axis":{
+									"position":{
+										"x":{
+											"type":"int",
+											"value":0
+										},
+										"y":{
+											"type":"int",
+											"value":0
+										}
+										
+									},
+									"direction":{
+										"x":{
+											"type":"int",
+											"value":1
+										},
+										"y":{
+											"type":"int",
+											"value":1
+										}
+										
+									}
+									
+								},
+								"offset":{
+									"x":{
+										"type":"int",
+										"value":159
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								}
+								
+							},
+							"size":{
+								"x":{
+									"type":"int",
+									"value":64
+								},
+								"y":{
+									"type":"int",
+									"value":28
+								}
+								
+							}
+							
+						}
+						
+					},
+					"disable":{
+						"dim":{
+							"position":{
+								"axis":{
+									"position":{
+										"x":{
+											"type":"int",
+											"value":0
+										},
+										"y":{
+											"type":"int",
+											"value":0
+										}
+										
+									},
+									"direction":{
+										"x":{
+											"type":"int",
+											"value":1
+										},
+										"y":{
+											"type":"int",
+											"value":1
+										}
+										
+									}
+									
+								},
+								"offset":{
+									"x":{
+										"type":"int",
+										"value":138
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								}
+								
+							},
+							"size":{
+								"x":{
+									"type":"int",
+									"value":64
+								},
+								"y":{
+									"type":"int",
+									"value":28
+								}
+								
+							}
+							
+						}
+						
+					}
+					
+				},
+				"dst":{
+					"dim":{
+						"position":{
+							"axis":{
+								"position":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								},
+								"direction":{
+									"x":{
+										"type":"int",
+										"value":1
+									},
+									"y":{
+										"type":"int",
+										"value":1
+									}
+									
+								}
+								
+							},
+							"offset":{
+								"x":{
+									"type":"int",
+									"value":-64
+								},
+								"y":{
+									"type":"int",
+									"value":-28
+								}
+								
+							}
+							
+						},
+						"size":{
+							"x":{
+								"type":"int",
+								"value":64
+							},
+							"y":{
+								"type":"int",
+								"value":28
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		},
+		{
+			"type":"flipanim",
+			"value":{
+				"id":"fa_rocket",
+				"layout":{
+					"type":"layoutgrid",
+					"value":{
+						"row":1,
+						"line":1
+					}
+					
+				},
+				"layer":1,
+				"image":"flipanim_rocket",
+				"row":10,
+				"line":1,
+				"start":0,
+				"end":9,
+				"speed":0.1,
+				"dst":{
+					"dim":{
+						"position":{
+							"axis":{
+								"position":{
+									"x":{
+										"type":"int",
+										"value":0
+									},
+									"y":{
+										"type":"int",
+										"value":0
+									}
+									
+								},
+								"direction":{
+									"x":{
+										"type":"int",
+										"value":1
+									},
+									"y":{
+										"type":"int",
+										"value":1
+									}
+									
+								}
+								
+							},
+							"offset":{
+								"x":{
+									"type":"int",
+									"value":0
+								},
+								"y":{
+									"type":"int",
+									"value":100
+								}
+								
+							}
+							
+						},
+						"size":{
+							"x":{
+								"type":"int",
+								"value":200
+							},
+							"y":{
+								"type":"int",
+								"value":80
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+	]
+}
