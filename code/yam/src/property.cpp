@@ -204,6 +204,49 @@ ybool YCProperty::ToRect2D(YRect2D& rstValue) const
     return YTRUE;
 }
 
+ybool YCProperty::FromVec2D(const YVec2D& rstValue)
+{
+    yint8* pStr = new yint8[YSTRINGLEN_RECT2D32_MAX];
+    {
+        ybuff iZero = 0;
+        MemSet(pStr, sizeof(yint8) * YSTRINGLEN_RECT2D32_MAX, &iZero, sizeof(ybuff));
+    }
+#if defined(MSVC)
+    ::sprintf_s(pStr, YSTRINGLEN_RECT2D32_MAX, "%d,%d", rstValue.X, rstValue.Y);
+#elif defined(GNUC)
+    ::sprintf(pStr, "%d,%d", rstValue.X, rstValue.Y);
+#else
+#pragma YCOMPILE_MESSAGE_ERR("can't find the compiler type")
+#endif
+    ystring sStr = "";
+    sStr.append(pStr);
+    delete[] pStr;
+    return FromString(sStr);
+}
+
+ybool YCProperty::ToVec2D(YVec2D& rstValue) const
+{
+    ystring sStr;
+    if (!ToString(sStr))
+    {
+        return YFALSE;
+    }
+
+    YVec2D stValue;
+#if defined(MSVC)
+    if (EOF == ::sscanf_s(sStr.c_str(), "%d,%d", &stValue.X, &stValue.Y))
+#elif defined(GNUC)
+    if (EOF == ::sscanf(sStr.c_str(), "%d,%d", &stValue.X, &stValue.Y))
+#else
+#pragma YCOMPILE_MESSAGE_ERR("can't find the compiler type")
+#endif
+    {
+        return YFALSE;
+    }
+    rstValue = stValue;
+    return YTRUE;
+}
+
 ybool YCProperty::FromBuffer(const YCBuffer& roValue)
 {
     GetValue().Begin();

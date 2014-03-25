@@ -18,7 +18,9 @@ enum EWidgetType
     eWidgetType_Scene,
     eWidgetType_Panel,
     eWidgetType_Image,
+    eWidgetType_Picture,
     eWidgetType_Button,
+    eWidgetType_Text,
     eWidgetType_Max,
 };
 

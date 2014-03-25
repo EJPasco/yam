@@ -17,7 +17,7 @@ public Q_SLOTS:
     virtual void onItemChanged(QTreeWidgetItem* pItem, int iColume);
 
 public:
-    void setUiItem(YCQUiItem*& rpUiItem);
+    virtual void setUiItem(YCQUiItem*& rpUiItem);
 
 protected:
     QTreeWidget*    m_pTreeRoot;

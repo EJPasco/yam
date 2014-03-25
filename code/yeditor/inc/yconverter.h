@@ -16,6 +16,8 @@ protected:
     virtual ~YCConverter();
 
 public:
+    yam::YVec2D Convert(const QPoint& rPoint) const;
+    QPoint Convert2Point(const yam::YVec2D& rPoint) const;
     yam::YVec2D Convert(const QSize& rSize) const;
     QSize Convert(const yam::YVec2D& rSize) const;
     yam::YRect2D Convert(const QRect& rRect) const;

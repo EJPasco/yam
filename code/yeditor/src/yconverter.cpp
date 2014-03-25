@@ -12,6 +12,20 @@ YCConverter::~YCConverter()
     //
 }
 
+
+yam::YVec2D YCConverter::Convert(const QPoint& rPoint) const
+{
+    yam::YVec2D stVec2D;
+    stVec2D.X = rPoint.x();
+    stVec2D.Y = rPoint.y();
+    return stVec2D;
+}
+
+QPoint YCConverter::Convert2Point(const yam::YVec2D& rPoint) const
+{
+    return QPoint(rPoint.X, rPoint.Y);
+}
+
 yam::YVec2D YCConverter::Convert(const QSize& rSize) const
 {
     yam::YVec2D stVec2D;

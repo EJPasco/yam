@@ -18,6 +18,17 @@ extern yam::base::YCTree                    gs_FileTreeData;
 class YCQUiItem;
 class YCQUiTreeItem;
 
+enum EImageType
+{
+    eImageType_Normal,
+    eImageType_Hover,
+    eImageType_Press,
+    eImageType_Disable,
+    eImageType_Checked,
+    eImageType_Unchecked,
+    eImageType_Max,
+};
+
 enum ERelationshipType
 {
     eRelationshipType_None,
@@ -35,5 +46,10 @@ typedef struct tagRelationship
 typedef std::map<yam::ystring, SRelationship>    ymnamerelationship;
 
 extern ymnamerelationship                   gs_mRelationship;
+
+typedef struct tagConfigCreateWidget
+{
+    yam::ystring     _sId;
+} SConfigCreateWidget;
 
 #endif // Y_EDITORCOMMON_H

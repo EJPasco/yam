@@ -1,7 +1,7 @@
 #ifndef Y_EXPORT_H
 #define Y_EXPORT_H
 
-#include <yam.h>
+#include "yeditorcommon.h"
 
 namespace yam{ namespace io{
 

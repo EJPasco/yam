@@ -1,6 +1,6 @@
 #include "quitreeitemboundhelper.h"
 
-YCQUiTreeItemBoundHelper::YCQUiTreeItemBoundHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem)
+YCQUiTreeItemBoundHelper::YCQUiTreeItemBoundHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem, std::string sName /*= "bound"*/)
     : m_pTreeItemBound(NULL)
     , m_pSpinBoxX(NULL)
     , m_pSpinBoxY(NULL)
@@ -13,7 +13,7 @@ YCQUiTreeItemBoundHelper::YCQUiTreeItemBoundHelper(QTreeWidget* pTreeRoot, QTree
     }
 
     m_pTreeItemBound = new QTreeWidgetItem;
-    m_pTreeItemBound->setText(0, tr("Bound"));
+    m_pTreeItemBound->setText(0, tr(sName.c_str()));
     pTreeItem->addChild(m_pTreeItemBound);
 
     {

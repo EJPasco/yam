@@ -20,7 +20,7 @@ void YCQUiTreeHelper::onItemChanged(QTreeWidgetItem* pItem, int iColume)
         return;
     }
 
-    if (pItem->text(0) == tr("Visible"))
+    if (pItem->text(0) == tr("visible"))
     {
         m_pUiItem->setVisible((pItem->checkState(1) == Qt::Checked) ? true : false);
     }
@@ -36,12 +36,12 @@ void YCQUiTreeHelper::setUiItem(YCQUiItem*& rpUiItem)
     }
 
     QTreeWidgetItem* pTreeCommon = new QTreeWidgetItem;
-    pTreeCommon->setText(0, tr("Common"));
+    pTreeCommon->setText(0, tr("common"));
     m_pTreeRoot->insertTopLevelItem(m_pTreeRoot->topLevelItemCount(), pTreeCommon);
 
     {
         QTreeWidgetItem* pTreeVisible = new QTreeWidgetItem;
-        pTreeVisible->setText(0, tr("Visible"));
+        pTreeVisible->setText(0, tr("visible"));
         pTreeVisible->setCheckState(1, (rpUiItem->isVisible() ? Qt::Checked : Qt::Unchecked));
         pTreeCommon->addChild(pTreeVisible);
     }

@@ -20,30 +20,14 @@ CYQt2Yam::~CYQt2Yam()
     //
 }
 
-yam::ybool CYQt2Yam::Convert(const YEditor* pEditor, const YCQUiTreeItem* pUiItem, yam::base::YITree* pTree) const
+yam::ybool CYQt2Yam::Convert(const YEditor* pEditor, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpTree) const
 {
     YCQUiItem* pItem = pEditor->getUiItem(pUiItem);
-    if (NULL == pEditor || NULL == pItem|| NULL == pUiItem)
+    if (NULL == pEditor || NULL == pItem|| NULL == pUiItem || NULL == rpTree)
     {
         return false;
     }
-
-    yam::base::YIWidget* pWidget = YNULL;
-    {
-        yam::base::YITree* pTreeUi = pTree->FindChild(YFILE_KEY_UI);
-        if (YNULL != pTreeUi && YOBJECT_GETCLASSNAME(yam::base::YCWidget) == pTreeUi->GetClassName())
-        {
-            pTreeUi->Clear();
-            pWidget = (yam::base::YIWidget*)pTreeUi;
-        }
-        else
-        {
-            pWidget = new yam::base::YCWidget;
-            pWidget->GetId() = YFILE_KEY_UI;
-            pTree->AddChild(pWidget);
-        }
-    }
-    return Generate(pEditor, pItem, pUiItem, pWidget);
+    return Generate(pEditor, pItem, pUiItem, rpTree);
 }
 
 yam::ybool CYQt2Yam::Generate(const YEditor* pEditor, const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
@@ -57,6 +41,7 @@ yam::ybool CYQt2Yam::Generate(const YEditor* pEditor, const YCQUiItem* pItem, co
     switch (eType)
     {
     case eWidgetType_Scene: {
+        //rpWidget = new yam::base::YCWidget;
         GenerateScene(pItem, pUiItem, rpWidget);
         } break;
 
@@ -65,14 +50,19 @@ yam::ybool CYQt2Yam::Generate(const YEditor* pEditor, const YCQUiItem* pItem, co
         GeneratePanel(pItem, pUiItem, rpWidget);
         } break;
 
-    case eWidgetType_Image: {
+    case eWidgetType_Picture: {
         rpWidget = new yam::base::YCWidget;
-        GenerateImage(pItem, pUiItem, rpWidget);
+        GeneratePicture(pItem, pUiItem, rpWidget);
         } break;
 
     case eWidgetType_Button: {
         rpWidget = new yam::base::YCWidget;
         GenerateButton(pItem, pUiItem, rpWidget);
+        } break;
+
+    case eWidgetType_Text: {
+        rpWidget = new yam::base::YCWidget;
+        GenerateText(pItem, pUiItem, rpWidget);
         } break;
 
     default:
@@ -85,10 +75,7 @@ yam::ybool CYQt2Yam::Generate(const YEditor* pEditor, const YCQUiItem* pItem, co
 
 yam::ybool CYQt2Yam::GenerateWidget(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
 {
-    if (eWidgetType_Scene != pItem->getType())
-    {
-        rpWidget->GetId() = pUiItem->text(0).toLocal8Bit().data();
-    }
+    rpWidget->GetId() = pUiItem->text(0).toLocal8Bit().data();
     rpWidget->GetType() = pItem->getType();
     rpWidget->GetLayerWeight() = pItem->getLayerWeight();
     rpWidget->GetBound().Pos.X = pItem->pos().x();
@@ -124,17 +111,55 @@ yam::ybool CYQt2Yam::GenerateScene(const YCQUiItem* pItem, const YCQUiTreeItem* 
 
 yam::ybool CYQt2Yam::GeneratePanel(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
 {
-    //
-    return GenerateWidget(pItem, pUiItem, rpWidget);
+    GenerateWidget(pItem, pUiItem, rpWidget);
+
+    yam::base::YIProperty* pPropertyFont = rpWidget->GetExternalProperty().AddChild("noinput");
+    pPropertyFont->Clear();
+    pPropertyFont->FromString(pItem->getNoInput() ? "true" : "false");
+    return true;
 }
 
-yam::ybool CYQt2Yam::GenerateImage(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
+yam::ybool CYQt2Yam::GenerateImage(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, const EImageType eType, const int& riIndex, yam::base::YIWidget*& rpWidget, yam::base::YIProperty*& rpProperty) const
+{
+    yam::ystring sSource = pItem->getImageSource(eType, riIndex).toLocal8Bit().data();
+    rpProperty->AddChild("source")->FromString(sSource);
+
+    SRelationship stRel = YEditor::getRelationship(sSource);
+    if (NULL == stRel._pUiItem)
+    {
+        rpProperty->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(pItem->getImageBound(eType, riIndex)));
+    }
+    else
+    {
+        QRect bound(stRel._pUiItem->pos(), stRel._pUiItem->size());
+        rpProperty->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(bound));
+    }
+    rpProperty->AddChild("offset")->FromVec2D(YCConverter::Instance().Convert(pItem->getImageOffset(eType, riIndex)));
+    return true;
+}
+
+yam::ybool CYQt2Yam::GenerateImages(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, const EImageType eType, yam::base::YIWidget*& rpWidget, yam::base::YIProperty*& rpProperty) const
+{
+    int iCount = pItem->getImageCount(eType);
+    rpProperty->AddChild("count")->FromInt32(iCount);
+
+    for (int i = 0; i < iCount; ++i)
+    {
+        std::stringstream ss;
+        ss << i;
+        yam::base::YIProperty* pPropertyItem = rpProperty->AddChild(ss.str());
+        GenerateImage(pItem, pUiItem, eType, i, rpWidget, pPropertyItem);
+    }
+    return true;
+}
+
+yam::ybool CYQt2Yam::GeneratePicture(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
 {
     GenerateWidget(pItem, pUiItem, rpWidget);
 
-    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("source")->FromString(pItem->getImageSource(YCQUiItem::eImageType_Normal).toLocal8Bit().data());
-    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(pItem->getImageBound(YCQUiItem::eImageType_Normal)));
-    //
+    yam::base::YIProperty* pProperty = rpWidget->GetExternalProperty().AddChild("images")->AddChild(YCQUiItem::convertImageTypeToString(eImageType_Normal));
+    GenerateImages(pItem, pUiItem, eImageType_Normal, rpWidget, pProperty);
+
     return true;
 }
 
@@ -142,15 +167,25 @@ yam::ybool CYQt2Yam::GenerateButton(const YCQUiItem* pItem, const YCQUiTreeItem*
 {
     GenerateWidget(pItem, pUiItem, rpWidget);
 
-    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("source")->FromString(pItem->getImageSource(YCQUiItem::eImageType_Normal).toLocal8Bit().data());
-    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(pItem->getImageBound(YCQUiItem::eImageType_Normal)));
-    rpWidget->GetExternalProperty().AddChild("image")->AddChild("hover")->AddChild("source")->FromString(pItem->getImageSource(YCQUiItem::eImageType_Hover).toLocal8Bit().data());
-    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(pItem->getImageBound(YCQUiItem::eImageType_Hover)));
-    rpWidget->GetExternalProperty().AddChild("image")->AddChild("press")->AddChild("source")->FromString(pItem->getImageSource(YCQUiItem::eImageType_Press).toLocal8Bit().data());
-    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(pItem->getImageBound(YCQUiItem::eImageType_Press)));
-    rpWidget->GetExternalProperty().AddChild("image")->AddChild("disable")->AddChild("source")->FromString(pItem->getImageSource(YCQUiItem::eImageType_Disable).toLocal8Bit().data());
-    rpWidget->GetExternalProperty().AddChild("image")->AddChild("normal")->AddChild("bound")->FromRect2D(YCConverter::Instance().Convert(pItem->getImageBound(YCQUiItem::eImageType_Disable)));
-    //
+    for (int i = 0; i < eImageType_Max; ++i)
+    {
+        if (i != eImageType_Normal && i != eImageType_Hover && i != eImageType_Press && i != eImageType_Disable)
+        {
+            continue;
+        }
+        yam::base::YIProperty* pProperty = rpWidget->GetExternalProperty().AddChild("images")->AddChild(YCQUiItem::convertImageTypeToString((EImageType)i));
+        GenerateImages(pItem, pUiItem, (EImageType)i, rpWidget, pProperty);
+    }
+    return true;
+}
+
+yam::ybool CYQt2Yam::GenerateText(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
+{
+    GenerateWidget(pItem, pUiItem, rpWidget);
+
+    yam::base::YIProperty* pPropertyFont = rpWidget->GetExternalProperty().AddChild("font");
+    pPropertyFont->Clear();
+    pPropertyFont->FromString(pItem->getFontName());
     return true;
 }
 

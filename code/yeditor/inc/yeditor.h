@@ -47,17 +47,19 @@ public Q_SLOTS:
     void onUiAreaVisibilityChanged(bool bVisible);
     void onClickedUiMenuItem_CreateScene();
     void onClickedUiMenuItem_CreatePanel();
-    void onClickedUiMenuItem_CreateImage();
+    void onClickedUiMenuItem_CreatePicture();
     void onClickedUiMenuItem_CreateButton();
+    void onClickedUiMenuItem_CreateText();
     void onClickedUiMenuItem_EditRemove();
 
 private:
     void reloadFile(const yam::ystring& rsFileName);
     void reloadRes(const yam::base::YIFormat*& rpFormat, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
     void reloadUi(const yam::base::YIWidget*& rpWidget, YCQUiItem* pUiParent, QTreeWidgetItem* pTreeParent);
-    yam::ystring getFullName(const yam::base::YITree* pTree);
+    bool readyToCreate(QTreeWidgetItem*& rpTreeWidgetItem, SConfigCreateWidget& rstConfig);
 
 public:
+    static yam::ystring getFullName(const yam::base::YITree* pTree);
     static SRelationship getRelationship(const yam::ystring& rsKey);
     static YCQUiTreeItem* getTreeItem(const YCQUiItem* pUiItem);
     static YCQUiItem* getUiItem(const QTreeWidgetItem* pTreeItem);

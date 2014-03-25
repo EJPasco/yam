@@ -10,6 +10,8 @@
 class QTreeWidget;
 class QTreeWidgetItem;
 class QLineEdit;
+class YCQUiTreeItemImagesHelper;
+class YCQUiTreeItemPointHelper;
 class YCQUiTreeItemBoundHelper;
 
 class YCQUiTreeItemImageHelper : public QObject
@@ -17,27 +19,34 @@ class YCQUiTreeItemImageHelper : public QObject
     Q_OBJECT
 
 public:
-    explicit YCQUiTreeItemImageHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem, const YCQUiItem::EImageType& reImageType, const QString sName = "Image");
+    explicit YCQUiTreeItemImageHelper(YCQUiTreeItemImagesHelper* pImagesHelper, QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem, const yam::yint32& riIndex, const QString sName = "Image");
     virtual ~YCQUiTreeItemImageHelper();
 
 Q_SIGNALS:
-    void onChanged(const YCQUiItem::EImageType& reImageType, const QString& rsImageSource, const QRect& roBound);
+    void onChanged(const yam::yint32& riIndex, YCQUiTreeItemImageHelper* pImageHelper);
 
 public Q_SLOTS:
     void onItemChangedSource(const QString& rsImageSource);
-    void onItemChangedBound(const QRect& roBound);
+    void onItemChangedOffset(const QPoint& roOffset);
+    void onDelButtonClicked();
 
 public:
+    void setText(const QString& rsName);
+    const QString& getSource() const;
     void setSource(const QString& rsValue);
-    void setBound(const QRect& rBound);
+    const QPoint& getOffset() const;
+    void setOffset(const QPoint& rOffset);
+    void setIndex(const yam::yint32& riIndex);
+    QTreeWidgetItem* getTreeWidgetItem();
 
 private:
+    YCQUiTreeItemImagesHelper*  m_pImagesHelper;
     QTreeWidgetItem*            m_pTreeItemImage;
     QLineEdit*                  m_pEditor;
-    YCQUiTreeItemBoundHelper*   m_pTreeItemBoundHelper;
-    YCQUiItem::EImageType       m_eImageType;
+    YCQUiTreeItemPointHelper*   m_pTreeItemPointHelper;
     QString                     m_sImageSource;
-    QRect                       m_oRect;
+    QPoint                      m_oOffset;
+    yam::yint32                 m_iImageIndex;
 };
 
 #endif // Y_QUITREEITEMIMAGEHELPER_H

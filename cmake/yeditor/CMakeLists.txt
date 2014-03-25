@@ -77,6 +77,8 @@ SET (CODE_FILE_LIST_QT_HELPER
     ${CODE_PATH_YEDITOR}/src/quitreereshelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeuihelper.h
     ${CODE_PATH_YEDITOR}/src/quitreeuihelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitempointhelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitempointhelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitemsizehelper.h
     ${CODE_PATH_YEDITOR}/src/quitreeitemsizehelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitemsizefhelper.h
@@ -89,8 +91,14 @@ SET (CODE_FILE_LIST_QT_HELPER
     ${CODE_PATH_YEDITOR}/src/quitreeitemlayerweighthelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitemimagehelper.h
     ${CODE_PATH_YEDITOR}/src/quitreeitemimagehelper.cpp
-    ${CODE_PATH_YEDITOR}/inc/quitreeitemimagetypehelper.h
-    ${CODE_PATH_YEDITOR}/src/quitreeitemimagetypehelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitemimageshelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitemimageshelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitemsrchelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitemsrchelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitemtexthelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitemtexthelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitempanelhelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitempanelhelper.cpp
     )
 
 SET (CODE_FILE_LIST_RES
@@ -111,13 +119,17 @@ SET (CODE_FILE_LIST_QT_GENERATE
     ${CODE_PATH_YEDITOR}/src/quitreehelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreereshelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeuihelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitempointhelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemsizehelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemsizefhelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemboundhelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemboundfhelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemlayerweighthelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemimagehelper_moc.cpp
-    ${CODE_PATH_YEDITOR}/src/quitreeitemimagetypehelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitemimageshelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitemsrchelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitemtexthelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitempanelhelper_moc.cpp
     )
 
 SET (CODE_FILE_LIST_EXPORT
@@ -189,6 +201,8 @@ QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreereshelper)
 
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeuihelper)
 
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitempointhelper)
+
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemsizehelper)
 
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemsizefhelper)
@@ -201,7 +215,13 @@ QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemlayerweighthelper)
 
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemimagehelper)
 
-QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemimagetypehelper)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemimageshelper)
+
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemsrchelper)
+
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitempanelhelper)
+
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemtexthelper)
 
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} yeditor)
 
@@ -231,12 +251,16 @@ ADD_DEPENDENCIES (yeditor ${DEPEND_PROJ_LIST}
                          quitreehelper_moc_cpp
                          quitreeuihelper_moc_cpp
                          quitreereshelper_moc_cpp
+                         quitreeitempointhelper_moc_cpp
                          quitreeitemsizehelper_moc_cpp
                          quitreeitemsizefhelper_moc_cpp
                          quitreeitemboundhelper_moc_cpp
                          quitreeitemlayerweighthelper_moc_cpp
                          quitreeitemimagehelper_moc_cpp
-                         quitreeitemimagetypehelper_moc_cpp
+                         quitreeitemimageshelper_moc_cpp
+                         quitreeitemsrchelper_moc_cpp
+                         quitreeitemtexthelper_moc_cpp
+                         quitreeitempanelhelper_moc_cpp
                          yeditor_moc_cpp
                          yeditor_main_ui_h
                          yeditor_createwidget_ui_h

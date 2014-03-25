@@ -25,6 +25,8 @@ public:
     virtual ybool ToInt32(yint32& rfValue) const = 0;
     virtual ybool FromFloat32(const yfloat32& rfValue) = 0;
     virtual ybool ToFloat32(yfloat32& rfValue) const = 0;
+    virtual ybool FromVec2D(const YVec2D& rstValue) = 0;
+    virtual ybool ToVec2D(YVec2D& rstValue) const = 0;
     virtual ybool FromRect2D(const YRect2D& rstValue) = 0;
     virtual ybool ToRect2D(YRect2D& rstValue) const = 0;
     virtual ybool FromBuffer(const YCBuffer& roValue) = 0;
@@ -71,6 +73,8 @@ public:
     virtual ybool ToFloat32(yfloat32& rfValue) const;
     virtual ybool FromRect2D(const YRect2D& rstValue);
     virtual ybool ToRect2D(YRect2D& rstValue) const;
+    virtual ybool FromVec2D(const YVec2D& rstValue);
+    virtual ybool ToVec2D(YVec2D& rstValue) const;
     virtual ybool FromBuffer(const YCBuffer& roValue);
     virtual ybool ToBuffer(YCBuffer& roValue) const;
 

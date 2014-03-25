@@ -9,7 +9,7 @@ class YCQUiTreeItemBoundHelper : public QObject
     Q_OBJECT
 
 public:
-    explicit YCQUiTreeItemBoundHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem);
+    explicit YCQUiTreeItemBoundHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem, std::string sName = "bound");
     virtual ~YCQUiTreeItemBoundHelper();
 
 Q_SIGNALS:

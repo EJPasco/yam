@@ -23,7 +23,7 @@ YCQDlgCreateWidget::~YCQDlgCreateWidget()
 
 bool YCQDlgCreateWidget::toConfig(SConfigCreateWidget& rstConfig) const
 {
-    rstConfig._sId = m_Ui.leId->text();
+    rstConfig._sId = m_Ui.leId->text().toLocal8Bit().data();
     return toCheck(rstConfig);
 }
 

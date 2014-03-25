@@ -7,11 +7,6 @@
 
 #include <QtWidgets/QDialog>
 
-typedef struct tagConfigCreateWidget
-{
-    QString     _sId;
-} SConfigCreateWidget;
-
 class YCQDlgCreateWidget : public QDialog
 {
     Q_OBJECT;

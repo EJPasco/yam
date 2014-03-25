@@ -2,25 +2,27 @@
 
 #include "yeditor.h"
 #include "yconverter.h"
+#include "yexportyam.h"
 #include "quitreeuihelper.h"
 
 #include "quitreeitemsizehelper.h"
 #include "quitreeitemboundhelper.h"
 #include "quitreeitemlayerweighthelper.h"
-#include "quitreeitemimagetypehelper.h"
+#include "quitreeitemsrchelper.h"
 #include "quitreeitemimagehelper.h"
+#include "quitreeitemtexthelper.h"
+#include "quitreeitempanelhelper.h"
 
 YCQUiTreeUiHelper::YCQUiTreeUiHelper(QTreeWidget* pTreeRoot)
     : YCQUiTreeHelper(pTreeRoot)
     , m_pTreeItemSizeHelper(NULL)
     , m_pTreeItemBoundHelper(NULL)
     , m_pTreeItemLayerWeightHelper(NULL)
-    , m_pTreeItemImageTypeHelper(NULL)
+    , m_pTreeItemSrcHelper(NULL)
+    , m_pTreeItemTextHelper(NULL)
+    , m_pTreeItemPanelHelper(NULL)
 {
-    for (int i = 0; i < YCQUiItem::eImageType_Max; ++i)
-    {
-        m_apTreeItemImageHelper[i] = NULL;
-    }
+    //
 }
 
 YCQUiTreeUiHelper::~YCQUiTreeUiHelper()
@@ -28,12 +30,9 @@ YCQUiTreeUiHelper::~YCQUiTreeUiHelper()
     YEDITOR_DELETE(m_pTreeItemSizeHelper);
     YEDITOR_DELETE(m_pTreeItemBoundHelper);
     YEDITOR_DELETE(m_pTreeItemLayerWeightHelper);
-    YEDITOR_DELETE(m_pTreeItemImageTypeHelper);
-
-    for (int i = 0; i < YCQUiItem::eImageType_Max; ++i)
-    {
-        YEDITOR_DELETE(m_apTreeItemImageHelper[i]);
-    }
+    YEDITOR_DELETE(m_pTreeItemSrcHelper);
+    YEDITOR_DELETE(m_pTreeItemTextHelper);
+    YEDITOR_DELETE(m_pTreeItemPanelHelper);
 }
 
 void YCQUiTreeUiHelper::onItemChangedSize(const QSize& roSize)
@@ -64,53 +63,77 @@ void YCQUiTreeUiHelper::onItemChangedLayerWeight(const int& riLayerWeight)
     m_pUiItem->setLayerWeight(riLayerWeight);
 }
 
-void YCQUiTreeUiHelper::onItemChangedImageType(const YCQUiItem::EImageType& reImageType)
+void YCQUiTreeUiHelper::onItemChangedSrc(const EImageType& reImageType, const yam::yint32& riImageIndex, YCQUiTreeItemImageHelper* pImageHelper)
 {
     if (NULL == m_pUiItem)
     {
         return;
     }
-    m_pUiItem->setImageType(reImageType);
-}
 
-void YCQUiTreeUiHelper::onItemChangedImageSource(const YCQUiItem::EImageType& reImageType, const QString& rsImageSource, const QRect& roBound)
-{
-    if (NULL == m_pUiItem)
-    {
-        return;
-    }
-    m_pUiItem->setImageSource(reImageType, rsImageSource);
-
-    std::vector<yam::ystring> vsPathSeg;
     const yam::base::YIFormat* pFormat = YNULL;
-    SRelationship stRelationship;
-    stRelationship._pUiItem = NULL;
-    stRelationship._pTreeItem = NULL;
+    if (m_pUiItem->getImageSource(reImageType, riImageIndex) != pImageHelper->getSource().toLocal8Bit().data())
     {
-        QStringList qvsPathSeg = rsImageSource.split(".");
-        for (int i = 1; i < qvsPathSeg.size(); ++i)
+        std::vector<yam::ystring> vsPathSeg;
+        SRelationship stRelationship;
+        stRelationship._pUiItem = NULL;
+        stRelationship._pTreeItem = NULL;
         {
-            yam::ystring sPathSeg(qvsPathSeg[i].toLocal8Bit());
-            vsPathSeg.push_back(sPathSeg);
-        }
+            QStringList qvsPathSeg = pImageHelper->getSource().split(".");
+            for (int i = 1; i < qvsPathSeg.size(); ++i)
+            {
+                yam::ystring sPathSeg(qvsPathSeg[i].toLocal8Bit());
+                if (0 >= sPathSeg.size())
+                {
+                    continue;
+                }
+                vsPathSeg.push_back(sPathSeg);
+            }
 
-        pFormat = gs_FileTreeData.Find<yam::base::YCFormat>(vsPathSeg);
-        stRelationship = YEditor::getRelationship(rsImageSource.toLocal8Bit().data());
-    }
-    if (NULL == pFormat || NULL == stRelationship._pUiItem)
-    {
-        m_pUiItem->setColor(qRgba((qrand() + 0x10) % 0xff, (qrand() + 0x10) % 0xff, (qrand() + 0x10) % 0xff, (qrand() + 0x10) % 0xff));
+            pFormat = gs_FileTreeData.Find<yam::base::YCFormat>(vsPathSeg);
+            stRelationship = YEditor::getRelationship(pImageHelper->getSource().toLocal8Bit().data());
+        }
+        if (NULL == pFormat)
+        {
+            //m_pUiItem->setImage(reImageType, riImageIndex, pImageHelper->getSource().toLocal8Bit().data(), yam::YRect2D(), NULL);
+            m_pUiItem->setColor(qRgba((qrand() + 0x10) % 0xff, (qrand() + 0x10) % 0xff, (qrand() + 0x10) % 0xff, (qrand() + 0x10) % 0xff));
+        }
+        else
+        {
+            m_pUiItem->setImage(reImageType, riImageIndex, YCConverter::Instance().Convert(pImageHelper->getOffset()), pFormat);
+        }
     }
     else
     {
-        m_pUiItem->setImage(reImageType, pFormat->GetBound(), pFormat->GetColorData());
+        m_pUiItem->setImage(reImageType, riImageIndex, YCConverter::Instance().Convert(pImageHelper->getOffset()), pFormat);
     }
-    if (NULL != m_apTreeItemImageHelper[reImageType])
+}
+
+void YCQUiTreeUiHelper::onItemSelectedSrc(const EImageType& reImageType, const yam::yint32& riImageIndex)
+{
+    if (NULL == m_pUiItem)
     {
-        QRect rect = stRelationship._pUiItem != NULL ? QRect(stRelationship._pUiItem->pos(), stRelationship._pUiItem->size()) : m_pUiItem->rect();
-        m_pUiItem->setImageBound(reImageType, rect);
-        m_apTreeItemImageHelper[reImageType]->setBound(rect);
+        return;
     }
+
+    m_pUiItem->setCurrentImage(reImageType, riImageIndex);
+}
+
+void YCQUiTreeUiHelper::onItemChangedFont(const QString& rsFontName)
+{
+    if (NULL == m_pUiItem)
+    {
+        return;
+    }
+    m_pUiItem->setFontName(rsFontName.toLocal8Bit().data());
+}
+
+void YCQUiTreeUiHelper::onItemChangedPanel(const bool& rbNoInput)
+{
+    if (NULL == m_pUiItem)
+    {
+        return;
+    }
+    m_pUiItem->setNoInput(rbNoInput);
 }
 
 void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
@@ -122,7 +145,7 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
     }
 
     QTreeWidgetItem* pTreeWidget = new QTreeWidgetItem;
-    pTreeWidget->setText(0, tr("Widget"));
+    pTreeWidget->setText(0, tr(yam::io::YCExportYam::GetNameByWidgetType(rpUiItem->getType()).c_str()));
     m_pTreeRoot->insertTopLevelItem(m_pTreeRoot->topLevelItemCount(), pTreeWidget);
 
     if (yam::eWidgetType_Scene == rpUiItem->getType())
@@ -152,65 +175,40 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
 
         if (yam::eWidgetType_Panel == rpUiItem->getType())
         {
-            //
-        }
-        else if (yam::eWidgetType_Image == rpUiItem->getType())
-        {
-            if (NULL == m_pTreeItemImageTypeHelper)
+            if (NULL == m_pTreeItemPanelHelper)
             {
-                m_pTreeItemImageTypeHelper = new YCQUiTreeItemImageTypeHelper(m_pTreeRoot, pTreeWidget, (1 << YCQUiItem::eImageType_Normal));
-                m_pTreeItemImageTypeHelper->setImageType(YCQUiItem::eImageType_Normal);
-                connect(m_pTreeItemImageTypeHelper, SIGNAL(onChanged(const YCQUiItem::EImageType&)), this, SLOT(onItemChangedImageType(const YCQUiItem::EImageType&)));
+                m_pTreeItemPanelHelper = new YCQUiTreeItemPanelHelper(m_pTreeRoot, pTreeWidget);
+                m_pTreeItemPanelHelper->setUiItem(rpUiItem);
+                connect(m_pTreeItemPanelHelper, SIGNAL(onChanged(const bool&)), this, SLOT(onItemChangedPanel(const bool&)));
             }
-
-            if (NULL == m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal])
+        }
+        else if (yam::eWidgetType_Picture == rpUiItem->getType())
+        {
+            if (NULL == m_pTreeItemSrcHelper)
             {
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal] = new YCQUiTreeItemImageHelper(m_pTreeRoot, pTreeWidget, YCQUiItem::eImageType_Normal);
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal]->setSource(rpUiItem->getImageSource(YCQUiItem::eImageType_Normal));
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal]->setBound(rpUiItem->getImageBound(YCQUiItem::eImageType_Normal));
-                connect(m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal], SIGNAL(onChanged(const YCQUiItem::EImageType&, const QString&, const QRect&)), this, SLOT(onItemChangedImageSource(const YCQUiItem::EImageType&, const QString&, const QRect&)));
+                m_pTreeItemSrcHelper = new YCQUiTreeItemSrcHelper(m_pTreeRoot, pTreeWidget, (1 << eImageType_Normal), "src");
+                m_pTreeItemSrcHelper->setUiItem(rpUiItem);
+                connect(m_pTreeItemSrcHelper, SIGNAL(onChanged(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)), this, SLOT(onItemChangedSrc(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)));
+                connect(m_pTreeItemSrcHelper, SIGNAL(onSelected(const EImageType&, const yam::yint32&)), this, SLOT(onItemSelectedSrc(const EImageType&, const yam::yint32&)));
             }
         }
         else if (yam::eWidgetType_Button == rpUiItem->getType())
         {
-            if (NULL == m_pTreeItemImageTypeHelper)
+            if (NULL == m_pTreeItemSrcHelper)
             {
-                m_pTreeItemImageTypeHelper = new YCQUiTreeItemImageTypeHelper(m_pTreeRoot, pTreeWidget
-                    , (1 << YCQUiItem::eImageType_Normal) | (1 << YCQUiItem::eImageType_Hover) | (1 << YCQUiItem::eImageType_Press) | (1 << YCQUiItem::eImageType_Disable));
-                m_pTreeItemImageTypeHelper->setImageType(YCQUiItem::eImageType_Normal);
-                connect(m_pTreeItemImageTypeHelper, SIGNAL(onChanged(const YCQUiItem::EImageType&)), this, SLOT(onItemChangedImageType(const YCQUiItem::EImageType&)));
+                m_pTreeItemSrcHelper = new YCQUiTreeItemSrcHelper(m_pTreeRoot, pTreeWidget, (1 << eImageType_Normal) | (1 << eImageType_Hover) | (1 << eImageType_Press) | (1 << eImageType_Disable), "src");
+                m_pTreeItemSrcHelper->setUiItem(rpUiItem);
+                connect(m_pTreeItemSrcHelper, SIGNAL(onChanged(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)), this, SLOT(onItemChangedSrc(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)));
+                connect(m_pTreeItemSrcHelper, SIGNAL(onSelected(const EImageType&, const yam::yint32&)), this, SLOT(onItemSelectedSrc(const EImageType&, const yam::yint32&)));
             }
-
-            if (NULL == m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal])
+        }
+        else if (yam::eWidgetType_Text == rpUiItem->getType())
+        {
+            if (NULL == m_pTreeItemTextHelper)
             {
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal] = new YCQUiTreeItemImageHelper(m_pTreeRoot, pTreeWidget, YCQUiItem::eImageType_Normal, tr("Normal Image"));
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal]->setSource(rpUiItem->getImageSource(YCQUiItem::eImageType_Normal));
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal]->setBound(rpUiItem->getImageBound(YCQUiItem::eImageType_Normal));
-                connect(m_apTreeItemImageHelper[YCQUiItem::eImageType_Normal], SIGNAL(onChanged(const YCQUiItem::EImageType&, const QString&, const QRect&)), this, SLOT(onItemChangedImageSource(const YCQUiItem::EImageType&, const QString&, const QRect&)));
-            }
-
-            if (NULL == m_apTreeItemImageHelper[YCQUiItem::eImageType_Hover])
-            {
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Hover] = new YCQUiTreeItemImageHelper(m_pTreeRoot, pTreeWidget, YCQUiItem::eImageType_Hover, tr("Hover Image"));
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Hover]->setSource(rpUiItem->getImageSource(YCQUiItem::eImageType_Hover));
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Hover]->setBound(rpUiItem->getImageBound(YCQUiItem::eImageType_Hover));
-                connect(m_apTreeItemImageHelper[YCQUiItem::eImageType_Hover], SIGNAL(onChanged(const YCQUiItem::EImageType&, const QString&, const QRect&)), this, SLOT(onItemChangedImageSource(const YCQUiItem::EImageType&, const QString&, const QRect&)));
-            }
-
-            if (NULL == m_apTreeItemImageHelper[YCQUiItem::eImageType_Press])
-            {
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Press] = new YCQUiTreeItemImageHelper(m_pTreeRoot, pTreeWidget, YCQUiItem::eImageType_Press, tr("Press Image"));
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Press]->setSource(rpUiItem->getImageSource(YCQUiItem::eImageType_Press));
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Press]->setBound(rpUiItem->getImageBound(YCQUiItem::eImageType_Press));
-                connect(m_apTreeItemImageHelper[YCQUiItem::eImageType_Press], SIGNAL(onChanged(const YCQUiItem::EImageType&, const QString&, const QRect&)), this, SLOT(onItemChangedImageSource(const YCQUiItem::EImageType&, const QString&, const QRect&)));
-            }
-
-            if (NULL == m_apTreeItemImageHelper[YCQUiItem::eImageType_Disable])
-            {
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Disable] = new YCQUiTreeItemImageHelper(m_pTreeRoot, pTreeWidget, YCQUiItem::eImageType_Disable, tr("Disable Image"));
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Disable]->setSource(rpUiItem->getImageSource(YCQUiItem::eImageType_Disable));
-                m_apTreeItemImageHelper[YCQUiItem::eImageType_Disable]->setBound(rpUiItem->getImageBound(YCQUiItem::eImageType_Disable));
-                connect(m_apTreeItemImageHelper[YCQUiItem::eImageType_Disable], SIGNAL(onChanged(const YCQUiItem::EImageType&, const QString&, const QRect&)), this, SLOT(onItemChangedImageSource(const YCQUiItem::EImageType&, const QString&, const QRect&)));
+                m_pTreeItemTextHelper = new YCQUiTreeItemTextHelper(m_pTreeRoot, pTreeWidget);
+                m_pTreeItemTextHelper->setUiItem(rpUiItem);
+                connect(m_pTreeItemTextHelper, SIGNAL(onChanged(const QString&)), this, SLOT(onItemChangedFont(const QString&)));
             }
         }
     }

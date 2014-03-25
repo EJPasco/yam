@@ -20,7 +20,7 @@ YCQUiTreeItemSizeHelper::YCQUiTreeItemSizeHelper(QTreeWidget* pTreeRoot, QTreeWi
         m_pSpinBoxWidth->setValue(0);
         connect(m_pSpinBoxWidth, SIGNAL(valueChanged(int)), this, SLOT(onItemChangedWidth(int)));
         QTreeWidgetItem* pTreeWidth = new QTreeWidgetItem;
-        pTreeWidth->setText(0, tr("Width"));
+        pTreeWidth->setText(0, tr("width"));
         m_pTreeItemSize->addChild(pTreeWidth);
         pTreeRoot->setItemWidget(pTreeWidth, 1, m_pSpinBoxWidth);
 
@@ -29,10 +29,12 @@ YCQUiTreeItemSizeHelper::YCQUiTreeItemSizeHelper(QTreeWidget* pTreeRoot, QTreeWi
         m_pSpinBoxHeight->setValue(0);
         connect(m_pSpinBoxHeight, SIGNAL(valueChanged(int)), this, SLOT(onItemChangedHeight(int)));
         QTreeWidgetItem* pTreeHeight = new QTreeWidgetItem;
-        pTreeHeight->setText(0, tr("Height"));
+        pTreeHeight->setText(0, tr("height"));
         m_pTreeItemSize->addChild(pTreeHeight);
         pTreeRoot->setItemWidget(pTreeHeight, 1, m_pSpinBoxHeight);
     }
+
+    setSizeText(m_Size);
 }
 
 YCQUiTreeItemSizeHelper::~YCQUiTreeItemSizeHelper()

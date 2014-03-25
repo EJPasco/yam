@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YCQUiTreeItemImageHelper_t {
-    QByteArrayData data[9];
-    char stringdata[132];
+    QByteArrayData data[12];
+    char stringdata[178];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,17 +32,21 @@ static const qt_meta_stringdata_YCQUiTreeItemImageHelper_t qt_meta_stringdata_YC
 QT_MOC_LITERAL(0, 0, 24),
 QT_MOC_LITERAL(1, 25, 9),
 QT_MOC_LITERAL(2, 35, 0),
-QT_MOC_LITERAL(3, 36, 21),
-QT_MOC_LITERAL(4, 58, 11),
-QT_MOC_LITERAL(5, 70, 13),
-QT_MOC_LITERAL(6, 84, 7),
-QT_MOC_LITERAL(7, 92, 19),
-QT_MOC_LITERAL(8, 112, 18)
+QT_MOC_LITERAL(3, 36, 11),
+QT_MOC_LITERAL(4, 48, 7),
+QT_MOC_LITERAL(5, 56, 25),
+QT_MOC_LITERAL(6, 82, 12),
+QT_MOC_LITERAL(7, 95, 19),
+QT_MOC_LITERAL(8, 115, 13),
+QT_MOC_LITERAL(9, 129, 19),
+QT_MOC_LITERAL(10, 149, 8),
+QT_MOC_LITERAL(11, 158, 18)
     },
     "YCQUiTreeItemImageHelper\0onChanged\0\0"
-    "YCQUiItem::EImageType\0reImageType\0"
-    "rsImageSource\0roBound\0onItemChangedSource\0"
-    "onItemChangedBound\0"
+    "yam::yint32\0riIndex\0YCQUiTreeItemImageHelper*\0"
+    "pImageHelper\0onItemChangedSource\0"
+    "rsImageSource\0onItemChangedOffset\0"
+    "roOffset\0onDelButtonClicked\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -52,7 +56,7 @@ static const uint qt_meta_data_YCQUiTreeItemImageHelper[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -60,18 +64,20 @@ static const uint qt_meta_data_YCQUiTreeItemImageHelper[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,   29,    2, 0x06,
+       1,    2,   34,    2, 0x06,
 
  // slots: name, argc, parameters, tag, flags
-       7,    1,   36,    2, 0x0a,
-       8,    1,   39,    2, 0x0a,
+       7,    1,   39,    2, 0x0a,
+       9,    1,   42,    2, 0x0a,
+      11,    0,   45,    2, 0x0a,
 
  // signals: parameters
-    QMetaType::Void, 0x80000000 | 3, QMetaType::QString, QMetaType::QRect,    4,    5,    6,
+    QMetaType::Void, 0x80000000 | 3, 0x80000000 | 5,    4,    6,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QString,    5,
-    QMetaType::Void, QMetaType::QRect,    6,
+    QMetaType::Void, QMetaType::QString,    8,
+    QMetaType::Void, QMetaType::QPoint,   10,
+    QMetaType::Void,
 
        0        // eod
 };
@@ -81,16 +87,28 @@ void YCQUiTreeItemImageHelper::qt_static_metacall(QObject *_o, QMetaObject::Call
     if (_c == QMetaObject::InvokeMetaMethod) {
         YCQUiTreeItemImageHelper *_t = static_cast<YCQUiTreeItemImageHelper *>(_o);
         switch (_id) {
-        case 0: _t->onChanged((*reinterpret_cast< const YCQUiItem::EImageType(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QRect(*)>(_a[3]))); break;
+        case 0: _t->onChanged((*reinterpret_cast< const yam::yint32(*)>(_a[1])),(*reinterpret_cast< YCQUiTreeItemImageHelper*(*)>(_a[2]))); break;
         case 1: _t->onItemChangedSource((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 2: _t->onItemChangedBound((*reinterpret_cast< const QRect(*)>(_a[1]))); break;
+        case 2: _t->onItemChangedOffset((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 3: _t->onDelButtonClicked(); break;
         default: ;
+        }
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        switch (_id) {
+        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+        case 0:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 1:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< YCQUiTreeItemImageHelper* >(); break;
+            }
+            break;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (YCQUiTreeItemImageHelper::*_t)(const YCQUiItem::EImageType & , const QString & , const QRect & );
+            typedef void (YCQUiTreeItemImageHelper::*_t)(const yam::yint32 & , YCQUiTreeItemImageHelper * );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&YCQUiTreeItemImageHelper::onChanged)) {
                 *result = 0;
             }
@@ -123,21 +141,21 @@ int YCQUiTreeItemImageHelper::qt_metacall(QMetaObject::Call _c, int _id, void **
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 4;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
-            *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        if (_id < 4)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 4;
     }
     return _id;
 }
 
 // SIGNAL 0
-void YCQUiTreeItemImageHelper::onChanged(const YCQUiItem::EImageType & _t1, const QString & _t2, const QRect & _t3)
+void YCQUiTreeItemImageHelper::onChanged(const yam::yint32 & _t1, YCQUiTreeItemImageHelper * _t2)
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_END_MOC_NAMESPACE
