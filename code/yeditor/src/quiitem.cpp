@@ -20,29 +20,36 @@ YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
     , m_eType(yam::eWidgetType_None)
     , m_eImageType(eImageType_Normal)
     , m_iIndex(0)
-    , m_sFontName("")
+    , m_sTextFace("")
+    , m_iTextSize(1)
+    , m_sTextAlign("")
+    , m_sTextValue("")
     , m_bNoInput(true)
 {
     QSizePolicy policy = QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     policy.setHeightForWidth(true);
     setSizePolicy(policy);
 
-    m_stImageDefault._pImage = NULL;
+    for (int i = 0; i < eImageType_Max; ++i)
+    {
+        m_astImagesData[i]._fSpeed = 0.1f;
+    }
+    m_stImageDataDefault._pImage = NULL;
 }
 
 YCQUiItem::~YCQUiItem()
 {
     for (int i = 0; i < eImageType_Max; ++i)
     {
-        VImageData::iterator it = m_avImageData[i].begin();
-        VImageData::iterator itEnd = m_avImageData[i].end();
+        VImageData::iterator it = m_astImagesData[i]._vstImageData.begin();
+        VImageData::iterator itEnd = m_astImagesData[i]._vstImageData.end();
         for (; it != itEnd; ++it)
         {
             YEDITOR_DELETE((*it)._pImage);
         }
-        m_avImageData[i].clear();
+        m_astImagesData[i]._vstImageData.clear();
     }
-    YEDITOR_DELETE(m_stImageDefault._pImage);
+    YEDITOR_DELETE(m_stImageDataDefault._pImage);
 }
 
 void YCQUiItem::paintEvent(QPaintEvent* pEvent)
@@ -50,7 +57,7 @@ void YCQUiItem::paintEvent(QPaintEvent* pEvent)
     QPainter oPainter(this);
 
     QImage* pImage = NULL;
-    VImageData& rvpImage = m_avImageData[m_eImageType];
+    VImageData& rvpImage = m_astImagesData[m_eImageType]._vstImageData;
     QPoint oOffset;
     if (0 <= m_iIndex && rvpImage.size() > m_iIndex)
     {
@@ -59,8 +66,8 @@ void YCQUiItem::paintEvent(QPaintEvent* pEvent)
     }
     else
     {
-        pImage = m_stImageDefault._pImage;
-        oOffset = m_stImageDefault._oOffset;
+        pImage = m_stImageDataDefault._pImage;
+        oOffset = m_stImageDataDefault._oOffset;
     }
     if (NULL != pImage)
     {
@@ -187,17 +194,50 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
     }
 
     m_eType = rpWidget->GetType();
-    yam::base::YCProperty* pPropertyFont = rpWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("font");
-    if (YNULL != pPropertyFont)
+
+    if (yam::eWidgetType_Text == m_eType)
     {
-        pPropertyFont->ToString(m_sFontName);
+        yam::base::YCProperty* pPropertyTextFace = rpWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("face");
+        if (YNULL != pPropertyTextFace)
+        {
+            pPropertyTextFace->ToString(m_sTextFace);
+        }
+
+        yam::base::YCProperty* pPropertyTextSize = rpWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("size");
+        if (YNULL != pPropertyTextSize)
+        {
+            pPropertyTextSize->ToInt32(m_iTextSize);
+        }
+
+        yam::base::YCProperty* pPropertyTextAlign = rpWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("align");
+        if (YNULL != pPropertyTextAlign)
+        {
+            pPropertyTextAlign->ToString(m_sTextAlign);
+        }
+
+        yam::base::YCProperty* pPropertyTextValue = rpWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("value");
+        if (YNULL != pPropertyTextValue)
+        {
+            pPropertyTextValue->ToString(m_sTextValue);
+        }
     }
-    yam::base::YCProperty* pPropertyNoInput = rpWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("noinput");
-    if (YNULL != pPropertyNoInput)
+
+    if (yam::eWidgetType_Panel == m_eType)
     {
-        yam::ystring sNoInput;
-        pPropertyNoInput->ToString(sNoInput);
-        m_bNoInput = (sNoInput == "false") ? false : true;
+        yam::base::YCProperty* pPropertyNoInput = rpWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("noinput");
+        if (YNULL != pPropertyNoInput)
+        {
+            yam::ystring sNoInput;
+            pPropertyNoInput->ToString(sNoInput);
+            m_bNoInput = (sNoInput == "false") ? false : true;
+        }
+    }
+
+    if (yam::eWidgetType_Scene == m_eType)
+    {
+        yam::base::YCProperty* pPropertyScene = rpWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("scene");
+        getConfigScene(pPropertyScene, m_stConfigScene);
+        m_stConfigScene._stSize = rpWidget->GetBound().Size;
     }
 
     move(rpWidget->GetBound().Pos.X, rpWidget->GetBound().Pos.Y);
@@ -206,14 +246,12 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
     bool bHasImage = false;
     for (int i = 0; i < eImageType_Max; ++i)
     {
+        m_astImagesData[i]._vstImageData.clear();
+
         VFormatData vFormats;
-        getFormatImages((EImageType)i, rpWidget, vFormats);
+        getFormatImages((EImageType)i, rpWidget, m_astImagesData[i]._fSpeed, vFormats);
         for (size_t j = 0; j < vFormats.size(); ++j)
         {
-            if (YNULL == vFormats[j]._pFormat)
-            {
-                continue;
-            }
             setImage((EImageType)i, j, vFormats[j]._stOffset, vFormats[j]._pFormat);
             bHasImage = true;
         }
@@ -230,16 +268,16 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
 
 void YCQUiItem::setColor(const uint& riColor)
 {
-    if (NULL == m_stImageDefault._pImage)
+    if (NULL == m_stImageDataDefault._pImage)
     {
-        m_stImageDefault._pImage = new QImage(size(), QImage::Format_ARGB32);
+        m_stImageDataDefault._pImage = new QImage(size(), QImage::Format_ARGB32);
     }
 
     for (int j = 0; j < size().height(); ++j)
     {
         for (int i = 0; i < size().width(); ++i)
         {
-            m_stImageDefault._pImage->setPixel(i, j, riColor);
+            m_stImageDataDefault._pImage->setPixel(i, j, riColor);
         }
     }
 }
@@ -251,22 +289,20 @@ void YCQUiItem::setAlpah(const qreal& rfAlpha)
 
 void YCQUiItem::setImage(const EImageType& reImageType, const yam::yint32& riImageIndex, const yam::YVec2D& rstImageOffset, const yam::base::YIFormat*& rpFormat)
 {
-    while (riImageIndex >= (yam::yint32)m_avImageData[reImageType].size())
+    while (riImageIndex >= (yam::yint32)m_astImagesData[reImageType]._vstImageData.size())
     {
         SImageData stImageData;
-        stImageData._pImage = NULL;
-        m_avImageData[reImageType].push_back(stImageData);
+        m_astImagesData[reImageType]._vstImageData.push_back(stImageData);
     }
 
-    SImageData& rstImageData = m_avImageData[reImageType][riImageIndex];
+    SImageData& rstImageData = m_astImagesData[reImageType]._vstImageData[riImageIndex];
 
     if (YNULL != rpFormat)
     {
         yam::ystring sFormatUrl = YEditor::getFullName(rpFormat);
         if (sFormatUrl != rstImageData._sSource.toLocal8Bit().data())
         {
-            delete rstImageData._pImage;
-            rstImageData._pImage = NULL;
+            YEDITOR_DELETE(rstImageData._pImage);
             rstImageData._sSource = sFormatUrl.c_str();
         }
 
@@ -281,6 +317,21 @@ void YCQUiItem::setImage(const EImageType& reImageType, const yam::yint32& riIma
 
         repaint();
     }
+}
+
+void YCQUiItem::addImage(const EImageType& reImageType)
+{
+    SImageData stImageData;
+    m_astImagesData[reImageType]._vstImageData.push_back(stImageData);
+}
+
+void YCQUiItem::delImage(const EImageType& reImageType, const yam::yint32& riImageIndex)
+{
+    if (riImageIndex < 0 || riImageIndex >= (yam::yint32)m_astImagesData[reImageType]._vstImageData.size())
+    {
+        return;
+    }
+    m_astImagesData[reImageType]._vstImageData.erase(m_astImagesData[reImageType]._vstImageData.begin() + riImageIndex);
 }
 
 void YCQUiItem::setImage(SImageData& rstImageData, const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData)
@@ -328,9 +379,24 @@ void YCQUiItem::setCurrentImage(const EImageType& reImageType, const yam::yint32
     repaint();
 }
 
-void YCQUiItem::setFontName(const yam::ystring& rsFontName)
+void YCQUiItem::setTextFace(const yam::ystring& rsFace)
 {
-    m_sFontName = rsFontName;
+    m_sTextFace = rsFace;
+}
+
+void YCQUiItem::setTextSize(const yam::yint32& riSize)
+{
+    m_iTextSize = riSize;
+}
+
+void YCQUiItem::setTextAlign(const yam::ystring& rsAlign)
+{
+    m_sTextAlign = rsAlign;
+}
+
+void YCQUiItem::setTextValue(const yam::ystring& rsValue)
+{
+    m_sTextValue = rsValue;
 }
 
 void YCQUiItem::setNoInput(const bool& rbNoInput)
@@ -338,55 +404,65 @@ void YCQUiItem::setNoInput(const bool& rbNoInput)
     m_bNoInput = rbNoInput;
 }
 
+void YCQUiItem::setConfigScene(const SConfigScene& rstConfig)
+{
+    m_stConfigScene = rstConfig;
+}
+
 int YCQUiItem::getLayerWeight() const
 {
     return m_iLayerWeight;
 }
 
-YCQUiItem::VImageData& YCQUiItem::getImageDataList(const EImageType& reImageType)
+YCQUiItem::SImagesData& YCQUiItem::getImagesData(const EImageType& reImageType)
 {
-    return m_avImageData[reImageType];
+    return m_astImagesData[reImageType];
 }
 
 yam::yint32 YCQUiItem::getImageCount(const EImageType& reImageType) const
 {
-    return (yam::yint32)m_avImageData[reImageType].size();
+    return (yam::yint32)m_astImagesData[reImageType]._vstImageData.size();
+}
+
+yam::yfloat32 YCQUiItem::getImageSpeed(const EImageType& reImageType) const
+{
+    return m_astImagesData[reImageType]._fSpeed;
 }
 
 QImage* YCQUiItem::getImage(const EImageType& reImageType, const size_t& riIndex) const
 {
-    if (riIndex < 0 || riIndex >= m_avImageData[reImageType].size())
+    if (riIndex < 0 || riIndex >= m_astImagesData[reImageType]._vstImageData.size())
     {
         return NULL;
     }
-    return m_avImageData[reImageType][riIndex]._pImage;
+    return m_astImagesData[reImageType]._vstImageData[riIndex]._pImage;
 }
 
 QString YCQUiItem::getImageSource(const EImageType& reImageType, const size_t& riIndex) const
 {
-    if (riIndex < 0 || riIndex >= m_avImageData[reImageType].size())
+    if (riIndex < 0 || riIndex >= m_astImagesData[reImageType]._vstImageData.size())
     {
         return QString();
     }
-    return m_avImageData[reImageType][riIndex]._sSource;
+    return m_astImagesData[reImageType]._vstImageData[riIndex]._sSource;
 }
 
 QRect YCQUiItem::getImageBound(const EImageType& reImageType, const size_t& riIndex) const
 {
-    if (riIndex < 0 || riIndex >= m_avImageData[reImageType].size())
+    if (riIndex < 0 || riIndex >= m_astImagesData[reImageType]._vstImageData.size())
     {
         return QRect();
     }
-    return m_avImageData[reImageType][riIndex]._oBound;
+    return m_astImagesData[reImageType]._vstImageData[riIndex]._oBound;
 }
 
 QPoint YCQUiItem::getImageOffset(const EImageType& reImageType, const size_t& riIndex) const
 {
-    if (riIndex < 0 || riIndex >= m_avImageData[reImageType].size())
+    if (riIndex < 0 || riIndex >= m_astImagesData[reImageType]._vstImageData.size())
     {
         return QPoint();
     }
-    return m_avImageData[reImageType][riIndex]._oOffset;
+    return m_astImagesData[reImageType]._vstImageData[riIndex]._oOffset;
 }
 
 yam::EWidgetType YCQUiItem::getType() const
@@ -399,14 +475,34 @@ YCQUiArea* YCQUiItem::getArea() const
     return m_pUiArea;
 }
 
-const yam::ystring& YCQUiItem::getFontName() const
+const yam::ystring& YCQUiItem::getTextFace() const
 {
-    return m_sFontName;
+    return m_sTextFace;
+}
+
+const yam::yint32& YCQUiItem::getTextSize() const
+{
+    return m_iTextSize;
+}
+
+const yam::ystring& YCQUiItem::getTextAlign() const
+{
+    return m_sTextAlign;
+}
+
+const yam::ystring& YCQUiItem::getTextValue() const
+{
+    return m_sTextValue;
 }
 
 const bool& YCQUiItem::getNoInput() const
 {
     return m_bNoInput;
+}
+
+const SConfigScene& YCQUiItem::getConfigScene() const
+{
+    return m_stConfigScene;
 }
 
 QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const
@@ -418,9 +514,9 @@ QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const
                 , YGETCOLORBIT(riColor, YBITOFFSET_ALPHA));
 }
 
-yam::ystring YCQUiItem::convertImageTypeToString(EImageType eImageType)
+yam::ystring YCQUiItem::convertImageTypeToString(const EImageType& reImageType)
 {
-    switch (eImageType)
+    switch (reImageType)
     {
     case eImageType_Normal:
         return "normal";
@@ -447,7 +543,7 @@ yam::ystring YCQUiItem::convertImageTypeToString(EImageType eImageType)
     return "";
 }
 
-bool YCQUiItem::getFormatImages(const EImageType& reImageType, const yam::base::YIWidget*& rpWidget, YCQUiItem::VFormatData& rvFormatData) const
+bool YCQUiItem::getFormatImages(const EImageType& reImageType, const yam::base::YIWidget*& rpWidget, yam::yfloat32& rfSpeed, YCQUiItem::VFormatData& rvFormatData) const
 {
     rvFormatData.clear();
 
@@ -468,6 +564,12 @@ bool YCQUiItem::getFormatImages(const EImageType& reImageType, const yam::base::
     }
     yam::yint32 iCount = 0;
     pPropertyImagesCount->ToInt32(iCount);
+
+    yam::base::YCProperty* pPropertyImagesSpeed = pPropertyImagesType->FindChild<yam::base::YCProperty>("speed");
+    if (YNULL != pPropertyImagesSpeed)
+    {
+        pPropertyImagesSpeed->ToFloat32(rfSpeed, 0.1f);
+    }
 
     for (yam::yint32 i = 0; i < iCount; ++i)
     {
@@ -511,18 +613,56 @@ bool YCQUiItem::getFormatImages(const EImageType& reImageType, const yam::base::
     return true;
 }
 
-bool YCQUiItem::getFormatImage(const EImageType& reImageType, const yam::yint32& riImageIndex, const yam::base::YIWidget*& rpWidget, YCQUiItem::SFormatData& rstFormatData) const
+void YCQUiItem::getConfigScene(yam::base::YCProperty*& rpProperty, SConfigScene& rstConfig)
 {
-    VFormatData vFormatData;
-    if (!getFormatImages(reImageType, rpWidget, vFormatData))
+    if (YNULL == rpProperty)
     {
-        return false;
+        return;
     }
 
-    if (riImageIndex < 0 || riImageIndex >= (yam::yint32)vFormatData.size())
+    yam::base::YCProperty* pPropertyLogic = rpProperty->FindChild<yam::base::YCProperty>("logic");
+    if (YNULL != pPropertyLogic)
     {
-        return false;
+        pPropertyLogic->ToString(rstConfig._sLogic, rstConfig._sLogic);
     }
-    rstFormatData = vFormatData[riImageIndex];
-    return true;
+
+    yam::base::YCProperty* pPropertyAsserts = rpProperty->FindChild<yam::base::YCProperty>("asserts");
+    if (YNULL == pPropertyAsserts)
+    {
+        return;
+    }
+    yam::base::YCProperty* pPropertyAssertsCount = pPropertyAsserts->FindChild<yam::base::YCProperty>("count");
+    if (YNULL == pPropertyAssertsCount)
+    {
+        return;
+    }
+    yam::yint32 iCount = 0;
+    pPropertyAssertsCount->ToInt32(iCount);
+    for (yam::yint32 i = 0; i < iCount; ++i)
+    {
+        std::stringstream ss;
+        ss << i;
+        yam::base::YCProperty* pPropertyAssert = pPropertyAsserts->FindChild<yam::base::YCProperty>(ss.str());
+        if (YNULL == pPropertyAssert)
+        {
+            continue;
+        }
+        SConfigAssert stAssert;
+        yam::base::YCProperty* pPropertyAssertFile = pPropertyAssert->FindChild<yam::base::YCProperty>("file");
+        if (YNULL != pPropertyAssertFile)
+        {
+            pPropertyAssertFile->ToString(stAssert._sFile);
+        }
+        yam::base::YCProperty* pPropertyAssertName = pPropertyAssert->FindChild<yam::base::YCProperty>("name");
+        if (YNULL != pPropertyAssertName)
+        {
+            pPropertyAssertName->ToString(stAssert._sName);
+        }
+        yam::base::YCProperty* pPropertyAssertType = pPropertyAssert->FindChild<yam::base::YCProperty>("type");
+        if (YNULL != pPropertyAssertType)
+        {
+            pPropertyAssertType->ToString(stAssert._sType);
+        }
+        rstConfig._vAsserts.push_back(stAssert);
+    }
 }

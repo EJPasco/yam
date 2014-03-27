@@ -1,3 +1,10 @@
+// The MIT License (MIT) Copyright (c) 2014 Code 4 Game
+/*!
+  \file format.h
+  \author Alex Chi
+  \brief a class to store the image data
+
+ */
 #ifndef Y_FORMAT_H
 #define Y_FORMAT_H
 
@@ -18,7 +25,6 @@ public:
 
 public:
     virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData) = 0;
-//     virtual void Refine() = 0;
 };
 
 template<typename TNBase, typename TNReal>
@@ -52,12 +58,9 @@ public:
 
 public:
     virtual void SetBoundAndColorData(const YRect2D& rstBound, ycolorptr pColorData);
-//    virtual void Refine();
 
 private:
     void SetColorData(const yint32& riSize, const ycolorptr& rpColorData);
-//    YRect2D CalculateSmallestBound() const;
-//    void Crop(YRect2D rstBound);
 };
 
 #define YGETCOLORBIT(_Color, _Offset) (*((ycolorbitptr)&_Color + _Offset / (sizeof(ycolorbit) * YBITCOUNT_INT8)))

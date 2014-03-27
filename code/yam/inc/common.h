@@ -1,3 +1,10 @@
+// The MIT License (MIT) Copyright (c) 2014 Code 4 Game
+/*!
+  \file common.h
+  \author Alex Chi
+  \brief include some basic files for the project
+
+ */
 #ifndef Y_COMMON_H
 #define Y_COMMON_H
 

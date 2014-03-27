@@ -82,7 +82,8 @@ yam::ybool CYQt2Yam::GenerateWidget(const YCQUiItem* pItem, const YCQUiTreeItem*
     rpWidget->GetBound().Pos.Y = pItem->pos().y();
     rpWidget->GetBound().Size.X = pItem->size().width();
     rpWidget->GetBound().Size.Y = pItem->size().height();
-    //
+
+    rpWidget->GetExternalProperty().AddChild("visible")->FromString(pItem->isVisible() ? "true" : "false");
     return true;
 }
 
@@ -105,7 +106,25 @@ void CYQt2Yam::GenerateWidgetChildren(const YEditor* pEditor, const YCQUiTreeIte
 yam::ybool CYQt2Yam::GenerateScene(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
 {
     GenerateWidget(pItem, pUiItem, rpWidget);
-    //
+
+    const SConfigScene& rstConfigScene = pItem->getConfigScene();
+
+    yam::base::YCProperty* pPropertyScene = rpWidget->GetExternalProperty().AddChild("scene");
+    pPropertyScene->Clear();
+    pPropertyScene->AddChild("logic")->FromString(rstConfigScene._sLogic);
+    yam::base::YCProperty* pPropertyAsserts = pPropertyScene->AddChild("asserts");
+    pPropertyAsserts->AddChild("count")->FromInt32((yam::yint32)rstConfigScene._vAsserts.size());
+
+    for (size_t i = 0; i < rstConfigScene._vAsserts.size(); ++i)
+    {
+        const SConfigAssert& rstConfigAssert = rstConfigScene._vAsserts[i];
+        std::stringstream ss;
+        ss << i;
+        yam::base::YCProperty* pPropertyAssert = pPropertyAsserts->AddChild(ss.str());
+        pPropertyAssert->AddChild("file")->FromString(rstConfigAssert._sFile);
+        pPropertyAssert->AddChild("name")->FromString(rstConfigAssert._sName);
+        pPropertyAssert->AddChild("type")->FromString(rstConfigAssert._sType);
+    }
     return true;
 }
 
@@ -113,9 +132,9 @@ yam::ybool CYQt2Yam::GeneratePanel(const YCQUiItem* pItem, const YCQUiTreeItem* 
 {
     GenerateWidget(pItem, pUiItem, rpWidget);
 
-    yam::base::YIProperty* pPropertyFont = rpWidget->GetExternalProperty().AddChild("noinput");
-    pPropertyFont->Clear();
-    pPropertyFont->FromString(pItem->getNoInput() ? "true" : "false");
+    yam::base::YIProperty* pPropertyFace = rpWidget->GetExternalProperty().AddChild("noinput");
+    pPropertyFace->Clear();
+    pPropertyFace->FromString(pItem->getNoInput() ? "true" : "false");
     return true;
 }
 
@@ -140,8 +159,11 @@ yam::ybool CYQt2Yam::GenerateImage(const YCQUiItem* pItem, const YCQUiTreeItem* 
 
 yam::ybool CYQt2Yam::GenerateImages(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, const EImageType eType, yam::base::YIWidget*& rpWidget, yam::base::YIProperty*& rpProperty) const
 {
+    rpProperty->Clear();
+
     int iCount = pItem->getImageCount(eType);
     rpProperty->AddChild("count")->FromInt32(iCount);
+    rpProperty->AddChild("speed")->FromFloat32(pItem->getImageSpeed(eType));
 
     for (int i = 0; i < iCount; ++i)
     {
@@ -183,9 +205,17 @@ yam::ybool CYQt2Yam::GenerateText(const YCQUiItem* pItem, const YCQUiTreeItem* p
 {
     GenerateWidget(pItem, pUiItem, rpWidget);
 
-    yam::base::YIProperty* pPropertyFont = rpWidget->GetExternalProperty().AddChild("font");
-    pPropertyFont->Clear();
-    pPropertyFont->FromString(pItem->getFontName());
+    yam::base::YIProperty* pPropertyFace = rpWidget->GetExternalProperty().AddChild("face");
+    pPropertyFace->FromString(pItem->getTextFace());
+
+    yam::base::YIProperty* pPropertySize = rpWidget->GetExternalProperty().AddChild("size");
+    pPropertySize->FromInt32(pItem->getTextSize());
+
+    yam::base::YIProperty* pPropertyAlign = rpWidget->GetExternalProperty().AddChild("align");
+    pPropertyAlign->FromString(pItem->getTextAlign());
+
+    yam::base::YIProperty* pPropertyValue = rpWidget->GetExternalProperty().AddChild("value");
+    pPropertyValue->FromString(pItem->getTextValue());
     return true;
 }
 

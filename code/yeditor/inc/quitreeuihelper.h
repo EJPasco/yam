@@ -10,6 +10,7 @@ class YCQUiTreeItemSrcHelper;
 class YCQUiTreeItemImageHelper;
 class YCQUiTreeItemTextHelper;
 class YCQUiTreeItemPanelHelper;
+class YCQUiTreeItemSceneHelper;
 
 class YCQUiTreeUiHelper : public YCQUiTreeHelper
 {
@@ -26,9 +27,13 @@ public Q_SLOTS:
     void onItemChangedBound(const QRect& roBound);
     void onItemChangedLayerWeight(const int& riLayerWeight);
     void onItemChangedSrc(const EImageType& reImageType, const yam::yint32& riImageIndex, YCQUiTreeItemImageHelper* pImageHelper);
+    void onItemChangedSrc(const EImageType& reImageType, const yam::yfloat32& rfSpeed);
+    void onItemChangedSrc(const EImageType& reImageType);
+    void onItemChangedSrc(const EImageType& reImageType, const yam::yint32& riImageIndex);
     void onItemSelectedSrc(const EImageType& reImageType, const yam::yint32& riImageIndex);
-    void onItemChangedFont(const QString& rsFontName);
+    void onItemChangedText(const QString& rsFace, const int& riSize, const QString& rsAlign, const QString& rsValue);
     void onItemChangedPanel(const bool& rbNoInput);
+    void onItemChangedScene(const SConfigScene& rstConfigScene);
 
 public:
     virtual void setUiItem(YCQUiItem*& rpUiItem);
@@ -40,6 +45,7 @@ private:
     YCQUiTreeItemSrcHelper*                 m_pTreeItemSrcHelper;
     YCQUiTreeItemTextHelper*                m_pTreeItemTextHelper;
     YCQUiTreeItemPanelHelper*               m_pTreeItemPanelHelper;
+    YCQUiTreeItemSceneHelper*               m_pTreeItemSceneHelper;
 };
 
 #endif // Y_QUITREEWIDGETHELPER_H

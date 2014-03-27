@@ -1,27 +1,46 @@
+// The MIT License (MIT) Copyright (c) 2014 Code 4 Game
+/*!
+  \file enum.h
+  \author Alex Chi
+  \brief typedef some enums for the project
+
+ */
 #ifndef Y_ENUM_H
 #define Y_ENUM_H
 
 namespace yam{
 
-enum EColor
+/// list of color channel
+enum EColorChannel
 {
-    eColor_Red,
-    eColor_Green,
-    eColor_Blue,
-    eColor_Alpah,
-    eColor_Max,
+    eColorChannel_Red,
+    eColorChannel_Green,
+    eColorChannel_Blue,
+    eColorChannel_Alpah,
+    eColorChannel_Max,
 };
 
+/// list of widget type
 enum EWidgetType
 {
     eWidgetType_None,
     eWidgetType_Scene,
     eWidgetType_Panel,
-    eWidgetType_Image,
     eWidgetType_Picture,
     eWidgetType_Button,
     eWidgetType_Text,
     eWidgetType_Max,
+};
+
+/// list of align
+enum EAlignType
+{
+    eAlignType_Left,
+    eAlignType_Right,
+    eAlignType_Top,
+    eAlignType_Bottom,
+    eAlignType_Center,
+    eAlignType_Max,
 };
 
 }

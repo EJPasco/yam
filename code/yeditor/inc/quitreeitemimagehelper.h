@@ -24,6 +24,7 @@ public:
 
 Q_SIGNALS:
     void onChanged(const yam::yint32& riIndex, YCQUiTreeItemImageHelper* pImageHelper);
+    void onChanged(const yam::yint32& riIndex);
 
 public Q_SLOTS:
     void onItemChangedSource(const QString& rsImageSource);
@@ -31,7 +32,6 @@ public Q_SLOTS:
     void onDelButtonClicked();
 
 public:
-    void setText(const QString& rsName);
     const QString& getSource() const;
     void setSource(const QString& rsValue);
     const QPoint& getOffset() const;

@@ -23,7 +23,7 @@ Q_SIGNALS:
     void onChanged(const bool& rbNoInput);
 
 public Q_SLOTS:
-    void onChangedNoInput(const QString& rsFontName);
+    void onChangedNoInput(const QString& rsNoInput);
 
 public:
     void setUiItem(YCQUiItem*& rpUiItem);

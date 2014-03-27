@@ -35,9 +35,9 @@ YCQUiTreeItemPanelHelper::~YCQUiTreeItemPanelHelper()
     //
 }
 
-void YCQUiTreeItemPanelHelper::onChangedNoInput(const QString& rsFontName)
+void YCQUiTreeItemPanelHelper::onChangedNoInput(const QString& rsNoInput)
 {
-    m_bNoInput = (rsFontName == "false") ? 0 : 1;
+    m_bNoInput = (rsNoInput == "false") ? 0 : 1;
     onChanged(m_bNoInput);
 }
 

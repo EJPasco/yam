@@ -1,3 +1,10 @@
+// The MIT License (MIT) Copyright (c) 2014 Code 4 Game
+/*!
+  \file typedef.h
+  \author Alex Chi
+  \brief some type definitions for the project
+
+ */
 #ifndef Y_TYPEDEF_H
 #define Y_TYPEDEF_H
 
@@ -5,16 +12,17 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-/*#include <functional>
-#include <tr1/functional_hash.h>*/
 
 #if defined(GNUC)
 #include <cstring>
 #endif
 
-
 namespace yam{
 
+/*!
+  \var typedef void* yptr;
+  \brief a type definition for the pointer
+ */
 typedef void*                       yptr;
 typedef bool                        ybool;
 typedef char                        yint8;
@@ -31,7 +39,6 @@ typedef std::fstream                yfstream;
 typedef std::ifstream               yifstream;
 typedef std::ofstream               yofstream;
 typedef std::streambuf              ystreambuff;
-/*typedef std::hash<ystring>          ystringhash;*/
 
 typedef yint8                       ybuff;
 typedef ybuff*                      ybuffptr;

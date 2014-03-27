@@ -1,3 +1,10 @@
+// The MIT License (MIT) Copyright (c) 2014 Code 4 Game
+/*!
+  \file pstoyam.cpp
+  \author Alex Chi
+  \brief implement some apis for ps plugin
+
+ */
 #include "pstoyam.h"
 
 DLLExport MACPASCAL void PluginMain (const int16 iSelector,
@@ -83,3 +90,9 @@ OSErr FSWrite(int32 refNum, int32* count, void* buffPtr)
 
     return noErr;
 }
+
+/*!
+  \page pstoyam
+
+  A photoshop plugin to export the psd to yui.
+ */

@@ -120,41 +120,41 @@ void YCPsFormatWriter::Do(const ReadLayerDesc* const& rpLayerDesc, base::YIForma
             pColorData = YNULL;
         }
 
-        ReadChannelDesc* apChannelDesc[eColor_Max] = {NULL, NULL, NULL, NULL};
+        ReadChannelDesc* apChannelDesc[eColorChannel_Max] = {NULL, NULL, NULL, NULL};
         ReadChannelDesc* pChannelDesc = rpLayerDesc->compositeChannelsList;
         while (NULL != pChannelDesc)
         {
             if (ctRed == pChannelDesc->channelType)
             {
-                apChannelDesc[eColor_Red] = pChannelDesc;
+                apChannelDesc[eColorChannel_Red] = pChannelDesc;
             }
             else if (ctGreen == pChannelDesc->channelType)
             {
-                apChannelDesc[eColor_Green] = pChannelDesc;
+                apChannelDesc[eColorChannel_Green] = pChannelDesc;
             }
             else if (ctBlue == pChannelDesc->channelType)
             {
-                apChannelDesc[eColor_Blue] = pChannelDesc;
+                apChannelDesc[eColorChannel_Blue] = pChannelDesc;
             }
             pChannelDesc = pChannelDesc->next;
         }
-        apChannelDesc[eColor_Alpah] = rpLayerDesc->transparency;
+        apChannelDesc[eColorChannel_Alpah] = rpLayerDesc->transparency;
 
-        for (yint32 i = 0; i < eColor_Max; ++i)
+        for (yint32 i = 0; i < eColorChannel_Max; ++i)
         {
-            if (eColor_Red == i)
+            if (eColorChannel_Red == i)
             {
                 Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_RED);
             }
-            else if (eColor_Green == i)
+            else if (eColorChannel_Green == i)
             {
                 Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_GREEN);
             }
-            else if (eColor_Blue == i)
+            else if (eColorChannel_Blue == i)
             {
                 Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_BLUE);
             }
-            else if (eColor_Alpah == i)
+            else if (eColorChannel_Alpah == i)
             {
                 Do(apChannelDesc[i], stBox, pFormat, YBITOFFSET_ALPHA);
             }

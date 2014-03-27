@@ -58,20 +58,22 @@ ybool YCProperty::FromString(const ystring& rsValue)
     return YTRUE;
 }
 
-ybool YCProperty::ToString(ystring& rsValue) const
+ybool YCProperty::ToString(ystring& rsValue, const ystring sDefault /*= ""*/) const
 {
-    rsValue.clear();
-
     ybuffsize iSize = GetValue().GetSize();
     if (0 < iSize)
     {
+        rsValue.clear();
         yint8* pStr = new yint8[iSize + 1];
         ::memcpy(pStr, GetValue().GetData(), sizeof(yint8) * iSize);
         pStr[iSize] = '\0';
         rsValue.append(pStr);
         delete[] pStr;
+
+        return YTRUE;
     }
-    return YTRUE;
+    rsValue = sDefault;
+    return YFALSE;
 }
 
 ybool YCProperty::FromInt32(const yint32& riValue)
@@ -95,11 +97,12 @@ ybool YCProperty::FromInt32(const yint32& riValue)
     return FromString(sStr);
 }
 
-ybool YCProperty::ToInt32(yint32& riValue) const
+ybool YCProperty::ToInt32(yint32& riValue, const yint32 iDefault /*= 0*/) const
 {
     ystring sStr;
     if (!ToString(sStr))
     {
+        riValue = iDefault;
         return YFALSE;
     }
 
@@ -112,6 +115,7 @@ ybool YCProperty::ToInt32(yint32& riValue) const
 #pragma YCOMPILE_MESSAGE_ERR("can't find the compiler type")
 #endif
     {
+        riValue = iDefault;
         return YFALSE;
     }
     riValue = iValue;
@@ -138,11 +142,12 @@ ybool YCProperty::FromFloat32(const yfloat32& rfValue)
     return FromString(sStr);
 }
 
-ybool YCProperty::ToFloat32(yfloat32& rfValue) const
+ybool YCProperty::ToFloat32(yfloat32& rfValue, const yfloat32 fDefault /*= 0.0f*/) const
 {
     ystring sStr;
     if (!ToString(sStr))
     {
+        rfValue = fDefault;
         return YFALSE;
     }
 
@@ -155,52 +160,10 @@ ybool YCProperty::ToFloat32(yfloat32& rfValue) const
 #pragma YCOMPILE_MESSAGE_ERR("can't find the compiler type")
 #endif
     {
+        rfValue = fDefault;
         return YFALSE;
     }
     rfValue = fValue;
-    return YTRUE;
-}
-
-ybool YCProperty::FromRect2D(const YRect2D& rstValue)
-{
-    yint8* pStr = new yint8[YSTRINGLEN_RECT2D32_MAX];
-    {
-        ybuff iZero = 0;
-        MemSet(pStr, sizeof(yint8) * YSTRINGLEN_RECT2D32_MAX, &iZero, sizeof(ybuff));
-    }
-#if defined(MSVC)
-    ::sprintf_s(pStr, YSTRINGLEN_RECT2D32_MAX, "%d,%d,%d,%d", rstValue.Pos.X, rstValue.Pos.Y, rstValue.Size.X, rstValue.Size.Y);
-#elif defined(GNUC)
-    ::sprintf(pStr, "%d,%d,%d,%d", rstValue.Pos.X, rstValue.Pos.Y, rstValue.Size.X, rstValue.Size.Y);
-#else
-#pragma YCOMPILE_MESSAGE_ERR("can't find the compiler type")
-#endif
-    ystring sStr = "";
-    sStr.append(pStr);
-    delete[] pStr;
-    return FromString(sStr);
-}
-
-ybool YCProperty::ToRect2D(YRect2D& rstValue) const
-{
-    ystring sStr;
-    if (!ToString(sStr))
-    {
-        return YFALSE;
-    }
-
-    YRect2D stValue;
-#if defined(MSVC)
-    if (EOF == ::sscanf_s(sStr.c_str(), "%d,%d,%d,%d", &stValue.Pos.X, &stValue.Pos.Y, &stValue.Size.X, &stValue.Size.Y))
-#elif defined(GNUC)
-    if (EOF == ::sscanf(sStr.c_str(), "%d,%d,%d,%d", &stValue.Pos.X, &stValue.Pos.Y, &stValue.Size.X, &stValue.Size.Y))
-#else
-#pragma YCOMPILE_MESSAGE_ERR("can't find the compiler type")
-#endif
-    {
-        return YFALSE;
-    }
-    rstValue = stValue;
     return YTRUE;
 }
 
@@ -224,11 +187,12 @@ ybool YCProperty::FromVec2D(const YVec2D& rstValue)
     return FromString(sStr);
 }
 
-ybool YCProperty::ToVec2D(YVec2D& rstValue) const
+ybool YCProperty::ToVec2D(YVec2D& rstValue, const YVec2D stDefault /*= YVec2D::None*/) const
 {
     ystring sStr;
     if (!ToString(sStr))
     {
+        rstValue = stDefault;
         return YFALSE;
     }
 
@@ -241,6 +205,52 @@ ybool YCProperty::ToVec2D(YVec2D& rstValue) const
 #pragma YCOMPILE_MESSAGE_ERR("can't find the compiler type")
 #endif
     {
+        rstValue = stDefault;
+        return YFALSE;
+    }
+    rstValue = stValue;
+    return YTRUE;
+}
+
+ybool YCProperty::FromRect2D(const YRect2D& rstValue)
+{
+    yint8* pStr = new yint8[YSTRINGLEN_RECT2D32_MAX];
+    {
+        ybuff iZero = 0;
+        MemSet(pStr, sizeof(yint8) * YSTRINGLEN_RECT2D32_MAX, &iZero, sizeof(ybuff));
+    }
+#if defined(MSVC)
+    ::sprintf_s(pStr, YSTRINGLEN_RECT2D32_MAX, "%d,%d,%d,%d", rstValue.Pos.X, rstValue.Pos.Y, rstValue.Size.X, rstValue.Size.Y);
+#elif defined(GNUC)
+    ::sprintf(pStr, "%d,%d,%d,%d", rstValue.Pos.X, rstValue.Pos.Y, rstValue.Size.X, rstValue.Size.Y);
+#else
+#pragma YCOMPILE_MESSAGE_ERR("can't find the compiler type")
+#endif
+    ystring sStr = "";
+    sStr.append(pStr);
+    delete[] pStr;
+    return FromString(sStr);
+}
+
+ybool YCProperty::ToRect2D(YRect2D& rstValue, const YRect2D stDefault /*= YRect2D::None*/) const
+{
+    ystring sStr;
+    if (!ToString(sStr))
+    {
+        rstValue = stDefault;
+        return YFALSE;
+    }
+
+    YRect2D stValue;
+#if defined(MSVC)
+    if (EOF == ::sscanf_s(sStr.c_str(), "%d,%d,%d,%d", &stValue.Pos.X, &stValue.Pos.Y, &stValue.Size.X, &stValue.Size.Y))
+#elif defined(GNUC)
+    if (EOF == ::sscanf(sStr.c_str(), "%d,%d,%d,%d", &stValue.Pos.X, &stValue.Pos.Y, &stValue.Size.X, &stValue.Size.Y))
+#else
+#pragma YCOMPILE_MESSAGE_ERR("can't find the compiler type")
+#endif
+    {
+        rstValue = stDefault;
         return YFALSE;
     }
     rstValue = stValue;
@@ -267,7 +277,7 @@ ybool YCProperty::ToBuffer(YCBuffer& roValue) const
 YCProperty* YCProperty::AddChild(const yam::ystring& rsId)
 {
     // no same id objects
-    YITree* pProperty = Find(rsId);
+    YITree* pProperty = FindChild(rsId);
     if (YNULL != pProperty && YOBJECT_GETCLASSNAME(yam::base::YCProperty) == pProperty->GetClassName())
     {
         return (YCProperty*)pProperty;

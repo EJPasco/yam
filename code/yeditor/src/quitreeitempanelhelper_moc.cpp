@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YCQUiTreeItemPanelHelper_t {
     QByteArrayData data[6];
-    char stringdata[75];
+    char stringdata[74];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,10 +34,10 @@ QT_MOC_LITERAL(1, 25, 9),
 QT_MOC_LITERAL(2, 35, 0),
 QT_MOC_LITERAL(3, 36, 9),
 QT_MOC_LITERAL(4, 46, 16),
-QT_MOC_LITERAL(5, 63, 10)
+QT_MOC_LITERAL(5, 63, 9)
     },
     "YCQUiTreeItemPanelHelper\0onChanged\0\0"
-    "rbNoInput\0onChangedNoInput\0rsFontName\0"
+    "rbNoInput\0onChangedNoInput\0rsNoInput\0"
 };
 #undef QT_MOC_LITERAL
 

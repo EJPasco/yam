@@ -56,7 +56,10 @@ YCQUiTreeItemSrcHelper::YCQUiTreeItemSrcHelper(QTreeWidget* pTreeRoot, QTreeWidg
             continue;
         }
         m_apImagesHelper[i] = new YCQUiTreeItemImagesHelper(pTreeRoot, pTreeItemMain, (EImageType)i, tr(YCQUiItem::convertImageTypeToString((EImageType)i).c_str()));
-        connect(m_apImagesHelper[i], SIGNAL(onChanged(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)), this, SLOT(onImagesChanged(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)));
+        connect(m_apImagesHelper[i], SIGNAL(onChanged(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)), this, SLOT(onChangedImages(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)));
+        connect(m_apImagesHelper[i], SIGNAL(onChanged(const EImageType&, const yam::yfloat32&)), this, SLOT(onChangedImages(const EImageType&, const yam::yfloat32&)));
+        connect(m_apImagesHelper[i], SIGNAL(onChanged(const EImageType&)), this, SLOT(onChangedImages(const EImageType&)));
+        connect(m_apImagesHelper[i], SIGNAL(onChanged(const EImageType&, const yam::yint32&)), this, SLOT(onChangedImages(const EImageType&, const yam::yint32&)));
     }
 }
 
@@ -90,9 +93,23 @@ void YCQUiTreeItemSrcHelper::onImageIndexChanged(const int& riImageIndex)
     onSelected(m_eImageType, m_iImageIndex);
 }
 
-void YCQUiTreeItemSrcHelper::onImagesChanged(const EImageType& reImageType, const yam::yint32& iImageIndex, YCQUiTreeItemImageHelper* pImageHelper)
+void YCQUiTreeItemSrcHelper::onChangedImages(const EImageType& reImageType, const yam::yint32& riImageIndex, YCQUiTreeItemImageHelper* pImageHelper)
 {
-    onChanged(reImageType, iImageIndex, pImageHelper);
+    onChanged(reImageType, riImageIndex, pImageHelper);
+}
+void YCQUiTreeItemSrcHelper::onChangedImages(const EImageType& reImageType, const yam::yfloat32& rfSpeed)
+{
+    onChanged(reImageType, rfSpeed);
+}
+
+void YCQUiTreeItemSrcHelper::onChangedImages(const EImageType& reImageType)
+{
+    onChanged(reImageType);
+}
+
+void YCQUiTreeItemSrcHelper::onChangedImages(const EImageType& reImageType, const yam::yint32& riImageIndex)
+{
+    onChanged(reImageType, riImageIndex);
 }
 
 void YCQUiTreeItemSrcHelper::setUiItem(YCQUiItem*& rpUiItem)

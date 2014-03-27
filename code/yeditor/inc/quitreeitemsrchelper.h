@@ -21,13 +21,19 @@ public:
     virtual ~YCQUiTreeItemSrcHelper();
 
 Q_SIGNALS:
-    void onChanged(const EImageType& reImageType, const yam::yint32& iImageIndex, YCQUiTreeItemImageHelper* pImageHelper);
-    void onSelected(const EImageType& reImageType, const yam::yint32& iImageIndex);
+    void onChanged(const EImageType& reImageType, const yam::yint32& riImageIndex, YCQUiTreeItemImageHelper* pImageHelper);
+    void onChanged(const EImageType& reImageType, const yam::yfloat32& rfSpeed);
+    void onChanged(const EImageType& reImageType);  //< add
+    void onChanged(const EImageType& reImageType, const yam::yint32& riImageIndex); //< delete
+    void onSelected(const EImageType& reImageType, const yam::yint32& riImageIndex);
 
 public Q_SLOTS:
     void onImageTypeChanged(const QString& rsImageType);
     void onImageIndexChanged(const int& riImageIndex);
-    void onImagesChanged(const EImageType& reImageType, const yam::yint32& iImageIndex, YCQUiTreeItemImageHelper* pImageHelper);
+    void onChangedImages(const EImageType& reImageType, const yam::yint32& riImageIndex, YCQUiTreeItemImageHelper* pImageHelper);
+    void onChangedImages(const EImageType& reImageType, const yam::yfloat32& rfSpeed);
+    void onChangedImages(const EImageType& reImageType);
+    void onChangedImages(const EImageType& reImageType, const yam::yint32& riImageIndex);
 
 public:
     void setUiItem(YCQUiItem*& rpUiItem);

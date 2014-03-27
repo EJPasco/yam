@@ -1,3 +1,10 @@
+// The MIT License (MIT) Copyright (c) 2014 Code 4 Game
+/*!
+  \file t001.cpp
+  \author Alex Chi
+  \brief some example to text the function
+
+ */
 #include <json.h>
 #include <yam.h>
 

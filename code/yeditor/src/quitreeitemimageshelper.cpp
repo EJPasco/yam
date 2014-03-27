@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QTreeWidgetItem>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QSpinBox>
+#include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QPushButton>
 
 #include "quitreeitemimagehelper.h"
@@ -10,7 +10,9 @@
 YCQUiTreeItemImagesHelper::YCQUiTreeItemImagesHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem, const EImageType& reImageType, const QString sName /*= "Image"*/)
     : m_pTreeRoot(pTreeRoot)
     , m_pTreeItemImages(NULL)
+    , m_pdsbSpeed(NULL)
     , m_eImageType(reImageType)
+    , m_fSpeed(0.1f)
 {
     if (NULL == pTreeRoot || NULL == pTreeItem)
     {
@@ -27,7 +29,16 @@ YCQUiTreeItemImagesHelper::YCQUiTreeItemImagesHelper(QTreeWidget* pTreeRoot, QTr
         connect(ppbAddButton, SIGNAL(clicked()), this, SLOT(onAddButtonClicked()));
         pTreeRoot->setItemWidget(m_pTreeItemImages, 1, ppbAddButton);
     }
-    //
+
+    {
+        m_pdsbSpeed = new QDoubleSpinBox;
+        m_pdsbSpeed->setValue(m_fSpeed);
+        connect(m_pdsbSpeed, SIGNAL(valueChanged(double)), this, SLOT(onChangedSpeed(double)));
+        QTreeWidgetItem* pTreeItemSpeed = new QTreeWidgetItem;
+        pTreeItemSpeed->setText(0, tr("speed"));
+        m_pTreeItemImages->addChild(pTreeItemSpeed);
+        pTreeRoot->setItemWidget(pTreeItemSpeed, 1, m_pdsbSpeed);
+    }
 }
 
 YCQUiTreeItemImagesHelper::~YCQUiTreeItemImagesHelper()
@@ -43,18 +54,33 @@ YCQUiTreeItemImagesHelper::~YCQUiTreeItemImagesHelper()
 void YCQUiTreeItemImagesHelper::onAddButtonClicked()
 {
     toAddImageHelper();
+
+    onChanged(m_eImageType);
 }
 
-void YCQUiTreeItemImagesHelper::onImageChanged(const yam::yint32& riIndex, YCQUiTreeItemImageHelper* pImageHelper)
+void YCQUiTreeItemImagesHelper::onChangedImage(const yam::yint32& riIndex, YCQUiTreeItemImageHelper* pImageHelper)
 {
     onChanged(m_eImageType, riIndex, pImageHelper);
+}
+
+void YCQUiTreeItemImagesHelper::onChangedImage(const yam::yint32& riIndex)
+{
+    onChanged(m_eImageType, riIndex);
+}
+
+void YCQUiTreeItemImagesHelper::onChangedSpeed(double dSpeed)
+{
+    m_fSpeed = (float)dSpeed;
+
+    onChanged(m_eImageType, m_fSpeed);
 }
 
 YCQUiTreeItemImageHelper* YCQUiTreeItemImagesHelper::toAddImageHelper()
 {
     QString name;
     YCQUiTreeItemImageHelper* pImageHelper = new YCQUiTreeItemImageHelper(this, m_pTreeRoot, m_pTreeItemImages, m_vpImageHelper.size(), name.sprintf("%d", m_vpImageHelper.size()));
-    connect(pImageHelper, SIGNAL(onChanged(const yam::yint32&, YCQUiTreeItemImageHelper*)), this, SLOT(onImageChanged(const yam::yint32&, YCQUiTreeItemImageHelper*)));
+    connect(pImageHelper, SIGNAL(onChanged(const yam::yint32&, YCQUiTreeItemImageHelper*)), this, SLOT(onChangedImage(const yam::yint32&, YCQUiTreeItemImageHelper*)));
+    connect(pImageHelper, SIGNAL(onChanged(const yam::yint32&)), this, SLOT(onChangedImage(const yam::yint32&)));
     m_vpImageHelper.push_back(pImageHelper);
     return pImageHelper;
 }
@@ -69,7 +95,11 @@ void YCQUiTreeItemImagesHelper::toDeleteImageHelper(YCQUiTreeItemImageHelper* pI
         {
             continue;
         }
-        m_pTreeItemImages->removeChild((*it)->getTreeWidgetItem());
+        QTreeWidgetItem* pTreeWidgetItem = (*it)->getTreeWidgetItem();
+        m_pTreeItemImages->removeChild(pTreeWidgetItem);
+        /// We must handle to free the memory of QTreeWidgetItem.
+        /// Because the item already was removed from Qt, Qt will don't delete it.
+        YEDITOR_DELETE(pTreeWidgetItem);
         YEDITOR_DELETE(*it);
         m_vpImageHelper.erase(it);
         break;
@@ -77,9 +107,7 @@ void YCQUiTreeItemImagesHelper::toDeleteImageHelper(YCQUiTreeItemImageHelper* pI
 
     for (size_t i = 0; i < m_vpImageHelper.size(); ++i)
     {
-        std::stringstream ss;
-        ss << i;
-        m_vpImageHelper[i]->setText(ss.str().c_str());
+        m_vpImageHelper[i]->setIndex((yam::yint32)i);
     }
 }
 
@@ -101,6 +129,9 @@ void YCQUiTreeItemImagesHelper::setUiItem(YCQUiItem*& rpUiItem)
     toClearImageHelper();
 
     yam::yint32 iCount = rpUiItem->getImageCount(m_eImageType);
+    m_fSpeed = rpUiItem->getImagesData(m_eImageType)._fSpeed;
+    m_pdsbSpeed->setValue(m_fSpeed);
+
     for (yam::yint32 i = 0; i < iCount; ++i)
     {
         YCQUiTreeItemImageHelper* pImageHelper = toAddImageHelper();

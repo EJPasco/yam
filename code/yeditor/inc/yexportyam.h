@@ -25,7 +25,7 @@ private:
     void ToJsonScene(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonPanel(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonImage(const yam::base::YCProperty* pProperty, json::Object& rjObj) const;
-    void ToJsonImages(const yam::base::YCProperty* pProperty, json::Array& rjArr) const;
+    void ToJsonImages(const yam::base::YCProperty* pProperty, json::Object& rjObj) const;
     void ToJsonPicture(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonButton(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonText(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
@@ -33,6 +33,7 @@ private:
 public:
     static void GetStringByIdFromProperty(const yam::base::YITree* const& rpTree, const yam::ystring& rsId, yam::ystring& rsValue);
     static yam::ystring GetNameByWidgetType(const yam::EWidgetType& reType);
+    static yam::ystring GetNameByAlignType(const yam::EAlignType& reType);
     static void ToJsonVec2D(const yam::YVec2D& rstVec2D, json::Object& rjObj);
     static void ToJsonRect2D(const yam::YRect2D& rstRect2D, json::Object& rjObj);
 };

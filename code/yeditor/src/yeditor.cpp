@@ -111,7 +111,6 @@ YEditor::~YEditor()
         delete m_pTreeUiHelper;
         m_pTreeUiHelper = NULL;
     }
-    //
 }
 
 void YEditor::onClickedOpen()
@@ -213,7 +212,6 @@ void YEditor::onClickedExport()
     }
 
     yam::io::YCExportYam oExportYam;
-    oExportYam.GetProperty().AddChild("logic")->FromString(stConfig._sLogicName.toLocal8Bit().data());
     oExportYam.GetProperty().AddChild("filename")->FromString(stConfig._sFileName.toLocal8Bit().data());
     oExportYam.GetProperty().AddChild("directory")->FromString(stConfig._sDirectory.toLocal8Bit().data());
     oExportYam.GetProperty().AddChild("assets")->AddChild("image")->AddChild("file")->FromString(stConfig._sFileName.toLocal8Bit().data());
@@ -910,3 +908,9 @@ int main(int argc, char* argv[])
     editor.show();
     return a.exec();
 }
+
+/*!
+  \page yeditor
+
+  An editor for yui file
+ */

@@ -40,15 +40,13 @@ bool YCQDlgExport::toConfig(SConfigExport& rstConfig) const
 {
     rstConfig._sDirectory = m_Ui.leDirectory->text();
     rstConfig._sFileName = m_Ui.leFileName->text();
-    rstConfig._sLogicName = m_Ui.leLogicName->text();
     return toCheck(rstConfig);
 }
 
 bool YCQDlgExport::toCheck(const SConfigExport& rstConfig) const
 {
     if (0 >= rstConfig._sDirectory.size()
-        || 0 >= rstConfig._sFileName.size()
-        || 0 >= rstConfig._sLogicName.size())
+        || 0 >= rstConfig._sFileName.size())
     {
         return false;
     }

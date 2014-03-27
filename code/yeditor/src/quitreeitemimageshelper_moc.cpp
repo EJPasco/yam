@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YCQUiTreeItemImagesHelper_t {
-    QByteArrayData data[12];
-    char stringdata[166];
+    QByteArrayData data[16];
+    char stringdata[211];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,18 +35,23 @@ QT_MOC_LITERAL(2, 36, 0),
 QT_MOC_LITERAL(3, 37, 10),
 QT_MOC_LITERAL(4, 48, 11),
 QT_MOC_LITERAL(5, 60, 11),
-QT_MOC_LITERAL(6, 72, 11),
-QT_MOC_LITERAL(7, 84, 25),
-QT_MOC_LITERAL(8, 110, 12),
-QT_MOC_LITERAL(9, 123, 18),
-QT_MOC_LITERAL(10, 142, 14),
-QT_MOC_LITERAL(11, 157, 7)
+QT_MOC_LITERAL(6, 72, 12),
+QT_MOC_LITERAL(7, 85, 25),
+QT_MOC_LITERAL(8, 111, 12),
+QT_MOC_LITERAL(9, 124, 13),
+QT_MOC_LITERAL(10, 138, 7),
+QT_MOC_LITERAL(11, 146, 18),
+QT_MOC_LITERAL(12, 165, 14),
+QT_MOC_LITERAL(13, 180, 7),
+QT_MOC_LITERAL(14, 188, 14),
+QT_MOC_LITERAL(15, 203, 6)
     },
     "YCQUiTreeItemImagesHelper\0onChanged\0"
     "\0EImageType\0reImageType\0yam::yint32\0"
-    "iImageIndex\0YCQUiTreeItemImageHelper*\0"
-    "pImageHelper\0onAddButtonClicked\0"
-    "onImageChanged\0riIndex\0"
+    "riImageIndex\0YCQUiTreeItemImageHelper*\0"
+    "pImageHelper\0yam::yfloat32\0riSpeed\0"
+    "onAddButtonClicked\0onChangedImage\0"
+    "riIndex\0onChangedSpeed\0dSpeed\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -56,26 +61,36 @@ static const uint qt_meta_data_YCQUiTreeItemImagesHelper[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       1,       // signalCount
+       4,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,   29,    2, 0x06,
+       1,    3,   54,    2, 0x06,
+       1,    2,   61,    2, 0x06,
+       1,    1,   66,    2, 0x06,
+       1,    2,   69,    2, 0x06,
 
  // slots: name, argc, parameters, tag, flags
-       9,    0,   36,    2, 0x0a,
-      10,    2,   37,    2, 0x0a,
+      11,    0,   74,    2, 0x0a,
+      12,    2,   75,    2, 0x0a,
+      12,    1,   80,    2, 0x0a,
+      14,    1,   83,    2, 0x0a,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3, 0x80000000 | 5, 0x80000000 | 7,    4,    6,    8,
+    QMetaType::Void, 0x80000000 | 3, 0x80000000 | 9,    4,   10,
+    QMetaType::Void, 0x80000000 | 3,    4,
+    QMetaType::Void, 0x80000000 | 3, 0x80000000 | 5,    4,    6,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 5, 0x80000000 | 7,   11,    8,
+    QMetaType::Void, 0x80000000 | 5, 0x80000000 | 7,   13,    8,
+    QMetaType::Void, 0x80000000 | 5,   13,
+    QMetaType::Void, QMetaType::Double,   15,
 
        0        // eod
 };
@@ -86,8 +101,13 @@ void YCQUiTreeItemImagesHelper::qt_static_metacall(QObject *_o, QMetaObject::Cal
         YCQUiTreeItemImagesHelper *_t = static_cast<YCQUiTreeItemImagesHelper *>(_o);
         switch (_id) {
         case 0: _t->onChanged((*reinterpret_cast< const EImageType(*)>(_a[1])),(*reinterpret_cast< const yam::yint32(*)>(_a[2])),(*reinterpret_cast< YCQUiTreeItemImageHelper*(*)>(_a[3]))); break;
-        case 1: _t->onAddButtonClicked(); break;
-        case 2: _t->onImageChanged((*reinterpret_cast< const yam::yint32(*)>(_a[1])),(*reinterpret_cast< YCQUiTreeItemImageHelper*(*)>(_a[2]))); break;
+        case 1: _t->onChanged((*reinterpret_cast< const EImageType(*)>(_a[1])),(*reinterpret_cast< const yam::yfloat32(*)>(_a[2]))); break;
+        case 2: _t->onChanged((*reinterpret_cast< const EImageType(*)>(_a[1]))); break;
+        case 3: _t->onChanged((*reinterpret_cast< const EImageType(*)>(_a[1])),(*reinterpret_cast< const yam::yint32(*)>(_a[2]))); break;
+        case 4: _t->onAddButtonClicked(); break;
+        case 5: _t->onChangedImage((*reinterpret_cast< const yam::yint32(*)>(_a[1])),(*reinterpret_cast< YCQUiTreeItemImageHelper*(*)>(_a[2]))); break;
+        case 6: _t->onChangedImage((*reinterpret_cast< const yam::yint32(*)>(_a[1]))); break;
+        case 7: _t->onChangedSpeed((*reinterpret_cast< double(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -97,6 +117,24 @@ void YCQUiTreeItemImagesHelper::qt_static_metacall(QObject *_o, QMetaObject::Cal
             typedef void (YCQUiTreeItemImagesHelper::*_t)(const EImageType & , const yam::yint32 & , YCQUiTreeItemImageHelper * );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&YCQUiTreeItemImagesHelper::onChanged)) {
                 *result = 0;
+            }
+        }
+        {
+            typedef void (YCQUiTreeItemImagesHelper::*_t)(const EImageType & , const yam::yfloat32 & );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&YCQUiTreeItemImagesHelper::onChanged)) {
+                *result = 1;
+            }
+        }
+        {
+            typedef void (YCQUiTreeItemImagesHelper::*_t)(const EImageType & );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&YCQUiTreeItemImagesHelper::onChanged)) {
+                *result = 2;
+            }
+        }
+        {
+            typedef void (YCQUiTreeItemImagesHelper::*_t)(const EImageType & , const yam::yint32 & );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&YCQUiTreeItemImagesHelper::onChanged)) {
+                *result = 3;
             }
         }
     }
@@ -127,13 +165,13 @@ int YCQUiTreeItemImagesHelper::qt_metacall(QMetaObject::Call _c, int _id, void *
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 8;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 8)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        _id -= 8;
     }
     return _id;
 }
@@ -143,5 +181,26 @@ void YCQUiTreeItemImagesHelper::onChanged(const EImageType & _t1, const yam::yin
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
+}
+
+// SIGNAL 1
+void YCQUiTreeItemImagesHelper::onChanged(const EImageType & _t1, const yam::yfloat32 & _t2)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+
+// SIGNAL 2
+void YCQUiTreeItemImagesHelper::onChanged(const EImageType & _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
+}
+
+// SIGNAL 3
+void YCQUiTreeItemImagesHelper::onChanged(const EImageType & _t1, const yam::yint32 & _t2)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 QT_END_MOC_NAMESPACE

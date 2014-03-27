@@ -15,9 +15,9 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
@@ -28,69 +28,57 @@ class Ui_Export
 {
 public:
     QVBoxLayout *verticalLayout_2;
-    QVBoxLayout *verticalLayout;
-    QGroupBox *groupBox;
-    QVBoxLayout *verticalLayout_3;
     QHBoxLayout *horizontalLayout_2;
+    QLabel *label;
     QLineEdit *leDirectory;
     QPushButton *pbtnBrowserDirectory;
+    QHBoxLayout *horizontalLayout;
+    QLabel *label_2;
     QLineEdit *leFileName;
-    QGroupBox *groupBox_3;
-    QHBoxLayout *horizontalLayout_3;
-    QLineEdit *leLogicName;
     QDialogButtonBox *buttonBox;
 
     void setupUi(QDialog *Export)
     {
         if (Export->objectName().isEmpty())
             Export->setObjectName(QStringLiteral("Export"));
-        Export->resize(346, 235);
+        Export->resize(346, 138);
         Export->setModal(true);
         verticalLayout_2 = new QVBoxLayout(Export);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        verticalLayout = new QVBoxLayout();
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        groupBox = new QGroupBox(Export);
-        groupBox->setObjectName(QStringLiteral("groupBox"));
-        verticalLayout_3 = new QVBoxLayout(groupBox);
-        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        leDirectory = new QLineEdit(groupBox);
+        label = new QLabel(Export);
+        label->setObjectName(QStringLiteral("label"));
+
+        horizontalLayout_2->addWidget(label);
+
+        leDirectory = new QLineEdit(Export);
         leDirectory->setObjectName(QStringLiteral("leDirectory"));
 
         horizontalLayout_2->addWidget(leDirectory);
 
-        pbtnBrowserDirectory = new QPushButton(groupBox);
+        pbtnBrowserDirectory = new QPushButton(Export);
         pbtnBrowserDirectory->setObjectName(QStringLiteral("pbtnBrowserDirectory"));
 
         horizontalLayout_2->addWidget(pbtnBrowserDirectory);
 
 
-        verticalLayout_3->addLayout(horizontalLayout_2);
+        verticalLayout_2->addLayout(horizontalLayout_2);
 
-        leFileName = new QLineEdit(groupBox);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        label_2 = new QLabel(Export);
+        label_2->setObjectName(QStringLiteral("label_2"));
+
+        horizontalLayout->addWidget(label_2);
+
+        leFileName = new QLineEdit(Export);
         leFileName->setObjectName(QStringLiteral("leFileName"));
 
-        verticalLayout_3->addWidget(leFileName);
+        horizontalLayout->addWidget(leFileName);
 
 
-        verticalLayout->addWidget(groupBox);
-
-
-        verticalLayout_2->addLayout(verticalLayout);
-
-        groupBox_3 = new QGroupBox(Export);
-        groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
-        horizontalLayout_3 = new QHBoxLayout(groupBox_3);
-        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        leLogicName = new QLineEdit(groupBox_3);
-        leLogicName->setObjectName(QStringLiteral("leLogicName"));
-
-        horizontalLayout_3->addWidget(leLogicName);
-
-
-        verticalLayout_2->addWidget(groupBox_3);
+        verticalLayout_2->addLayout(horizontalLayout);
 
         buttonBox = new QDialogButtonBox(Export);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
@@ -111,9 +99,9 @@ public:
     void retranslateUi(QDialog *Export)
     {
         Export->setWindowTitle(QApplication::translate("Export", "Dialog", 0));
-        groupBox->setTitle(QApplication::translate("Export", "Json", 0));
+        label->setText(QApplication::translate("Export", "Path:", 0));
         pbtnBrowserDirectory->setText(QApplication::translate("Export", "Browser", 0));
-        groupBox_3->setTitle(QApplication::translate("Export", "Set Data", 0));
+        label_2->setText(QApplication::translate("Export", "Name:", 0));
     } // retranslateUi
 
 };

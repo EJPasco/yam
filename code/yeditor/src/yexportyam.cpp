@@ -153,6 +153,14 @@ void YCExportYam::ToJsonWidgetCommon(const yam::base::YIWidget* pWidget, json::O
     }
     rjObj["dst"] = jObjDst;
 
+    yam::base::YCProperty* pPropertyVisible = pWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("visible");
+    if (YNULL != pPropertyVisible)
+    {
+        yam::ystring sVisible = "true";
+        pPropertyVisible->ToString(sVisible);
+        rjObj["visible"] = sVisible;
+    }
+
     ToJsonWidgetChildren(pWidget, rjObj);
 }
 
@@ -179,38 +187,67 @@ void YCExportYam::ToJsonScene(const yam::base::YIWidget* pWidget, json::Object& 
 {
     ToJsonWidgetCommon(pWidget, rjObj);
 
-    yam::base::YCProperty* pLogic = GetProperty().FindChild<yam::base::YCProperty>("logic");
-    yam::ystring sLogicName;
-    if (YNULL != pLogic)
+    yam::base::YCProperty* pPropertyScene = pWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("scene");
+    if (YNULL == pPropertyScene)
     {
-        pLogic->ToString(sLogicName);
-        rjObj["logic"] = sLogicName;
+        return;
     }
 
+    yam::base::YCProperty* pPropertySceneLogic = pPropertyScene->FindChild<yam::base::YCProperty>("logic");
+    yam::ystring sLogic;
+    if (YNULL != pPropertySceneLogic)
+    {
+        pPropertySceneLogic->ToString(sLogic);
+        rjObj["logic"] = sLogic;
+    }
+
+    yam::base::YCProperty* pPropertySceneAsserts = pPropertyScene->FindChild<yam::base::YCProperty>("asserts");
+    if (YNULL == pPropertySceneAsserts)
+    {
+        return;
+    }
+
+    yam::yint32 iCount = 0;
+    yam::base::YCProperty* pPropertySceneAssertsCount = pPropertySceneAsserts->FindChild<yam::base::YCProperty>("count");
+    if (YNULL != pPropertySceneAssertsCount)
+    {
+        pPropertySceneAssertsCount->ToInt32(iCount);
+    }
     json::Array jArr;
-    yam::base::YITree* pAssets = GetProperty().FindChild("assets");
-    if (YNULL != pAssets)
+    for (yam::yint32 i = 0; i < iCount; ++i)
     {
-        yam::base::YITree* pFile = pAssets->FindChild("image");
-        while (YNULL != pFile)
+        std::stringstream ss; ss << i;
+        yam::base::YCProperty* pPropertySceneAssert = pPropertySceneAsserts->FindChild<yam::base::YCProperty>(ss.str());
+        if (YNULL == pPropertySceneAssert)
         {
-            yam::ystring sFile = "";
-            yam::ystring sName = "";
-            yam::ystring sType = "";
-            GetStringByIdFromProperty(pFile, "file", sFile);
-            GetStringByIdFromProperty(pFile, "name", sName);
-            GetStringByIdFromProperty(pFile, "type", sType);
-
-            json::Object jObjAst;
-            jObjAst["file"] = sFile + ".png";
-            jObjAst["name"] = sName;
-            jObjAst["type"] = sType;
-            jArr.push_back(jObjAst);
-
-            pFile = pFile->GetNext();
+            continue;
         }
-        rjObj["assets"] = jArr;
+        yam::ystring sFile;
+        yam::ystring sName;
+        yam::ystring sType;
+        yam::base::YCProperty* pPropertySceneAssertFile = pPropertySceneAssert->FindChild<yam::base::YCProperty>("file");
+        if (YNULL != pPropertySceneAssertFile)
+        {
+            pPropertySceneAssertFile->ToString(sFile);
+        }
+        yam::base::YCProperty* pPropertySceneAssertName = pPropertySceneAssert->FindChild<yam::base::YCProperty>("name");
+        if (YNULL != pPropertySceneAssertName)
+        {
+            pPropertySceneAssertName->ToString(sName);
+        }
+        yam::base::YCProperty* pPropertySceneAssertType = pPropertySceneAssert->FindChild<yam::base::YCProperty>("type");
+        if (YNULL != pPropertySceneAssertType)
+        {
+            pPropertySceneAssertType->ToString(sType);
+        }
+
+        json::Object jObjAst;
+        jObjAst["file"] = sFile;
+        jObjAst["name"] = sName;
+        jObjAst["type"] = sType;
+        jArr.push_back(jObjAst);
     }
+    rjObj["assets"] = jArr;
 }
 
 void YCExportYam::ToJsonPanel(const yam::base::YIWidget* pWidget, json::Object& rjObj) const
@@ -249,7 +286,7 @@ void YCExportYam::ToJsonImage(const yam::base::YCProperty* pProperty, json::Obje
     }
 }
 
-void YCExportYam::ToJsonImages(const yam::base::YCProperty* pProperty, json::Array& rjArr) const
+void YCExportYam::ToJsonImages(const yam::base::YCProperty* pProperty, json::Object& rjObj) const
 {
     yam::base::YCProperty* pPropertyCount = pProperty->FindChild<yam::base::YCProperty>("count");
     if (YNULL == pPropertyCount)
@@ -261,6 +298,16 @@ void YCExportYam::ToJsonImages(const yam::base::YCProperty* pProperty, json::Arr
 
     yam::yint32 iCount = 0;
     pPropertyCount->ToInt32(iCount);
+
+    yam::base::YCProperty* pPropertySpeed = pProperty->FindChild<yam::base::YCProperty>("speed");
+    if (YNULL != pPropertySpeed)
+    {
+        yam::yfloat32 fSpeed = 0.1f;
+        pPropertySpeed->ToFloat32(fSpeed, fSpeed);
+        rjObj["speed"] = fSpeed;
+    }
+
+    json::Array jArr;
     for (yam::yint32 i = 0; i < iCount; ++i)
     {
         std::stringstream ss;
@@ -272,8 +319,9 @@ void YCExportYam::ToJsonImages(const yam::base::YCProperty* pProperty, json::Arr
         }
         json::Object jObjItem;
         ToJsonImage(pPropertyItem, jObjItem);
-        rjArr.push_back(jObjItem);
+        jArr.push_back(jObjItem);
     }
+    rjObj["list"] = jArr;
 }
 
 void YCExportYam::ToJsonPicture(const yam::base::YIWidget* pWidget, json::Object& rjObj) const
@@ -298,9 +346,9 @@ void YCExportYam::ToJsonPicture(const yam::base::YIWidget* pWidget, json::Object
     yam::base::YCProperty* pPropertyImage = pWidget->GetExternalProperty().Find<yam::base::YCProperty>(vsPath);
     if (YNULL != pPropertyImage)
     {
-        json::Array jArrSrc;
-        ToJsonImages(pPropertyImage, jArrSrc);
-        rjObj["src"] = jArrSrc;
+        json::Object jObjSrc;
+        ToJsonImages(pPropertyImage, jObjSrc);
+        rjObj["src"] = jObjSrc;
     }
 }
 
@@ -336,9 +384,9 @@ void YCExportYam::ToJsonButton(const yam::base::YIWidget* pWidget, json::Object&
             continue;
         }
 
-        json::Array jArrImage;
-        ToJsonImages(pPropertySrc, jArrImage);
-        jObjSrc[sTypeName] = jArrImage;
+        json::Object jObjImages;
+        ToJsonImages(pPropertySrc, jObjImages);
+        jObjSrc[sTypeName] = jObjImages;
     }
 
     rjObj["src"] = jObjSrc;
@@ -348,12 +396,36 @@ void YCExportYam::ToJsonText(const yam::base::YIWidget* pWidget, json::Object& r
 {
     ToJsonWidgetCommon(pWidget, rjObj);
 
-    yam::base::YIProperty* pPropertyFont = pWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("font");
-    if (YNULL != pPropertyFont)
+    yam::base::YIProperty* pPropertyFace = pWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("face");
+    if (YNULL != pPropertyFace)
     {
-        std::string sFontName = "";
-        pPropertyFont->ToString(sFontName);
-        rjObj["font"] = sFontName;
+        std::string sFace = "";
+        pPropertyFace->ToString(sFace);
+        rjObj["face"] = sFace;
+    }
+
+    yam::base::YIProperty* pPropertySize = pWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("size");
+    if (YNULL != pPropertySize)
+    {
+        yam::yint32 iSize = 1;
+        pPropertySize->ToInt32(iSize);
+        rjObj["size"] = iSize;
+    }
+
+    yam::base::YIProperty* pPropertyAlignType = pWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("align");
+    if (YNULL != pPropertyAlignType)
+    {
+        yam::ystring sAlignType = "";
+        pPropertyAlignType->ToString(sAlignType);
+        rjObj["align"] = sAlignType;
+    }
+
+    yam::base::YIProperty* pPropertyValue = pWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("value");
+    if (YNULL != pPropertyValue)
+    {
+        yam::ystring sValue = "";
+        pPropertyValue->ToString(sValue);
+        rjObj["value"] = sValue;
     }
 }
 
@@ -373,11 +445,32 @@ yam::ystring YCExportYam::GetNameByWidgetType(const yam::EWidgetType& reType)
     case yam::eWidgetType_Button:
         return "button";
 
-    case yam::eWidgetType_Image:
-        return "image";
-
     case yam::eWidgetType_Text:
         return "text";
+
+    default:
+        return "none";
+    }
+}
+
+yam::ystring YCExportYam::GetNameByAlignType(const yam::EAlignType& reType)
+{
+    switch (reType)
+    {
+    case yam::eAlignType_Left:
+        return "left";
+
+    case yam::eAlignType_Right:
+        return "right";
+
+    case yam::eAlignType_Top:
+        return "top";
+
+    case yam::eAlignType_Bottom:
+        return "bottom";
+
+    case yam::eAlignType_Center:
+        return "center";
 
     default:
         return "none";

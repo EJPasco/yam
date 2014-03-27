@@ -1,3 +1,10 @@
+// The MIT License (MIT) Copyright (c) 2014 Code 4 Game
+/*!
+  \file struct.h
+  \author Alex Chi
+  \brief some basic structs for the project
+
+ */
 #ifndef Y_STRUCT_H
 #define Y_STRUCT_H
 
@@ -9,6 +16,7 @@
 
 namespace yam{
 
+/// the vec2d like position, vertex, .etc in 2d
 struct YVec2D
 {
     YVec2D() : X(0), Y(0) { ; }
@@ -19,7 +27,11 @@ struct YVec2D
 
     static const YVec2D None;
 };
-typedef std::vector<YVec2D>            yvvec2d;
+
+/// some operators for vec2d, (+, -, *).
+YVec2D operator+(const YVec2D& rstVec2DA, const YVec2D& rstVec2DB);
+YVec2D operator-(const YVec2D& rstVec2DA, const YVec2D& rstVec2DB);
+YVec2D operator*(const YVec2D& rstVec2DA, const YVec2D& rstVec2DB);
 
 struct YRect2D
 {
@@ -31,7 +43,6 @@ struct YRect2D
 
     static const YRect2D None;
 };
-typedef std::vector<YRect2D>        yvrect;
 
 struct YFVec2D
 {
@@ -59,6 +70,10 @@ struct YBuffer
     ybuffsize    Size;
     ybuffptr    Data;
 };
+
+/// some typedefs for the struct
+typedef std::vector<YVec2D>         yvvec2d;
+typedef std::vector<YRect2D>        yvrect;
 typedef std::vector<YBuffer>        yvbuffer;
 
 }

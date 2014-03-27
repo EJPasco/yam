@@ -57,6 +57,19 @@ SET (CODE_FILE_LIST_EDITOR
     ${CODE_PATH_YEDITOR}/src/yeditor.cpp
     )
 
+SET (CODE_FILE_LIST_EDITOR_EXPORT
+    ${CODE_PATH_YEDITOR}/inc/yconverter.h
+    ${CODE_PATH_YEDITOR}/src/yconverter.cpp
+    ${CODE_PATH_YEDITOR}/inc/yexport.h
+    ${CODE_PATH_YEDITOR}/src/yexport.cpp
+    ${CODE_PATH_YEDITOR}/inc/yexportyam.h
+    ${CODE_PATH_YEDITOR}/src/yexportyam.cpp
+    ${CODE_PATH_YEDITOR}/inc/yqt2yam.h
+    ${CODE_PATH_YEDITOR}/src/yqt2yam.cpp
+    ${CODE_PATH_YEDITOR}/inc/yrectpacker.h
+    ${CODE_PATH_YEDITOR}/src/yrectpacker.cpp
+    )
+
 SET (CODE_FILE_LIST_QT_WIDGET
     ${CODE_PATH_YEDITOR}/inc/qdlgcreatewidget.h
     ${CODE_PATH_YEDITOR}/src/qdlgcreatewidget.cpp
@@ -99,12 +112,12 @@ SET (CODE_FILE_LIST_QT_HELPER
     ${CODE_PATH_YEDITOR}/src/quitreeitemtexthelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitempanelhelper.h
     ${CODE_PATH_YEDITOR}/src/quitreeitempanelhelper.cpp
-    )
-
-SET (CODE_FILE_LIST_RES
-    ${CODE_PATH_YEDITOR}/res/main.ui
-    ${CODE_PATH_YEDITOR}/res/createwidget.ui
-    ${CODE_PATH_YEDITOR}/res/export.ui
+    ${CODE_PATH_YEDITOR}/inc/quitreeitemasserthelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitemasserthelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitemassertshelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitemassertshelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitemscenehelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitemscenehelper.cpp
     )
 
 SET (CODE_FILE_LIST_QT_GENERATE
@@ -130,27 +143,23 @@ SET (CODE_FILE_LIST_QT_GENERATE
     ${CODE_PATH_YEDITOR}/src/quitreeitemsrchelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemtexthelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitempanelhelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitemasserthelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitemassertshelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitemscenehelper_moc.cpp
     )
 
-SET (CODE_FILE_LIST_EXPORT
-    ${CODE_PATH_YEDITOR}/inc/yconverter.h
-    ${CODE_PATH_YEDITOR}/src/yconverter.cpp
-    ${CODE_PATH_YEDITOR}/inc/yexport.h
-    ${CODE_PATH_YEDITOR}/src/yexport.cpp
-    ${CODE_PATH_YEDITOR}/inc/yexportyam.h
-    ${CODE_PATH_YEDITOR}/src/yexportyam.cpp
-    ${CODE_PATH_YEDITOR}/inc/yqt2yam.h
-    ${CODE_PATH_YEDITOR}/src/yqt2yam.cpp
-    ${CODE_PATH_YEDITOR}/inc/yrectpacker.h
-    ${CODE_PATH_YEDITOR}/src/yrectpacker.cpp
+SET (CODE_FILE_LIST_QT_RES
+    ${CODE_PATH_YEDITOR}/res/main.ui
+    ${CODE_PATH_YEDITOR}/res/createwidget.ui
+    ${CODE_PATH_YEDITOR}/res/export.ui
     )
 
 SOURCE_GROUP ("editor" FILES ${CODE_FILE_LIST_EDITOR})
+SOURCE_GROUP ("editor\\export" FILES ${CODE_FILE_LIST_EDITOR_EXPORT})
 SOURCE_GROUP ("qt\\widget" FILES ${CODE_FILE_LIST_QT_WIDGET})
 SOURCE_GROUP ("qt\\helper" FILES ${CODE_FILE_LIST_QT_HELPER})
 SOURCE_GROUP ("qt\\generate" FILES ${CODE_FILE_LIST_QT_GENERATE})
-SOURCE_GROUP ("res" FILES ${CODE_FILE_LIST_RES})
-SOURCE_GROUP ("export" FILES ${CODE_FILE_LIST_EXPORT})
+SOURCE_GROUP ("qt\\res" FILES ${CODE_FILE_LIST_QT_RES})
 
 SET (LIBRARY_OUTPUT_PATH ${OUT_PATH}/lib)
 SET (EXECUTABLE_OUTPUT_PATH ${OUT_PATH}/bin)
@@ -165,11 +174,11 @@ IF (YENV_SYSTEM_IS_LINUX)
 ENDIF ()
 
 ADD_EXECUTABLE (yeditor ${CODE_FILE_LIST_EDITOR}
+                        ${CODE_FILE_LIST_EDITOR_EXPORT}
                         ${CODE_FILE_LIST_QT_WIDGET}
                         ${CODE_FILE_LIST_QT_HELPER}
                         ${CODE_FILE_LIST_QT_GENERATE}
-                        ${CODE_FILE_LIST_RES}
-                        ${CODE_FILE_LIST_EXPORT}
+                        ${CODE_FILE_LIST_QT_RES}
                         )
 
 IF (YENV_SYSTEM_IS_WINDOWS AND YENV_COMPILER_IS_GNUC)
@@ -219,9 +228,15 @@ QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemimageshelper)
 
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemsrchelper)
 
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemtexthelper)
+
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitempanelhelper)
 
-QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemtexthelper)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemasserthelper)
+
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemassertshelper)
+
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemscenehelper)
 
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} yeditor)
 
@@ -261,6 +276,9 @@ ADD_DEPENDENCIES (yeditor ${DEPEND_PROJ_LIST}
                          quitreeitemsrchelper_moc_cpp
                          quitreeitemtexthelper_moc_cpp
                          quitreeitempanelhelper_moc_cpp
+                         quitreeitemasserthelper_moc_cpp
+                         quitreeitemassertshelper_moc_cpp
+                         quitreeitemscenehelper_moc_cpp
                          yeditor_moc_cpp
                          yeditor_main_ui_h
                          yeditor_createwidget_ui_h

@@ -11,7 +11,6 @@ typedef struct tagConfigExport
 {
     QString     _sDirectory;
     QString     _sFileName;
-    QString     _sLogicName;
 } SConfigExport;
 
 class YCQDlgExport : public QDialog

@@ -12,6 +12,7 @@
 #include "quitreeitemimagehelper.h"
 #include "quitreeitemtexthelper.h"
 #include "quitreeitempanelhelper.h"
+#include "quitreeitemscenehelper.h"
 
 YCQUiTreeUiHelper::YCQUiTreeUiHelper(QTreeWidget* pTreeRoot)
     : YCQUiTreeHelper(pTreeRoot)
@@ -21,6 +22,7 @@ YCQUiTreeUiHelper::YCQUiTreeUiHelper(QTreeWidget* pTreeRoot)
     , m_pTreeItemSrcHelper(NULL)
     , m_pTreeItemTextHelper(NULL)
     , m_pTreeItemPanelHelper(NULL)
+    , m_pTreeItemSceneHelper(NULL)
 {
     //
 }
@@ -33,6 +35,7 @@ YCQUiTreeUiHelper::~YCQUiTreeUiHelper()
     YEDITOR_DELETE(m_pTreeItemSrcHelper);
     YEDITOR_DELETE(m_pTreeItemTextHelper);
     YEDITOR_DELETE(m_pTreeItemPanelHelper);
+    YEDITOR_DELETE(m_pTreeItemSceneHelper);
 }
 
 void YCQUiTreeUiHelper::onItemChangedSize(const QSize& roSize)
@@ -108,6 +111,36 @@ void YCQUiTreeUiHelper::onItemChangedSrc(const EImageType& reImageType, const ya
     }
 }
 
+void YCQUiTreeUiHelper::onItemChangedSrc(const EImageType& reImageType, const yam::yfloat32& rfSpeed)
+{
+    if (NULL == m_pUiItem)
+    {
+        return;
+    }
+
+    m_pUiItem->getImagesData(reImageType)._fSpeed = rfSpeed;
+}
+
+void YCQUiTreeUiHelper::onItemChangedSrc(const EImageType& reImageType)
+{
+    if (NULL == m_pUiItem)
+    {
+        return;
+    }
+
+    m_pUiItem->addImage(reImageType);
+}
+
+void YCQUiTreeUiHelper::onItemChangedSrc(const EImageType& reImageType, const yam::yint32& riImageIndex)
+{
+    if (NULL == m_pUiItem)
+    {
+        return;
+    }
+
+    m_pUiItem->delImage(reImageType, riImageIndex);
+}
+
 void YCQUiTreeUiHelper::onItemSelectedSrc(const EImageType& reImageType, const yam::yint32& riImageIndex)
 {
     if (NULL == m_pUiItem)
@@ -118,13 +151,16 @@ void YCQUiTreeUiHelper::onItemSelectedSrc(const EImageType& reImageType, const y
     m_pUiItem->setCurrentImage(reImageType, riImageIndex);
 }
 
-void YCQUiTreeUiHelper::onItemChangedFont(const QString& rsFontName)
+void YCQUiTreeUiHelper::onItemChangedText(const QString& rsFace, const int& riSize, const QString& rsAlign, const QString& rsValue)
 {
     if (NULL == m_pUiItem)
     {
         return;
     }
-    m_pUiItem->setFontName(rsFontName.toLocal8Bit().data());
+    m_pUiItem->setTextFace(rsFace.toLocal8Bit().data());
+    m_pUiItem->setTextSize(riSize);
+    m_pUiItem->setTextAlign(rsAlign.toLocal8Bit().data());
+    m_pUiItem->setTextValue(rsValue.toLocal8Bit().data());
 }
 
 void YCQUiTreeUiHelper::onItemChangedPanel(const bool& rbNoInput)
@@ -134,6 +170,15 @@ void YCQUiTreeUiHelper::onItemChangedPanel(const bool& rbNoInput)
         return;
     }
     m_pUiItem->setNoInput(rbNoInput);
+}
+
+void YCQUiTreeUiHelper::onItemChangedScene(const SConfigScene& rstConfigScene)
+{
+    if (NULL == m_pUiItem)
+    {
+        return;
+    }
+    m_pUiItem->setConfigScene(rstConfigScene);
 }
 
 void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
@@ -150,11 +195,11 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
 
     if (yam::eWidgetType_Scene == rpUiItem->getType())
     {
-        if (NULL == m_pTreeItemSizeHelper)
+        if (NULL == m_pTreeItemSceneHelper)
         {
-            m_pTreeItemSizeHelper = new YCQUiTreeItemSizeHelper(m_pTreeRoot, pTreeWidget);
-            m_pTreeItemSizeHelper->setSize(rpUiItem->size());
-            connect(m_pTreeItemSizeHelper, SIGNAL(onChanged(const QSize&)), this, SLOT(onItemChangedSize(const QSize&)));
+            m_pTreeItemSceneHelper = new YCQUiTreeItemSceneHelper(m_pTreeRoot, pTreeWidget);
+            m_pTreeItemSceneHelper->setUiItem(rpUiItem);
+            connect(m_pTreeItemSceneHelper, SIGNAL(onChanged(const SConfigScene&)), this, SLOT(onItemChangedScene(const SConfigScene&)));
         }
     }
     else
@@ -189,6 +234,9 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
                 m_pTreeItemSrcHelper = new YCQUiTreeItemSrcHelper(m_pTreeRoot, pTreeWidget, (1 << eImageType_Normal), "src");
                 m_pTreeItemSrcHelper->setUiItem(rpUiItem);
                 connect(m_pTreeItemSrcHelper, SIGNAL(onChanged(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)), this, SLOT(onItemChangedSrc(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)));
+                connect(m_pTreeItemSrcHelper, SIGNAL(onChanged(const EImageType&, const yam::yfloat32&)), this, SLOT(onItemChangedSrc(const EImageType&, const yam::yfloat32&)));
+                connect(m_pTreeItemSrcHelper, SIGNAL(onChanged(const EImageType&)), this, SLOT(onItemChangedSrc(const EImageType&)));
+                connect(m_pTreeItemSrcHelper, SIGNAL(onChanged(const EImageType&, const yam::yint32&)), this, SLOT(onItemChangedSrc(const EImageType&, const yam::yint32&)));
                 connect(m_pTreeItemSrcHelper, SIGNAL(onSelected(const EImageType&, const yam::yint32&)), this, SLOT(onItemSelectedSrc(const EImageType&, const yam::yint32&)));
             }
         }
@@ -199,6 +247,7 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
                 m_pTreeItemSrcHelper = new YCQUiTreeItemSrcHelper(m_pTreeRoot, pTreeWidget, (1 << eImageType_Normal) | (1 << eImageType_Hover) | (1 << eImageType_Press) | (1 << eImageType_Disable), "src");
                 m_pTreeItemSrcHelper->setUiItem(rpUiItem);
                 connect(m_pTreeItemSrcHelper, SIGNAL(onChanged(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)), this, SLOT(onItemChangedSrc(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)));
+                connect(m_pTreeItemSrcHelper, SIGNAL(onChanged(const EImageType&, const yam::yfloat32&)), this, SLOT(onItemChangedSrc(const EImageType&, const yam::yfloat32&)));
                 connect(m_pTreeItemSrcHelper, SIGNAL(onSelected(const EImageType&, const yam::yint32&)), this, SLOT(onItemSelectedSrc(const EImageType&, const yam::yint32&)));
             }
         }
@@ -208,7 +257,7 @@ void YCQUiTreeUiHelper::setUiItem(YCQUiItem*& rpUiItem)
             {
                 m_pTreeItemTextHelper = new YCQUiTreeItemTextHelper(m_pTreeRoot, pTreeWidget);
                 m_pTreeItemTextHelper->setUiItem(rpUiItem);
-                connect(m_pTreeItemTextHelper, SIGNAL(onChanged(const QString&)), this, SLOT(onItemChangedFont(const QString&)));
+                connect(m_pTreeItemTextHelper, SIGNAL(onChanged(const QString&, const int&, const QString&, const QString&)), this, SLOT(onItemChangedText(const QString&, const int&, const QString&, const QString&)));
             }
         }
     }

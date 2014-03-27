@@ -20,15 +20,15 @@ public:
 
 public:
     virtual ybool FromString(const ystring& rsValue) = 0;
-    virtual ybool ToString(ystring& rsValue) const = 0;
+    virtual ybool ToString(ystring& rsValue, const ystring sDefault = "") const = 0;
     virtual ybool FromInt32(const yint32& rfValue) = 0;
-    virtual ybool ToInt32(yint32& rfValue) const = 0;
+    virtual ybool ToInt32(yint32& rfValue, const yint32 iDefault = 0) const = 0;
     virtual ybool FromFloat32(const yfloat32& rfValue) = 0;
-    virtual ybool ToFloat32(yfloat32& rfValue) const = 0;
+    virtual ybool ToFloat32(yfloat32& rfValue, const yfloat32 fDefault = 0.0f) const = 0;
     virtual ybool FromVec2D(const YVec2D& rstValue) = 0;
-    virtual ybool ToVec2D(YVec2D& rstValue) const = 0;
+    virtual ybool ToVec2D(YVec2D& rstValue, const YVec2D stDefault = YVec2D::None) const = 0;
     virtual ybool FromRect2D(const YRect2D& rstValue) = 0;
-    virtual ybool ToRect2D(YRect2D& rstValue) const = 0;
+    virtual ybool ToRect2D(YRect2D& rstValue, const YRect2D stDefault = YRect2D::None) const = 0;
     virtual ybool FromBuffer(const YCBuffer& roValue) = 0;
     virtual ybool ToBuffer(YCBuffer& roValue) const = 0;
 
@@ -66,15 +66,15 @@ public:
 
 public:
     virtual ybool FromString(const ystring& rsValue);
-    virtual ybool ToString(ystring& rsValue) const;
+    virtual ybool ToString(ystring& rsValue, const ystring sDefault = "") const;
     virtual ybool FromInt32(const yint32& rfValue);
-    virtual ybool ToInt32(yint32& rfValue) const;
+    virtual ybool ToInt32(yint32& rfValue, const yint32 iDefault = 0) const;
     virtual ybool FromFloat32(const yfloat32& rfValue);
-    virtual ybool ToFloat32(yfloat32& rfValue) const;
-    virtual ybool FromRect2D(const YRect2D& rstValue);
-    virtual ybool ToRect2D(YRect2D& rstValue) const;
+    virtual ybool ToFloat32(yfloat32& rfValue, const yfloat32 fDefault = 0.0f) const;
     virtual ybool FromVec2D(const YVec2D& rstValue);
-    virtual ybool ToVec2D(YVec2D& rstValue) const;
+    virtual ybool ToVec2D(YVec2D& rstValue, const YVec2D stDefault = YVec2D::None) const;
+    virtual ybool FromRect2D(const YRect2D& rstValue);
+    virtual ybool ToRect2D(YRect2D& rstValue, const YRect2D stDefault = YRect2D::None) const;
     virtual ybool FromBuffer(const YCBuffer& roValue);
     virtual ybool ToBuffer(YCBuffer& roValue) const;
 

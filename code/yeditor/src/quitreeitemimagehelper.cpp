@@ -68,12 +68,9 @@ void YCQUiTreeItemImageHelper::onItemChangedOffset(const QPoint& roOffset)
 
 void YCQUiTreeItemImageHelper::onDelButtonClicked()
 {
+    onChanged(m_iImageIndex);
     m_pImagesHelper->toDeleteImageHelper(this);
-}
-
-void YCQUiTreeItemImageHelper::setText(const QString& rsName)
-{
-    m_pTreeItemImage->setText(0, rsName);
+    //DON'T DO ANYTHING
 }
 
 const QString& YCQUiTreeItemImageHelper::getSource() const
@@ -103,6 +100,7 @@ void YCQUiTreeItemImageHelper::setOffset(const QPoint& rOffset)
 void YCQUiTreeItemImageHelper::setIndex(const yam::yint32& riIndex)
 {
     m_iImageIndex = riIndex;
+    m_pTreeItemImage->setText(0, QString().sprintf("%d", m_iImageIndex));
 }
 
 QTreeWidgetItem* YCQUiTreeItemImageHelper::getTreeWidgetItem()
