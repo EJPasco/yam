@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YCQUiTreeItemSceneHelper_t {
     QByteArrayData data[13];
-    char stringdata[153];
+    char stringdata[150];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -38,16 +38,16 @@ QT_MOC_LITERAL(5, 59, 14),
 QT_MOC_LITERAL(6, 74, 7),
 QT_MOC_LITERAL(7, 82, 13),
 QT_MOC_LITERAL(8, 96, 6),
-QT_MOC_LITERAL(9, 103, 16),
-QT_MOC_LITERAL(10, 120, 7),
-QT_MOC_LITERAL(11, 128, 13),
-QT_MOC_LITERAL(12, 142, 9)
+QT_MOC_LITERAL(9, 103, 15),
+QT_MOC_LITERAL(10, 119, 7),
+QT_MOC_LITERAL(11, 127, 12),
+QT_MOC_LITERAL(12, 140, 8)
     },
     "YCQUiTreeItemSceneHelper\0onChanged\0\0"
     "SConfigScene\0rstConfig\0onChangedLogic\0"
     "roLogic\0onChangedSize\0roSize\0"
-    "onChangedAsserts\0riIndex\0SConfigAssert\0"
-    "rstAssert\0"
+    "onChangedAssets\0riIndex\0SConfigAsset\0"
+    "rstAsset\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -95,9 +95,9 @@ void YCQUiTreeItemSceneHelper::qt_static_metacall(QObject *_o, QMetaObject::Call
         case 0: _t->onChanged((*reinterpret_cast< const SConfigScene(*)>(_a[1]))); break;
         case 1: _t->onChangedLogic((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 2: _t->onChangedSize((*reinterpret_cast< const QSize(*)>(_a[1]))); break;
-        case 3: _t->onChangedAsserts((*reinterpret_cast< const int(*)>(_a[1])),(*reinterpret_cast< const SConfigAssert(*)>(_a[2]))); break;
-        case 4: _t->onChangedAsserts(); break;
-        case 5: _t->onChangedAsserts((*reinterpret_cast< const int(*)>(_a[1]))); break;
+        case 3: _t->onChangedAssets((*reinterpret_cast< const int(*)>(_a[1])),(*reinterpret_cast< const SConfigAsset(*)>(_a[2]))); break;
+        case 4: _t->onChangedAssets(); break;
+        case 5: _t->onChangedAssets((*reinterpret_cast< const int(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

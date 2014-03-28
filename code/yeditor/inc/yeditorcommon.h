@@ -52,19 +52,19 @@ typedef struct tagConfigCreateWidget
     yam::ystring     _sId;
 } SConfigCreateWidget;
 
-typedef struct tagConfigAssert
+typedef struct tagConfigAsset
 {
     yam::ystring    _sFile;
     yam::ystring    _sName;
     yam::ystring    _sType;
-} SConfigAssert;
-typedef std::vector<SConfigAssert>      yvconfigassert;
+} SConfigAsset;
+typedef std::vector<SConfigAsset>      yvconfigasset;
 
 typedef struct tagConfigScene
 {
     yam::ystring    _sLogic;
     yam::YVec2D     _stSize;
-    yvconfigassert  _vAsserts;
+    yvconfigasset  _vAssets;
 } SConfigScene;
 
 #endif // Y_EDITORCOMMON_H

@@ -626,43 +626,43 @@ void YCQUiItem::getConfigScene(yam::base::YCProperty*& rpProperty, SConfigScene&
         pPropertyLogic->ToString(rstConfig._sLogic, rstConfig._sLogic);
     }
 
-    yam::base::YCProperty* pPropertyAsserts = rpProperty->FindChild<yam::base::YCProperty>("asserts");
-    if (YNULL == pPropertyAsserts)
+    yam::base::YCProperty* pPropertyAssets = rpProperty->FindChild<yam::base::YCProperty>("assets");
+    if (YNULL == pPropertyAssets)
     {
         return;
     }
-    yam::base::YCProperty* pPropertyAssertsCount = pPropertyAsserts->FindChild<yam::base::YCProperty>("count");
-    if (YNULL == pPropertyAssertsCount)
+    yam::base::YCProperty* pPropertyAssetsCount = pPropertyAssets->FindChild<yam::base::YCProperty>("count");
+    if (YNULL == pPropertyAssetsCount)
     {
         return;
     }
     yam::yint32 iCount = 0;
-    pPropertyAssertsCount->ToInt32(iCount);
+    pPropertyAssetsCount->ToInt32(iCount);
     for (yam::yint32 i = 0; i < iCount; ++i)
     {
         std::stringstream ss;
         ss << i;
-        yam::base::YCProperty* pPropertyAssert = pPropertyAsserts->FindChild<yam::base::YCProperty>(ss.str());
-        if (YNULL == pPropertyAssert)
+        yam::base::YCProperty* pPropertyAsset = pPropertyAssets->FindChild<yam::base::YCProperty>(ss.str());
+        if (YNULL == pPropertyAsset)
         {
             continue;
         }
-        SConfigAssert stAssert;
-        yam::base::YCProperty* pPropertyAssertFile = pPropertyAssert->FindChild<yam::base::YCProperty>("file");
-        if (YNULL != pPropertyAssertFile)
+        SConfigAsset stAsset;
+        yam::base::YCProperty* pPropertyAssetFile = pPropertyAsset->FindChild<yam::base::YCProperty>("file");
+        if (YNULL != pPropertyAssetFile)
         {
-            pPropertyAssertFile->ToString(stAssert._sFile);
+            pPropertyAssetFile->ToString(stAsset._sFile);
         }
-        yam::base::YCProperty* pPropertyAssertName = pPropertyAssert->FindChild<yam::base::YCProperty>("name");
-        if (YNULL != pPropertyAssertName)
+        yam::base::YCProperty* pPropertyAssetName = pPropertyAsset->FindChild<yam::base::YCProperty>("name");
+        if (YNULL != pPropertyAssetName)
         {
-            pPropertyAssertName->ToString(stAssert._sName);
+            pPropertyAssetName->ToString(stAsset._sName);
         }
-        yam::base::YCProperty* pPropertyAssertType = pPropertyAssert->FindChild<yam::base::YCProperty>("type");
-        if (YNULL != pPropertyAssertType)
+        yam::base::YCProperty* pPropertyAssetType = pPropertyAsset->FindChild<yam::base::YCProperty>("type");
+        if (YNULL != pPropertyAssetType)
         {
-            pPropertyAssertType->ToString(stAssert._sType);
+            pPropertyAssetType->ToString(stAsset._sType);
         }
-        rstConfig._vAsserts.push_back(stAssert);
+        rstConfig._vAssets.push_back(stAsset);
     }
 }

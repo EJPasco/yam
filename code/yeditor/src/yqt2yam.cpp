@@ -112,18 +112,18 @@ yam::ybool CYQt2Yam::GenerateScene(const YCQUiItem* pItem, const YCQUiTreeItem* 
     yam::base::YCProperty* pPropertyScene = rpWidget->GetExternalProperty().AddChild("scene");
     pPropertyScene->Clear();
     pPropertyScene->AddChild("logic")->FromString(rstConfigScene._sLogic);
-    yam::base::YCProperty* pPropertyAsserts = pPropertyScene->AddChild("asserts");
-    pPropertyAsserts->AddChild("count")->FromInt32((yam::yint32)rstConfigScene._vAsserts.size());
+    yam::base::YCProperty* pPropertyAssets = pPropertyScene->AddChild("assets");
+    pPropertyAssets->AddChild("count")->FromInt32((yam::yint32)rstConfigScene._vAssets.size());
 
-    for (size_t i = 0; i < rstConfigScene._vAsserts.size(); ++i)
+    for (size_t i = 0; i < rstConfigScene._vAssets.size(); ++i)
     {
-        const SConfigAssert& rstConfigAssert = rstConfigScene._vAsserts[i];
+        const SConfigAsset& rstConfigAsset = rstConfigScene._vAssets[i];
         std::stringstream ss;
         ss << i;
-        yam::base::YCProperty* pPropertyAssert = pPropertyAsserts->AddChild(ss.str());
-        pPropertyAssert->AddChild("file")->FromString(rstConfigAssert._sFile);
-        pPropertyAssert->AddChild("name")->FromString(rstConfigAssert._sName);
-        pPropertyAssert->AddChild("type")->FromString(rstConfigAssert._sType);
+        yam::base::YCProperty* pPropertyAsset = pPropertyAssets->AddChild(ss.str());
+        pPropertyAsset->AddChild("file")->FromString(rstConfigAsset._sFile);
+        pPropertyAsset->AddChild("name")->FromString(rstConfigAsset._sName);
+        pPropertyAsset->AddChild("type")->FromString(rstConfigAsset._sType);
     }
     return true;
 }

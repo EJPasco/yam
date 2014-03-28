@@ -78,7 +78,7 @@ void YCQUiTreeItemImagesHelper::onChangedSpeed(double dSpeed)
 YCQUiTreeItemImageHelper* YCQUiTreeItemImagesHelper::toAddImageHelper()
 {
     QString name;
-    YCQUiTreeItemImageHelper* pImageHelper = new YCQUiTreeItemImageHelper(this, m_pTreeRoot, m_pTreeItemImages, m_vpImageHelper.size(), name.sprintf("%d", m_vpImageHelper.size()));
+    YCQUiTreeItemImageHelper* pImageHelper = new YCQUiTreeItemImageHelper(this, m_pTreeRoot, m_pTreeItemImages, m_vpImageHelper.size(), name.sprintf("%d", (int)m_vpImageHelper.size()));
     connect(pImageHelper, SIGNAL(onChanged(const yam::yint32&, YCQUiTreeItemImageHelper*)), this, SLOT(onChangedImage(const yam::yint32&, YCQUiTreeItemImageHelper*)));
     connect(pImageHelper, SIGNAL(onChanged(const yam::yint32&)), this, SLOT(onChangedImage(const yam::yint32&)));
     m_vpImageHelper.push_back(pImageHelper);

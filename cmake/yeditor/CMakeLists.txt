@@ -112,10 +112,10 @@ SET (CODE_FILE_LIST_QT_HELPER
     ${CODE_PATH_YEDITOR}/src/quitreeitemtexthelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitempanelhelper.h
     ${CODE_PATH_YEDITOR}/src/quitreeitempanelhelper.cpp
-    ${CODE_PATH_YEDITOR}/inc/quitreeitemasserthelper.h
-    ${CODE_PATH_YEDITOR}/src/quitreeitemasserthelper.cpp
-    ${CODE_PATH_YEDITOR}/inc/quitreeitemassertshelper.h
-    ${CODE_PATH_YEDITOR}/src/quitreeitemassertshelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitemassethelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitemassethelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitemassetshelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitemassetshelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitemscenehelper.h
     ${CODE_PATH_YEDITOR}/src/quitreeitemscenehelper.cpp
     )
@@ -143,8 +143,8 @@ SET (CODE_FILE_LIST_QT_GENERATE
     ${CODE_PATH_YEDITOR}/src/quitreeitemsrchelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemtexthelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitempanelhelper_moc.cpp
-    ${CODE_PATH_YEDITOR}/src/quitreeitemasserthelper_moc.cpp
-    ${CODE_PATH_YEDITOR}/src/quitreeitemassertshelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitemassethelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitemassetshelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemscenehelper_moc.cpp
     )
 
@@ -232,9 +232,9 @@ QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemtexthelper)
 
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitempanelhelper)
 
-QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemasserthelper)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemassethelper)
 
-QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemassertshelper)
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemassetshelper)
 
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemscenehelper)
 
@@ -276,8 +276,8 @@ ADD_DEPENDENCIES (yeditor ${DEPEND_PROJ_LIST}
                          quitreeitemsrchelper_moc_cpp
                          quitreeitemtexthelper_moc_cpp
                          quitreeitempanelhelper_moc_cpp
-                         quitreeitemasserthelper_moc_cpp
-                         quitreeitemassertshelper_moc_cpp
+                         quitreeitemassethelper_moc_cpp
+                         quitreeitemassetshelper_moc_cpp
                          quitreeitemscenehelper_moc_cpp
                          yeditor_moc_cpp
                          yeditor_main_ui_h

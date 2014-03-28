@@ -201,44 +201,49 @@ void YCExportYam::ToJsonScene(const yam::base::YIWidget* pWidget, json::Object& 
         rjObj["logic"] = sLogic;
     }
 
-    yam::base::YCProperty* pPropertySceneAsserts = pPropertyScene->FindChild<yam::base::YCProperty>("asserts");
-    if (YNULL == pPropertySceneAsserts)
+    yam::base::YCProperty* pPropertySceneAssets = pPropertyScene->FindChild<yam::base::YCProperty>("assets");
+    if (YNULL == pPropertySceneAssets)
     {
         return;
     }
 
     yam::yint32 iCount = 0;
-    yam::base::YCProperty* pPropertySceneAssertsCount = pPropertySceneAsserts->FindChild<yam::base::YCProperty>("count");
-    if (YNULL != pPropertySceneAssertsCount)
+    yam::base::YCProperty* pPropertySceneAssetsCount = pPropertySceneAssets->FindChild<yam::base::YCProperty>("count");
+    if (YNULL != pPropertySceneAssetsCount)
     {
-        pPropertySceneAssertsCount->ToInt32(iCount);
+        pPropertySceneAssetsCount->ToInt32(iCount);
     }
     json::Array jArr;
     for (yam::yint32 i = 0; i < iCount; ++i)
     {
         std::stringstream ss; ss << i;
-        yam::base::YCProperty* pPropertySceneAssert = pPropertySceneAsserts->FindChild<yam::base::YCProperty>(ss.str());
-        if (YNULL == pPropertySceneAssert)
+        yam::base::YCProperty* pPropertySceneAsset = pPropertySceneAssets->FindChild<yam::base::YCProperty>(ss.str());
+        if (YNULL == pPropertySceneAsset)
         {
             continue;
         }
         yam::ystring sFile;
         yam::ystring sName;
         yam::ystring sType;
-        yam::base::YCProperty* pPropertySceneAssertFile = pPropertySceneAssert->FindChild<yam::base::YCProperty>("file");
-        if (YNULL != pPropertySceneAssertFile)
+        yam::base::YCProperty* pPropertySceneAssetFile = pPropertySceneAsset->FindChild<yam::base::YCProperty>("file");
+        if (YNULL != pPropertySceneAssetFile)
         {
-            pPropertySceneAssertFile->ToString(sFile);
+            pPropertySceneAssetFile->ToString(sFile);
         }
-        yam::base::YCProperty* pPropertySceneAssertName = pPropertySceneAssert->FindChild<yam::base::YCProperty>("name");
-        if (YNULL != pPropertySceneAssertName)
+        yam::base::YCProperty* pPropertySceneAssetName = pPropertySceneAsset->FindChild<yam::base::YCProperty>("name");
+        if (YNULL != pPropertySceneAssetName)
         {
-            pPropertySceneAssertName->ToString(sName);
+            pPropertySceneAssetName->ToString(sName);
         }
-        yam::base::YCProperty* pPropertySceneAssertType = pPropertySceneAssert->FindChild<yam::base::YCProperty>("type");
-        if (YNULL != pPropertySceneAssertType)
+        yam::base::YCProperty* pPropertySceneAssetType = pPropertySceneAsset->FindChild<yam::base::YCProperty>("type");
+        if (YNULL != pPropertySceneAssetType)
         {
-            pPropertySceneAssertType->ToString(sType);
+            pPropertySceneAssetType->ToString(sType);
+        }
+
+        if (0 >= sFile.size() || 0 >= sName.size() || 0 >= sType.size())
+        {
+            continue;
         }
 
         json::Object jObjAst;
@@ -247,7 +252,10 @@ void YCExportYam::ToJsonScene(const yam::base::YIWidget* pWidget, json::Object& 
         jObjAst["type"] = sType;
         jArr.push_back(jObjAst);
     }
-    rjObj["assets"] = jArr;
+    if (0 < jArr.size())
+    {
+        rjObj["assets"] = jArr;
+    }
 }
 
 void YCExportYam::ToJsonPanel(const yam::base::YIWidget* pWidget, json::Object& rjObj) const
@@ -294,8 +302,6 @@ void YCExportYam::ToJsonImages(const yam::base::YCProperty* pProperty, json::Obj
         return;
     }
 
-    json::Array jArrImage;
-
     yam::yint32 iCount = 0;
     pPropertyCount->ToInt32(iCount);
 
@@ -307,7 +313,7 @@ void YCExportYam::ToJsonImages(const yam::base::YCProperty* pProperty, json::Obj
         rjObj["speed"] = fSpeed;
     }
 
-    json::Array jArr;
+    json::Array jArrImage;
     for (yam::yint32 i = 0; i < iCount; ++i)
     {
         std::stringstream ss;
@@ -319,9 +325,12 @@ void YCExportYam::ToJsonImages(const yam::base::YCProperty* pProperty, json::Obj
         }
         json::Object jObjItem;
         ToJsonImage(pPropertyItem, jObjItem);
-        jArr.push_back(jObjItem);
+        jArrImage.push_back(jObjItem);
     }
-    rjObj["list"] = jArr;
+    if (0 < jArrImage.size())
+    {
+        rjObj["list"] = jArrImage;
+    }
 }
 
 void YCExportYam::ToJsonPicture(const yam::base::YIWidget* pWidget, json::Object& rjObj) const

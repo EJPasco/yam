@@ -11,7 +11,7 @@ class QTreeWidget;
 class QTreeWidgetItem;
 class QLineEdit;
 class YCQUiTreeItemSizeHelper;
-class YCQUiTreeItemAssertsHelper;
+class YCQUiTreeItemAssetsHelper;
 
 class YCQUiTreeItemSceneHelper : public QObject
 {
@@ -27,9 +27,9 @@ Q_SIGNALS:
 public Q_SLOTS:
     void onChangedLogic(const QString& roLogic);
     void onChangedSize(const QSize& roSize);
-    void onChangedAsserts(const int& riIndex, const SConfigAssert& rstAssert);
-    void onChangedAsserts();    //< add
-    void onChangedAsserts(const int& riIndex);  //< delete
+    void onChangedAssets(const int& riIndex, const SConfigAsset& rstAsset);
+    void onChangedAssets();    //< add
+    void onChangedAssets(const int& riIndex);  //< delete
 
 public:
     void setUiItem(YCQUiItem*& rpUiItem);
@@ -37,7 +37,7 @@ public:
 private:
     QLineEdit*                      m_pleLogic;
     YCQUiTreeItemSizeHelper*        m_pTreeItemSizeHelper;
-    YCQUiTreeItemAssertsHelper*     m_pTreeItemAssertsHelper;
+    YCQUiTreeItemAssetsHelper*     m_pTreeItemAssetsHelper;
     SConfigScene m_stConfig;
 };
 

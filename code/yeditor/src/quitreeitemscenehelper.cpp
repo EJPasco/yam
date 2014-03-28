@@ -6,12 +6,12 @@
 #include <QtWidgets/QLineEdit>
 #include "quiitem.h"
 #include "quitreeitemsizehelper.h"
-#include "quitreeitemassertshelper.h"
+#include "quitreeitemassetshelper.h"
 
 YCQUiTreeItemSceneHelper::YCQUiTreeItemSceneHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem, const QString sName /*= "scene"*/)
     : m_pleLogic(NULL)
     , m_pTreeItemSizeHelper(NULL)
-    , m_pTreeItemAssertsHelper(NULL)
+    , m_pTreeItemAssetsHelper(NULL)
 {
     if (NULL == pTreeRoot || NULL == pTreeItem)
     {
@@ -38,17 +38,17 @@ YCQUiTreeItemSceneHelper::YCQUiTreeItemSceneHelper(QTreeWidget* pTreeRoot, QTree
     }
 
     {
-        m_pTreeItemAssertsHelper = new YCQUiTreeItemAssertsHelper(pTreeRoot, pTreeItemMain);
-        connect(m_pTreeItemAssertsHelper, SIGNAL(onChanged(const int&, const SConfigAssert&)), this, SLOT(onChangedAsserts(const int&, const SConfigAssert&)));
-        connect(m_pTreeItemAssertsHelper, SIGNAL(onChanged()), this, SLOT(onChangedAsserts()));
-        connect(m_pTreeItemAssertsHelper, SIGNAL(onChanged(const int&)), this, SLOT(onChangedAsserts(const int&)));
+        m_pTreeItemAssetsHelper = new YCQUiTreeItemAssetsHelper(pTreeRoot, pTreeItemMain);
+        connect(m_pTreeItemAssetsHelper, SIGNAL(onChanged(const int&, const SConfigAsset&)), this, SLOT(onChangedAssets(const int&, const SConfigAsset&)));
+        connect(m_pTreeItemAssetsHelper, SIGNAL(onChanged()), this, SLOT(onChangedAssets()));
+        connect(m_pTreeItemAssetsHelper, SIGNAL(onChanged(const int&)), this, SLOT(onChangedAssets(const int&)));
     }
 }
 
 YCQUiTreeItemSceneHelper::~YCQUiTreeItemSceneHelper()
 {
     YEDITOR_DELETE(m_pTreeItemSizeHelper);
-    YEDITOR_DELETE(m_pTreeItemAssertsHelper);
+    YEDITOR_DELETE(m_pTreeItemAssetsHelper);
 }
 
 void YCQUiTreeItemSceneHelper::onChangedLogic(const QString& roLogic)
@@ -63,31 +63,31 @@ void YCQUiTreeItemSceneHelper::onChangedSize(const QSize& roSize)
     onChanged(m_stConfig);
 }
 
-void YCQUiTreeItemSceneHelper::onChangedAsserts(const int& riIndex, const SConfigAssert& rstAssert)
+void YCQUiTreeItemSceneHelper::onChangedAssets(const int& riIndex, const SConfigAsset& rstAsset)
 {
-    while (riIndex >= (int)m_stConfig._vAsserts.size())
+    while (riIndex >= (int)m_stConfig._vAssets.size())
     {
-        SConfigAssert stAssert;
-        m_stConfig._vAsserts.push_back(stAssert);
+        SConfigAsset stAsset;
+        m_stConfig._vAssets.push_back(stAsset);
     }
-    m_stConfig._vAsserts[riIndex] = rstAssert;
+    m_stConfig._vAssets[riIndex] = rstAsset;
     onChanged(m_stConfig);
 }
 
-void YCQUiTreeItemSceneHelper::onChangedAsserts()
+void YCQUiTreeItemSceneHelper::onChangedAssets()
 {
-    SConfigAssert stAssert;
-    m_stConfig._vAsserts.push_back(stAssert);
+    SConfigAsset stAsset;
+    m_stConfig._vAssets.push_back(stAsset);
     onChanged(m_stConfig);
 }
 
-void YCQUiTreeItemSceneHelper::onChangedAsserts(const int& riIndex)
+void YCQUiTreeItemSceneHelper::onChangedAssets(const int& riIndex)
 {
-    if (riIndex < 0 || riIndex >= (int)m_stConfig._vAsserts.size())
+    if (riIndex < 0 || riIndex >= (int)m_stConfig._vAssets.size())
     {
         return;
     }
-    m_stConfig._vAsserts.erase(m_stConfig._vAsserts.begin() + riIndex);
+    m_stConfig._vAssets.erase(m_stConfig._vAssets.begin() + riIndex);
     onChanged(m_stConfig);
 }
 
@@ -104,8 +104,8 @@ void YCQUiTreeItemSceneHelper::setUiItem(YCQUiItem*& rpUiItem)
         m_pTreeItemSizeHelper->setSize(rpUiItem->size());
     }
 
-    if (NULL != m_pTreeItemAssertsHelper)
+    if (NULL != m_pTreeItemAssetsHelper)
     {
-        m_pTreeItemAssertsHelper->setUiItem(rpUiItem);
+        m_pTreeItemAssetsHelper->setUiItem(rpUiItem);
     }
 }
