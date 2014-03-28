@@ -13,7 +13,12 @@ A User Interface System for Game. It belongs to [Code4Game][].
 * [**Usage**](#usage)
 * [**Credits**](#credits)
 * [**License**](#license)
-* [**Link**](#link)
+* [**Links**](#links)
+
+
+## Status
+
+In developing.
 
 
 ## Projects
@@ -93,7 +98,7 @@ It is part of [Code4Game][] and was created by [Alex Chi][].
 See [MIT License][] or LICENSE file
 
 
-## Link
+## Links
 
 1. [MIT License][]
 1. [CMake][]
@@ -115,6 +120,3 @@ See [MIT License][] or LICENSE file
 [Alex Chi's Blog]: http://blog.alexchi.me/ "Alex Chi's Blog"
 [Code4Game]: http://c4g.alexchi.me/ "Code 4 Game"
 [Yam]: http://c4g.alexchi.me/yam/ "Yam"
-
-
-<script type="text/javascript" src="http://www.ohloh.net/p/714981/widgets/project_basic_stats.js"></script>
