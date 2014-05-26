@@ -407,6 +407,7 @@ void YCQUiItem::setNoInput(const bool& rbNoInput)
 void YCQUiItem::setConfigScene(const SConfigScene& rstConfig)
 {
     m_stConfigScene = rstConfig;
+    resize(YCConverter::Instance().Convert(rstConfig._stSize));
 }
 
 int YCQUiItem::getLayerWeight() const
