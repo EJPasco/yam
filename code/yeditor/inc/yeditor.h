@@ -47,7 +47,7 @@ public Q_SLOTS:
     void onUiAreaVisibilityChanged(bool bVisible);
     void onClickedUiMenuItem_CreateScene();
     void onClickedUiMenuItem_CreatePanel();
-    void onClickedUiMenuItem_CreatePicture();
+    void onClickedUiMenuItem_CreateImage();
     void onClickedUiMenuItem_CreateButton();
     void onClickedUiMenuItem_CreateText();
     void onClickedUiMenuItem_EditRemove();

@@ -102,6 +102,8 @@ SET (CODE_FILE_LIST_QT_HELPER
     ${CODE_PATH_YEDITOR}/src/quitreeitemboundfhelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitemlayerweighthelper.h
     ${CODE_PATH_YEDITOR}/src/quitreeitemlayerweighthelper.cpp
+    ${CODE_PATH_YEDITOR}/inc/quitreeitemlayouthelper.h
+    ${CODE_PATH_YEDITOR}/src/quitreeitemlayouthelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitemimagehelper.h
     ${CODE_PATH_YEDITOR}/src/quitreeitemimagehelper.cpp
     ${CODE_PATH_YEDITOR}/inc/quitreeitemimageshelper.h
@@ -138,6 +140,7 @@ SET (CODE_FILE_LIST_QT_GENERATE
     ${CODE_PATH_YEDITOR}/src/quitreeitemboundhelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemboundfhelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemlayerweighthelper_moc.cpp
+    ${CODE_PATH_YEDITOR}/src/quitreeitemlayouthelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemimagehelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemimageshelper_moc.cpp
     ${CODE_PATH_YEDITOR}/src/quitreeitemsrchelper_moc.cpp
@@ -222,6 +225,8 @@ QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemboundfhelper)
 
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemlayerweighthelper)
 
+QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemlayouthelper)
+
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemimagehelper)
 
 QT_GENERATE_MOC(${CODE_PATH_YEDITOR} quitreeitemimageshelper)
@@ -271,6 +276,7 @@ ADD_DEPENDENCIES (yeditor ${DEPEND_PROJ_LIST}
                          quitreeitemsizefhelper_moc_cpp
                          quitreeitemboundhelper_moc_cpp
                          quitreeitemlayerweighthelper_moc_cpp
+                         quitreeitemlayouthelper_moc_cpp
                          quitreeitemimagehelper_moc_cpp
                          quitreeitemimageshelper_moc_cpp
                          quitreeitemsrchelper_moc_cpp

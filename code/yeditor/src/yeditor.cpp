@@ -154,24 +154,23 @@ void YEditor::onClickedSave()
     yam::base::YITree* pTreeUi = gs_FileTreeData.FindChild(YFILE_KEY_UI);
     if (YNULL == pTreeUi)
     {
-        pTreeUi = new yam::base::YCTree;
+        pTreeUi = gs_FileTreeData.NewChild<yam::base::YCFormat>();
+        //pTreeUi = new yam::base::YCTree;
         pTreeUi->GetId() = YFILE_KEY_UI;
-        gs_FileTreeData.AddChild(pTreeUi);
+        //gs_FileTreeData.AddChild(pTreeUi);
     }
-    else
+
+    yam::base::YITree* pUiRoot = pTreeUi->GetChildren();
+    if (NULL == pUiRoot)
     {
-        yam::base::YITree* pUiRoot = pTreeUi->GetChildren();
-        if (NULL == pUiRoot)
-        {
-            pUiRoot = new yam::base::YCWidget;
-            pTreeUi->AddChild(pUiRoot);
-        }
-        yam::base::YITree*& rpUiRoot = pTreeUi->GetChildren();
-        if (YNULL != rpUiRoot && YOBJECT_GETCLASSNAME(yam::base::YCWidget) == rpUiRoot->GetClassName())
-        {
-            rpUiRoot->Clear();
-            yam::io::CYQt2Yam::Instance().Convert(this, pTreeItem, (yam::base::YIWidget*&)rpUiRoot);
-        }
+        pUiRoot = new yam::base::YCWidget;
+        pTreeUi->AddChild(pUiRoot);
+    }
+    yam::base::YITree*& rpUiRoot = pTreeUi->GetChildren();
+    if (YNULL != rpUiRoot && YOBJECT_GETCLASSNAME(yam::base::YCWidget) == rpUiRoot->GetClassName())
+    {
+        rpUiRoot->ClearChildren();
+        yam::io::CYQt2Yam::Instance().Convert(this, pTreeItem, (yam::base::YIWidget*&)rpUiRoot);
     }
 
     yam::base::YCBuffer oBuffer;
@@ -206,7 +205,7 @@ void YEditor::onClickedExport()
         yam::base::YITree*& rpUiRoot = pTreeUi->GetChildren();
         if (YNULL != rpUiRoot && YOBJECT_GETCLASSNAME(yam::base::YCWidget) == rpUiRoot->GetClassName())
         {
-            rpUiRoot->Clear();
+            rpUiRoot->ClearChildren();
             yam::io::CYQt2Yam::Instance().Convert(this, pTreeItem, (yam::base::YIWidget*&)rpUiRoot);
         }
     }
@@ -324,7 +323,7 @@ void YEditor::onUiTreeContextMenu(QPoint oPos)
         pActionCreate->setEnabled(NULL != pCurrentUiItem);
     }
     {
-        QAction* pActionCreate = pMenuCreate->addAction(tr("Picture"), this, SLOT(onClickedUiMenuItem_CreatePicture()));
+        QAction* pActionCreate = pMenuCreate->addAction(tr("Image"), this, SLOT(onClickedUiMenuItem_CreateImage()));
         pActionCreate->setEnabled(NULL != pCurrentUiItem);
     }
     {
@@ -468,7 +467,7 @@ void YEditor::onClickedUiMenuItem_CreatePanel()
     YEDITOR_DELETE(pWidget);
 }
 
-void YEditor::onClickedUiMenuItem_CreatePicture()
+void YEditor::onClickedUiMenuItem_CreateImage()
 {
     QTreeWidgetItem* pItem = NULL;
     SConfigCreateWidget stConfig;
@@ -479,7 +478,7 @@ void YEditor::onClickedUiMenuItem_CreatePicture()
 
     yam::base::YIWidget* pWidget = new yam::base::YCWidget;
     pWidget->GetId() = stConfig._sId;
-    pWidget->GetType() = yam::eWidgetType_Picture;
+    pWidget->GetType() = yam::eWidgetType_Image;
     pWidget->GetBound().Size.X = 100;
     pWidget->GetBound().Size.Y = 100;
 
@@ -592,7 +591,7 @@ void YEditor::reloadFile(const yam::ystring& rsFileName)
     m_Ui.uiTree->clear();
     m_Ui.uiPropertyTreeWidget->clear();
     gs_mRelationship.clear();
-    gs_FileTreeData.Clear();
+    gs_FileTreeData.ClearChildren();
 
     // parse
     gs_FileTreeData << buffer;

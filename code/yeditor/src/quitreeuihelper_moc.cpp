@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YCQUiTreeUiHelper_t {
-    QByteArrayData data[28];
-    char stringdata[379];
+    QByteArrayData data[32];
+    char stringdata[429];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -46,17 +46,21 @@ QT_MOC_LITERAL(13, 175, 25),
 QT_MOC_LITERAL(14, 201, 12),
 QT_MOC_LITERAL(15, 214, 13),
 QT_MOC_LITERAL(16, 228, 7),
-QT_MOC_LITERAL(17, 236, 17),
-QT_MOC_LITERAL(18, 254, 17),
-QT_MOC_LITERAL(19, 272, 6),
-QT_MOC_LITERAL(20, 279, 6),
-QT_MOC_LITERAL(21, 286, 7),
-QT_MOC_LITERAL(22, 294, 7),
-QT_MOC_LITERAL(23, 302, 18),
-QT_MOC_LITERAL(24, 321, 9),
-QT_MOC_LITERAL(25, 331, 18),
-QT_MOC_LITERAL(26, 350, 12),
-QT_MOC_LITERAL(27, 363, 14)
+QT_MOC_LITERAL(17, 236, 12),
+QT_MOC_LITERAL(18, 249, 6),
+QT_MOC_LITERAL(19, 256, 17),
+QT_MOC_LITERAL(20, 274, 17),
+QT_MOC_LITERAL(21, 292, 6),
+QT_MOC_LITERAL(22, 299, 6),
+QT_MOC_LITERAL(23, 306, 7),
+QT_MOC_LITERAL(24, 314, 7),
+QT_MOC_LITERAL(25, 322, 18),
+QT_MOC_LITERAL(26, 341, 9),
+QT_MOC_LITERAL(27, 351, 13),
+QT_MOC_LITERAL(28, 365, 15),
+QT_MOC_LITERAL(29, 381, 18),
+QT_MOC_LITERAL(30, 400, 12),
+QT_MOC_LITERAL(31, 413, 14)
     },
     "YCQUiTreeUiHelper\0onItemChangedSize\0"
     "\0roSize\0onItemChangedBound\0roBound\0"
@@ -64,11 +68,12 @@ QT_MOC_LITERAL(27, 363, 14)
     "onItemChangedSrc\0EImageType\0reImageType\0"
     "yam::yint32\0riImageIndex\0"
     "YCQUiTreeItemImageHelper*\0pImageHelper\0"
-    "yam::yfloat32\0rfSpeed\0onItemSelectedSrc\0"
-    "onItemChangedText\0rsFace\0riSize\0rsAlign\0"
-    "rsValue\0onItemChangedPanel\0rbNoInput\0"
-    "onItemChangedScene\0SConfigScene\0"
-    "rstConfigScene\0"
+    "yam::yfloat32\0rfSpeed\0yam::ystring\0"
+    "rsType\0onItemSelectedSrc\0onItemChangedText\0"
+    "rsFace\0riSize\0rsAlign\0rsValue\0"
+    "onItemChangedPanel\0rbNoInput\0SConfigLayout\0"
+    "rstConfigLayout\0onItemChangedScene\0"
+    "SConfigScene\0rstConfigScene\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -90,26 +95,26 @@ static const uint qt_meta_data_YCQUiTreeUiHelper[] = {
        4,    1,   72,    2, 0x0a,
        6,    1,   75,    2, 0x0a,
        8,    3,   78,    2, 0x0a,
-       8,    2,   85,    2, 0x0a,
-       8,    1,   90,    2, 0x0a,
-       8,    2,   93,    2, 0x0a,
-      17,    2,   98,    2, 0x0a,
-      18,    4,  103,    2, 0x0a,
-      23,    1,  112,    2, 0x0a,
-      25,    1,  115,    2, 0x0a,
+       8,    3,   85,    2, 0x0a,
+       8,    1,   92,    2, 0x0a,
+       8,    2,   95,    2, 0x0a,
+      19,    2,  100,    2, 0x0a,
+      20,    4,  105,    2, 0x0a,
+      25,    2,  114,    2, 0x0a,
+      29,    2,  119,    2, 0x0a,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QSize,    3,
     QMetaType::Void, QMetaType::QRect,    5,
     QMetaType::Void, QMetaType::Int,    7,
     QMetaType::Void, 0x80000000 | 9, 0x80000000 | 11, 0x80000000 | 13,   10,   12,   14,
-    QMetaType::Void, 0x80000000 | 9, 0x80000000 | 15,   10,   16,
+    QMetaType::Void, 0x80000000 | 9, 0x80000000 | 15, 0x80000000 | 17,   10,   16,   18,
     QMetaType::Void, 0x80000000 | 9,   10,
     QMetaType::Void, 0x80000000 | 9, 0x80000000 | 11,   10,   12,
     QMetaType::Void, 0x80000000 | 9, 0x80000000 | 11,   10,   12,
-    QMetaType::Void, QMetaType::QString, QMetaType::Int, QMetaType::QString, QMetaType::QString,   19,   20,   21,   22,
-    QMetaType::Void, QMetaType::Bool,   24,
-    QMetaType::Void, 0x80000000 | 26,   27,
+    QMetaType::Void, QMetaType::QString, QMetaType::Int, QMetaType::QString, QMetaType::QString,   21,   22,   23,   24,
+    QMetaType::Void, QMetaType::Bool, 0x80000000 | 27,   26,   28,
+    QMetaType::Void, 0x80000000 | 30, 0x80000000 | 27,   31,   28,
 
        0        // eod
 };
@@ -123,13 +128,13 @@ void YCQUiTreeUiHelper::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         case 1: _t->onItemChangedBound((*reinterpret_cast< const QRect(*)>(_a[1]))); break;
         case 2: _t->onItemChangedLayerWeight((*reinterpret_cast< const int(*)>(_a[1]))); break;
         case 3: _t->onItemChangedSrc((*reinterpret_cast< const EImageType(*)>(_a[1])),(*reinterpret_cast< const yam::yint32(*)>(_a[2])),(*reinterpret_cast< YCQUiTreeItemImageHelper*(*)>(_a[3]))); break;
-        case 4: _t->onItemChangedSrc((*reinterpret_cast< const EImageType(*)>(_a[1])),(*reinterpret_cast< const yam::yfloat32(*)>(_a[2]))); break;
+        case 4: _t->onItemChangedSrc((*reinterpret_cast< const EImageType(*)>(_a[1])),(*reinterpret_cast< const yam::yfloat32(*)>(_a[2])),(*reinterpret_cast< const yam::ystring(*)>(_a[3]))); break;
         case 5: _t->onItemChangedSrc((*reinterpret_cast< const EImageType(*)>(_a[1]))); break;
         case 6: _t->onItemChangedSrc((*reinterpret_cast< const EImageType(*)>(_a[1])),(*reinterpret_cast< const yam::yint32(*)>(_a[2]))); break;
         case 7: _t->onItemSelectedSrc((*reinterpret_cast< const EImageType(*)>(_a[1])),(*reinterpret_cast< const yam::yint32(*)>(_a[2]))); break;
         case 8: _t->onItemChangedText((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const int(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4]))); break;
-        case 9: _t->onItemChangedPanel((*reinterpret_cast< const bool(*)>(_a[1]))); break;
-        case 10: _t->onItemChangedScene((*reinterpret_cast< const SConfigScene(*)>(_a[1]))); break;
+        case 9: _t->onItemChangedPanel((*reinterpret_cast< const bool(*)>(_a[1])),(*reinterpret_cast< const SConfigLayout(*)>(_a[2]))); break;
+        case 10: _t->onItemChangedScene((*reinterpret_cast< const SConfigScene(*)>(_a[1])),(*reinterpret_cast< const SConfigLayout(*)>(_a[2]))); break;
         default: ;
         }
     }

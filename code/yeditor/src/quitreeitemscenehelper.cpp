@@ -7,11 +7,13 @@
 #include "quiitem.h"
 #include "quitreeitemsizehelper.h"
 #include "quitreeitemassetshelper.h"
+#include "quitreeitemlayouthelper.h"
 
 YCQUiTreeItemSceneHelper::YCQUiTreeItemSceneHelper(QTreeWidget* pTreeRoot, QTreeWidgetItem* pTreeItem, const QString sName /*= "scene"*/)
     : m_pleLogic(NULL)
     , m_pTreeItemSizeHelper(NULL)
     , m_pTreeItemAssetsHelper(NULL)
+    , m_pTreeItemLayoutHelper(NULL)
 {
     if (NULL == pTreeRoot || NULL == pTreeItem)
     {
@@ -43,24 +45,32 @@ YCQUiTreeItemSceneHelper::YCQUiTreeItemSceneHelper(QTreeWidget* pTreeRoot, QTree
         connect(m_pTreeItemAssetsHelper, SIGNAL(onChanged()), this, SLOT(onChangedAssets()));
         connect(m_pTreeItemAssetsHelper, SIGNAL(onChanged(const int&)), this, SLOT(onChangedAssets(const int&)));
     }
+
+    {
+        m_pTreeItemLayoutHelper = new YCQUiTreeItemLayoutHelper(pTreeRoot, pTreeItemMain);
+        connect(m_pTreeItemLayoutHelper, SIGNAL(onChanged(const SConfigLayout&)), this, SLOT(onChangedLayout(const SConfigLayout&)));
+    }
 }
 
 YCQUiTreeItemSceneHelper::~YCQUiTreeItemSceneHelper()
 {
     YEDITOR_DELETE(m_pTreeItemSizeHelper);
     YEDITOR_DELETE(m_pTreeItemAssetsHelper);
+    YEDITOR_DELETE(m_pTreeItemLayoutHelper);
 }
 
 void YCQUiTreeItemSceneHelper::onChangedLogic(const QString& roLogic)
 {
     m_stConfig._sLogic = roLogic.toLocal8Bit().data();
-    onChanged(m_stConfig);
+
+    onChanged(m_stConfig, m_stConfigLayout);
 }
 
 void YCQUiTreeItemSceneHelper::onChangedSize(const QSize& roSize)
 {
     m_stConfig._stSize = YCConverter::Instance().Convert(roSize);
-    onChanged(m_stConfig);
+
+    onChanged(m_stConfig, m_stConfigLayout);
 }
 
 void YCQUiTreeItemSceneHelper::onChangedAssets(const int& riIndex, const SConfigAsset& rstAsset)
@@ -71,14 +81,14 @@ void YCQUiTreeItemSceneHelper::onChangedAssets(const int& riIndex, const SConfig
         m_stConfig._vAssets.push_back(stAsset);
     }
     m_stConfig._vAssets[riIndex] = rstAsset;
-    onChanged(m_stConfig);
+    onChanged(m_stConfig, m_stConfigLayout);
 }
 
 void YCQUiTreeItemSceneHelper::onChangedAssets()
 {
     SConfigAsset stAsset;
     m_stConfig._vAssets.push_back(stAsset);
-    onChanged(m_stConfig);
+    onChanged(m_stConfig, m_stConfigLayout);
 }
 
 void YCQUiTreeItemSceneHelper::onChangedAssets(const int& riIndex)
@@ -88,7 +98,14 @@ void YCQUiTreeItemSceneHelper::onChangedAssets(const int& riIndex)
         return;
     }
     m_stConfig._vAssets.erase(m_stConfig._vAssets.begin() + riIndex);
-    onChanged(m_stConfig);
+    onChanged(m_stConfig, m_stConfigLayout);
+}
+
+void YCQUiTreeItemSceneHelper::onChangedLayout(const SConfigLayout& rstConfig)
+{
+    m_stConfigLayout = rstConfig;
+
+    onChanged(m_stConfig, m_stConfigLayout);
 }
 
 void YCQUiTreeItemSceneHelper::setUiItem(YCQUiItem*& rpUiItem)
@@ -107,5 +124,10 @@ void YCQUiTreeItemSceneHelper::setUiItem(YCQUiItem*& rpUiItem)
     if (NULL != m_pTreeItemAssetsHelper)
     {
         m_pTreeItemAssetsHelper->setUiItem(rpUiItem);
+    }
+
+    if (NULL != m_pTreeItemLayoutHelper)
+    {
+        m_pTreeItemLayoutHelper->setUiItem(rpUiItem);
     }
 }

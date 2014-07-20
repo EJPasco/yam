@@ -4,6 +4,7 @@
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
 
 #include "quitreeitemimagehelper.h"
 
@@ -13,6 +14,7 @@ YCQUiTreeItemImagesHelper::YCQUiTreeItemImagesHelper(QTreeWidget* pTreeRoot, QTr
     , m_pdsbSpeed(NULL)
     , m_eImageType(reImageType)
     , m_fSpeed(0.1f)
+    , m_sType("")
 {
     if (NULL == pTreeRoot || NULL == pTreeItem)
     {
@@ -38,6 +40,16 @@ YCQUiTreeItemImagesHelper::YCQUiTreeItemImagesHelper(QTreeWidget* pTreeRoot, QTr
         pTreeItemSpeed->setText(0, tr("speed"));
         m_pTreeItemImages->addChild(pTreeItemSpeed);
         pTreeRoot->setItemWidget(pTreeItemSpeed, 1, m_pdsbSpeed);
+    }
+
+    {
+        m_pleType = new QLineEdit;
+        m_pleType->setText(m_sType.c_str());
+        connect(m_pleType, SIGNAL(textChanged(const QString&)), this, SLOT(onItemChangedType(const QString&)));
+        QTreeWidgetItem* pTreeType = new QTreeWidgetItem;
+        pTreeType->setText(0, tr("type"));
+        m_pTreeItemImages->addChild(pTreeType);
+        pTreeRoot->setItemWidget(pTreeType, 1, m_pleType);
     }
 }
 
@@ -72,7 +84,14 @@ void YCQUiTreeItemImagesHelper::onChangedSpeed(double dSpeed)
 {
     m_fSpeed = (float)dSpeed;
 
-    onChanged(m_eImageType, m_fSpeed);
+    onChanged(m_eImageType, m_fSpeed, m_sType);
+}
+
+void YCQUiTreeItemImagesHelper::onItemChangedType(const QString& rsType)
+{
+    m_sType = rsType.toLocal8Bit().data();
+
+    onChanged(m_eImageType, m_fSpeed, m_sType);
 }
 
 YCQUiTreeItemImageHelper* YCQUiTreeItemImagesHelper::toAddImageHelper()
@@ -131,6 +150,8 @@ void YCQUiTreeItemImagesHelper::setUiItem(YCQUiItem*& rpUiItem)
     yam::yint32 iCount = rpUiItem->getImageCount(m_eImageType);
     m_fSpeed = rpUiItem->getImagesData(m_eImageType)._fSpeed;
     m_pdsbSpeed->setValue(m_fSpeed);
+    m_sType = rpUiItem->getImagesData(m_eImageType)._sType;
+    m_pleType->setText(m_sType.c_str());
 
     for (yam::yint32 i = 0; i < iCount; ++i)
     {

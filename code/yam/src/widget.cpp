@@ -49,7 +49,7 @@ ybool YCWidget::operator<<(YCBuffer& rBuffer)
 
 void YCWidget::operator>>(YCProperty& rProperty) const
 {
-    rProperty.Clear();
+    rProperty.ClearChildren();
 
     {
         // widget type
@@ -127,7 +127,7 @@ void YCWidget::operator<<(YCProperty& rProperty)
             (*((YCProperty*)pProperty)) >> oBuffer;
             oBuffer.End();
         }
-        m_oExternalProperty.Clear();
+        m_oExternalProperty.ClearChildren();
         if (0 < oBuffer.GetSize())
         {
             m_oExternalProperty << oBuffer;

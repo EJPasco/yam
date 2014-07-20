@@ -52,7 +52,7 @@ void YCPsFormatWriter::Do(FormatRecordPtr& rpRecord)
     }
     else
     {
-        pFormat->Clear();
+        pFormat->ClearChildren();
     }
 
     // parse the layer

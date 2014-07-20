@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
         oWidget >> oProperty;
         oWidget.GetBound().Pos.Y = 100;
         oWidget << oProperty;
-        oProperty.Clear();
+        oProperty.ClearChildren();
     }
 
     {

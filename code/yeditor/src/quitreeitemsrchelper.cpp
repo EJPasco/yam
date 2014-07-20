@@ -57,7 +57,7 @@ YCQUiTreeItemSrcHelper::YCQUiTreeItemSrcHelper(QTreeWidget* pTreeRoot, QTreeWidg
         }
         m_apImagesHelper[i] = new YCQUiTreeItemImagesHelper(pTreeRoot, pTreeItemMain, (EImageType)i, tr(YCQUiItem::convertImageTypeToString((EImageType)i).c_str()));
         connect(m_apImagesHelper[i], SIGNAL(onChanged(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)), this, SLOT(onChangedImages(const EImageType&, const yam::yint32&, YCQUiTreeItemImageHelper*)));
-        connect(m_apImagesHelper[i], SIGNAL(onChanged(const EImageType&, const yam::yfloat32&)), this, SLOT(onChangedImages(const EImageType&, const yam::yfloat32&)));
+        connect(m_apImagesHelper[i], SIGNAL(onChanged(const EImageType&, const yam::yfloat32&, const yam::ystring&)), this, SLOT(onChangedImages(const EImageType&, const yam::yfloat32&, const yam::ystring&)));
         connect(m_apImagesHelper[i], SIGNAL(onChanged(const EImageType&)), this, SLOT(onChangedImages(const EImageType&)));
         connect(m_apImagesHelper[i], SIGNAL(onChanged(const EImageType&, const yam::yint32&)), this, SLOT(onChangedImages(const EImageType&, const yam::yint32&)));
     }
@@ -97,9 +97,9 @@ void YCQUiTreeItemSrcHelper::onChangedImages(const EImageType& reImageType, cons
 {
     onChanged(reImageType, riImageIndex, pImageHelper);
 }
-void YCQUiTreeItemSrcHelper::onChangedImages(const EImageType& reImageType, const yam::yfloat32& rfSpeed)
+void YCQUiTreeItemSrcHelper::onChangedImages(const EImageType& reImageType, const yam::yfloat32& rfSpeed, const yam::ystring& rsType)
 {
-    onChanged(reImageType, rfSpeed);
+    onChanged(reImageType, rfSpeed, rsType);
 }
 
 void YCQUiTreeItemSrcHelper::onChangedImages(const EImageType& reImageType)

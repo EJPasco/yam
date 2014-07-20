@@ -29,7 +29,9 @@ public:
     virtual YITree* AddNext(YITree* pChild) = 0;
     // caution: don't call this directly
     virtual YITree* AddChild(YITree* pChild) = 0;
-    virtual void Clear() = 0;
+    virtual void ClearAll() = 0;
+    virtual void ClearChildren() = 0;
+    virtual void ClearNext() = 0;
     virtual yint32 GetCountOfNext() const = 0;
     virtual yint32 GetCountOfChildren() const = 0;
     virtual YITree* Find(const ystring& rsId) const = 0;
@@ -46,7 +48,7 @@ public:
     virtual ~YTTree()
     {
         m_pParent = YNULL;
-        Clear();
+        ClearAll();
     }
 
 public:
@@ -160,13 +162,23 @@ public:
         return pChild;
     }
 
-    virtual void Clear()
+    virtual void ClearAll()
+    {
+        ClearChildren();
+        ClearNext();
+    }
+
+    virtual void ClearChildren()
     {
         if (YNULL != m_pChildren)
         {
             delete m_pChildren;
             m_pChildren = YNULL;
         }
+    }
+
+    virtual void ClearNext()
+    {
         if (YNULL != m_pNext)
         {
             delete m_pNext;
@@ -357,7 +369,20 @@ public:
     virtual ~YCTree();
 
 public:
-    //
+};
+
+class YCTreeNew : public YCTree
+{
+    typedef YCTree        super;
+    YOBJECT_DECL(YCTreeNew);
+
+public:
+    YCTreeNew();
+    virtual ~YCTreeNew();
+
+public:
+    virtual bool operator>>(YCBuffer& rBuffer) const;
+    virtual bool operator<<(YCBuffer& rBuffer);
 };
 
 }}

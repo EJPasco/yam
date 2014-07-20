@@ -50,9 +50,9 @@ yam::ybool CYQt2Yam::Generate(const YEditor* pEditor, const YCQUiItem* pItem, co
         GeneratePanel(pItem, pUiItem, rpWidget);
         } break;
 
-    case eWidgetType_Picture: {
+    case eWidgetType_Image: {
         rpWidget = new yam::base::YCWidget;
-        GeneratePicture(pItem, pUiItem, rpWidget);
+        GenerateImage(pItem, pUiItem, rpWidget);
         } break;
 
     case eWidgetType_Button: {
@@ -110,10 +110,13 @@ yam::ybool CYQt2Yam::GenerateScene(const YCQUiItem* pItem, const YCQUiTreeItem* 
     const SConfigScene& rstConfigScene = pItem->getConfigScene();
 
     yam::base::YCProperty* pPropertyScene = rpWidget->GetExternalProperty().AddChild("scene");
-    pPropertyScene->Clear();
+    pPropertyScene->ClearChildren();
     pPropertyScene->AddChild("logic")->FromString(rstConfigScene._sLogic);
+
     yam::base::YCProperty* pPropertyAssets = pPropertyScene->AddChild("assets");
     pPropertyAssets->AddChild("count")->FromInt32((yam::yint32)rstConfigScene._vAssets.size());
+
+    GenerateLayout(*pPropertyScene, pItem->getConfigLayout());
 
     for (size_t i = 0; i < rstConfigScene._vAssets.size(); ++i)
     {
@@ -133,8 +136,10 @@ yam::ybool CYQt2Yam::GeneratePanel(const YCQUiItem* pItem, const YCQUiTreeItem* 
     GenerateWidget(pItem, pUiItem, rpWidget);
 
     yam::base::YIProperty* pPropertyFace = rpWidget->GetExternalProperty().AddChild("noinput");
-    pPropertyFace->Clear();
+    pPropertyFace->ClearChildren();
     pPropertyFace->FromString(pItem->getNoInput() ? "true" : "false");
+
+    GenerateLayout(rpWidget->GetExternalProperty(), pItem->getConfigLayout());
     return true;
 }
 
@@ -159,11 +164,12 @@ yam::ybool CYQt2Yam::GenerateImage(const YCQUiItem* pItem, const YCQUiTreeItem* 
 
 yam::ybool CYQt2Yam::GenerateImages(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, const EImageType eType, yam::base::YIWidget*& rpWidget, yam::base::YIProperty*& rpProperty) const
 {
-    rpProperty->Clear();
+    rpProperty->ClearChildren();
 
     int iCount = pItem->getImageCount(eType);
     rpProperty->AddChild("count")->FromInt32(iCount);
     rpProperty->AddChild("speed")->FromFloat32(pItem->getImageSpeed(eType));
+    rpProperty->AddChild("type")->FromString(pItem->getImageType(eType));
 
     for (int i = 0; i < iCount; ++i)
     {
@@ -175,7 +181,7 @@ yam::ybool CYQt2Yam::GenerateImages(const YCQUiItem* pItem, const YCQUiTreeItem*
     return true;
 }
 
-yam::ybool CYQt2Yam::GeneratePicture(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
+yam::ybool CYQt2Yam::GenerateImage(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const
 {
     GenerateWidget(pItem, pUiItem, rpWidget);
 
@@ -191,7 +197,7 @@ yam::ybool CYQt2Yam::GenerateButton(const YCQUiItem* pItem, const YCQUiTreeItem*
 
     for (int i = 0; i < eImageType_Max; ++i)
     {
-        if (i != eImageType_Normal && i != eImageType_Hover && i != eImageType_Press && i != eImageType_Disable)
+        if (i != eImageType_Normal && i != eImageType_Hover && i != eImageType_Pressed && i != eImageType_Disable)
         {
             continue;
         }
@@ -217,6 +223,18 @@ yam::ybool CYQt2Yam::GenerateText(const YCQUiItem* pItem, const YCQUiTreeItem* p
     yam::base::YIProperty* pPropertyValue = rpWidget->GetExternalProperty().AddChild("value");
     pPropertyValue->FromString(pItem->getTextValue());
     return true;
+}
+
+void CYQt2Yam::GenerateLayout(yam::base::YCProperty& rProperty, const SConfigLayout& rstConfig) const
+{
+    yam::base::YCProperty* pPropertyLayout = rProperty.AddChild("layout");
+    {
+        pPropertyLayout->AddChild("type")->FromString(rstConfig._sType);
+        yam::base::YCProperty* pPropertyLayoutValue = pPropertyLayout->AddChild("value");
+        {
+            pPropertyLayoutValue->AddChild("type")->FromString(rstConfig._sValue);
+        }
+    }
 }
 
 }}

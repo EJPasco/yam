@@ -22,7 +22,7 @@ enum EImageType
 {
     eImageType_Normal,
     eImageType_Hover,
-    eImageType_Press,
+    eImageType_Pressed,
     eImageType_Disable,
     eImageType_Checked,
     eImageType_Unchecked,
@@ -66,5 +66,11 @@ typedef struct tagConfigScene
     yam::YVec2D     _stSize;
     yvconfigasset  _vAssets;
 } SConfigScene;
+
+typedef struct tagConfigLayout
+{
+    yam::ystring    _sType;
+    yam::ystring    _sValue;
+} SConfigLayout;
 
 #endif // Y_EDITORCOMMON_H

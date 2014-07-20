@@ -33,6 +33,7 @@ YCQUiItem::YCQUiItem(YCQUiArea* parent /* = 0 */, Qt::WindowFlags f /* = 0 */)
     for (int i = 0; i < eImageType_Max; ++i)
     {
         m_astImagesData[i]._fSpeed = 0.1f;
+        m_astImagesData[i]._sType = "";
     }
     m_stImageDataDefault._pImage = NULL;
 }
@@ -231,13 +232,18 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
             pPropertyNoInput->ToString(sNoInput);
             m_bNoInput = (sNoInput == "false") ? false : true;
         }
+        getConfigLayout(rpWidget->GetExternalProperty(), m_stConfigLayout);
     }
 
     if (yam::eWidgetType_Scene == m_eType)
     {
         yam::base::YCProperty* pPropertyScene = rpWidget->GetExternalProperty().FindChild<yam::base::YCProperty>("scene");
-        getConfigScene(pPropertyScene, m_stConfigScene);
-        m_stConfigScene._stSize = rpWidget->GetBound().Size;
+        if (YNULL != pPropertyScene)
+        {
+            getConfigScene(pPropertyScene, m_stConfigScene);
+            m_stConfigScene._stSize = rpWidget->GetBound().Size;
+            getConfigLayout(*pPropertyScene, m_stConfigLayout);
+        }
     }
 
     move(rpWidget->GetBound().Pos.X, rpWidget->GetBound().Pos.Y);
@@ -249,7 +255,7 @@ void YCQUiItem::setWidget(const yam::base::YIWidget*& rpWidget)
         m_astImagesData[i]._vstImageData.clear();
 
         VFormatData vFormats;
-        getFormatImages((EImageType)i, rpWidget, m_astImagesData[i]._fSpeed, vFormats);
+        getFormatImages((EImageType)i, rpWidget, m_astImagesData[i]._fSpeed, m_astImagesData[i]._sType, vFormats);
         for (size_t j = 0; j < vFormats.size(); ++j)
         {
             setImage((EImageType)i, j, vFormats[j]._stOffset, vFormats[j]._pFormat);
@@ -410,6 +416,12 @@ void YCQUiItem::setConfigScene(const SConfigScene& rstConfig)
     resize(YCConverter::Instance().Convert(rstConfig._stSize));
 }
 
+void YCQUiItem::setConfigLayout(const SConfigLayout& rstConfig)
+{
+    m_stConfigLayout = rstConfig;
+    //
+}
+
 int YCQUiItem::getLayerWeight() const
 {
     return m_iLayerWeight;
@@ -428,6 +440,11 @@ yam::yint32 YCQUiItem::getImageCount(const EImageType& reImageType) const
 yam::yfloat32 YCQUiItem::getImageSpeed(const EImageType& reImageType) const
 {
     return m_astImagesData[reImageType]._fSpeed;
+}
+
+yam::ystring YCQUiItem::getImageType(const EImageType& reImageType) const
+{
+    return m_astImagesData[reImageType]._sType;
 }
 
 QImage* YCQUiItem::getImage(const EImageType& reImageType, const size_t& riIndex) const
@@ -506,6 +523,11 @@ const SConfigScene& YCQUiItem::getConfigScene() const
     return m_stConfigScene;
 }
 
+const SConfigLayout& YCQUiItem::getConfigLayout() const
+{
+    return m_stConfigLayout;
+}
+
 QRgb YCQUiItem::convertFromYColor(const yam::ycolor& riColor) const
 {
     using namespace yam;
@@ -525,8 +547,8 @@ yam::ystring YCQUiItem::convertImageTypeToString(const EImageType& reImageType)
     case eImageType_Hover:
         return "hover";
 
-    case eImageType_Press:
-        return "press";
+    case eImageType_Pressed:
+        return "pressed";
 
     case eImageType_Disable:
         return "disable";
@@ -544,7 +566,7 @@ yam::ystring YCQUiItem::convertImageTypeToString(const EImageType& reImageType)
     return "";
 }
 
-bool YCQUiItem::getFormatImages(const EImageType& reImageType, const yam::base::YIWidget*& rpWidget, yam::yfloat32& rfSpeed, YCQUiItem::VFormatData& rvFormatData) const
+bool YCQUiItem::getFormatImages(const EImageType& reImageType, const yam::base::YIWidget*& rpWidget, yam::yfloat32& rfSpeed, yam::ystring& rsType, YCQUiItem::VFormatData& rvFormatData) const
 {
     rvFormatData.clear();
 
@@ -570,6 +592,12 @@ bool YCQUiItem::getFormatImages(const EImageType& reImageType, const yam::base::
     if (YNULL != pPropertyImagesSpeed)
     {
         pPropertyImagesSpeed->ToFloat32(rfSpeed, 0.1f);
+    }
+
+    yam::base::YCProperty* pPropertyImagesTypeType = pPropertyImagesType->FindChild<yam::base::YCProperty>("type");
+    if (YNULL != pPropertyImagesTypeType)
+    {
+        pPropertyImagesTypeType->ToString(rsType);
     }
 
     for (yam::yint32 i = 0; i < iCount; ++i)
@@ -665,5 +693,30 @@ void YCQUiItem::getConfigScene(yam::base::YCProperty*& rpProperty, SConfigScene&
             pPropertyAssetType->ToString(stAsset._sType);
         }
         rstConfig._vAssets.push_back(stAsset);
+    }
+}
+
+void YCQUiItem::getConfigLayout(const yam::base::YCProperty& rProperty, SConfigLayout& rstConfig)
+{
+    const yam::base::YCProperty* pPropertyLayout = rProperty.FindChild<yam::base::YCProperty>("layout");
+    if (YNULL == pPropertyLayout)
+    {
+        return;
+    }
+
+    const yam::base::YCProperty* pPropertyLayoutType = pPropertyLayout->FindChild<yam::base::YCProperty>("type");
+    if (YNULL != pPropertyLayoutType)
+    {
+        pPropertyLayoutType->ToString(rstConfig._sType);
+    }
+
+    const yam::base::YCProperty* pPropertyLayoutValue = pPropertyLayout->FindChild<yam::base::YCProperty>("value");
+    if (YNULL != pPropertyLayoutValue)
+    {
+        const yam::base::YCProperty* pPropertyLayoutValueType = pPropertyLayoutValue->FindChild<yam::base::YCProperty>("type");
+        if (YNULL != pPropertyLayoutValueType)
+        {
+            pPropertyLayoutValueType->ToString(rstConfig._sValue);
+        }
     }
 }

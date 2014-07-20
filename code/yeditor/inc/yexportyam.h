@@ -24,11 +24,12 @@ private:
     void ToJsonWidgetChildren(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonScene(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonPanel(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
-    void ToJsonImage(const yam::base::YCProperty* pProperty, json::Object& rjObj) const;
-    void ToJsonImages(const yam::base::YCProperty* pProperty, json::Object& rjObj) const;
-    void ToJsonPicture(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
+    void ToJsonTile(const yam::base::YCProperty* pProperty, json::Object& rjObj) const;
+    void ToJsonTiles(const yam::base::YCProperty* pProperty, json::Object& rjObj) const;
+    void ToJsonImage(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonButton(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
     void ToJsonText(const yam::base::YIWidget* pWidget, json::Object& rjObj) const;
+    void ToJsonLayout(const yam::base::YCProperty* pProperty, json::Object& rjObj) const;
 
 public:
     static void GetStringByIdFromProperty(const yam::base::YITree* const& rpTree, const yam::ystring& rsId, yam::ystring& rsValue);

@@ -27,13 +27,13 @@ public Q_SLOTS:
     void onItemChangedBound(const QRect& roBound);
     void onItemChangedLayerWeight(const int& riLayerWeight);
     void onItemChangedSrc(const EImageType& reImageType, const yam::yint32& riImageIndex, YCQUiTreeItemImageHelper* pImageHelper);
-    void onItemChangedSrc(const EImageType& reImageType, const yam::yfloat32& rfSpeed);
+    void onItemChangedSrc(const EImageType& reImageType, const yam::yfloat32& rfSpeed, const yam::ystring& rsType);
     void onItemChangedSrc(const EImageType& reImageType);
     void onItemChangedSrc(const EImageType& reImageType, const yam::yint32& riImageIndex);
     void onItemSelectedSrc(const EImageType& reImageType, const yam::yint32& riImageIndex);
     void onItemChangedText(const QString& rsFace, const int& riSize, const QString& rsAlign, const QString& rsValue);
-    void onItemChangedPanel(const bool& rbNoInput);
-    void onItemChangedScene(const SConfigScene& rstConfigScene);
+    void onItemChangedPanel(const bool& rbNoInput, const SConfigLayout& rstConfigLayout);
+    void onItemChangedScene(const SConfigScene& rstConfigScene, const SConfigLayout& rstConfigLayout);
 
 public:
     virtual void setUiItem(YCQUiItem*& rpUiItem);

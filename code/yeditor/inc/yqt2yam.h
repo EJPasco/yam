@@ -26,9 +26,10 @@ private:
     yam::ybool GeneratePanel(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const;
     yam::ybool GenerateImage(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, const EImageType eType, const int& riIndex, yam::base::YIWidget*& rpWidget, yam::base::YIProperty*& rpProperty) const;
     yam::ybool GenerateImages(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, const EImageType eType, yam::base::YIWidget*& rpWidget, yam::base::YIProperty*& rpProperty) const;
-    yam::ybool GeneratePicture(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const;
+    yam::ybool GenerateImage(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const;
     yam::ybool GenerateButton(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const;
     yam::ybool GenerateText(const YCQUiItem* pItem, const YCQUiTreeItem* pUiItem, yam::base::YIWidget*& rpWidget) const;
+    void GenerateLayout(yam::base::YCProperty& rProperty, const SConfigLayout& rstConfig) const;
 };
 
 }}

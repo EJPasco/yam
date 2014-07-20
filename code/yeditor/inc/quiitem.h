@@ -24,6 +24,7 @@ public:
     typedef struct tagImagesData
     {
         yam::yfloat32   _fSpeed;
+        yam::ystring    _sType;
         VImageData      _vstImageData;
         tagImagesData() : _fSpeed(0.1f) { ; }
     } SImagesData;
@@ -73,12 +74,14 @@ public:
     void setTextValue(const yam::ystring& rsValue);
     void setNoInput(const bool& rbNoInput);
     void setConfigScene(const SConfigScene& rstConfig);
+    void setConfigLayout(const SConfigLayout& rstConfig);
 
 public:
     int getLayerWeight() const;
     SImagesData& getImagesData(const EImageType& reImageType);
     yam::yint32 getImageCount(const EImageType& reImageType) const;
     yam::yfloat32 getImageSpeed(const EImageType& reImageType) const;
+    yam::ystring getImageType(const EImageType& reImageType) const;
     SImageData getImageData(const EImageType& reImageType, const size_t& riIndex) const;
     QImage* getImage(const EImageType& reImageType, const size_t& riIndex) const;
     QString getImageSource(const EImageType& reImageType, const size_t& riIndex) const;
@@ -92,6 +95,7 @@ public:
     const yam::ystring& getTextValue() const;
     const bool& getNoInput() const;
     const SConfigScene& getConfigScene() const;
+    const SConfigLayout& getConfigLayout() const;
 
 public:
     QRgb convertFromYColor(const yam::ycolor& riColor) const;
@@ -99,8 +103,9 @@ public:
 
 private:
     void setImage(SImageData& rstImageData, const yam::YRect2D& rstRect, const yam::ycolorptr& rpColorData);
-    bool getFormatImages(const EImageType& reImageType, const yam::base::YIWidget*& rpWidget, yam::yfloat32& rfSpeed, VFormatData& rvFormatData) const;
+    bool getFormatImages(const EImageType& reImageType, const yam::base::YIWidget*& rpWidget, yam::yfloat32& rfSpeed, yam::ystring& rsType, VFormatData& rvFormatData) const;
     void getConfigScene(yam::base::YCProperty*& rpProperty, SConfigScene& rstConfig);
+    void getConfigLayout(const yam::base::YCProperty& rProperty, SConfigLayout& rstConfig);
 
 private:
     YCQUiArea*              m_pUiArea;
@@ -122,6 +127,7 @@ private:
     yam::ystring            m_sTextValue;
     bool                    m_bNoInput;
     SConfigScene            m_stConfigScene;
+    SConfigLayout           m_stConfigLayout;
 };
 
 

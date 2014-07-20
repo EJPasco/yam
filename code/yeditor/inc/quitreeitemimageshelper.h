@@ -10,6 +10,7 @@
 class QTreeWidget;
 class QTreeWidgetItem;
 class QDoubleSpinBox;
+class QLineEdit;
 class YCQUiTreeItemImageHelper;
 
 class YCQUiTreeItemImagesHelper : public QObject
@@ -25,7 +26,7 @@ public:
 
 Q_SIGNALS:
     void onChanged(const EImageType& reImageType, const yam::yint32& riImageIndex, YCQUiTreeItemImageHelper* pImageHelper);
-    void onChanged(const EImageType& reImageType, const yam::yfloat32& riSpeed);
+    void onChanged(const EImageType& reImageType, const yam::yfloat32& riSpeed, const yam::ystring& rsType);
     void onChanged(const EImageType& reImageType);     //< add
     void onChanged(const EImageType& reImageType, const yam::yint32& riImageIndex);     //< delete
 
@@ -34,6 +35,7 @@ public Q_SLOTS:
     void onChangedImage(const yam::yint32& riIndex, YCQUiTreeItemImageHelper* pImageHelper);
     void onChangedImage(const yam::yint32& riIndex);
     void onChangedSpeed(double dSpeed);
+    void onItemChangedType(const QString& rsType);
 
 public:
     YCQUiTreeItemImageHelper* toAddImageHelper();
@@ -47,8 +49,10 @@ private:
     QTreeWidget*        m_pTreeRoot;
     QTreeWidgetItem*    m_pTreeItemImages;
     QDoubleSpinBox*     m_pdsbSpeed;
+    QLineEdit*          m_pleType;
     EImageType          m_eImageType;
     float               m_fSpeed;
+    yam::ystring        m_sType;
 };
 
 #endif // Y_QUITREEITEMIMAGESHELPER_H

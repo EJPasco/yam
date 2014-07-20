@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YEditor_t {
     QByteArrayData data[35];
-    char stringdata[724];
+    char stringdata[722];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -60,10 +60,10 @@ QT_MOC_LITERAL(27, 478, 25),
 QT_MOC_LITERAL(28, 504, 25),
 QT_MOC_LITERAL(29, 530, 31),
 QT_MOC_LITERAL(30, 562, 31),
-QT_MOC_LITERAL(31, 594, 33),
-QT_MOC_LITERAL(32, 628, 32),
-QT_MOC_LITERAL(33, 661, 30),
-QT_MOC_LITERAL(34, 692, 30)
+QT_MOC_LITERAL(31, 594, 31),
+QT_MOC_LITERAL(32, 626, 32),
+QT_MOC_LITERAL(33, 659, 30),
+QT_MOC_LITERAL(34, 690, 30)
     },
     "YEditor\0onClickedOpen\0\0onClickedSave\0"
     "onClickedExport\0onClickedSync\0"
@@ -83,7 +83,7 @@ QT_MOC_LITERAL(34, 692, 30)
     "onUiAreaVisibilityChanged\0"
     "onClickedUiMenuItem_CreateScene\0"
     "onClickedUiMenuItem_CreatePanel\0"
-    "onClickedUiMenuItem_CreatePicture\0"
+    "onClickedUiMenuItem_CreateImage\0"
     "onClickedUiMenuItem_CreateButton\0"
     "onClickedUiMenuItem_CreateText\0"
     "onClickedUiMenuItem_EditRemove\0"
@@ -189,7 +189,7 @@ void YEditor::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         case 19: _t->onUiAreaVisibilityChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 20: _t->onClickedUiMenuItem_CreateScene(); break;
         case 21: _t->onClickedUiMenuItem_CreatePanel(); break;
-        case 22: _t->onClickedUiMenuItem_CreatePicture(); break;
+        case 22: _t->onClickedUiMenuItem_CreateImage(); break;
         case 23: _t->onClickedUiMenuItem_CreateButton(); break;
         case 24: _t->onClickedUiMenuItem_CreateText(); break;
         case 25: _t->onClickedUiMenuItem_EditRemove(); break;

@@ -26,7 +26,7 @@ enum EWidgetType
     eWidgetType_None,
     eWidgetType_Scene,
     eWidgetType_Panel,
-    eWidgetType_Picture,
+    eWidgetType_Image,
     eWidgetType_Button,
     eWidgetType_Text,
     eWidgetType_Max,
