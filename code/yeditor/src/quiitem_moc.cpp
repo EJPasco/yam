@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'quiitem.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.2.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.3.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'quiitem.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.2.0. It"
+#error "This file was generated using the moc from 5.3.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,12 +20,12 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YCQUiItem_t {
     QByteArrayData data[6];
-    char stringdata[52];
+    char stringdata[51];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    offsetof(qt_meta_stringdata_YCQUiItem_t, stringdata) + ofs \
-        - idx * sizeof(QByteArrayData) \
+    qptrdiff(offsetof(qt_meta_stringdata_YCQUiItem_t, stringdata) + ofs \
+        - idx * sizeof(QByteArrayData)) \
     )
 static const qt_meta_stringdata_YCQUiItem_t qt_meta_stringdata_YCQUiItem = {
     {
@@ -37,7 +37,7 @@ QT_MOC_LITERAL(4, 32, 7),
 QT_MOC_LITERAL(5, 40, 10)
     },
     "YCQUiItem\0onPressed\0\0YCQUiItem*\0pUiItem\0"
-    "onSelected\0"
+    "onSelected"
 };
 #undef QT_MOC_LITERAL
 
@@ -55,8 +55,8 @@ static const uint qt_meta_data_YCQUiItem[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   24,    2, 0x06,
-       5,    1,   27,    2, 0x06,
+       1,    1,   24,    2, 0x06 /* Public */,
+       5,    1,   27,    2, 0x06 /* Public */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,

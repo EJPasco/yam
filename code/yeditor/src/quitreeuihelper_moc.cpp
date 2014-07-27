@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'quitreeuihelper.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.2.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.3.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'quitreeuihelper.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.2.0. It"
+#error "This file was generated using the moc from 5.3.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,12 +20,12 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YCQUiTreeUiHelper_t {
     QByteArrayData data[32];
-    char stringdata[429];
+    char stringdata[428];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    offsetof(qt_meta_stringdata_YCQUiTreeUiHelper_t, stringdata) + ofs \
-        - idx * sizeof(QByteArrayData) \
+    qptrdiff(offsetof(qt_meta_stringdata_YCQUiTreeUiHelper_t, stringdata) + ofs \
+        - idx * sizeof(QByteArrayData)) \
     )
 static const qt_meta_stringdata_YCQUiTreeUiHelper_t qt_meta_stringdata_YCQUiTreeUiHelper = {
     {
@@ -73,7 +73,7 @@ QT_MOC_LITERAL(31, 413, 14)
     "rsFace\0riSize\0rsAlign\0rsValue\0"
     "onItemChangedPanel\0rbNoInput\0SConfigLayout\0"
     "rstConfigLayout\0onItemChangedScene\0"
-    "SConfigScene\0rstConfigScene\0"
+    "SConfigScene\0rstConfigScene"
 };
 #undef QT_MOC_LITERAL
 
@@ -91,17 +91,17 @@ static const uint qt_meta_data_YCQUiTreeUiHelper[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   69,    2, 0x0a,
-       4,    1,   72,    2, 0x0a,
-       6,    1,   75,    2, 0x0a,
-       8,    3,   78,    2, 0x0a,
-       8,    3,   85,    2, 0x0a,
-       8,    1,   92,    2, 0x0a,
-       8,    2,   95,    2, 0x0a,
-      19,    2,  100,    2, 0x0a,
-      20,    4,  105,    2, 0x0a,
-      25,    2,  114,    2, 0x0a,
-      29,    2,  119,    2, 0x0a,
+       1,    1,   69,    2, 0x0a /* Public */,
+       4,    1,   72,    2, 0x0a /* Public */,
+       6,    1,   75,    2, 0x0a /* Public */,
+       8,    3,   78,    2, 0x0a /* Public */,
+       8,    3,   85,    2, 0x0a /* Public */,
+       8,    1,   92,    2, 0x0a /* Public */,
+       8,    2,   95,    2, 0x0a /* Public */,
+      19,    2,  100,    2, 0x0a /* Public */,
+      20,    4,  105,    2, 0x0a /* Public */,
+      25,    2,  114,    2, 0x0a /* Public */,
+      29,    2,  119,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::QSize,    3,

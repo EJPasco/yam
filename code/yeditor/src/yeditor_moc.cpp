@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'yeditor.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.2.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.3.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'yeditor.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.2.0. It"
+#error "This file was generated using the moc from 5.3.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,12 +20,12 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YEditor_t {
     QByteArrayData data[35];
-    char stringdata[722];
+    char stringdata[721];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    offsetof(qt_meta_stringdata_YEditor_t, stringdata) + ofs \
-        - idx * sizeof(QByteArrayData) \
+    qptrdiff(offsetof(qt_meta_stringdata_YEditor_t, stringdata) + ofs \
+        - idx * sizeof(QByteArrayData)) \
     )
 static const qt_meta_stringdata_YEditor_t qt_meta_stringdata_YEditor = {
     {
@@ -86,7 +86,7 @@ QT_MOC_LITERAL(34, 690, 30)
     "onClickedUiMenuItem_CreateImage\0"
     "onClickedUiMenuItem_CreateButton\0"
     "onClickedUiMenuItem_CreateText\0"
-    "onClickedUiMenuItem_EditRemove\0"
+    "onClickedUiMenuItem_EditRemove"
 };
 #undef QT_MOC_LITERAL
 
@@ -104,32 +104,32 @@ static const uint qt_meta_data_YEditor[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  144,    2, 0x0a,
-       3,    0,  145,    2, 0x0a,
-       4,    0,  146,    2, 0x0a,
-       5,    0,  147,    2, 0x0a,
-       6,    0,  148,    2, 0x0a,
-       7,    0,  149,    2, 0x0a,
-       8,    0,  150,    2, 0x0a,
-       9,    0,  151,    2, 0x0a,
-      10,    2,  152,    2, 0x0a,
-      14,    1,  157,    2, 0x0a,
-      16,    2,  160,    2, 0x0a,
-      17,    1,  165,    2, 0x0a,
-      18,    1,  168,    2, 0x0a,
-      21,    1,  171,    2, 0x0a,
-      22,    1,  174,    2, 0x0a,
-      24,    1,  177,    2, 0x0a,
-      25,    0,  180,    2, 0x0a,
-      26,    0,  181,    2, 0x0a,
-      27,    1,  182,    2, 0x0a,
-      28,    1,  185,    2, 0x0a,
-      29,    0,  188,    2, 0x0a,
-      30,    0,  189,    2, 0x0a,
-      31,    0,  190,    2, 0x0a,
-      32,    0,  191,    2, 0x0a,
-      33,    0,  192,    2, 0x0a,
-      34,    0,  193,    2, 0x0a,
+       1,    0,  144,    2, 0x0a /* Public */,
+       3,    0,  145,    2, 0x0a /* Public */,
+       4,    0,  146,    2, 0x0a /* Public */,
+       5,    0,  147,    2, 0x0a /* Public */,
+       6,    0,  148,    2, 0x0a /* Public */,
+       7,    0,  149,    2, 0x0a /* Public */,
+       8,    0,  150,    2, 0x0a /* Public */,
+       9,    0,  151,    2, 0x0a /* Public */,
+      10,    2,  152,    2, 0x0a /* Public */,
+      14,    1,  157,    2, 0x0a /* Public */,
+      16,    2,  160,    2, 0x0a /* Public */,
+      17,    1,  165,    2, 0x0a /* Public */,
+      18,    1,  168,    2, 0x0a /* Public */,
+      21,    1,  171,    2, 0x0a /* Public */,
+      22,    1,  174,    2, 0x0a /* Public */,
+      24,    1,  177,    2, 0x0a /* Public */,
+      25,    0,  180,    2, 0x0a /* Public */,
+      26,    0,  181,    2, 0x0a /* Public */,
+      27,    1,  182,    2, 0x0a /* Public */,
+      28,    1,  185,    2, 0x0a /* Public */,
+      29,    0,  188,    2, 0x0a /* Public */,
+      30,    0,  189,    2, 0x0a /* Public */,
+      31,    0,  190,    2, 0x0a /* Public */,
+      32,    0,  191,    2, 0x0a /* Public */,
+      33,    0,  192,    2, 0x0a /* Public */,
+      34,    0,  193,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,

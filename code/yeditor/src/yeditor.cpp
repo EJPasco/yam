@@ -89,9 +89,9 @@ YEditor::YEditor(QWidget* pParent /* = NULL */)
     }
 
     m_Ui.resArea->setGrabable(false);
-    m_Ui.resArea->setRaiseBySelected(false);
+    m_Ui.resArea->setRaiseBySelected(true);
     m_Ui.uiArea->setGrabable(false);
-    m_Ui.uiArea->setRaiseBySelected(false);
+    m_Ui.uiArea->setRaiseBySelected(true);
 
     m_Ui.resTree->setSelectionMode(QAbstractItemView::SingleSelection);
     m_Ui.uiTree->setSelectionMode(QAbstractItemView::SingleSelection);

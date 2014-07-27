@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'quitreeitemimageshelper.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.2.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.3.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'quitreeitemimageshelper.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.2.0. It"
+#error "This file was generated using the moc from 5.3.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -20,12 +20,12 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_YCQUiTreeItemImagesHelper_t {
     QByteArrayData data[19];
-    char stringdata[249];
+    char stringdata[248];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    offsetof(qt_meta_stringdata_YCQUiTreeItemImagesHelper_t, stringdata) + ofs \
-        - idx * sizeof(QByteArrayData) \
+    qptrdiff(offsetof(qt_meta_stringdata_YCQUiTreeItemImagesHelper_t, stringdata) + ofs \
+        - idx * sizeof(QByteArrayData)) \
     )
 static const qt_meta_stringdata_YCQUiTreeItemImagesHelper_t qt_meta_stringdata_YCQUiTreeItemImagesHelper = {
     {
@@ -55,7 +55,7 @@ QT_MOC_LITERAL(18, 230, 17)
     "pImageHelper\0yam::yfloat32\0riSpeed\0"
     "yam::ystring\0rsType\0onAddButtonClicked\0"
     "onChangedImage\0riIndex\0onChangedSpeed\0"
-    "dSpeed\0onItemChangedType\0"
+    "dSpeed\0onItemChangedType"
 };
 #undef QT_MOC_LITERAL
 
@@ -73,17 +73,17 @@ static const uint qt_meta_data_YCQUiTreeItemImagesHelper[] = {
        4,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,   59,    2, 0x06,
-       1,    3,   66,    2, 0x06,
-       1,    1,   73,    2, 0x06,
-       1,    2,   76,    2, 0x06,
+       1,    3,   59,    2, 0x06 /* Public */,
+       1,    3,   66,    2, 0x06 /* Public */,
+       1,    1,   73,    2, 0x06 /* Public */,
+       1,    2,   76,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      13,    0,   81,    2, 0x0a,
-      14,    2,   82,    2, 0x0a,
-      14,    1,   87,    2, 0x0a,
-      16,    1,   90,    2, 0x0a,
-      18,    1,   93,    2, 0x0a,
+      13,    0,   81,    2, 0x0a /* Public */,
+      14,    2,   82,    2, 0x0a /* Public */,
+      14,    1,   87,    2, 0x0a /* Public */,
+      16,    1,   90,    2, 0x0a /* Public */,
+      18,    1,   93,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3, 0x80000000 | 5, 0x80000000 | 7,    4,    6,    8,
